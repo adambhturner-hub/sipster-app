@@ -28,37 +28,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
-                const userRef = doc(db, 'users', currentUser.uid);
-                const userSnap = await getDoc(userRef);
+                try {
+                    const userRef = doc(db, 'users', currentUser.uid);
+                    const userSnap = await getDoc(userRef);
 
-                // Check localStorage for existing My Bar inventory
-                let localBar: string[] = [];
-                const savedLocal = localStorage.getItem('sipster-my-bar');
-                if (savedLocal) {
-                    try { localBar = JSON.parse(savedLocal); } catch (e) { }
-                }
-
-                if (!userSnap.exists()) {
-                    await setDoc(userRef, {
-                        email: currentUser.email,
-                        displayName: currentUser.displayName,
-                        createdAt: serverTimestamp(),
-                        myBar: localBar
-                    });
-
-                    if (localBar.length > 0) {
-                        localStorage.removeItem('sipster-my-bar'); // Clear local storage after successful migration
+                    // Check localStorage for existing My Bar inventory
+                    let localBar: string[] = [];
+                    const savedLocal = localStorage.getItem('sipster-my-bar');
+                    if (savedLocal) {
+                        try { localBar = JSON.parse(savedLocal); } catch (e) { }
                     }
-                } else if (localBar.length > 0) {
-                    // If user exists but we have local data, merge it
-                    const existingBar = userSnap.data().myBar || [];
-                    const mergedBar = Array.from(new Set([...existingBar, ...localBar]));
-                    await setDoc(userRef, { myBar: mergedBar }, { merge: true });
-                    localStorage.removeItem('sipster-my-bar');
+
+                    if (!userSnap.exists()) {
+                        await setDoc(userRef, {
+                            email: currentUser.email,
+                            displayName: currentUser.displayName,
+                            createdAt: serverTimestamp(),
+                            myBar: localBar
+                        });
+
+                        if (localBar.length > 0) {
+                            localStorage.removeItem('sipster-my-bar'); // Clear local storage after successful migration
+                        }
+                    } else if (localBar.length > 0) {
+                        // If user exists but we have local data, merge it
+                        const existingBar = userSnap.data().myBar || [];
+                        const mergedBar = Array.from(new Set([...existingBar, ...localBar]));
+                        await setDoc(userRef, { myBar: mergedBar }, { merge: true });
+                        localStorage.removeItem('sipster-my-bar');
+                    }
+                } catch (error) {
+                    console.error("Error migrating or fetching user data from Firestore:", error);
+                } finally {
+                    setUser(currentUser);
+                    setLoading(false);
                 }
+            } else {
+                setUser(null);
+                setLoading(false);
             }
-            setUser(currentUser);
-            setLoading(false);
         });
 
         return () => unsubscribe();
