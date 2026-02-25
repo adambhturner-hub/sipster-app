@@ -38,6 +38,14 @@ export default function MyBarPage() {
     const [isScanning, setIsScanning] = useState(false);
     const [customIngredient, setCustomIngredient] = useState('');
     const [customShoppingItem, setCustomShoppingItem] = useState('');
+    const [showSuggestions, setShowSuggestions] = useState(false);
+
+    const ALL_INGREDIENTS = Array.from(new Set(INGREDIENT_CATEGORIES.flatMap(cat => cat.items)));
+    const filteredSuggestions = customShoppingItem.trim() === '' ? [] :
+        ALL_INGREDIENTS.filter(item =>
+            item.toLowerCase().includes(customShoppingItem.toLowerCase()) &&
+            !shoppingList.some(i => i.toLowerCase() === item.toLowerCase())
+        ).slice(0, 5);
 
     useEffect(() => {
         if (authLoading) return;
@@ -115,9 +123,8 @@ export default function MyBarPage() {
         }
     };
 
-    const handleAddShoppingItem = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const item = customShoppingItem.trim();
+    const addItemToShoppingList = async (itemToProcess: string) => {
+        const item = itemToProcess.trim();
         if (!item) return;
 
         if (shoppingList.some(i => i.toLowerCase() === item.toLowerCase())) {
@@ -128,12 +135,18 @@ export default function MyBarPage() {
         const newList = [...shoppingList, item];
         setShoppingList(newList);
         setCustomShoppingItem('');
+        setShowSuggestions(false);
         toast.success(`Added ${item} to Shopping List`);
 
         if (user) {
             const userRef = doc(db, 'users', user.uid);
             await setDoc(userRef, { shoppingList: newList }, { merge: true });
         }
+    };
+
+    const handleAddShoppingItem = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await addItemToShoppingList(customShoppingItem);
     };
 
     const removeShoppingItem = async (ingredient: string) => {
@@ -353,14 +366,35 @@ export default function MyBarPage() {
                         Add items you're missing. When you buy them, click the checkmark to instantly move them to your My Bar inventory!
                     </p>
 
-                    <form onSubmit={handleAddShoppingItem} className="flex gap-4 w-full mb-10">
-                        <input
-                            type="text"
-                            placeholder="e.g. Campari, Lemons..."
-                            value={customShoppingItem}
-                            onChange={(e) => setCustomShoppingItem(e.target.value)}
-                            className="flex-1 bg-white/5 border border-white/20 rounded-full px-6 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-green)] focus:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all"
-                        />
+                    <form onSubmit={handleAddShoppingItem} className="flex gap-4 w-full mb-10 relative">
+                        <div className="flex-1 relative">
+                            <input
+                                type="text"
+                                placeholder="e.g. Campari, Lemons..."
+                                value={customShoppingItem}
+                                onChange={(e) => {
+                                    setCustomShoppingItem(e.target.value);
+                                    setShowSuggestions(true);
+                                }}
+                                onFocus={() => setShowSuggestions(true)}
+                                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                                className="w-full bg-white/5 border border-white/20 rounded-full px-6 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-green)] focus:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all"
+                            />
+                            {showSuggestions && filteredSuggestions.length > 0 && (
+                                <ul className="absolute z-20 w-full mt-2 bg-black/95 border border-white/20 rounded-2xl shadow-[0_0_30px_rgba(57,255,20,0.2)] overflow-hidden backdrop-blur-xl">
+                                    {filteredSuggestions.map((suggestion) => (
+                                        <li
+                                            key={suggestion}
+                                            onClick={() => addItemToShoppingList(suggestion)}
+                                            className="px-6 py-3 hover:bg-[var(--color-neon-green)]/20 cursor-pointer text-gray-200 hover:text-white transition-colors border-b border-white/5 last:border-0 flex items-center justify-between group"
+                                        >
+                                            <span className="font-medium">{suggestion}</span>
+                                            <span className="text-[var(--color-neon-green)] opacity-0 group-hover:opacity-100 transition-opacity text-sm font-bold">+ Add</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
                         <button
                             type="submit"
                             disabled={!customShoppingItem.trim()}
