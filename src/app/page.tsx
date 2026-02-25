@@ -28,7 +28,7 @@ export default function Home() {
           Ask the Bartender ✨
         </Link>
         <Link
-          href="/backbar"
+          href="/my-bar"
           className="w-full sm:w-auto px-8 py-4 rounded-full glass-panel text-white font-bold text-lg hover:bg-white/10 hover:scale-105 transition-all duration-300"
         >
           Open Your Back Bar
