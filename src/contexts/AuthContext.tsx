@@ -44,7 +44,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             email: currentUser.email,
                             displayName: currentUser.displayName,
                             createdAt: serverTimestamp(),
-                            myBar: localBar
+                            myBar: localBar,
+                            shoppingList: []
                         });
 
                         if (localBar.length > 0) {
