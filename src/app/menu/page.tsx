@@ -6,75 +6,7 @@ import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-
-const CLASSIC_COCKTAILS = [
-    {
-        name: 'Old Fashioned',
-        emoji: '🥃',
-        ingredients: [
-            { amount: '2 oz', item: 'Bourbon' },
-            { amount: '2 dashes', item: 'Angostura Bitters' },
-            { amount: '1 spl', item: 'Simple Syrup' },
-            { amount: 'Garnish', item: 'Oranges' }
-        ],
-        description: 'The grandfather of all cocktails. A perfect balance of spirit, sugar, and bitters.'
-    },
-    {
-        name: 'Margarita',
-        emoji: '🍸',
-        ingredients: [
-            { amount: '2 oz', item: 'Tequila (Blanco)' },
-            { amount: '1 oz', item: 'Limes' },
-            { amount: '0.5 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' }
-        ],
-        description: 'Bright, citrusy, and deeply refreshing. The ultimate crowd-pleaser.'
-    },
-    {
-        name: 'Negroni',
-        emoji: '🥃',
-        ingredients: [
-            { amount: '1 oz', item: 'Gin (London Dry)' },
-            { amount: '1 oz', item: 'Campari' },
-            { amount: '1 oz', item: 'Sweet Vermouth' },
-            { amount: 'Garnish', item: 'Oranges' }
-        ],
-        description: 'Bitter, sweet, and botanical. An acquired taste that becomes an obsession.'
-    },
-    {
-        name: 'Espresso Martini',
-        emoji: '☕',
-        ingredients: [
-            { amount: '2 oz', item: 'Vodka' },
-            { amount: '0.5 oz', item: 'Coffee Liqueur' },
-            { amount: '0.25 oz', item: 'Simple Syrup' }
-        ],
-        description: 'Rich, robust, and highly caffeinated. The perfect evening pick-me-up.'
-    },
-    {
-        name: 'Mojito',
-        emoji: '🌿',
-        ingredients: [
-            { amount: '2 oz', item: 'White Rum' },
-            { amount: '0.5 oz', item: 'Limes' },
-            { amount: '0.5 oz', item: 'Simple Syrup' },
-            { amount: 'Handful', item: 'Mint' },
-            { amount: 'Top with', item: 'Club Soda' }
-        ],
-        description: 'Minty, bubbly, and invigorating. A Cuban classic perfect for hot days.'
-    },
-    {
-        name: 'Whiskey Sour',
-        emoji: '🍋',
-        ingredients: [
-            { amount: '2 oz', item: 'Bourbon' },
-            { amount: '0.75 oz', item: 'Lemons' },
-            { amount: '0.5 oz', item: 'Simple Syrup' },
-            { amount: '1', item: 'Egg White' },
-            { amount: '2 dashes', item: 'Angostura Bitters' }
-        ],
-        description: 'Tart, sweet, and frothy. A beautiful showcase for a good whiskey.'
-    }
-];
+import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 
 export default function MenuPage() {
     const { user, loading: authLoading } = useAuth();
