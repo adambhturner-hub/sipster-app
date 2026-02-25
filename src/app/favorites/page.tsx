@@ -15,7 +15,7 @@ interface FavoriteRecipe {
 }
 
 export default function FavoritesPage() {
-    const { user, loading: authLoading } = useAuth();
+    const { user, loading: authLoading, signInWithGoogle } = useAuth();
     const [favorites, setFavorites] = useState<FavoriteRecipe[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -64,7 +64,13 @@ export default function FavoritesPage() {
             <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
                 <span className="text-6xl mb-6">🔒</span>
                 <h2 className="text-3xl font-bold mb-4">Login Required</h2>
-                <p className="text-gray-400 max-w-md">You need to log in to save and view your favorite AI-generated cocktail recipes.</p>
+                <p className="text-gray-400 max-w-md mb-8">You need to log in to save and view your favorite AI-generated cocktail recipes.</p>
+                <button
+                    onClick={signInWithGoogle}
+                    className="bg-[var(--color-neon-pink)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,0,127,0.4)]"
+                >
+                    Log In with Google
+                </button>
             </div>
         );
     }
