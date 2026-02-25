@@ -6,13 +6,26 @@ import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import {
+    CLASSIC_COCKTAILS,
+    PrimarySpirit,
+    CocktailEra,
+    CocktailStyle,
+    GlassType
+} from '@/data/cocktails';
 
 export default function MenuPage() {
     const { user, loading: authLoading } = useAuth();
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [showMakeableOnly, setShowMakeableOnly] = useState(false);
+
+    // New Advanced Filters
+    const [selectedSpirit, setSelectedSpirit] = useState<PrimarySpirit | 'All'>('All');
+    const [selectedEra, setSelectedEra] = useState<CocktailEra | 'All'>('All');
+    const [selectedStyle, setSelectedStyle] = useState<CocktailStyle | 'All'>('All');
+    const [selectedGlass, setSelectedGlass] = useState<GlassType | 'All'>('All');
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
@@ -64,10 +77,29 @@ export default function MenuPage() {
     };
 
     const cocktailsToShow = CLASSIC_COCKTAILS.filter(cocktail => {
-        if (!showMakeableOnly) return true;
-        // Ensure user has EVERY item (case-insensitive)
-        return cocktail.ingredients.every(ing => hasIngredient(ing.item));
+        // Base Filters
+        if (selectedSpirit !== 'All' && cocktail.primarySpirit !== selectedSpirit) return false;
+        if (selectedEra !== 'All' && cocktail.era !== selectedEra) return false;
+        if (selectedStyle !== 'All' && cocktail.style !== selectedStyle) return false;
+        if (selectedGlass !== 'All' && cocktail.glass !== selectedGlass) return false;
+
+        // Makeable Filter
+        if (showMakeableOnly) {
+            return cocktail.ingredients.every(ing => hasIngredient(ing.item));
+        }
+
+        return true;
     });
+
+    const activeFilterCount = [selectedSpirit, selectedEra, selectedStyle, selectedGlass].filter(f => f !== 'All').length;
+
+    const clearFilters = () => {
+        setSelectedSpirit('All');
+        setSelectedEra('All');
+        setSelectedStyle('All');
+        setSelectedGlass('All');
+        setShowMakeableOnly(false);
+    };
 
     if (!isLoaded) return null; // Prevent hydration mismatch
 
@@ -81,9 +113,9 @@ export default function MenuPage() {
                     A curated selection of timeless classics. Perfect when you know exactly what you want, or just need a little inspiration.
                 </p>
 
-                {/* Filter Toggle */}
+                {/* Makeable Toggle */}
                 {myBar.length > 0 && (
-                    <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6 inline-flex">
+                    <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6 inline-flex mb-8">
                         <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--color-neon-purple)]' : 'text-gray-500'}`}>Show All</span>
                         <button
                             onClick={() => setShowMakeableOnly(!showMakeableOnly)}
@@ -94,6 +126,71 @@ export default function MenuPage() {
                         <span className={`text-sm font-semibold transition-colors ${showMakeableOnly ? 'text-[var(--color-neon-blue)]' : 'text-gray-500'}`}>Makeable Now</span>
                     </div>
                 )}
+
+                {/* Advanced Filtering Toolbar */}
+                <div className="flex flex-wrap justify-center gap-3 w-full max-w-4xl mx-auto">
+                    <select
+                        value={selectedSpirit}
+                        onChange={(e) => setSelectedSpirit(e.target.value as any)}
+                        className={`bg-black/60 border ${selectedSpirit !== 'All' ? 'border-[var(--color-neon-purple)] text-white shadow-[0_0_10px_rgba(176,38,255,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                    >
+                        <option value="All">All Spirits</option>
+                        <option value="Whiskey & Bourbon">Whiskey & Bourbon</option>
+                        <option value="Agave">Agave</option>
+                        <option value="Gin">Gin</option>
+                        <option value="Vodka">Vodka</option>
+                        <option value="Rum">Rum</option>
+                        <option value="Liqueur & Other">Liqueur & Other</option>
+                    </select>
+
+                    <select
+                        value={selectedStyle}
+                        onChange={(e) => setSelectedStyle(e.target.value as any)}
+                        className={`bg-black/60 border ${selectedStyle !== 'All' ? 'border-[var(--color-neon-blue)] text-white shadow-[0_0_10px_rgba(0,255,255,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                    >
+                        <option value="All">All Styles</option>
+                        <option value="Spirit-Forward">Spirit-Forward</option>
+                        <option value="Sour">Sour</option>
+                        <option value="Highball">Highball</option>
+                        <option value="Fizzy">Fizzy</option>
+                        <option value="Dessert">Dessert</option>
+                    </select>
+
+                    <select
+                        value={selectedEra}
+                        onChange={(e) => setSelectedEra(e.target.value as any)}
+                        className={`bg-black/60 border ${selectedEra !== 'All' ? 'border-[var(--color-neon-green)] text-white shadow-[0_0_10px_rgba(57,255,20,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                    >
+                        <option value="All">All Eras</option>
+                        <option value="Pre-Prohibition">Pre-Prohibition</option>
+                        <option value="Prohibition">Prohibition</option>
+                        <option value="Golden Age">Golden Age</option>
+                        <option value="Tiki">Tiki</option>
+                        <option value="Modern Classic">Modern Classic</option>
+                    </select>
+
+                    <select
+                        value={selectedGlass}
+                        onChange={(e) => setSelectedGlass(e.target.value as any)}
+                        className={`bg-black/60 border ${selectedGlass !== 'All' ? 'border-pink-500 text-white shadow-[0_0_10px_rgba(236,72,153,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                    >
+                        <option value="All">All Glassware</option>
+                        <option value="Rocks">Rocks Glass</option>
+                        <option value="Coupe">Coupe</option>
+                        <option value="Highball">Highball</option>
+                        <option value="Martini">Martini</option>
+                        <option value="Mug">Mug</option>
+                    </select>
+
+                    {(activeFilterCount > 0 || showMakeableOnly) && (
+                        <button
+                            onClick={clearFilters}
+                            className="bg-red-500/20 text-red-400 border border-red-500/30 rounded-full px-4 py-2 text-sm hover:bg-red-500 hover:text-white transition-all flex items-center gap-2"
+                        >
+                            <span>✕</span> Clear Filters
+                        </button>
+                    )}
+                </div>
             </div>
 
             {cocktailsToShow.length === 0 ? (
@@ -122,6 +219,14 @@ export default function MenuPage() {
                                         <span className="ml-auto text-xs font-bold text-black bg-[var(--color-neon-blue)] px-2 py-1 rounded-md shadow-[0_0_10px_rgba(0,255,255,0.5)]">READY</span>
                                     )}
                                 </div>
+
+                                {/* Metadata Tags */}
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    <span className="text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-300">{cocktail.primarySpirit}</span>
+                                    <span className="text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-400">{cocktail.style}</span>
+                                    <span className="text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-500">{cocktail.era}</span>
+                                </div>
+
                                 <p className="text-gray-400 text-sm italic mb-6 flex-grow">
                                     {cocktail.description}
                                 </p>
