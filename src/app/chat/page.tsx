@@ -4,8 +4,9 @@ import { useChat } from '@ai-sdk/react';
 import { useRef, useEffect, useState, FormEvent, ChangeEvent } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useAuth } from '@/contexts/AuthContext';
-import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import toast from 'react-hot-toast';
 
 export default function Chat() {
     const { user, loading: authLoading } = useAuth();
@@ -114,6 +115,28 @@ export default function Chat() {
         }
     };
 
+    const handleFavorite = async (messageId: string, content: string) => {
+        if (!user) {
+            toast.error("You must be logged in to save favorites!");
+            return;
+        }
+
+        try {
+            const favRef = collection(db, 'favorites');
+            await addDoc(favRef, {
+                uid: user.uid,
+                messageId: messageId,
+                content: content,
+                imageUrl: generatedImages[messageId] || null,
+                createdAt: new Date().toISOString()
+            });
+            toast.success("Recipe saved to Favorites! ❤️");
+        } catch (e) {
+            console.error(e);
+            toast.error("Failed to save favorite.");
+        }
+    };
+
     const clearChat = async () => {
         if (!confirm('Are you sure you want to clear your chat history?')) return;
         setMessages([]);
@@ -181,7 +204,7 @@ export default function Chat() {
                                     </ReactMarkdown>
                                 </div>
                                 {m.role === 'assistant' && (
-                                    <div className="mt-4 pt-4 border-t border-white/10">
+                                    <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
                                         {generatedImages[m.id] ? (
                                             <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-[var(--color-neon-pink)]/30">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -191,11 +214,17 @@ export default function Chat() {
                                             <button
                                                 onClick={() => handleGenerateImage(m.id, m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content)}
                                                 disabled={isGeneratingImg === m.id}
-                                                className="text-xs bg-black/40 border border-[var(--color-neon-pink)]/30 text-[var(--color-neon-pink)] px-4 py-2 rounded-full hover:bg-[var(--color-neon-pink)]/20 transition-all duration-300 disabled:opacity-50"
+                                                className="text-xs bg-black/40 border border-[var(--color-neon-pink)]/30 text-[var(--color-neon-pink)] px-4 py-2 rounded-full hover:bg-[var(--color-neon-pink)]/20 transition-all duration-300 disabled:opacity-50 self-start"
                                             >
                                                 {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
                                             </button>
                                         )}
+                                        <button
+                                            onClick={() => handleFavorite(m.id, m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content)}
+                                            className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
+                                        >
+                                            <span>❤️</span> Save Recipe
+                                        </button>
                                     </div>
                                 )}
                             </div>

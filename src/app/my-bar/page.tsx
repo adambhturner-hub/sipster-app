@@ -8,20 +8,24 @@ import toast from 'react-hot-toast';
 
 const INGREDIENT_CATEGORIES = [
     {
-        name: 'Spirits 🥃',
-        items: ['Vodka', 'Gin', 'Rum (Light)', 'Rum (Dark)', 'Tequila (Blanco)', 'Tequila (Reposado)', 'Bourbon', 'Rye Whiskey', 'Mezcal', 'Cognac']
+        name: 'Whiskey & Bourbon 🥃',
+        items: ['Bourbon', 'Rye Whiskey', 'Scotch (Single Malt)', 'Scotch (Blended)', 'Irish Whiskey', 'Japanese Whisky', 'Tennessee Whiskey']
+    },
+    {
+        name: 'Agave & Clear Spirits 🌵',
+        items: ['Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Spiced Rum', 'Cachaça']
     },
     {
         name: 'Liqueurs & Amari 🍾',
-        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'Orange Liqueur (Cointreau)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur']
+        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'Orange Liqueur (Cointreau/Triple Sec)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca']
     },
     {
-        name: 'Mixers 🥤',
-        items: ['Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer', 'Cola', 'Lemon-Lime Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice']
+        name: 'Mixers & Sodas 🥤',
+        items: ['Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer', 'Cola', 'Lemon-Lime Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice', 'Grapefruit Juice', 'Tomato Juice']
     },
     {
-        name: 'Pantry & Fresh 🍋',
-        items: ['Lemons', 'Limes', 'Oranges', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Mint', 'Basil', 'Angostura Bitters', 'Orange Bitters', 'Egg White']
+        name: 'Pantry, Syrups & Fresh 🍋',
+        items: ['Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Mint', 'Basil', 'Rosemary', 'Angostura Bitters', 'Orange Bitters', 'Peychaud\'s Bitters', 'Egg White', 'Heavy Cream']
     }
 ];
 
@@ -30,6 +34,7 @@ export default function MyBarPage() {
     const [myBar, setMyBar] = useState<string[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isScanning, setIsScanning] = useState(false);
+    const [customIngredient, setCustomIngredient] = useState('');
 
     useEffect(() => {
         if (authLoading) return;
@@ -80,6 +85,28 @@ export default function MyBarPage() {
             toast.success(`Added ${ingredient}`, { id: 'bar-update' });
         } else {
             toast(`Removed ${ingredient}`, { id: 'bar-update', icon: '🗑️' });
+        }
+    };
+
+    const handleAddCustom = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const item = customIngredient.trim();
+        if (!item) return;
+
+        // Prevent exact duplicates (case-insensitive)
+        if (myBar.some(i => i.toLowerCase() === item.toLowerCase())) {
+            toast.error(`${item} is already in your bar!`);
+            return;
+        }
+
+        const newBar = [...myBar, item];
+        setMyBar(newBar);
+        setCustomIngredient('');
+        toast.success(`Added ${item}`);
+
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            await setDoc(userRef, { myBar: newBar }, { merge: true });
         }
     };
 
@@ -158,7 +185,7 @@ export default function MyBarPage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 {INGREDIENT_CATEGORIES.map((category) => (
                     <div key={category.name} className="glass-panel p-6">
                         <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[var(--color-neon-blue)] opacity-90">
@@ -183,6 +210,50 @@ export default function MyBarPage() {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Custom Addition Section */}
+            <div className="glass-panel p-8 mb-12 w-full max-w-2xl mx-auto text-center border border-[var(--color-neon-purple)]/30 shadow-[0_0_20px_rgba(176,38,255,0.1)]">
+                <h2 className="text-2xl font-bold mb-4 text-[var(--color-neon-purple)]">Missing Something?</h2>
+                <p className="text-gray-400 mb-6 text-sm">
+                    Have a niche liqueur or unique syrup not listed above? Add it manually so Sipster knows what you're working with!
+                </p>
+                <form onSubmit={handleAddCustom} className="flex gap-4 max-w-lg mx-auto">
+                    <input
+                        type="text"
+                        placeholder="e.g. Absinthe, Malört, Yuzu Juice..."
+                        value={customIngredient}
+                        onChange={(e) => setCustomIngredient(e.target.value)}
+                        className="flex-1 bg-white/5 border border-white/20 rounded-full px-6 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-purple)] focus:shadow-[0_0_15px_rgba(176,38,255,0.3)] transition-all"
+                    />
+                    <button
+                        type="submit"
+                        disabled={!customIngredient.trim()}
+                        className="bg-[var(--color-neon-purple)] text-white font-bold px-6 py-3 rounded-full hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_15px_rgba(176,38,255,0.4)]"
+                    >
+                        Add
+                    </button>
+                </form>
+
+                {/* Custom items display */}
+                {myBar.filter(item => !INGREDIENT_CATEGORIES.some(cat => cat.items.includes(item))).length > 0 && (
+                    <div className="mt-8 text-left border-t border-white/10 pt-6">
+                        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Your Custom Ingredients:</h3>
+                        <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                            {myBar.filter(item => !INGREDIENT_CATEGORIES.some(cat => cat.items.includes(item))).map(customItem => (
+                                <button
+                                    key={customItem}
+                                    onClick={() => toggleIngredient(customItem)}
+                                    className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 group flex items-center gap-2"
+                                    title="Click to remove"
+                                >
+                                    {customItem}
+                                    <span className="hidden group-hover:inline">✕</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {myBar.length > 0 && (

@@ -23,6 +23,7 @@ export default function Navigation() {
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
                         <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all duration-300">My Bar</Link>
                         <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-purple)] hover:text-glow-purple transition-all duration-300">Menu</Link>
+                        <Link href="/favorites" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-pink)] hover:text-glow-pink transition-all duration-300">Favorites</Link>
                         <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-green)] hover:text-glow-green transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
                     </nav>
 
