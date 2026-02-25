@@ -5,14 +5,12 @@ import { z } from 'zod';
 // We allow longer execution for vision processing
 export const maxDuration = 30;
 
-const VALID_INGREDIENTS = [
-    'Vodka', 'Gin', 'Rum (Light)', 'Rum (Dark)', 'Tequila (Blanco)', 'Tequila (Reposado)',
-    'Bourbon', 'Rye Whiskey', 'Mezcal', 'Cognac', 'Campari', 'Aperol', 'Sweet Vermouth',
-    'Dry Vermouth', 'Orange Liqueur (Cointreau)', 'Coffee Liqueur', 'Amaretto',
-    'Elderflower Liqueur', 'Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer',
-    'Cola', 'Lemon-Lime Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice',
-    'Lemons', 'Limes', 'Oranges', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Mint',
-    'Basil', 'Angostura Bitters', 'Orange Bitters', 'Egg White'
+const INGREDIENT_CATEGORIES = [
+    'Bourbon', 'Rye Whiskey', 'Scotch (Single Malt)', 'Scotch (Blended)', 'Irish Whiskey', 'Japanese Whisky', 'Tennessee Whiskey',
+    'Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Spiced Rum', 'Cachaça',
+    'Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'Orange Liqueur (Cointreau/Triple Sec)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca',
+    'Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer', 'Cola', 'Lemon-Lime Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice', 'Grapefruit Juice', 'Tomato Juice',
+    'Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Mint', 'Basil', 'Rosemary', "Angostura Bitters", 'Orange Bitters', "Peychaud's Bitters", 'Egg White', 'Heavy Cream'
 ];
 
 export async function POST(req: Request) {
@@ -23,11 +21,11 @@ export async function POST(req: Request) {
             return new Response(JSON.stringify({ error: 'No image provided' }), { status: 400 });
         }
 
-        // We use generateObject to force the AI to return a strict JSON array of matched ingredients
+        // We use generateObject to force the AI to return a strict JSON array of matched items
         const result = await generateObject({
             model: openai('gpt-4o'),
             schema: z.object({
-                detectedIngredients: z.array(z.string()).describe('An array of ingredients exactly matching the provided valid list.')
+                detectedIngredients: z.array(z.string()).describe('An array of valid cocktail ingredients found in the image.')
             }),
             messages: [
                 {
@@ -35,9 +33,14 @@ export async function POST(req: Request) {
                     content: [
                         {
                             type: 'text',
-                            text: `Analyze this image of a liquor cabinet, pantry, or fridge. Identify all the cocktail ingredients you can see. 
-                            You must map your findings ONLY to this exact list of valid items: ${VALID_INGREDIENTS.join(', ')}. 
-                            Do not include any string that is not perfectly identical to an item in the list.`
+                            text: `Analyze this image. Your task is to IDENTIFY COCKTAIL INGREDIENTS ONLY. 
+                            
+                            CRITICAL RULES:
+                            1. You MUST IGNORE all furniture, appliances (e.g., the fridge itself), people, electronics, or unrelated food items.
+                            2. Look for spirits, liqueurs, mixers, syrups, bitters, and fresh cocktail garnishes (like citrus).
+                            3. If an item perfectly matches or is a direct brand of one of our standard categories, map it to that EXACT string from this list: ${INGREDIENT_CATEGORIES.join(', ')}.
+                            4. If you see a specific, unique cocktail ingredient that is NOT on our list (e.g., 'Yuzu Juice', 'Malört', 'Falernum'), add the specific name of that ingredient to the array. 
+                            5. If you are not 100% sure an item is a beverage or cocktail ingredient, DO NOT include it.`
                         },
                         {
                             type: 'image',
