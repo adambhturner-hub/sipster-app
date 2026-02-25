@@ -1,0 +1,235 @@
+'use client';
+
+import { useChat } from '@ai-sdk/react';
+import { useRef, useEffect, useState, FormEvent, ChangeEvent } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { useAuth } from '@/contexts/AuthContext';
+import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+
+export default function Chat() {
+    const { user, loading: authLoading } = useAuth();
+    const [myBar, setMyBar] = useState<string[]>([]);
+    const [messagesLoaded, setMessagesLoaded] = useState(false);
+    const [generatedImages, setGeneratedImages] = useState<Record<string, string>>({});
+    const [isGeneratingImg, setIsGeneratingImg] = useState<string | null>(null);
+
+    const { messages, setMessages, sendMessage, status } = useChat();
+    const [input, setInput] = useState('');
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const isLoading = status === 'submitted' || status === 'streaming';
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (!input.trim() || isLoading) return;
+        sendMessage({ parts: [{ type: 'text', text: input }], role: 'user', metadata: { myBar } });
+        setInput('');
+    };
+
+    // Fetch My Bar and Chat History
+    useEffect(() => {
+        if (authLoading) return;
+
+        if (user) {
+            // Firestore myBar real-time updates
+            const userRef = doc(db, 'users', user.uid);
+            const unsubUser = onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    setMyBar(docSnap.data().myBar || []);
+                }
+            });
+
+            // Firestore chat history
+            const threadRef = doc(db, 'chat_threads', user.uid);
+            getDoc(threadRef).then((docSnap) => {
+                if (docSnap.exists() && docSnap.data().messages) {
+                    setMessages(docSnap.data().messages);
+                    if (docSnap.data().generatedImages) {
+                        setGeneratedImages(docSnap.data().generatedImages);
+                    }
+                } else {
+                    // Check localStorage to migrate existing chat
+                    const localChat = localStorage.getItem('sipster-chat-history');
+                    if (localChat) {
+                        try {
+                            const parsed = JSON.parse(localChat);
+                            setMessages(parsed);
+                            setDoc(threadRef, { messages: parsed, updatedAt: new Date().toISOString() }, { merge: true });
+                            localStorage.removeItem('sipster-chat-history');
+                        } catch (e) { }
+                    }
+                }
+                setMessagesLoaded(true);
+            });
+
+            return () => unsubUser();
+        } else {
+            // LocalStorage myBar
+            const savedBar = localStorage.getItem('sipster-my-bar');
+            if (savedBar) {
+                try { setMyBar(JSON.parse(savedBar)); } catch (e) { }
+            }
+
+            // LocalStorage chat history
+            const savedChat = localStorage.getItem('sipster-chat-history');
+            if (savedChat) {
+                try { setMessages(JSON.parse(savedChat)); } catch (e) { }
+            }
+            setMessagesLoaded(true);
+        }
+    }, [user, authLoading, setMessages]);
+
+    // Save chat history automatically on new messages
+    useEffect(() => {
+        if (!messagesLoaded || messages.length === 0) return;
+
+        if (user) {
+            const threadRef = doc(db, 'chat_threads', user.uid);
+            setDoc(threadRef, { messages, generatedImages, updatedAt: new Date().toISOString() }, { merge: true });
+        } else {
+            localStorage.setItem('sipster-chat-history', JSON.stringify(messages));
+            // For not-logged-in users, we could sync images to localStorage too, but let's encourage them to login
+            localStorage.setItem('sipster-generated-images', JSON.stringify(generatedImages));
+        }
+    }, [messages, generatedImages, user, messagesLoaded]);
+
+    const handleGenerateImage = async (messageId: string, promptText: string) => {
+        setIsGeneratingImg(messageId);
+        try {
+            const res = await fetch('/api/generate-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: promptText })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setGeneratedImages(prev => ({ ...prev, [messageId]: data.imageUrl }));
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsGeneratingImg(null);
+        }
+    };
+
+    const clearChat = async () => {
+        if (!confirm('Are you sure you want to clear your chat history?')) return;
+        setMessages([]);
+        setGeneratedImages({});
+        if (user) {
+            const threadRef = doc(db, 'chat_threads', user.uid);
+            await setDoc(threadRef, { messages: [], generatedImages: {}, updatedAt: new Date().toISOString() }, { merge: true });
+        } else {
+            localStorage.removeItem('sipster-chat-history');
+            localStorage.removeItem('sipster-generated-images');
+        }
+    };
+
+    // Auto-scroll to the bottom of the chat when new messages appear
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    return (
+        <div className="flex flex-col h-[80vh] w-full max-w-4xl mx-auto px-4 z-10 relative">
+
+            {/* Header */}
+            <div className="mb-6 text-center">
+                <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+                    Ask the <span className="text-glow-green text-[var(--color-neon-green)]">Bartender</span>
+                </h1>
+                <div className="flex items-center justify-center gap-4">
+                    <p className="text-gray-400 font-light">
+                        Tell me your ingredients, mood, or flavor cravings. I'll shake up something special.
+                    </p>
+                    {messages.length > 0 && (
+                        <button
+                            onClick={clearChat}
+                            className="text-gray-500 hover:text-[var(--color-neon-pink)] hover:scale-110 transition-all text-xl"
+                            title="Clear Chat History"
+                        >
+                            🗑️
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Chat Messages Container */}
+            <div className="flex-grow overflow-y-auto mb-6 glass-panel p-6 flex flex-col gap-6 custom-scrollbar">
+                {messages.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full text-center text-gray-400 opacity-60">
+                        <span className="text-6xl mb-4">🍸</span>
+                        <p className="text-xl">The bar is open. What can I get you?</p>
+                    </div>
+                ) : (
+                    messages.map(m => (
+                        <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                            <div
+                                className={`max-w-[80%] rounded-2xl px-6 py-4 shadow-lg ${m.role === 'user'
+                                    ? 'bg-white/10 text-white border border-white/20 rounded-tr-none'
+                                    : 'bg-black/40 text-gray-200 border border-[var(--color-neon-green)]/30 rounded-tl-none drop-shadow-[0_0_15px_rgba(57,255,20,0.15)]'
+                                    }`}
+                            >
+                                <div className="font-bold text-sm mb-1 opacity-50">
+                                    {m.role === 'user' ? 'You' : 'Sipster'}
+                                </div>
+                                <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
+                                    <ReactMarkdown>
+                                        {m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content}
+                                    </ReactMarkdown>
+                                </div>
+                                {m.role === 'assistant' && (
+                                    <div className="mt-4 pt-4 border-t border-white/10">
+                                        {generatedImages[m.id] ? (
+                                            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-[var(--color-neon-pink)]/30">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img src={generatedImages[m.id]} alt="AI Generated Cocktail" className="w-full h-full object-cover" />
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleGenerateImage(m.id, m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content)}
+                                                disabled={isGeneratingImg === m.id}
+                                                className="text-xs bg-black/40 border border-[var(--color-neon-pink)]/30 text-[var(--color-neon-pink)] px-4 py-2 rounded-full hover:bg-[var(--color-neon-pink)]/20 transition-all duration-300 disabled:opacity-50"
+                                            >
+                                                {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
+                {isLoading && (
+                    <div className="flex justify-start">
+                        <div className="bg-black/40 border border-[var(--color-neon-green)]/30 rounded-2xl rounded-tl-none px-6 py-4 text-[var(--color-neon-green)] flex items-center gap-3 drop-shadow-[0_0_15px_rgba(57,255,20,0.15)]">
+                            <span className="text-2xl animate-bounce">🍸</span>
+                            <span className="animate-pulse tracking-widest font-semibold">Shaking...</span>
+                        </div>
+                    </div>
+                )}
+                <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input Area */}
+            <form onSubmit={handleSubmit} className="relative w-full group">
+                <input
+                    value={input}
+                    onChange={handleInputChange}
+                    placeholder="e.g., I have bourbon, lemon, and a bad day..."
+                    className="w-full bg-white/5 border border-white/20 rounded-full px-6 py-4 pr-16 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-green)] focus:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all duration-300"
+                />
+                <button
+                    type="submit"
+                    disabled={!input || isLoading}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[var(--color-neon-green)] flex items-center justify-center text-black font-bold hover:scale-105 hover:bg-white disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300 shadow-[0_0_10px_rgba(57,255,20,0.5)]"
+                >
+                    ↵
+                </button>
+            </form>
+
+        </div>
+    );
+}

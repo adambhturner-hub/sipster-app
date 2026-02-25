@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-pink: #ff007f;
+  --color-neon-blue: #00f3ff;
+  --color-neon-purple: #b026ff;
+  --color-neon-green: #39ff14;
+  --color-neon-yellow: #fffb00;
+
+  --color-dark-bg: #0a0a0a;
+  --color-dark-surface: #1a1a1a;
+  --color-dark-border: #333333;
+}
+
+@layer base {
+  :root {
+    --background: var(--color-dark-bg);
+    --foreground: #ffffff;
+
+    --neon-pink: var(--color-neon-pink);
+    --neon-blue: var(--color-neon-blue);
+    --neon-purple: var(--color-neon-purple);
+    --neon-green: var(--color-neon-green);
+    --neon-yellow: var(--color-neon-yellow);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased min-h-screen selection:bg-neon-pink/30 selection:text-white;
+  }
+}
+
+@layer utilities {
+  .glow-pink {
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.5), 0 0 20px rgba(255, 0, 127, 0.3);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 10px rgba(176, 38, 255, 0.5), 0 0 20px rgba(176, 38, 255, 0.3);
+  }
+
+  .text-glow-pink {
+    text-shadow: 0 0 10px rgba(255, 0, 127, 0.7), 0 0 20px rgba(255, 0, 127, 0.5);
+  }
+
+  .text-glow-blue {
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
+  }
+
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+  }
+
+}
