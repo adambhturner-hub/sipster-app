@@ -40,12 +40,47 @@ export default function MyBarPage() {
     const [customShoppingItem, setCustomShoppingItem] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
 
+    // Helpers for parsing and fuzzy search
+    const parseShoppingInput = (rawInput: string): string[] => {
+        const rawItems = rawInput.split(/[\n,]+/);
+        return rawItems.map(item => {
+            let cleaned = item.trim();
+            cleaned = cleaned.replace(/^[\d\.\/]+\s*(oz|ounces?|parts?|ml|dashes?|cups?|tbsp|tsp|garnish|slices?|peels?|drops?)?\b\s*/i, '');
+            return cleaned.trim();
+        }).filter(item => item.length > 0);
+    };
+
+    const getLevenshteinDistance = (a: string, b: string) => {
+        const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
+        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    };
+
     const ALL_INGREDIENTS = Array.from(new Set(INGREDIENT_CATEGORIES.flatMap(cat => cat.items)));
     const filteredSuggestions = customShoppingItem.trim() === '' ? [] :
-        ALL_INGREDIENTS.filter(item =>
-            item.toLowerCase().includes(customShoppingItem.toLowerCase()) &&
-            !shoppingList.some(i => i.toLowerCase() === item.toLowerCase())
-        ).slice(0, 5);
+        ALL_INGREDIENTS.filter(item => {
+            const i = item.toLowerCase();
+            const q = customShoppingItem.toLowerCase().trim();
+            if (shoppingList.some(listIng => listIng.toLowerCase() === i)) return false;
+
+            if (i.includes(q)) return true;
+
+            if (q.length >= 3 && Math.abs(i.length - q.length) <= 10) {
+                const words = i.split(' ');
+                if (words.some(w => getLevenshteinDistance(w, q) <= 2)) return true;
+                if (getLevenshteinDistance(i, q) <= 2) return true;
+            }
+            return false;
+        }).slice(0, 5);
 
     useEffect(() => {
         if (authLoading) return;
@@ -146,7 +181,32 @@ export default function MyBarPage() {
 
     const handleAddShoppingItem = async (e: React.FormEvent) => {
         e.preventDefault();
-        await addItemToShoppingList(customShoppingItem);
+        const parsedItems = parseShoppingInput(customShoppingItem);
+        if (parsedItems.length === 0) return;
+
+        let latestList = [...shoppingList];
+        let addedCount = 0;
+
+        for (const item of parsedItems) {
+            if (!latestList.some(i => i.toLowerCase() === item.toLowerCase())) {
+                latestList.push(item);
+                addedCount++;
+            }
+        }
+
+        if (addedCount > 0) {
+            setShoppingList(latestList);
+            toast.success(`Added ${addedCount} item${addedCount > 1 ? 's' : ''}`);
+            if (user) {
+                const userRef = doc(db, 'users', user.uid);
+                await setDoc(userRef, { shoppingList: latestList }, { merge: true });
+            }
+        } else {
+            toast.error("Items already in your list!");
+        }
+
+        setCustomShoppingItem('');
+        setShowSuggestions(false);
     };
 
     const removeShoppingItem = async (ingredient: string) => {
