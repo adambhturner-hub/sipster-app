@@ -17,7 +17,7 @@ const INGREDIENT_CATEGORIES = [
     },
     {
         name: 'Liqueurs & Amari 🍾',
-        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'Orange Liqueur (Cointreau/Triple Sec)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca']
+        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'White Wine', 'Orange Liqueur (Cointreau/Triple Sec)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca', 'Amaro Nonino']
     },
     {
         name: 'Mixers & Sodas 🥤',
@@ -25,7 +25,7 @@ const INGREDIENT_CATEGORIES = [
     },
     {
         name: 'Pantry, Syrups & Fresh 🍋',
-        items: ['Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Mint', 'Basil', 'Rosemary', 'Angostura Bitters', 'Orange Bitters', 'Peychaud\'s Bitters', 'Egg White', 'Heavy Cream']
+        items: ['Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Sugar', 'Mint', 'Basil', 'Rosemary', 'Angostura Bitters', 'Orange Bitters', 'Peychaud\'s Bitters', 'Egg White', 'Heavy Cream']
     }
 ];
 
@@ -117,7 +117,7 @@ export default function MyBarPage() {
         }
     }, [myBar, shoppingList, isLoaded, user, authLoading]);
 
-    const toggleIngredient = async (ingredient: string) => {
+    const handleAddIngredient = async (ingredient: string) => {
         const newBar = myBar.includes(ingredient)
             ? myBar.filter(i => i !== ingredient)
             : [...myBar, ingredient];
@@ -184,7 +184,7 @@ export default function MyBarPage() {
         const parsedItems = parseShoppingInput(customShoppingItem);
         if (parsedItems.length === 0) return;
 
-        let latestList = [...shoppingList];
+        const latestList = typeof window !== 'undefined' ? [...shoppingList] : [];
         let addedCount = 0;
 
         for (const item of parsedItems) {
@@ -347,7 +347,7 @@ export default function MyBarPage() {
                                         return (
                                             <button
                                                 key={item}
-                                                onClick={() => toggleIngredient(item)}
+                                                onClick={() => handleAddIngredient(item)}
                                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${isSelected
                                                     ? 'bg-[var(--color-neon-blue)] text-black border-[var(--color-neon-blue)] shadow-[0_0_15px_rgba(0,255,255,0.4)] scale-105'
                                                     : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
@@ -393,7 +393,10 @@ export default function MyBarPage() {
                                     {myBar.filter(item => !INGREDIENT_CATEGORIES.some(cat => cat.items.includes(item))).map(customItem => (
                                         <button
                                             key={customItem}
-                                            onClick={() => toggleIngredient(customItem)}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleAddIngredient(customItem);
+                                            }}
                                             className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 group flex items-center gap-2"
                                             title="Click to remove"
                                         >
@@ -406,7 +409,13 @@ export default function MyBarPage() {
                         )}
                     </div>
 
-                    {myBar.length > 0 && (
+                    {myBar.length === 0 ? (
+                        <div className="text-center py-12 px-4 border border-white/5 rounded-2xl bg-black/20">
+                            <span className="text-4xl block mb-3 opacity-50">👻</span>
+                            <p className="text-gray-400 font-medium">Your bar is looking a little empty.</p>
+                            <p className="text-sm text-gray-500 mt-1">Add some bottles below to see what you can make!</p>
+                        </div>
+                    ) : (
                         <div className="mt-12 text-center">
                             <p className="text-gray-400 mb-4">You have <span className="text-white font-bold">{myBar.length}</span> items in your bar.</p>
                             <a

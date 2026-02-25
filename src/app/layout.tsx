@@ -6,7 +6,29 @@ import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: 'Sipster - Bartender in Your Pocket',
-  description: 'Explore and create cocktails based on your current inventory. Your personal bartender in your pocket.',
+  description: 'Explore cocktail recipes, manage your back bar, and invent new drinks with your AI mixologist.',
+  openGraph: {
+    title: 'Sipster - Bartender in Your Pocket',
+    description: 'Explore cocktail recipes, manage your back bar, and invent new drinks with your AI mixologist.',
+    url: 'https://sipster.app',
+    siteName: 'Sipster',
+    images: [
+      {
+        url: '/logo.png',
+        width: 800,
+        height: 600,
+        alt: 'Sipster Logo',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sipster - Bartender in Your Pocket',
+    description: 'Explore cocktail recipes, manage your back bar, and invent new drinks with your AI mixologist.',
+    images: ['/logo.png'],
+  },
 };
 
 export default function RootLayout({

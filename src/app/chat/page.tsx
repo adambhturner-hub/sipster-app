@@ -22,7 +22,7 @@ export default function Chat() {
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
         sendMessage({ parts: [{ type: 'text', text: input }], role: 'user', metadata: { myBar } });
@@ -161,7 +161,7 @@ export default function Chat() {
             {/* Header */}
             <div className="mb-6 text-center">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-                    Ask the <span className="text-glow-green text-[var(--color-neon-green)]">Bartender</span>
+                    <span className="font-bold text-[var(--color-neon-blue)]">Sipster:</span> Don't know what to make? Let's talk about what you're craving...
                 </h1>
                 <div className="flex items-center justify-center gap-4">
                     <p className="text-gray-400 font-light">
@@ -200,25 +200,52 @@ export default function Chat() {
                                 </div>
                                 <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
                                     <ReactMarkdown>
-                                        {m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content}
+                                        {m.parts ? m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content}
                                     </ReactMarkdown>
                                 </div>
                                 {m.role === 'assistant' && (
                                     <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
-                                        {generatedImages[m.id] ? (
-                                            <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-[var(--color-neon-pink)]/30">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src={generatedImages[m.id]} alt="AI Generated Cocktail" className="w-full h-full object-cover" />
-                                            </div>
-                                        ) : (
-                                            <button
-                                                onClick={() => handleGenerateImage(m.id, m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content)}
-                                                disabled={isGeneratingImg === m.id}
-                                                className="text-xs bg-black/40 border border-[var(--color-neon-pink)]/30 text-[var(--color-neon-pink)] px-4 py-2 rounded-full hover:bg-[var(--color-neon-pink)]/20 transition-all duration-300 disabled:opacity-50 self-start"
-                                            >
-                                                {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
-                                            </button>
-                                        )}
+                                        {m.parts?.map((part: any, i) => {
+                                            if (part.type !== 'tool-invocation') return null;
+
+                                            let content;
+                                            switch (part.toolInvocationId) {
+                                                case 'generate_cocktail_recipe':
+                                                    content = (
+                                                        <div key={i} className="flex flex-col gap-4 mt-4">
+                                                            {generatedImages[m.id] ? (
+                                                                <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-[var(--color-neon-pink)]/30">
+                                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                                    <img src={generatedImages[m.id]} alt="AI Generated Cocktail" className="w-full h-full object-cover" />
+                                                                </div>
+                                                            ) : (
+                                                                <button
+                                                                    onClick={() => handleGenerateImage(m.id, part.props.name)}
+                                                                    disabled={isGeneratingImg === m.id}
+                                                                    className="text-xs bg-black/40 border border-[var(--color-neon-pink)]/30 text-[var(--color-neon-pink)] px-4 py-2 rounded-full hover:bg-[var(--color-neon-pink)]/20 transition-all duration-300 disabled:opacity-50 self-start"
+                                                                >
+                                                                    {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
+                                                                </button>
+                                                            )}
+                                                            <div className="flex flex-col gap-2 mt-4 ml-2 border-l-2 border-[var(--color-neon-purple)]/30 pl-4 w-full max-w-sm">
+                                                                {part.props.steps.map((step: any, stepIdx: number) => (
+                                                                    <div key={stepIdx} className="flex gap-3 text-sm text-gray-300 bg-gray-900/50 p-2 rounded-lg border border-gray-800/80">
+                                                                        <span className="text-[var(--color-neon-purple)] font-mono font-bold">{stepIdx + 1}.</span>
+                                                                        <span className="leading-relaxed">{step}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            <div className="mt-8 text-center text-gray-500 italic text-sm">
+                                                                &quot;Enjoy your {part.props.name}&quot;
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                    break;
+                                                default:
+                                                    content = <div key={i} className="text-gray-500 italic">Unsupported tool: {part.toolInvocationId}</div>;
+                                            }
+                                            return content;
+                                        })}
                                         <button
                                             onClick={() => handleFavorite(m.id, m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content)}
                                             className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"

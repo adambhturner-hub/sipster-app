@@ -54,26 +54,42 @@ export default function MenuPage() {
         }
     }, [user, authLoading]);
 
-    const addToShoppingList = async (item: string) => {
-        if (shoppingList.some(i => i.toLowerCase() === item.toLowerCase())) {
-            toast(`${item} is already in your list!`, { icon: '🛒' });
-            return;
-        }
-
-        const newList = [...shoppingList, item];
-        setShoppingList(newList);
-        toast.success(`Added ${item} to Shopping List`);
-
-        if (user) {
-            const userRef = doc(db, 'users', user.uid);
-            await setDoc(userRef, { shoppingList: newList }, { merge: true });
-        } else {
-            localStorage.setItem('sipster-shopping-list', JSON.stringify(newList));
-        }
-    };
-
     const hasIngredient = (ingredientItem: string) => {
         return myBar.some(barItem => barItem.toLowerCase() === ingredientItem.toLowerCase());
+    };
+
+    // AI Filter State & Logic
+    const [aiSearchQuery, setAiSearchQuery] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
+
+    const handleAISearch = async () => {
+        if (!aiSearchQuery.trim()) return;
+
+        setIsSearching(true);
+        try {
+            const response = await fetch('/api/menu-filter', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query: aiSearchQuery })
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch AI filters');
+            const data = await response.json();
+
+            // Map the AI response back to the React State Dropdowns
+            if (data.primarySpirit) setSelectedSpirit(data.primarySpirit);
+            if (data.era) setSelectedEra(data.era);
+            if (data.style) setSelectedStyle(data.style);
+            if (data.glass) setSelectedGlass(data.glass);
+
+            toast.success("Found the perfect filters!");
+            setAiSearchQuery(''); // clear input
+        } catch (error) {
+            console.error("AI Search Error:", error);
+            toast.error("Couldn't process that request right now.");
+        } finally {
+            setIsSearching(false);
+        }
     };
 
     const cocktailsToShow = CLASSIC_COCKTAILS.filter(cocktail => {
@@ -127,11 +143,44 @@ export default function MenuPage() {
                     </div>
                 )}
 
+                {/* AI Search Bar */}
+                <div className="max-w-xl mx-auto mb-6 relative group z-20">
+                    <form
+                        onSubmit={(e: React.FormEvent<HTMLFormElement>) => { e.preventDefault(); handleAISearch(); }}
+                        className="relative"
+                    >
+                        <input
+                            type="text"
+                            value={aiSearchQuery}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAiSearchQuery(e.target.value)}
+                            placeholder={isSearching ? "Asking the Bartender..." : "Craving something specific? Describe your vibe..."}
+                            disabled={isSearching}
+                            className={`w-full bg-black/60 border ${isSearching ? 'border-neon-purple' : 'border-white/20'} rounded-full px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-blue)] focus:shadow-[0_0_15px_rgba(0,255,255,0.2)] transition-all pr-12`}
+                        />
+                        <button
+                            type="submit"
+                            disabled={isSearching || !aiSearchQuery.trim()}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-[var(--color-neon-blue)] transition-colors disabled:opacity-50"
+                        >
+                            {isSearching ? (
+                                <div className="w-5 h-5 border-2 border-t-[var(--color-neon-blue)] border-r-transparent border-b-[var(--color-neon-blue)] border-l-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                            )}
+                        </button>
+                    </form>
+
+                    {/* Glowing background effect for input */}
+                    <div className="absolute inset-0 -z-10 bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 rounded-full pointer-events-none"></div>
+                </div>
+
                 {/* Advanced Filtering Toolbar */}
                 <div className="flex flex-wrap justify-center gap-3 w-full max-w-4xl mx-auto">
                     <select
                         value={selectedSpirit}
-                        onChange={(e) => setSelectedSpirit(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedSpirit(e.target.value as PrimarySpirit | 'All')}
                         className={`bg-black/60 border ${selectedSpirit !== 'All' ? 'border-[var(--color-neon-purple)] text-white shadow-[0_0_10px_rgba(176,38,255,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                     >
                         <option value="All">All Spirits</option>
@@ -145,7 +194,7 @@ export default function MenuPage() {
 
                     <select
                         value={selectedStyle}
-                        onChange={(e) => setSelectedStyle(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedStyle(e.target.value as CocktailStyle | 'All')}
                         className={`bg-black/60 border ${selectedStyle !== 'All' ? 'border-[var(--color-neon-blue)] text-white shadow-[0_0_10px_rgba(0,255,255,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                     >
                         <option value="All">All Styles</option>
@@ -158,7 +207,7 @@ export default function MenuPage() {
 
                     <select
                         value={selectedEra}
-                        onChange={(e) => setSelectedEra(e.target.value as any)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedEra(e.target.value as CocktailEra | 'All')}
                         className={`bg-black/60 border ${selectedEra !== 'All' ? 'border-[var(--color-neon-green)] text-white shadow-[0_0_10px_rgba(57,255,20,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                     >
                         <option value="All">All Eras</option>
@@ -171,8 +220,8 @@ export default function MenuPage() {
 
                     <select
                         value={selectedGlass}
-                        onChange={(e) => setSelectedGlass(e.target.value as any)}
-                        className={`bg-black/60 border ${selectedGlass !== 'All' ? 'border-pink-500 text-white shadow-[0_0_10px_rgba(236,72,153,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedGlass(e.target.value as GlassType | 'All')}
+                        className={`bg-black/60 border ${selectedGlass !== 'All' ? 'border-orange-400 text-white shadow-[0_0_10px_rgba(251,146,60,0.2)]' : 'border-white/20 text-gray-400'} rounded-full px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                     >
                         <option value="All">All Glassware</option>
                         <option value="Rocks">Rocks Glass</option>
@@ -197,7 +246,7 @@ export default function MenuPage() {
                 <div className="text-center py-20 bg-black/40 border border-white/10 rounded-3xl mt-8">
                     <span className="text-6xl opacity-50 block mb-4">🧊</span>
                     <h3 className="text-2xl font-bold mb-2">Nothing to make... yet!</h3>
-                    <p className="text-gray-400 max-w-md mx-auto mb-6">You don't have all the ingredients for these classics right now.</p>
+                    <p className="text-gray-400 max-w-md mx-auto mb-6">You don&apos;t have all the ingredients for these classics right now.</p>
                     <button
                         onClick={() => setShowMakeableOnly(false)}
                         className="text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/50 px-6 py-2 rounded-full hover:bg-[var(--color-neon-blue)]/10 transition-colors"
@@ -206,62 +255,69 @@ export default function MenuPage() {
                     </button>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                     {cocktailsToShow.map((cocktail) => {
-                        const allIngredientsPresent = cocktail.ingredients.every(ing => hasIngredient(ing.item));
+                        const makeable = cocktail.ingredients.every(ing => hasIngredient(ing.item));
 
                         return (
-                            <div key={cocktail.name} className={`glass-panel p-6 flex flex-col transition-all duration-300 group ${allIngredientsPresent ? 'border-[var(--color-neon-blue)]/50 shadow-[0_0_20px_rgba(0,255,255,0.1)]' : 'hover:border-[var(--color-neon-purple)]/50 hover:shadow-[0_0_20px_rgba(255,0,255,0.15)]'}`}>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <span className="text-4xl group-hover:scale-110 transition-transform duration-300">{cocktail.emoji}</span>
-                                    <h2 className="text-2xl font-bold tracking-tight text-white">{cocktail.name}</h2>
-                                    {allIngredientsPresent && (
-                                        <span className="ml-auto text-xs font-bold text-black bg-[var(--color-neon-blue)] px-2 py-1 rounded-md shadow-[0_0_10px_rgba(0,255,255,0.5)]">READY</span>
-                                    )}
-                                </div>
+                            <Link href={`/menu/${cocktail.name.toLowerCase().replace(/ /g, '-')}`} key={cocktail.name}>
+                                <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 transition-all duration-300 hover:border-gray-600 hover:scale-[1.02] flex flex-col h-full cursor-pointer group group/card shadow-2xl overflow-hidden relative">
+                                    {/* Gradient Hover Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/5 to-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                                {/* Metadata Tags */}
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    <span className="text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-300">{cocktail.primarySpirit}</span>
-                                    <span className="text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-400">{cocktail.style}</span>
-                                    <span className="text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-500">{cocktail.era}</span>
-                                </div>
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="text-5xl bg-gray-950 p-4 rounded-2xl border border-gray-800 shadow-inner">{cocktail.emoji}</div>
+                                        <div className="flex flex-col items-end gap-2">
+                                            {makeable ? (
+                                                <div className="flex items-center gap-1.5 px-3 py-1 bg-neon-green/10 text-neon-green rounded-full text-xs font-medium border border-neon-green/20">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse"></span>
+                                                    Can Make
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-800 text-gray-400 rounded-full text-xs font-medium border border-gray-700">
+                                                    Missing Items
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
 
-                                <p className="text-gray-400 text-sm italic mb-6 flex-grow">
-                                    {cocktail.description}
-                                </p>
-                                <div className="border-t border-white/10 pt-4 mt-auto">
-                                    <h3 className="text-[var(--color-neon-purple)] text-xs uppercase tracking-widest font-bold mb-3 opacity-80">Ingredients</h3>
-                                    <ul className="space-y-2">
-                                        {cocktail.ingredients.map((ingredient, idx) => {
-                                            const hasIt = hasIngredient(ingredient.item);
+                                    <h3 className="text-2xl font-bold mb-2 text-white font-serif group-hover:text-neon-blue transition-colors">{cocktail.name}</h3>
+
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                        <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
+                                            {cocktail.primarySpirit}
+                                        </span>
+                                        <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
+                                            {cocktail.style}
+                                        </span>
+                                        <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
+                                            {cocktail.era}
+                                        </span>
+                                    </div>
+
+                                    <p className="text-gray-400 text-sm mb-6 flex-grow">{cocktail.description}</p>
+
+                                    <div className="space-y-4 pt-6 border-t border-gray-800 relative z-20">
+                                        <div className="flex justify-between items-center bg-gray-950 px-3 py-1.5 rounded-lg border border-gray-800/50 mb-3">
+                                            <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Recipe</span>
+                                            <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">{cocktail.glass} Glass</span>
+                                        </div>
+                                        {cocktail.ingredients.map((ing, idx) => {
+                                            const hasIt = hasIngredient(ing.item);
                                             return (
-                                                <li key={idx} className="flex flex-row items-start justify-between gap-2 group/item py-1">
-                                                    <span className={`text-sm flex gap-2 flex-1 ${hasIt ? 'text-gray-300' : 'text-red-400/80'}`}>
-                                                        <span className={hasIt ? 'text-[var(--color-neon-purple)] opacity-50' : 'text-red-500 mt-[2px]'}>
-                                                            {hasIt ? '•' : '✗'}
-                                                        </span>
-                                                        <span className="leading-snug">
-                                                            <span className="font-semibold text-white/90">{ingredient.amount}</span> {ingredient.item}
-                                                        </span>
+                                                <div key={idx} className="flex justify-between items-center text-sm group/ing">
+                                                    <span className={(hasIt || ing.item === 'Simple Syrup' || ing.item === 'Club Soda' || ing.item === 'Egg White' || ing.amount === 'Garnish') ? "text-gray-200" : "text-gray-600 line-through decoration-gray-700"}>
+                                                        {ing.item}
                                                     </span>
-
-                                                    {/* Missing Ingredient - Add to List Button */}
-                                                    {!hasIt && (
-                                                        <button
-                                                            onClick={(e) => { e.stopPropagation(); e.preventDefault(); addToShoppingList(ingredient.item); }}
-                                                            className="text-[10px] font-bold uppercase tracking-wider bg-red-500/10 border border-red-500/30 text-red-400 px-2 py-1 shrink-0 rounded hover:bg-red-500 hover:text-white hover:border-red-500 transition-all"
-                                                            title="Add to Shopping List"
-                                                        >
-                                                            + List
-                                                        </button>
-                                                    )}
-                                                </li>
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-gray-500 font-mono text-xs">{ing.amount}</span>
+                                                    </div>
+                                                </div>
                                             );
                                         })}
-                                    </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         );
                     })}
                 </div>
@@ -271,7 +327,7 @@ export default function MenuPage() {
                 <div className="inline-block p-8 rounded-3xl bg-black/40 border border-[var(--color-neon-green)]/20 shadow-[0_0_30px_rgba(57,255,20,0.05)] backdrop-blur-md">
                     <h2 className="text-2xl font-bold mb-4">Want something off-menu?</h2>
                     <p className="text-gray-400 mb-6 max-w-md mx-auto">
-                        Tell the bartender what flavors you're craving and let Sipster shake up a custom creation just for you.
+                        Tell the bartender what flavors you&apos;re craving and let Sipster shake up a custom creation just for you.
                     </p>
                     <Link
                         href="/chat"

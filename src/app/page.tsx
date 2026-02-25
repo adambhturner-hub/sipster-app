@@ -1,14 +1,17 @@
-import Link from "next/link";
-import Image from "next/image";
-import Logo from "@/components/Logo";
+import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '@/components/Logo';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 relative">
+    <div className="min-h-screen font-sans bg-gray-950 text-white selection:bg-[var(--color-neon-purple)] selection:text-white flex flex-col pt-32 relative overflow-hidden">
 
       {/* Hero Section */}
       <Logo />
-      <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 mt-6 z-10">
+      <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-6 mt-12 text-center">
+        Skip the &quot;What are we drinking?&quot; debate. Get <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple drop-shadow-[0_0_15px_rgba(176,38,255,0.6)]">Sipster</span>.
+      </h2>
+      <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 mt-6 z-10 text-center">
         Your Bartender <br className="hidden md:block" />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-pink)] to-[var(--color-neon-blue)]">
           In Your Pocket
