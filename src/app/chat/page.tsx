@@ -211,7 +211,7 @@ export default function Chat() {
                                 </div>
                                 <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
                                     <ReactMarkdown>
-                                        {m.parts ? m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content}
+                                        {m.parts ? m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('') : ((m as any).content || ' ')}
                                     </ReactMarkdown>
                                 </div>
                                 {m.role === 'assistant' && (

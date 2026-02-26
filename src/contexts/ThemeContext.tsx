@@ -13,10 +13,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setThemeState] = useState<Theme>('neon');
-    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
         const storedTheme = localStorage.getItem('sipster-theme') as Theme;
         if (storedTheme && ['neon', 'speakeasy', 'miami'].includes(storedTheme)) {
             setThemeState(storedTheme);
@@ -32,11 +30,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('sipster-theme', newTheme);
         document.documentElement.className = `theme-${newTheme}`;
     };
-
-    // Prevent hydration mismatch by not rendering until mounted
-    if (!mounted) {
-        return <div className="min-h-screen bg-black" />; // Prevents flash of unstyled content
-    }
 
     return (
         <ThemeContext.Provider value={{ theme, setTheme }}>
