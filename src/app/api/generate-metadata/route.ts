@@ -36,7 +36,8 @@ export async function POST(req: Request) {
                 countryOfPopularity: z.string().describe("Countries where it's popular, or 'Worldwide'"),
                 trivia: z.array(z.string()).describe("Array of 1-4 fun trivia facts about the drink"),
                 garnish: z.string().describe("Standard garnish, e.g., 'Lemon twist', 'None'"),
-                relationship: z.array(z.string()).describe("Array of 1-3 similar cocktails by name")
+                relationship: z.array(z.string()).describe("Array of 1-3 similar cocktails by name"),
+                estimatedCost: z.number().min(1).max(4).describe("Estimated amortized cost-per-drink based on typical US liquor store ingredients (1=Cheap $, 4=Premium $$$$)")
             }),
             prompt: `
             You are a master mixologist and cocktail historian. A user is creating a custom cocktail or saving an existing one.

@@ -45,7 +45,12 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                     </div>
                 </div>
 
-                <h3 className="text-2xl font-bold mb-2 text-white font-serif group-hover:text-[var(--accent)] transition-colors">{cocktail?.name || 'AI Original'}</h3>
+                <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-2xl font-bold text-white font-serif group-hover:text-[var(--accent)] transition-colors">{cocktail?.name || 'AI Original'}</h3>
+                    <span className="text-[10px] tracking-widest font-mono text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-0.5 rounded-full border border-[var(--accent)]/30">
+                        {'$'.repeat(cocktail?.estimatedCost || 2)}
+                    </span>
+                </div>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">

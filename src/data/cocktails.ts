@@ -44,6 +44,7 @@ export interface Cocktail {
     ratio: string; // e.g. "2:1:1"
     tagline: string; // Sipster spirit
     strength: number; // 1-10
+    estimatedCost?: number; // 1-4 for $, $$, $$$, $$$$
 }
 
 export const CLASSIC_COCKTAILS: Cocktail[] = [

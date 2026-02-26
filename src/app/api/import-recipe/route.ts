@@ -73,7 +73,8 @@ export async function POST(req: Request) {
                 amount: z.string().describe("The measurement (e.g. '2 oz', '1 dash')"),
                 item: z.string().describe("The ingredient name (e.g. 'Bourbon', 'Simple Syrup')")
             })).describe("The list of ingredients required to make the drink"),
-            instructions: z.array(z.string()).describe("Step-by-step instructions to make the drink")
+            instructions: z.array(z.string()).describe("Step-by-step instructions to make the drink"),
+            estimatedCost: z.number().min(1).max(4).describe("Estimated amortized cost-per-drink based on typical US liquor store ingredients (1=Cheap $, 4=Premium $$$$)")
         });
 
 
