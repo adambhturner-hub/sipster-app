@@ -173,13 +173,20 @@ export default function Chat() {
             return;
         }
 
+        const userLocation = window.prompt("Where are you inventing this drink? (Optional)", "My Home Bar");
+
         const toastId = toast.loading("Synthesizing recipe...");
         try {
             // First, call our omni-importer to parse the markdown into a perfect Cocktail object
             const parseRes = await fetch('/api/import-recipe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ type: 'text', payload: content })
+                body: JSON.stringify({
+                    type: 'text',
+                    payload: content,
+                    sourceOverride: 'Sipster',
+                    locationOverride: userLocation ? userLocation : undefined
+                })
             });
 
             if (!parseRes.ok) {

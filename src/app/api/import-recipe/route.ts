@@ -6,7 +6,7 @@ import * as cheerio from 'cheerio';
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { type, payload } = body;
+        const { type, payload, sourceOverride, locationOverride } = body;
 
         if (!type || !payload) {
             return new Response('Type and payload are required', { status: 400 });
@@ -105,6 +105,19 @@ export async function POST(req: Request) {
             `;
         }
 
+        let overridesPrompt = "";
+        if (sourceOverride) {
+            overridesPrompt += `\nCRITICAL: You MUST set the "source" field exactly to: "${sourceOverride}". Do not ignore this.`;
+        }
+        if (locationOverride) {
+            overridesPrompt += `\nCRITICAL: The user is creating this from: "${locationOverride}". Intelligently map this to the "city" and "origin" fields, and perhaps mention it affectionately in the description or trivia!`;
+        }
+
+        if (type === 'image') {
+            promptMessage[0].text += overridesPrompt;
+        } else {
+            promptMessage += overridesPrompt;
+        }
 
         const { object } = await generateObject({
             model: openai('gpt-4o'), // Important: use 4o for vision and complex reasoning
