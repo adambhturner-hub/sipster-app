@@ -15,7 +15,7 @@ export default function Home() {
         </span>
       </h2>
 
-      <div className="text-xl md:text-2xl text-gray-400 max-w-2xl mb-8 z-10 leading-relaxed font-light text-center space-y-2">
+      <div className="mx-auto text-xl md:text-2xl text-gray-400 max-w-2xl mb-8 z-10 leading-relaxed font-light text-center space-y-2">
         <p>Sipster knows your bar.</p>
         <p>Understands your mood.</p>
         <p className="text-white font-medium">Crafts the perfect drink — classic or custom — in seconds.</p>
@@ -26,7 +26,7 @@ export default function Home() {
       </p>
 
       {/* CTA Buttons */}
-      <div className="flex flex-col sm:flex-row gap-6 z-10 items-center justify-center w-full max-w-lg mb-24">
+      <div className="mx-auto flex flex-col sm:flex-row gap-6 z-10 items-center justify-center w-full max-w-lg mb-24">
         <Link
           href="/chat"
           className="w-full sm:w-auto px-8 py-4 rounded-full btn-primary text-lg"
@@ -102,35 +102,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* How It Works Strip */}
-      <div className="w-full max-w-5xl mx-auto z-10 py-16 px-4 mb-24 border-t border-b border-gray-800/50 bg-black/20 backdrop-blur-sm rounded-3xl">
-        <h3 className="text-center text-sm font-bold uppercase tracking-widest text-gray-500 mb-12">How It Works</h3>
-        <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-8">
-
-          <div className="flex flex-col items-center text-center max-w-xs relative">
-            <div className="w-16 h-16 rounded-full bg-[var(--surface)] border border-[var(--primary)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4 shadow-[0_0_15px_var(--primary-glow)]">1</div>
-            <h4 className="text-lg font-bold text-white mb-2">Add Your Bar</h4>
-            <p className="text-sm text-gray-400">Snap a quick photo or tap your bottles. We’ll build your digital shelf.</p>
-            {/* Connector Line (Desktop Only) */}
-            <div className="hidden md:block absolute top-8 left-full w-full h-[1px] bg-gradient-to-r from-[var(--primary)]/50 to-transparent -ml-4 z-[-1]"></div>
-          </div>
-
-          <div className="flex flex-col items-center text-center max-w-xs relative">
-            <div className="w-16 h-16 rounded-full bg-[var(--surface)] border border-[var(--primary)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4 shadow-[0_0_15px_var(--primary-glow)]">2</div>
-            <h4 className="text-lg font-bold text-white mb-2">Tell Sipster What You're Craving</h4>
-            <p className="text-sm text-gray-400">"I'm feeling nostalgic," "Something smoky," or "Just use the rum."</p>
-            {/* Connector Line (Desktop Only) */}
-            <div className="hidden md:block absolute top-8 left-full w-full h-[1px] bg-gradient-to-r from-[var(--primary)]/50 to-transparent -ml-4 z-[-1]"></div>
-          </div>
-
-          <div className="flex flex-col items-center text-center max-w-xs">
-            <div className="w-16 h-16 rounded-full bg-[var(--surface)] border border-[var(--primary)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4 shadow-[0_0_15px_var(--primary-glow)]">3</div>
-            <h4 className="text-lg font-bold text-white mb-2">Pour, Stir, Sip</h4>
-            <p className="text-sm text-gray-400">Follow the custom recipe and enjoy a perfectly tailored cocktail.</p>
-          </div>
-
-        </div>
-      </div>
 
       {/* Live Demo Section */}
       <div className="w-full max-w-6xl mx-auto z-10 mb-32 px-4 flex flex-col md:flex-row items-center gap-12 lg:gap-24">
@@ -139,11 +110,6 @@ export default function Home() {
           <p className="text-xl text-gray-400 font-light leading-relaxed">
             Sipster isn't just a database. It's a conversational mixologist. Tell it what you have, how you feel, or what you want to avoid.
           </p>
-          <div className="pt-4">
-            <Link href="/chat" className="px-6 py-3 rounded-full btn-primary text-base inline-flex items-center gap-2">
-              Try the Demo <span className="text-xl">🍸</span>
-            </Link>
-          </div>
         </div>
 
         {/* Mock Chat UI */}
