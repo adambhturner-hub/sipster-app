@@ -5,13 +5,7 @@ import { z } from 'zod';
 // We allow longer execution for vision processing
 export const maxDuration = 30;
 
-const INGREDIENT_CATEGORIES = [
-    'Bourbon', 'Rye Whiskey', 'Scotch (Single Malt)', 'Scotch (Blended)', 'Irish Whiskey', 'Japanese Whisky', 'Tennessee Whiskey',
-    'Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Spiced Rum', 'Cachaça', 'Cognac', 'Pisco', 'Old Tom Gin', 'Overproof Rum',
-    'Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'White Wine', 'Orange Liqueur (Cointreau/Triple Sec)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca', 'Amaro Nonino', 'Crème de Violette', 'Bénédictine', 'Raspberry Liqueur (Chambord)', 'Lillet Blanc', 'Blackberry Liqueur (Crème de Mûre)', 'Pimm\'s No. 1', 'Falernum',
-    'Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer', 'Cola', 'Lemon-Lime Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice', 'Grapefruit Juice', 'Tomato Juice', 'Coffee (Brewed)',
-    'Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Sugar', 'Mint', 'Basil', 'Rosemary', "Angostura Bitters", 'Orange Bitters', "Peychaud's Bitters", 'Egg White', 'Heavy Cream', 'Coconut Cream', 'Cinnamon Syrup'
-];
+import { FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
 
 export async function POST(req: Request) {
     try {
@@ -38,7 +32,7 @@ export async function POST(req: Request) {
                             CRITICAL RULES:
                             1. You MUST IGNORE all furniture, appliances (e.g., the fridge itself), people, electronics, or unrelated food items.
                             2. Look for spirits, liqueurs, mixers, syrups, bitters, and fresh cocktail garnishes (like citrus).
-                            3. If an item perfectly matches or is a direct brand of one of our standard categories, map it to that EXACT string from this list: ${INGREDIENT_CATEGORIES.join(', ')}.
+                            3. If an item perfectly matches or is a direct brand of one of our standard categories, map it to that EXACT string from this list: ${FLAT_INGREDIENTS_LIST.join(', ')}.
                             4. If you see a specific, unique cocktail ingredient that is NOT on our list (e.g., 'Yuzu Juice', 'Malört', 'Falernum'), add the specific name of that ingredient to the array. 
                             5. If you are not 100% sure an item is a beverage or cocktail ingredient, DO NOT include it.`
                         },

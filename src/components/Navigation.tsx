@@ -28,6 +28,7 @@ export default function Navigation() {
                         <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-purple)] hover:text-glow-purple transition-all duration-300">Menu</Link>
                         <Link href="/favorites" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-pink)] hover:text-glow-pink transition-all duration-300">Favorites</Link>
                         <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-green)] hover:text-glow-green transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
+                        <Link href="/create" className="text-[var(--color-neon-purple)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_rgba(176,38,255,0.8)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
                     </nav>
 
                     {/* Auth Section (Desktop) */}
@@ -111,6 +112,13 @@ export default function Navigation() {
                             className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-green)] rounded-lg transition-colors border-b border-gray-800/50"
                         >
                             Chat 🍸
+                        </Link>
+                        <Link
+                            href="/create"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block px-3 py-4 text-xl text-[var(--color-neon-purple)] font-bold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50"
+                        >
+                            Create Drink ✨
                         </Link>
 
                         {/* Mobile Auth */}
