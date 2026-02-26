@@ -46,22 +46,42 @@ export default function Chat() {
             // Firestore chat history
             const threadRef = doc(db, 'chat_threads', user.uid);
             getDoc(threadRef).then((docSnap) => {
-                if (docSnap.exists() && docSnap.data().messages) {
-                    setMessages(docSnap.data().messages);
-                    if (docSnap.data().generatedImages) {
-                        setGeneratedImages(docSnap.data().generatedImages);
+                try {
+                    if (docSnap.exists() && Array.isArray(docSnap.data().messages)) {
+                        const safeMessages = docSnap.data().messages.map((msg: any) => ({
+                            id: msg.id || Math.random().toString(36).slice(2),
+                            role: msg.role || 'user',
+                            content: typeof msg.content === 'string' ? msg.content : '',
+                            parts: Array.isArray(msg.parts) ? msg.parts : undefined,
+                            createdAt: msg.createdAt || undefined,
+                        }));
+                        setMessages(safeMessages);
+
+                        if (docSnap.data().generatedImages) {
+                            setGeneratedImages(docSnap.data().generatedImages);
+                        }
+                    } else {
+                        // Check localStorage to migrate existing chat
+                        const localChat = localStorage.getItem('sipster-chat-history');
+                        if (localChat) {
+                            try {
+                                const parsed = JSON.parse(localChat);
+                                if (Array.isArray(parsed)) {
+                                    const safeMessages = parsed.map((msg: any) => ({
+                                        id: msg.id || Math.random().toString(),
+                                        role: msg.role || 'user',
+                                        content: typeof msg.content === 'string' ? msg.content : '',
+                                        parts: Array.isArray(msg.parts) ? msg.parts : undefined,
+                                    }));
+                                    setMessages(safeMessages);
+                                    setDoc(threadRef, { messages: safeMessages, updatedAt: new Date().toISOString() }, { merge: true });
+                                    localStorage.removeItem('sipster-chat-history');
+                                }
+                            } catch (e) { console.error('Error parsing local chat', e); }
+                        }
                     }
-                } else {
-                    // Check localStorage to migrate existing chat
-                    const localChat = localStorage.getItem('sipster-chat-history');
-                    if (localChat) {
-                        try {
-                            const parsed = JSON.parse(localChat);
-                            setMessages(parsed);
-                            setDoc(threadRef, { messages: parsed, updatedAt: new Date().toISOString() }, { merge: true });
-                            localStorage.removeItem('sipster-chat-history');
-                        } catch (e) { }
-                    }
+                } catch (err) {
+                    console.error('Error importing firestore chat', err);
                 }
                 setMessagesLoaded(true);
             });
@@ -77,7 +97,17 @@ export default function Chat() {
             // LocalStorage chat history
             const savedChat = localStorage.getItem('sipster-chat-history');
             if (savedChat) {
-                try { setMessages(JSON.parse(savedChat)); } catch (e) { }
+                try {
+                    const parsed = JSON.parse(savedChat);
+                    if (Array.isArray(parsed)) {
+                        setMessages(parsed.map((msg: any) => ({
+                            id: msg.id || Math.random().toString(),
+                            role: msg.role || 'user',
+                            content: typeof msg.content === 'string' ? msg.content : '',
+                            parts: Array.isArray(msg.parts) ? msg.parts : undefined,
+                        })));
+                    }
+                } catch (e) { }
             }
             setMessagesLoaded(true);
         }
@@ -211,12 +241,12 @@ export default function Chat() {
                                 </div>
                                 <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
                                     <ReactMarkdown>
-                                        {m.parts ? m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('') : ((m as any).content || ' ')}
+                                        {Array.isArray(m.parts) ? m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ')}
                                     </ReactMarkdown>
                                 </div>
                                 {m.role === 'assistant' && (
                                     <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
-                                        {m.parts?.map((part: any, i) => {
+                                        {Array.isArray(m.parts) && m.parts.map((part: any, i) => {
                                             if (part.type !== 'tool-invocation') return null;
 
                                             let content;
@@ -259,8 +289,8 @@ export default function Chat() {
                                         })}
                                         <button
                                             onClick={() => {
-                                                const textContent = m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content;
-                                                const toolPart = m.parts?.find(p => p.type === 'tool-invocation' && (p as any).toolInvocationId === 'generate_cocktail_recipe') as any;
+                                                const textContent = Array.isArray(m.parts) ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ');
+                                                const toolPart = Array.isArray(m.parts) ? m.parts.find(p => p.type === 'tool-invocation' && (p as any).toolInvocationId === 'generate_cocktail_recipe') as any : undefined;
                                                 handleFavorite(
                                                     m.id,
                                                     textContent,
