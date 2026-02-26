@@ -141,8 +141,8 @@ export default function DiscoverPage() {
                         <button
                             onClick={() => setSortBy('newest')}
                             className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${sortBy === 'newest'
-                                    ? 'bg-[var(--primary)] text-black shadow-[0_0_15px_rgba(0,255,255,0.4)]'
-                                    : 'bg-black/40 border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
+                                ? 'bg-[var(--primary)] text-black shadow-[0_0_15px_rgba(0,255,255,0.4)]'
+                                : 'bg-black/40 border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
                                 }`}
                         >
                             <span className="mr-2">✨</span>Newest
@@ -150,8 +150,8 @@ export default function DiscoverPage() {
                         <button
                             onClick={() => setSortBy('trending')}
                             className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${sortBy === 'trending'
-                                    ? 'bg-[var(--accent)] text-white shadow-[0_0_15px_rgba(255,0,255,0.4)]'
-                                    : 'bg-black/40 border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
+                                ? 'bg-[var(--accent)] text-white shadow-[0_0_15px_rgba(255,0,255,0.4)]'
+                                : 'bg-black/40 border border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
                                 }`}
                         >
                             <span className="mr-2">🔥</span>Top Rated
@@ -186,8 +186,8 @@ export default function DiscoverPage() {
                                 {/* Rating Badge Overlay (Visual ONLY, not interactive here) */}
                                 {drink.averageRating && drink.ratingCount && (
                                     <div className="absolute top-4 left-4 z-30 flex pl-4 pt-4 pointer-events-none">
-                                        <div className="bg-black/80 backdrop-blur-md border border-[var(--color-[var(--accent)])]/50 rounded-full px-3 py-1 flex items-center gap-1.5 shadow-[0_0_10px_rgba(255,0,255,0.2)]">
-                                            <span className="text-[var(--color-[var(--accent)])] text-xs font-bold leading-none">★ {drink.averageRating}</span>
+                                        <div className="bg-black/80 backdrop-blur-md border border-[var(--accent)]/50 rounded-full px-3 py-1 flex items-center gap-1.5 shadow-[0_0_10px_rgba(255,0,255,0.2)]">
+                                            <span className="text-[var(--accent)] text-xs font-bold leading-none">★ {drink.averageRating}</span>
                                             <span className="text-gray-400 text-[10px] leading-none">({drink.ratingCount})</span>
                                         </div>
                                     </div>

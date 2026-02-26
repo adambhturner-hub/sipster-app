@@ -295,7 +295,7 @@ export default function CreateCocktailPage() {
 
     if (authLoading) return (
         <div className="flex justify-center flex-col items-center min-h-[50vh]">
-            <div className="animate-pulse text-[var(--color-[var(--primary)])] text-4xl mb-4">✨</div>
+            <div className="animate-pulse text-[var(--primary)] text-4xl mb-4">✨</div>
             <div className="text-gray-400">Loading Studio...</div>
         </div>
     );
@@ -305,7 +305,7 @@ export default function CreateCocktailPage() {
             <h2 className="text-3xl font-bold mb-4">Login Required</h2>
             <button
                 onClick={signInWithGoogle}
-                className="bg-[var(--color-[var(--primary)])] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]"
+                className="bg-[var(--primary)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]"
             >
                 Log In with Google
             </button>

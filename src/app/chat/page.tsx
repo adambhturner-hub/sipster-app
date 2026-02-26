@@ -231,15 +231,15 @@ export default function Chat() {
                                                                 </div>
                                                             ) : (
                                                                 <button
-                                                                    onClick={() => handleGenerateImage(m.id, part.props.name)}
-                                                                    disabled={isGeneratingImg === m.id}
+                                                                    onClick={() => handleGenerateImage(m.id, part.props?.name || "A delicious cocktail")}
+                                                                    disabled={isGeneratingImg === m.id || !part.props?.name}
                                                                     className="text-xs bg-black/40 border border-[var(--secondary)]/30 text-[var(--secondary)] px-4 py-2 rounded-full hover:bg-[var(--secondary)]/20 transition-all duration-300 disabled:opacity-50 self-start"
                                                                 >
                                                                     {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
                                                                 </button>
                                                             )}
                                                             <div className="flex flex-col gap-2 mt-4 ml-2 border-l-2 border-[var(--primary)]/30 pl-4 w-full max-w-sm">
-                                                                {part.props.steps.map((step: any, stepIdx: number) => (
+                                                                {part.props?.steps?.map((step: any, stepIdx: number) => (
                                                                     <div key={stepIdx} className="flex gap-3 text-sm text-gray-300 bg-gray-900/50 p-2 rounded-lg border border-gray-800/80">
                                                                         <span className="text-[var(--primary)] font-mono font-bold">{stepIdx + 1}.</span>
                                                                         <span className="leading-relaxed">{step}</span>
@@ -247,7 +247,7 @@ export default function Chat() {
                                                                 ))}
                                                             </div>
                                                             <div className="mt-8 text-center text-gray-500 italic text-sm">
-                                                                &quot;Enjoy your {part.props.name}&quot;
+                                                                &quot;Enjoy your {part.props?.name || "cocktail"}&quot;
                                                             </div>
                                                         </div>
                                                     );
@@ -264,7 +264,7 @@ export default function Chat() {
                                                 handleFavorite(
                                                     m.id,
                                                     textContent,
-                                                    toolPart ? { name: toolPart.props.name, steps: toolPart.props.steps } : undefined
+                                                    toolPart?.props ? { name: toolPart.props.name, steps: toolPart.props.steps } : undefined
                                                 );
                                             }}
                                             className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
