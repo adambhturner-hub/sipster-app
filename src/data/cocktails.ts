@@ -91,7 +91,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¼', // Spirit:Sweet
         tagline: 'Respect your elders.',
-        strength: 8
+        strength: 8,
+        estimatedCost: 3,
     },
     {
         name: 'Margarita',
@@ -135,7 +136,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:½',
         tagline: 'Salt, lime, and everything fine.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Negroni',
@@ -179,7 +181,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:1:1',
         tagline: 'An elegant bitterness.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Espresso Martini',
@@ -225,7 +228,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:½:¼',
         tagline: 'Wake up, it\'s time to party.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Mojito',
@@ -272,7 +276,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:½:½',
         tagline: 'Liquid air conditioning.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Whiskey Sour',
@@ -319,7 +324,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¾:½',
         tagline: 'Trust the egg white. Always trust the egg white.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Manhattan',
@@ -363,7 +369,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1',
         tagline: 'The king of cocktails.',
-        strength: 8
+        strength: 8,
+        estimatedCost: 3,
     },
     {
         name: 'Moscow Mule',
@@ -407,7 +414,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:½:4',
         tagline: 'Kick-start your weekend.',
-        strength: 4
+        strength: 4,
+        estimatedCost: 2,
     },
     {
         name: 'French 75',
@@ -453,7 +461,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:½:½', // Spirit:Sour:Sweet
         tagline: 'Fire the cannons.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Gimlet',
@@ -496,7 +505,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¾:¾',
         tagline: 'A botanical bite.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 2,
     },
     {
         name: 'Daiquiri',
@@ -539,7 +549,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:¾',
         tagline: 'The bartender\'s handshake.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 2,
     },
     {
         name: 'Dark \'n\' Stormy',
@@ -627,7 +638,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '3:2:1',
         tagline: 'Sunset in a glass.',
-        strength: 3
+        strength: 3,
+        estimatedCost: 2,
     },
     {
         name: 'Paloma',
@@ -673,7 +685,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:½:4',
         tagline: 'The dove takes flight.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Boulevardier',
@@ -717,7 +730,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.5:1:1',
         tagline: 'A whiskey hug in a glass.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Tom Collins',
@@ -762,7 +776,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:½',
         tagline: 'The original sparkling lemonade.',
-        strength: 4
+        strength: 4,
+        estimatedCost: 3,
     },
     {
         name: 'Amaretto Sour',
@@ -806,7 +821,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1',
         tagline: 'Liquid marzipan.',
-        strength: 4
+        strength: 4,
+        estimatedCost: 2,
     },
     {
         name: 'Gin Fizz',
@@ -853,7 +869,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:¾',
         tagline: 'Defy gravity.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Penicillin',
@@ -899,7 +916,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¾:¾',
         tagline: 'The cure for whatever ails you.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 4,
     },
     {
         name: 'Bee\'s Knees',
@@ -987,7 +1005,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¾:¾',
         tagline: 'The grandfather of the Margarita.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'White Russian',
@@ -1031,7 +1050,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:1',
         tagline: 'The Dude abides.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Mint Julep',
@@ -1077,7 +1097,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¼',
         tagline: 'And they\'re off!',
-        strength: 8
+        strength: 8,
+        estimatedCost: 3,
     },
     {
         name: 'Mai Tai',
@@ -1122,7 +1143,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¾:½:½',
         tagline: 'Out of this world.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Cosmopolitan',
@@ -1167,7 +1189,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.5:1:½:½',
         tagline: 'Hello, lover.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Sazerac',
@@ -1214,7 +1237,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¼',
         tagline: 'Laissez les bon temps rouler.',
-        strength: 8
+        strength: 8,
+        estimatedCost: 4,
     },
     {
         name: 'Paper Plane',
@@ -1258,7 +1282,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '¾:¾:¾:¾',
         tagline: 'Catching air.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Corpse Reviver No. 2',
@@ -1304,7 +1329,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '¾:¾:¾:¾',
         tagline: 'Rise from your grave.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Jungle Bird',
@@ -1350,7 +1376,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.5:¾:1.5:½:½',
         tagline: 'Welcome to the jungle.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Caipirinha',
@@ -1395,7 +1422,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1',
         tagline: 'The spirit of Brazil.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 2,
     },
     {
         name: 'Aviation',
@@ -1440,7 +1468,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:¾:½:¼',
         tagline: 'Take flight.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Bloody Mary',
@@ -1487,7 +1516,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:4:½',
         tagline: 'The hangover cure.',
-        strength: 3
+        strength: 3,
+        estimatedCost: 2,
     },
     {
         name: 'Piña Colada',
@@ -1532,7 +1562,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:2:1.5',
         tagline: 'If you like Piña Coladas...',
-        strength: 4
+        strength: 4,
+        estimatedCost: 2,
     },
     {
         name: 'Last Word',
@@ -1577,7 +1608,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:1:1:1',
         tagline: 'The ultimate equalizer.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Vieux Carré',
@@ -1624,7 +1656,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:1:1:¼',
         tagline: 'The soul of New Orleans.',
-        strength: 8
+        strength: 8,
+        estimatedCost: 3,
     },
     {
         name: 'Irish Coffee',
@@ -1670,7 +1703,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.5:4:½',
         tagline: 'Warm up from the inside out.',
-        strength: 4
+        strength: 4,
+        estimatedCost: 3,
     },
     {
         name: 'Pisco Sour',
@@ -1717,7 +1751,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:¾',
         tagline: 'The pride of the Andes.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 2,
     },
     {
         name: 'Martinez',
@@ -1762,7 +1797,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.5:1.5:¼',
         tagline: 'The grandfather of the Martini.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'French Martini',
@@ -1806,7 +1842,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1.5:½',
         tagline: 'C\'est chic.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Vesper',
@@ -1850,7 +1887,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '3:1:½',
         tagline: 'Shaken, not stirred.',
-        strength: 9
+        strength: 9,
+        estimatedCost: 3,
     },
     {
         name: 'Bramble',
@@ -1895,7 +1933,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:½:½',
         tagline: 'A stroll through the brambles.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Pimm\'s Cup',
@@ -2037,7 +2076,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '4:1.25:1',
         tagline: 'Limit two per customer.',
-        strength: 10
+        strength: 10,
+        estimatedCost: 3,
     },
     {
         name: 'Southside',
@@ -2083,7 +2123,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:¾',
         tagline: 'Cool under pressure.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 1,
     },
     // --- 15 NEW COCKTAILS (PHASE 23 EXPANSION) ---
     {
@@ -2129,7 +2170,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '3:1:1:X',
         tagline: 'Take flight with this floral pre-prohibition masterpiece.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'French 75',
@@ -2176,7 +2218,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:1 + Bubbles',
         tagline: 'Packs a punch that feels like being shelled by a 75mm gun.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 2,
     },
     {
         name: 'Gimlet',
@@ -2220,7 +2263,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:1',
         tagline: 'The cocktail that cured the Royal Navy of scurvy.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 2,
     },
     {
         name: 'Tommy\'s Margarita',
@@ -2308,7 +2352,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.25:1:1',
         tagline: 'The Negroni\'s dark, whiskey-drinking cousin.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 2,
     },
     {
         name: 'Corpse Reviver No. 2',
@@ -2355,7 +2400,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:1:1:1',
         tagline: 'Guaranteed to wake the dead before brunch.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Vieux Carré',
@@ -2402,7 +2448,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '3:3:3:1',
         tagline: 'The swirling, spicy, soulful heart of New Orleans in a glass.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Aperol Spritz',
@@ -2447,7 +2494,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '3:2:1',
         tagline: 'Sunset in a glass. The Italian way to start the evening.',
-        strength: 3
+        strength: 3,
+        estimatedCost: 2,
     },
     {
         name: 'Dark \'n\' Stormy',
@@ -2537,7 +2585,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:0.5 + Float',
         tagline: 'Memories of British blackberry bushes, perfectly encapsulated.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Vesper',
@@ -2582,7 +2631,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '6:2:1',
         tagline: '"Shaken, not stirred." A massive, lethal block of pure spirits.',
-        strength: 9
+        strength: 9,
+        estimatedCost: 3,
     },
     {
         name: 'Martinez',
@@ -2627,7 +2677,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:1',
         tagline: 'The sweet, botanical bridge between a Manhattan and a Martini.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Painkiller',
@@ -2672,7 +2723,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:4:1:1',
         tagline: 'The Piña Colada\'s wealthier, more sophisticated island cousin.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Pisco Sour',
@@ -2719,7 +2771,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:0.75',
         tagline: 'A cloud-like crown sitting atop earthy South American brandy.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Mint Julep',
@@ -2764,7 +2817,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '5:1',
         tagline: 'The frosted, silver-cupped pride of the American South.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     // --- 15 NEW COCKTAILS (PHASE 26 EXPANSION) ---
     {
@@ -2812,7 +2866,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.75:0.5:0.5',
         tagline: 'The out-of-this-world masterpiece that launched the Tiki craze.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Sazerac',
@@ -2859,7 +2914,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.25 + Rinse',
         tagline: 'A ritual of Rye, Absinthe, and New Orleans history.',
-        strength: 8
+        strength: 8,
+        estimatedCost: 3,
     },
     {
         name: 'Last Word',
@@ -2904,7 +2960,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1:1:1:1',
         tagline: 'The pale-green miracle of the craft cocktail revival.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Clover Club',
@@ -2950,7 +3007,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.5:0.5',
         tagline: 'A luxurious crimson foam straight from the Gilded Age.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Sidecar',
@@ -2995,7 +3053,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:0.75',
         tagline: 'The sleek, sophisticated French grandfather to the Margarita.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Piña Colada',
@@ -3042,7 +3101,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:2:1.5',
         tagline: 'If you like getting caught in the rain...',
-        strength: 4
+        strength: 4,
+        estimatedCost: 2,
     },
     {
         name: 'Jungle Bird',
@@ -3088,7 +3148,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '1.5:0.75:1.5:0.5:0.5',
         tagline: 'A darkly bitter and fiercely tropical bird of paradise.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Whiskey Smash',
@@ -3135,7 +3196,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.75',
         tagline: 'The Mint Julep\'s loud, citrus-loving cousin.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Caipirinha',
@@ -3180,7 +3242,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:X',
         tagline: 'Muddled, funky, and fiercely Brazilian.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 2,
     },
     {
         name: 'White Lady',
@@ -3226,7 +3289,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.75:0.75',
         tagline: 'An elegant, ghostly sour cloaked in a velvet foam.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Rob Roy',
@@ -3270,7 +3334,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1',
         tagline: 'A smoky Manhattan in a tartan kilt.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'Hemingway Daiquiri',
@@ -3315,7 +3380,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.75:0.5:0.5',
         tagline: 'Double the rum, none of the sugar. Papa\'s orders.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     },
     {
         name: 'Rusty Nail',
@@ -3357,7 +3423,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.75',
         tagline: 'The honeyed, smoky fuel of the 1960s Rat Pack.',
-        strength: 7
+        strength: 7,
+        estimatedCost: 3,
     },
     {
         name: 'White Russian',
@@ -3401,7 +3468,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:1',
         tagline: '"The Dude abides." A creamy, caffeinated classic.',
-        strength: 5
+        strength: 5,
+        estimatedCost: 3,
     },
     {
         name: 'Penicillin',
@@ -3447,6 +3515,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:0.75:0.75 + Float',
         tagline: 'The smoky, gingery cure-all of the 21st century.',
-        strength: 6
+        strength: 6,
+        estimatedCost: 3,
     }
 ];
