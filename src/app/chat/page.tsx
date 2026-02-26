@@ -252,7 +252,7 @@ export default function Chat() {
                                         <button
                                             onClick={() => {
                                                 const textContent = m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content;
-                                                const toolPart = m.parts?.find(p => p.type === 'tool-invocation' && p.toolInvocationId === 'generate_cocktail_recipe') as any;
+                                                const toolPart = m.parts?.find(p => p.type === 'tool-invocation' && (p as any).toolInvocationId === 'generate_cocktail_recipe') as any;
                                                 handleFavorite(
                                                     m.id,
                                                     textContent,
