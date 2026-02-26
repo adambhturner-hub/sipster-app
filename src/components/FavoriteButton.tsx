@@ -10,10 +10,12 @@ interface FavoriteButtonProps {
     cocktailId: string;
     cocktailName: string;
     compact?: boolean;
+    favoriteId?: string;
+    type?: 'classic' | 'custom_full' | 'custom';
     onChange?: (isFavorited: boolean) => void;
 }
 
-export default function FavoriteButton({ cocktailId, cocktailName, compact = false, onChange }: FavoriteButtonProps) {
+export default function FavoriteButton({ cocktailId, cocktailName, compact = false, favoriteId, type = 'classic', onChange }: FavoriteButtonProps) {
     const { user, loading } = useAuth();
     const [isFavorited, setIsFavorited] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -23,6 +25,12 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
         if (!user || loading) return;
 
         const checkFavorite = async () => {
+            if (favoriteId && type !== 'classic') {
+                setIsFavorited(true);
+                setDocId(favoriteId);
+                return;
+            }
+
             const q = query(
                 collection(db, 'favorites'),
                 where('uid', '==', user.uid),
@@ -38,7 +46,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
         };
 
         checkFavorite();
-    }, [user, loading, cocktailId]);
+    }, [user, loading, cocktailId, favoriteId, type]);
 
     const toggleFavorite = async (e?: React.MouseEvent) => {
         if (e) {

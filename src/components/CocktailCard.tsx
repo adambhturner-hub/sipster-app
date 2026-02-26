@@ -7,9 +7,12 @@ interface CocktailCardProps {
     makeable: boolean;
     hasIngredient: (item: string) => boolean;
     customHref?: string;
+    favoriteId?: string;
+    favoriteType?: 'classic' | 'custom_full' | 'custom';
+    onFavoriteChange?: (isFavorited: boolean) => void;
 }
 
-export default function CocktailCard({ cocktail, makeable, hasIngredient, customHref }: CocktailCardProps) {
+export default function CocktailCard({ cocktail, makeable, hasIngredient, customHref, favoriteId, favoriteType = 'classic', onFavoriteChange }: CocktailCardProps) {
     const href = customHref || `/menu/${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`;
 
     return (
@@ -25,6 +28,9 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                             cocktailId={(cocktail?.name || 'custom').toLowerCase().replace(/ /g, '-')}
                             cocktailName={cocktail?.name || 'Custom Drink'}
                             compact
+                            favoriteId={favoriteId}
+                            type={favoriteType}
+                            onChange={onFavoriteChange}
                         />
                         {makeable ? (
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20">

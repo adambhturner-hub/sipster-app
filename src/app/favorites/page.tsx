@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 
 import CocktailCard from '@/components/CocktailCard';
+import FavoriteButton from '@/components/FavoriteButton';
 import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 
 interface FavoriteRecipe {
@@ -137,6 +138,13 @@ export default function FavoritesPage() {
                                     cocktail={classicCocktail}
                                     makeable={makeable}
                                     hasIngredient={hasIngredient}
+                                    favoriteId={fav.id}
+                                    favoriteType="classic"
+                                    onFavoriteChange={(isFavorited) => {
+                                        if (!isFavorited) {
+                                            setFavorites(prev => prev.filter(f => f.id !== fav.id));
+                                        }
+                                    }}
                                 />
                             );
                         }
@@ -153,6 +161,13 @@ export default function FavoritesPage() {
                                     makeable={makeable}
                                     hasIngredient={hasIngredient}
                                     customHref={`/recipe/${fav.id}`}
+                                    favoriteId={fav.id}
+                                    favoriteType="custom_full"
+                                    onFavoriteChange={(isFavorited) => {
+                                        if (!isFavorited) {
+                                            setFavorites(prev => prev.filter(f => f.id !== fav.id));
+                                        }
+                                    }}
                                 />
                             );
                         }
@@ -178,9 +193,25 @@ export default function FavoritesPage() {
                                         </div>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold mb-2 text-white font-serif group-hover:text-[var(--secondary)] transition-colors">
-                                        {fav.name || 'Custom AI Recipe'}
-                                    </h3>
+                                    <div className="flex justify-between items-start mb-2 gap-4">
+                                        <h3 className="text-2xl font-bold text-white font-serif group-hover:text-[var(--secondary)] transition-colors">
+                                            {fav.name || 'Custom AI Recipe'}
+                                        </h3>
+                                        <div className="relative z-20">
+                                            <FavoriteButton
+                                                cocktailId={fav.name?.toLowerCase().replace(/ /g, '-') || 'custom'}
+                                                cocktailName={fav.name || 'Custom AI Recipe'}
+                                                compact
+                                                favoriteId={fav.id}
+                                                type={fav.type}
+                                                onChange={(isFavorited) => {
+                                                    if (!isFavorited) {
+                                                        setFavorites(prev => prev.filter(f => f.id !== fav.id));
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
 
                                     <div className="text-gray-400 text-sm mb-6 flex-grow font-sans line-clamp-4">
                                         <ReactMarkdown>{fav.content || ''}</ReactMarkdown>

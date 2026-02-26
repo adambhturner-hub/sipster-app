@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
@@ -18,6 +19,7 @@ interface CustomFullRecipe {
 }
 
 export default function RecipeProfilePage({ params }: { params: Promise<{ id: string }> }) {
+    const router = useRouter();
     const resolvedParams = use(params);
     const [recipeData, setRecipeData] = useState<CustomFullRecipe | null>(null);
     const [loading, setLoading] = useState(true);
@@ -89,11 +91,25 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                                 <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
-                                <ShareButton
-                                    title={cocktail.name}
-                                    text={`Check out my custom creation: ${cocktail.name} ${cocktail.emoji} on Sipster!`}
-                                    path={`/recipe/${recipeData.id}`}
-                                />
+                                <div className="flex items-center gap-3">
+                                    <FavoriteButton
+                                        cocktailId={(cocktail.name || 'custom').toLowerCase().replace(/ /g, '-')}
+                                        cocktailName={cocktail.name}
+                                        compact
+                                        favoriteId={recipeData.id}
+                                        type="custom_full"
+                                        onChange={(isFavorited) => {
+                                            if (!isFavorited) {
+                                                router.push('/favorites');
+                                            }
+                                        }}
+                                    />
+                                    <ShareButton
+                                        title={cocktail.name}
+                                        text={`Check out my custom creation: ${cocktail.name} ${cocktail.emoji} on Sipster!`}
+                                        path={`/recipe/${recipeData.id}`}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center gap-4 mb-2">
                                 <span className="px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-bold tracking-widest uppercase border border-[var(--primary)]/30">
