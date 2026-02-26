@@ -104,6 +104,12 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                     <span className="text-gray-500">ABV</span>
                                     <span className="font-medium text-white">{cocktail.abvContent}</span>
                                 </div>
+                                <div className="flex justify-between border-b border-gray-800 pb-2">
+                                    <span className="text-gray-500">Est. Cost</span>
+                                    <span className="font-medium tracking-widest text-[#00ffcc] font-mono drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]">
+                                        {'$'.repeat(cocktail.estimatedCost || 2)}
+                                    </span>
+                                </div>
                                 <div className="flex justify-between pb-2">
                                     <span className="text-gray-500">Difficulty</span>
                                     <span className="font-medium text-white">{cocktail.difficultyLevel}</span>
