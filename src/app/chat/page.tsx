@@ -1,13 +1,14 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
-import { useRef, useEffect, useState, FormEvent, ChangeEvent } from 'react';
+import { useRef, useEffect, useState, ChangeEvent } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, onSnapshot, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import toast from 'react-hot-toast';
 import VoiceInputButton from '@/components/VoiceInputButton';
+import Link from 'next/link';
 
 export default function Chat() {
     const { user, loading: authLoading } = useAuth();
@@ -202,7 +203,14 @@ export default function Chat() {
                 cocktailData: customCocktailData,
                 createdAt: new Date().toISOString()
             });
-            toast.success("Recipe transformed and saved! ❤️", { id: toastId });
+            toast.success(
+                (t) => (
+                    <span className="flex items-center gap-1">
+                        Recipe transformed! <Link href={`/recipe/${customCocktailData.id}`} onClick={() => toast.dismiss(t.id)} className="underline font-bold text-white hover:text-[var(--primary)] ml-1">View Info ❤️</Link>
+                    </span>
+                ),
+                { id: toastId, duration: 8000 }
+            );
         } catch (e) {
             console.error(e);
             toast.error("Failed to save full recipe.", { id: toastId });

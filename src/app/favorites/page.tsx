@@ -141,7 +141,8 @@ export default function FavoritesPage() {
 
                         if (fav.type === 'custom_full' && fav.cocktailData) {
                             const customCocktail = fav.cocktailData;
-                            const makeable = customCocktail.ingredients.every((ing: any) => hasIngredient(ing.item));
+                            const ingredientsArray = Array.isArray(customCocktail.ingredients) ? customCocktail.ingredients : [];
+                            const makeable = ingredientsArray.length > 0 ? ingredientsArray.every((ing: any) => ing?.item && hasIngredient(ing.item)) : false;
 
                             return (
                                 <CocktailCard
