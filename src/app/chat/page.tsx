@@ -81,7 +81,7 @@ export default function Chat() {
                                         return newMsg;
                                     });
                                     setMessages(safeMessages);
-                                    
+
                                     // Strip undefined before sending to Firebase
                                     const cleanedMessages = safeMessages.map(msg => Object.fromEntries(Object.entries(msg).filter(([_, v]) => v !== undefined)));
                                     setDoc(threadRef, { messages: cleanedMessages, updatedAt: new Date().toISOString() }, { merge: true });
@@ -166,28 +166,46 @@ export default function Chat() {
         }
     };
 
-    const handleFavorite = async (messageId: string, content: string, customRecipe?: { name: string, steps: string[] }) => {
+    const handleFavorite = async (messageId: string, content: string) => {
         if (!user) {
             toast.error("You must be logged in to save favorites!");
             return;
         }
 
+        const toastId = toast.loading("Synthesizing recipe...");
         try {
+            // First, call our omni-importer to parse the markdown into a perfect Cocktail object
+            const parseRes = await fetch('/api/import-recipe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'text', payload: content })
+            });
+
+            if (!parseRes.ok) {
+                throw new Error("Recipe parsing failed");
+            }
+            const customCocktailData = await parseRes.json();
+
+            // Add ID for the Cocktail schema
+            customCocktailData.id = Math.random().toString(36).slice(2);
+
+            // If the user generated an image during chat, use that instead of relying solely on the AI emoji
+            if (generatedImages[messageId]) {
+                customCocktailData.imageUrl = generatedImages[messageId];
+            }
+
             const favRef = collection(db, 'favorites');
             await addDoc(favRef, {
                 uid: user.uid,
-                type: 'custom',
+                type: 'custom_full',
                 messageId: messageId,
-                content: content,
-                name: customRecipe?.name || 'Custom AI Recipe',
-                steps: customRecipe?.steps || [],
-                imageUrl: generatedImages[messageId] || null,
+                cocktailData: customCocktailData,
                 createdAt: new Date().toISOString()
             });
-            toast.success("Recipe saved to Favorites! ❤️");
+            toast.success("Recipe transformed and saved! ❤️", { id: toastId });
         } catch (e) {
             console.error(e);
-            toast.error("Failed to save favorite.");
+            toast.error("Failed to save full recipe.", { id: toastId });
         }
     };
 
@@ -310,12 +328,7 @@ export default function Chat() {
                                         <button
                                             onClick={() => {
                                                 const textContent = Array.isArray(m.parts) ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ');
-                                                const toolPart = Array.isArray(m.parts) ? m.parts.find(p => p.type === 'tool-invocation' && (p as any).toolInvocationId === 'generate_cocktail_recipe') as any : undefined;
-                                                handleFavorite(
-                                                    m.id,
-                                                    textContent,
-                                                    toolPart?.props ? { name: toolPart.props.name, steps: toolPart.props.steps } : undefined
-                                                );
+                                                handleFavorite(m.id, textContent);
                                             }}
                                             className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
                                         >
