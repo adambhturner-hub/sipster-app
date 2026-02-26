@@ -1,5 +1,6 @@
 import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 import Link from 'next/link';
+import FavoriteButton from '@/components/FavoriteButton';
 
 export async function generateStaticParams() {
     return CLASSIC_COCKTAILS.map((cocktail) => ({
@@ -43,10 +44,16 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                         <div className="text-7xl bg-gray-900 h-32 w-32 rounded-3xl flex items-center justify-center shadow-lg border border-gray-800">
                             {cocktail.emoji}
                         </div>
-                        <div>
-                            <h1 className="text-5xl font-bold tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple leading-tight pb-1">
-                                {cocktail.name}
-                            </h1>
+                        <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                                <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple leading-tight pb-1">
+                                    {cocktail.name}
+                                </h1>
+                                <FavoriteButton
+                                    cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')}
+                                    cocktailName={cocktail.name}
+                                />
+                            </div>
                             <p className="text-xl text-gray-400 italic">&quot;{cocktail.tagline}&quot;</p>
                         </div>
                     </div>

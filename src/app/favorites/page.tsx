@@ -7,16 +7,23 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 
+import CocktailCard from '@/components/CocktailCard';
+import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+
 interface FavoriteRecipe {
     id: string;
-    content: string;
-    imageUrl: string | null;
+    type: 'classic' | 'custom';
+    cocktailId?: string;
+    name?: string;
+    content?: string;
+    imageUrl?: string | null;
     createdAt: string;
 }
 
 export default function FavoritesPage() {
     const { user, loading: authLoading, signInWithGoogle } = useAuth();
     const [favorites, setFavorites] = useState<FavoriteRecipe[]>([]);
+    const [myBar, setMyBar] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -50,6 +57,24 @@ export default function FavoritesPage() {
             fetchFavorites();
         }
     }, [user, authLoading]);
+
+    // Fetch user inventory for classic card makeable status
+    useEffect(() => {
+        if (!user || authLoading) return;
+        import('firebase/firestore').then(({ doc, onSnapshot }) => {
+            const userRef = doc(db, 'users', user.uid);
+            const unsubscribe = onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    setMyBar(docSnap.data().myBar || []);
+                }
+            });
+            return () => unsubscribe();
+        });
+    }, [user, authLoading]);
+
+    const hasIngredient = (ingredientName: string) => {
+        return myBar.some(item => item.toLowerCase() === ingredientName.toLowerCase());
+    };
 
     if (authLoading || isLoading) {
         return (
@@ -96,34 +121,64 @@ export default function FavoritesPage() {
                     </Link>
                 </div>
             ) : (
-                <div className="flex flex-col gap-12">
-                    {favorites.map((fav) => (
-                        <div key={fav.id} className="glass-panel p-6 md:p-8 flex flex-col md:flex-row gap-8 border border-[var(--color-neon-pink)]/20 shadow-[0_0_20px_rgba(255,0,127,0.05)] hover:shadow-[0_0_30px_rgba(255,0,127,0.15)] transition-all">
-                            {/* Image Section */}
-                            <div className="w-full md:w-1/3 flex-shrink-0">
-                                {fav.imageUrl ? (
-                                    <div className="relative w-full aspect-square rounded-2xl overflow-hidden shadow-[0_0_15px_rgba(0,0,0,0.5)] border border-white/10">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={fav.imageUrl} alt="Favorite Cocktail" className="w-full h-full object-cover" />
-                                    </div>
-                                ) : (
-                                    <div className="w-full aspect-square rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center text-4xl opacity-50">
-                                        🍸
-                                    </div>
-                                )}
-                            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {favorites.map((fav) => {
+                        if (fav.type === 'classic' && fav.cocktailId) {
+                            const classicCocktail = CLASSIC_COCKTAILS.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
+                            if (!classicCocktail) return null;
+                            const makeable = classicCocktail.ingredients.every(ing => hasIngredient(ing.item));
 
-                            {/* Content Section */}
-                            <div className="w-full md:w-2/3 flex flex-col">
-                                <span className="text-xs text-[var(--color-neon-pink)] font-mono mb-4 tracking-widest uppercase opacity-80">
-                                    Saved • {new Date(fav.createdAt).toLocaleDateString()}
-                                </span>
-                                <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
-                                    <ReactMarkdown>{fav.content}</ReactMarkdown>
+                            return (
+                                <CocktailCard
+                                    key={fav.id}
+                                    cocktail={classicCocktail}
+                                    makeable={makeable}
+                                    hasIngredient={hasIngredient}
+                                />
+                            );
+                        }
+
+                        // Custom AI Recipe Card
+                        return (
+                            <Link href={`/recipe/${fav.id}`} key={fav.id}>
+                                <div className="bg-gray-900 border border-neon-pink/30 rounded-3xl p-6 transition-all duration-300 hover:border-neon-pink hover:scale-[1.02] flex flex-col h-full cursor-pointer group shadow-2xl overflow-hidden relative">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-neon-pink/5 to-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="text-5xl bg-gray-950 p-4 rounded-2xl border border-neon-pink/20 shadow-inner flex shrink-0">
+                                            {fav.imageUrl ? (
+                                                <div className="w-12 h-12 relative overflow-hidden rounded-lg">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                    <img src={fav.imageUrl} alt="AI Cocktail" className="w-full h-full object-cover" />
+                                                </div>
+                                            ) : '✨'}
+                                        </div>
+                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-neon-pink/10 text-neon-pink rounded-full text-xs font-bold tracking-widest uppercase border border-neon-pink/20">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-neon-pink animate-pulse"></span>
+                                            AI Original
+                                        </div>
+                                    </div>
+
+                                    <h3 className="text-2xl font-bold mb-2 text-white font-serif group-hover:text-neon-pink transition-colors">
+                                        {fav.name || 'Custom AI Recipe'}
+                                    </h3>
+
+                                    <div className="text-gray-400 text-sm mb-6 flex-grow font-sans line-clamp-4">
+                                        <ReactMarkdown>{fav.content || ''}</ReactMarkdown>
+                                    </div>
+
+                                    <div className="pt-4 border-t border-neon-pink/20 flex justify-between items-center z-20">
+                                        <span className="text-xs text-gray-500 font-mono tracking-widest uppercase">
+                                            {new Date(fav.createdAt).toLocaleDateString()}
+                                        </span>
+                                        <span className="text-neon-pink text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                            Explore &rarr;
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
+                            </Link>
+                        );
+                    })}
                 </div>
             )}
         </div>

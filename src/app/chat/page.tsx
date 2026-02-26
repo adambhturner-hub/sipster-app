@@ -115,7 +115,7 @@ export default function Chat() {
         }
     };
 
-    const handleFavorite = async (messageId: string, content: string) => {
+    const handleFavorite = async (messageId: string, content: string, customRecipe?: { name: string, steps: string[] }) => {
         if (!user) {
             toast.error("You must be logged in to save favorites!");
             return;
@@ -125,8 +125,11 @@ export default function Chat() {
             const favRef = collection(db, 'favorites');
             await addDoc(favRef, {
                 uid: user.uid,
+                type: 'custom',
                 messageId: messageId,
                 content: content,
+                name: customRecipe?.name || 'Custom AI Recipe',
+                steps: customRecipe?.steps || [],
                 imageUrl: generatedImages[messageId] || null,
                 createdAt: new Date().toISOString()
             });
@@ -247,7 +250,15 @@ export default function Chat() {
                                             return content;
                                         })}
                                         <button
-                                            onClick={() => handleFavorite(m.id, m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content)}
+                                            onClick={() => {
+                                                const textContent = m.parts ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (m as any).content;
+                                                const toolPart = m.parts?.find(p => p.type === 'tool-invocation' && p.toolInvocationId === 'generate_cocktail_recipe') as any;
+                                                handleFavorite(
+                                                    m.id,
+                                                    textContent,
+                                                    toolPart ? { name: toolPart.props.name, steps: toolPart.props.steps } : undefined
+                                                );
+                                            }}
                                             className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
                                         >
                                             <span>❤️</span> Save Recipe
