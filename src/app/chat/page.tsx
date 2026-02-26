@@ -48,13 +48,16 @@ export default function Chat() {
             getDoc(threadRef).then((docSnap) => {
                 try {
                     if (docSnap.exists() && Array.isArray(docSnap.data().messages)) {
-                        const safeMessages = docSnap.data().messages.map((msg: any) => ({
-                            id: msg.id || Math.random().toString(36).slice(2),
-                            role: msg.role || 'user',
-                            content: typeof msg.content === 'string' ? msg.content : '',
-                            parts: Array.isArray(msg.parts) ? msg.parts : undefined,
-                            createdAt: msg.createdAt || undefined,
-                        }));
+                        const safeMessages = docSnap.data().messages.map((msg: any) => {
+                            const newMsg: any = {
+                                id: msg.id || Math.random().toString(36).slice(2),
+                                role: msg.role || 'user',
+                                content: typeof msg.content === 'string' ? msg.content : '',
+                            };
+                            if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
+                            if (msg.createdAt) newMsg.createdAt = msg.createdAt;
+                            return newMsg;
+                        });
                         setMessages(safeMessages);
 
                         if (docSnap.data().generatedImages) {
@@ -67,14 +70,21 @@ export default function Chat() {
                             try {
                                 const parsed = JSON.parse(localChat);
                                 if (Array.isArray(parsed)) {
-                                    const safeMessages = parsed.map((msg: any) => ({
-                                        id: msg.id || Math.random().toString(),
-                                        role: msg.role || 'user',
-                                        content: typeof msg.content === 'string' ? msg.content : '',
-                                        parts: Array.isArray(msg.parts) ? msg.parts : undefined,
-                                    }));
+                                    const safeMessages = parsed.map((msg: any) => {
+                                        const newMsg: any = {
+                                            id: msg.id || Math.random().toString(36).slice(2),
+                                            role: msg.role || 'user',
+                                            content: typeof msg.content === 'string' ? msg.content : '',
+                                        };
+                                        if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
+                                        if (msg.createdAt) newMsg.createdAt = msg.createdAt;
+                                        return newMsg;
+                                    });
                                     setMessages(safeMessages);
-                                    setDoc(threadRef, { messages: safeMessages, updatedAt: new Date().toISOString() }, { merge: true });
+                                    
+                                    // Strip undefined before sending to Firebase
+                                    const cleanedMessages = safeMessages.map(msg => Object.fromEntries(Object.entries(msg).filter(([_, v]) => v !== undefined)));
+                                    setDoc(threadRef, { messages: cleanedMessages, updatedAt: new Date().toISOString() }, { merge: true });
                                     localStorage.removeItem('sipster-chat-history');
                                 }
                             } catch (e) { console.error('Error parsing local chat', e); }
@@ -100,12 +110,16 @@ export default function Chat() {
                 try {
                     const parsed = JSON.parse(savedChat);
                     if (Array.isArray(parsed)) {
-                        setMessages(parsed.map((msg: any) => ({
-                            id: msg.id || Math.random().toString(),
-                            role: msg.role || 'user',
-                            content: typeof msg.content === 'string' ? msg.content : '',
-                            parts: Array.isArray(msg.parts) ? msg.parts : undefined,
-                        })));
+                        setMessages(parsed.map((msg: any) => {
+                            const newMsg: any = {
+                                id: msg.id || Math.random().toString(36).slice(2),
+                                role: msg.role || 'user',
+                                content: typeof msg.content === 'string' ? msg.content : '',
+                            };
+                            if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
+                            if (msg.createdAt) newMsg.createdAt = msg.createdAt;
+                            return newMsg;
+                        }));
                     }
                 } catch (e) { }
             }
@@ -119,7 +133,13 @@ export default function Chat() {
 
         if (user) {
             const threadRef = doc(db, 'chat_threads', user.uid);
-            setDoc(threadRef, { messages, generatedImages, updatedAt: new Date().toISOString() }, { merge: true });
+            // Firebase STRICTLY throws synchronous errors if any nested keys evaluate to explicit 'undefined'
+            const cleanedMessages = messages.map(msg => Object.fromEntries(Object.entries(msg).filter(([_, v]) => v !== undefined)));
+            try {
+                setDoc(threadRef, { messages: cleanedMessages, generatedImages, updatedAt: new Date().toISOString() }, { merge: true });
+            } catch (err) {
+                console.error("Failed to sync chat history to firebase:", err);
+            }
         } else {
             localStorage.setItem('sipster-chat-history', JSON.stringify(messages));
             // For not-logged-in users, we could sync images to localStorage too, but let's encourage them to login
