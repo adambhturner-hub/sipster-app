@@ -106,9 +106,20 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                 </div>
                                 <div className="flex justify-between border-b border-gray-800 pb-2">
                                     <span className="text-gray-500">Est. Cost</span>
-                                    <span className="font-medium tracking-widest text-[#00ffcc] font-mono drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]">
-                                        {'$'.repeat(cocktail.estimatedCost || 2)}
-                                    </span>
+                                    <div className="relative group/cost flex items-center cursor-help">
+                                        <span className="font-medium tracking-widest text-[#00ffcc] font-mono drop-shadow-[0_0_8px_rgba(0,255,204,0.5)]">
+                                            {'$'.repeat(cocktail.estimatedCost || 2)}
+                                        </span>
+                                        <div className="absolute right-0 top-full mt-1 w-max px-2 py-1 bg-gray-950 border border-gray-800 text-gray-300 text-xs rounded opacity-0 group-hover/cost:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl font-sans tracking-normal">
+                                            {(() => {
+                                                const cost = cocktail.estimatedCost || 2;
+                                                if (cost === 1) return "< $2 per drink";
+                                                if (cost === 2) return "$2 - $4 per drink";
+                                                if (cost === 3) return "$4 - $6 per drink";
+                                                return "$6+ per drink";
+                                            })()}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="flex justify-between pb-2">
                                     <span className="text-gray-500">Difficulty</span>

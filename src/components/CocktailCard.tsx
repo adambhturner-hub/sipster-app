@@ -47,9 +47,20 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
 
                 <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-2xl font-bold text-white font-serif group-hover:text-[var(--accent)] transition-colors">{cocktail?.name || 'AI Original'}</h3>
-                    <span className="text-[10px] tracking-widest font-mono text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-0.5 rounded-full border border-[var(--accent)]/30">
-                        {'$'.repeat(cocktail?.estimatedCost || 2)}
-                    </span>
+                    <div className="relative group/cost flex items-center">
+                        <span className="text-[10px] tracking-widest font-mono text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-0.5 rounded-full border border-[var(--accent)]/30 cursor-help">
+                            {'$'.repeat(cocktail?.estimatedCost || 2)}
+                        </span>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-950 border border-gray-800 text-gray-300 text-[10px] rounded opacity-0 group-hover/cost:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl font-sans tracking-normal">
+                            {(() => {
+                                const cost = cocktail?.estimatedCost || 2;
+                                if (cost === 1) return "< $2 per drink";
+                                if (cost === 2) return "$2 - $4 per drink";
+                                if (cost === 3) return "$4 - $6 per drink";
+                                return "$6+ per drink";
+                            })()}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-4">
