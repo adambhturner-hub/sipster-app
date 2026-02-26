@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Cocktail } from '@/data/cocktails';
+import FavoriteButton from './FavoriteButton';
 
 interface CocktailCardProps {
     cocktail: Cocktail;
@@ -16,7 +17,12 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient }: Cock
 
                 <div className="flex justify-between items-start mb-6">
                     <div className="text-5xl bg-gray-950 p-4 rounded-2xl border border-gray-800 shadow-inner">{cocktail.emoji}</div>
-                    <div className="flex flex-col items-end gap-2">
+                    <div className="flex flex-col items-end gap-2 relative z-20">
+                        <FavoriteButton
+                            cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')}
+                            cocktailName={cocktail.name}
+                            compact
+                        />
                         {makeable ? (
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-neon-green/10 text-neon-green rounded-full text-xs font-medium border border-neon-green/20">
                                 <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse"></span>

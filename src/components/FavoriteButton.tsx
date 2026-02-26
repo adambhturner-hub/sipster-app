@@ -9,9 +9,11 @@ import toast from 'react-hot-toast';
 interface FavoriteButtonProps {
     cocktailId: string;
     cocktailName: string;
+    compact?: boolean;
+    onChange?: (isFavorited: boolean) => void;
 }
 
-export default function FavoriteButton({ cocktailId, cocktailName }: FavoriteButtonProps) {
+export default function FavoriteButton({ cocktailId, cocktailName, compact = false, onChange }: FavoriteButtonProps) {
     const { user, loading } = useAuth();
     const [isFavorited, setIsFavorited] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -38,7 +40,12 @@ export default function FavoriteButton({ cocktailId, cocktailName }: FavoriteBut
         checkFavorite();
     }, [user, loading, cocktailId]);
 
-    const toggleFavorite = async () => {
+    const toggleFavorite = async (e?: React.MouseEvent) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
         if (!user) {
             toast.error("You must be logged in to save favorites!");
             return;
@@ -65,6 +72,7 @@ export default function FavoriteButton({ cocktailId, cocktailName }: FavoriteBut
                 setDocId(newDoc.id);
                 toast.success(`Saved ${cocktailName} to Favorites! ❤️`);
             }
+            if (onChange) onChange(!isFavorited);
         } catch (e) {
             console.error(e);
             toast.error("Failed to update favorite.");
@@ -77,12 +85,16 @@ export default function FavoriteButton({ cocktailId, cocktailName }: FavoriteBut
         <button
             onClick={toggleFavorite}
             disabled={isSaving || loading}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300 font-sans font-bold text-sm ${isFavorited
-                ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border-[var(--color-neon-pink)] shadow-[0_0_15px_rgba(255,0,127,0.3)]'
-                : 'bg-black/40 text-gray-400 border-gray-600 hover:text-white hover:border-gray-400'
+            className={`flex items-center justify-center gap-2 rounded-full border transition-all duration-300 font-sans font-bold text-sm ${compact ? 'w-10 h-10 p-0' : 'px-4 py-2'
+                } ${isFavorited
+                    ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border-[var(--color-neon-pink)] shadow-[0_0_15px_rgba(255,0,127,0.3)]'
+                    : 'bg-black/40 text-gray-400 border-gray-600 hover:text-white hover:border-gray-400'
                 }`}
         >
-            <span className={isFavorited ? 'animate-pulse' : ''}>{isFavorited ? '❤️ Favorited' : '🤍 Save'}</span>
+            <span className={isFavorited ? 'animate-pulse' : ''}>
+                {isFavorited ? '❤️' : '🤍'}
+                {!compact && (isFavorited ? ' Favorited' : ' Save')}
+            </span>
         </button>
     );
 }
