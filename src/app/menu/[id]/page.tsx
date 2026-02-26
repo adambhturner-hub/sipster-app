@@ -25,7 +25,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                 <p className="text-gray-400 mb-8">We couldn&apos;t find the drink you&apos;re looking for.</p>
                 <Link
                     href="/menu"
-                    className="px-6 py-3 bg-neon-blue rounded-full font-medium text-black hover:bg-white transition-colors"
+                    className="px-6 py-3 bg-[var(--primary)] rounded-full font-medium text-black hover:bg-white transition-colors"
                 >
                     Back to Menu
                 </Link>
@@ -39,7 +39,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
 
                 {/* Header Section */}
                 <div className="mb-12">
-                    <Link href="/menu" className="text-neon-blue hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
+                    <Link href="/menu" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
                         &larr; Back to Menu
                     </Link>
                     <div className="flex items-center gap-6 mt-4">
@@ -48,7 +48,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center justify-between mb-2 gap-4">
-                                <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple leading-tight pb-1">
+                                <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
                                 <div className="flex items-center gap-3">
@@ -77,7 +77,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                     {/* Column 1: Core Stats */}
                     <div className="space-y-6">
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-                            <h3 className="text-neon-green text-xs font-bold tracking-wider uppercase mb-4">Core Metadata</h3>
+                            <h3 className="text-[var(--primary)] text-xs font-bold tracking-wider uppercase mb-4">Core Metadata</h3>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between border-b border-gray-800 pb-2">
@@ -112,7 +112,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                         </div>
 
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-                            <h3 className="text-neon-purple text-xs font-bold tracking-wider uppercase mb-4">Vibe & Time</h3>
+                            <h3 className="text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-4">Vibe & Time</h3>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between border-b border-gray-800 pb-2">
@@ -145,7 +145,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                         {/* Ingredients */}
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
                             <div className="flex justify-between items-end mb-6">
-                                <h3 className="text-neon-blue text-xs font-bold tracking-wider uppercase">The Build</h3>
+                                <h3 className="text-[var(--primary)] text-xs font-bold tracking-wider uppercase">The Build</h3>
                                 <span className="text-gray-500 text-sm">Ratio: {cocktail.ratio}</span>
                             </div>
 
@@ -153,7 +153,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                 {cocktail.ingredients.map((ing, idx) => (
                                     <li key={idx} className="flex justify-between items-center bg-gray-950 p-3 rounded-lg border border-gray-800/50">
                                         <span className="font-medium text-gray-200">{ing.item}</span>
-                                        <span className="text-neon-blue font-mono text-sm">{ing.amount}</span>
+                                        <span className="text-[var(--primary)] font-mono text-sm">{ing.amount}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -219,7 +219,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                         <ul className="space-y-4 font-sans text-gray-300">
                             {cocktail.trivia.map((fact, idx) => (
                                 <li key={idx} className="flex gap-3">
-                                    <span className="text-neon-purple mt-1">✦</span>
+                                    <span className="text-[var(--accent)] mt-1">✦</span>
                                     <span className="leading-relaxed">{fact}</span>
                                 </li>
                             ))}
@@ -242,7 +242,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                     <Link
                                         href={`/menu/${formattedHref}`}
                                         key={rel}
-                                        className="px-5 py-3 rounded-xl bg-gray-800 hover:bg-neon-blue hover:text-black hover:border-neon-blue transition-all border border-gray-700 flex items-center gap-2"
+                                        className="px-5 py-3 rounded-xl bg-gray-800 hover:bg-[var(--primary)] hover:text-black hover:border-[var(--primary)] transition-all border border-gray-700 flex items-center gap-2"
                                     >
                                         <span className="text-xl">{linkedCocktail.emoji}</span>
                                         <span className="font-medium">{rel}</span>

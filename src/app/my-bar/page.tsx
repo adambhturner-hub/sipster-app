@@ -272,7 +272,7 @@ export default function MyBarPage() {
         <div className="flex flex-col w-full max-w-5xl mx-auto z-10 relative pb-12">
             <div className="mb-10 text-center relative">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-                    My <span className="text-glow-blue text-[var(--color-neon-blue)]">Back Bar</span>
+                    My <span className="text-glow-primary text-[var(--primary)]">Back Bar</span>
                 </h1>
                 <p className="text-gray-400 font-light max-w-2xl mx-auto mb-8">
                     Stock your virtual bar. Select what you have on hand, and Sipster will magically tailor cocktail recommendations just for you!
@@ -282,27 +282,27 @@ export default function MyBarPage() {
                 <div className="flex justify-center mb-8 gap-4">
                     <button
                         onClick={() => setActiveTab('my-bar')}
-                        className={`px-8 py-3 rounded-full font-bold transition-all duration-300 ${activeTab === 'my-bar' ? 'bg-[var(--color-neon-blue)] text-black shadow-[0_0_15px_rgba(0,255,255,0.4)]' : 'glass-panel text-gray-400 hover:text-white'}`}
+                        className={`px-8 py-3 rounded-full font-bold transition-all duration-300 ${activeTab === 'my-bar' ? 'bg-[var(--primary)] text-white shadow-[0_0_15px_var(--primary-glow)]' : 'glass-panel text-gray-400 hover:text-white'}`}
                     >
                         My Inventory
                     </button>
                     <button
                         onClick={() => setActiveTab('shopping-list')}
-                        className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'shopping-list' ? 'bg-[var(--color-neon-green)] text-black shadow-[0_0_15px_rgba(57,255,20,0.4)]' : 'glass-panel text-gray-400 hover:text-white'}`}
+                        className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'shopping-list' ? 'bg-[var(--accent)] text-black shadow-[0_0_15px_var(--primary-glow)]' : 'glass-panel text-gray-400 hover:text-white'}`}
                     >
-                        Shopping List {shoppingList.length > 0 && <span className="bg-black text-[var(--color-neon-green)] text-xs px-2 py-1 rounded-full">{shoppingList.length}</span>}
+                        Shopping List {shoppingList.length > 0 && <span className="bg-black text-[var(--accent)] text-xs px-2 py-1 rounded-full">{shoppingList.length}</span>}
                     </button>
                 </div>
 
                 {/* Fridge Scanner Button - Only in My Bar */}
                 {activeTab === 'my-bar' && (
                     <div className="flex justify-center border-t border-white/10 pt-8">
-                        <label className={`cursor-pointer inline-flex items-center gap-2 bg-white/5 border border-white/20 hover:bg-white/10 hover:border-[var(--color-neon-blue)] px-6 py-3 rounded-full transition-all duration-300 ${isScanning ? 'opacity-50 pointer-events-none' : ''}`}>
-                            <span className="text-xl">{isScanning ? '⏳' : '📸'}</span>
-                            <span className="font-semibold">{isScanning ? 'Scanning photo...' : 'Scan Fridge / Cabinet'}</span>
+                        <label className={`cursor-pointer inline-flex items-center gap-2 bg-white/5 border border-white/20 hover:bg-white/10 hover:border-[var(--primary)] px-6 py-3 rounded-full transition-all duration-300 ${isScanning ? 'opacity-50 pointer-events-none' : ''}`}>
+                            <span className="text-xl">📸</span>
+                            <span className="font-bold text-gray-300 hover:text-white">Scan Fridge / Cabinet</span>
                             <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/png, image/jpeg, image/webp"
                                 className="hidden"
                                 onChange={handleImageUpload}
                                 disabled={isScanning}
@@ -317,7 +317,7 @@ export default function MyBarPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                         {INGREDIENT_CATEGORIES.map((category) => (
                             <div key={category.name} className="glass-panel p-6">
-                                <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[var(--color-neon-blue)] opacity-90">
+                                <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[var(--accent)] opacity-90">
                                     {category.name}
                                 </h2>
                                 <div className="flex flex-wrap gap-3">
@@ -328,7 +328,7 @@ export default function MyBarPage() {
                                                 key={item}
                                                 onClick={() => handleAddIngredient(item)}
                                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${isSelected
-                                                    ? 'bg-[var(--color-neon-blue)] text-black border-[var(--color-neon-blue)] shadow-[0_0_15px_rgba(0,255,255,0.4)] scale-105'
+                                                    ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
                                                     : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
                                                     }`}
                                             >
@@ -485,6 +485,6 @@ export default function MyBarPage() {
                     )}
                 </div>
             )}
-        </div>
+        </div >
     );
 }

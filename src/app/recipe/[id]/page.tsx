@@ -49,7 +49,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
         return (
             <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-white p-6 pb-24">
                 <div className="text-6xl mb-6 animate-bounce">🍸</div>
-                <div className="text-xl text-neon-pink animate-pulse">Loading Creation...</div>
+                <div className="text-xl text-[var(--accent)] animate-pulse">Loading Creation...</div>
             </div>
         );
     }
@@ -59,7 +59,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
             <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-white p-6 pb-24">
                 <h1 className="text-4xl font-bold mb-4 font-serif">Recipe Not Found</h1>
                 <p className="text-gray-400 mb-8">This custom creation doesn't seem to exist.</p>
-                <Link href="/favorites" className="px-6 py-3 bg-neon-purple rounded-full font-medium text-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]">
+                <Link href="/favorites" className="px-6 py-3 bg-[var(--primary)] rounded-full font-medium text-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]">
                     Back to Favorites
                 </Link>
             </div>
@@ -71,22 +71,22 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
     return (
         <div className="min-h-screen bg-gray-950 text-white pb-24 font-serif relative overflow-hidden">
             {/* Background Glow */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
-            <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-neon-pink/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+            <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--accent)]/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
                 {/* Header Section */}
                 <div className="mb-12">
-                    <Link href="/favorites" className="text-neon-purple hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
+                    <Link href="/favorites" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
                         &larr; Back to Favorites
                     </Link>
                     <div className="flex items-center gap-6 mt-4">
-                        <div className="text-7xl bg-gray-900 h-32 w-32 rounded-3xl flex items-center justify-center shadow-[0_0_30px_rgba(176,38,255,0.2)] border border-neon-purple/30">
+                        <div className="text-7xl bg-gray-900 h-32 w-32 rounded-3xl flex items-center justify-center shadow-[0_0_30px_rgba(176,38,255,0.2)] border border-[var(--primary)]/30">
                             {cocktail.emoji}
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center justify-between mb-2 gap-4">
-                                <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-pink leading-tight pb-1">
+                                <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
                                 <ShareButton
@@ -96,7 +96,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                                 />
                             </div>
                             <div className="flex items-center gap-4 mb-2">
-                                <span className="px-3 py-1 bg-neon-purple/20 text-neon-purple rounded-full text-xs font-bold tracking-widest uppercase border border-neon-purple/30">
+                                <span className="px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-bold tracking-widest uppercase border border-[var(--primary)]/30">
                                     Creator Studio Original
                                 </span>
                                 <span className="text-gray-500 font-mono text-sm">
@@ -116,8 +116,8 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                     {/* Column 1: Core Stats */}
                     <div className="space-y-6">
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-neon-purple/10 blur-3xl rounded-full"></div>
-                            <h3 className="text-neon-purple text-xs font-bold tracking-wider uppercase mb-4 relative">Core Metadata</h3>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--primary)]/10 blur-3xl rounded-full"></div>
+                            <h3 className="text-[var(--primary)] text-xs font-bold tracking-wider uppercase mb-4 relative">Core Metadata</h3>
 
                             <div className="space-y-4 relative">
                                 <div className="flex justify-between border-b border-gray-800 pb-2">
@@ -152,8 +152,8 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                         </div>
 
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-neon-pink/10 blur-3xl rounded-full"></div>
-                            <h3 className="text-neon-pink text-xs font-bold tracking-wider uppercase mb-4 relative">Vibe & Time</h3>
+                            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[var(--accent)]/10 blur-3xl rounded-full"></div>
+                            <h3 className="text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-4 relative">Vibe & Time</h3>
 
                             <div className="space-y-4 relative">
                                 <div className="flex justify-between border-b border-gray-800 pb-2">
@@ -185,7 +185,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                         {/* Ingredients */}
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
                             <div className="flex justify-between items-end mb-6">
-                                <h3 className="text-neon-purple text-xs font-bold tracking-wider uppercase">The Build</h3>
+                                <h3 className="text-[var(--primary)] text-xs font-bold tracking-wider uppercase">The Build</h3>
                                 <div className="text-right">
                                     <span className="block text-gray-500 text-xs mb-1">Ratio</span>
                                     <span className="text-white font-mono text-sm">{cocktail.ratio}</span>
@@ -196,7 +196,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                                 {cocktail.ingredients.map((ing, idx) => (
                                     <li key={idx} className="flex justify-between items-center bg-gray-950 p-3 rounded-lg border border-gray-800/50">
                                         <span className="font-medium text-gray-200">{ing.item}</span>
-                                        <span className="text-neon-purple font-mono text-sm">{ing.amount}</span>
+                                        <span className="text-[var(--primary)] font-mono text-sm">{ing.amount}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -215,7 +215,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                             <ol className="space-y-6">
                                 {cocktail.instructions.map((step, idx) => (
                                     <li key={idx} className="flex gap-4">
-                                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-neon-purple/20 flex items-center justify-center text-neon-purple font-mono text-sm border border-neon-purple/30">
+                                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--primary)]/20 flex items-center justify-center text-[var(--primary)] font-mono text-sm border border-[var(--primary)]/30">
                                             {idx + 1}
                                         </div>
                                         <p className="text-gray-300 leading-relaxed mt-1">{step}</p>
@@ -242,7 +242,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
 
                 {/* History & Origin */}
                 <div className="mt-8 bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
-                    <h3 className="text-neon-pink text-xs font-bold tracking-wider uppercase mb-6 font-sans">History & Origin</h3>
+                    <h3 className="text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-6 font-sans">History & Origin</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
                             <span className="block text-gray-500 text-sm mb-1 font-sans">Source</span>
@@ -264,7 +264,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                             <ul className="space-y-4 font-sans text-gray-300">
                                 {cocktail.trivia.map((fact, idx) => (
                                     <li key={idx} className="flex gap-3">
-                                        <span className="text-neon-purple mt-1">✦</span>
+                                        <span className="text-[var(--primary)] mt-1">✦</span>
                                         <span className="leading-relaxed">{fact}</span>
                                     </li>
                                 ))}
@@ -289,7 +289,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                                         <Link
                                             href={`/menu/${formattedHref}`}
                                             key={rel}
-                                            className="px-5 py-3 rounded-xl bg-gray-800 hover:bg-neon-purple hover:text-white hover:border-neon-purple transition-all border border-gray-700 flex items-center gap-2"
+                                            className="px-5 py-3 rounded-xl bg-gray-800 hover:bg-[var(--primary)] hover:text-white hover:border-[var(--primary)] transition-all border border-gray-700 flex items-center gap-2"
                                         >
                                             <span className="text-xl">{linkedCocktail.emoji}</span>
                                             <span className="font-medium">{linkedCocktail.name}</span>

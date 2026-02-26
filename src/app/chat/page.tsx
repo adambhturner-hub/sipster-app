@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { doc, onSnapshot, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import toast from 'react-hot-toast';
+import VoiceInputButton from '@/components/VoiceInputButton';
 
 export default function Chat() {
     const { user, loading: authLoading } = useAuth();
@@ -153,6 +154,13 @@ export default function Chat() {
         }
     };
 
+    const handleTranscription = (transcript: string) => {
+        // Append transcribed text to the current input, adding a space if needed
+        const currentInput = input.trim();
+        const separator = currentInput.length > 0 ? ' ' : '';
+        handleInputChange({ target: { value: currentInput + separator + transcript } } as any);
+    };
+
     // Auto-scroll to the bottom of the chat when new messages appear
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -164,7 +172,7 @@ export default function Chat() {
             {/* Header */}
             <div className="mb-6 text-center">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-                    <span className="font-bold text-[var(--color-neon-blue)]">Sipster:</span> Don't know what to make? Let's talk about what you're craving...
+                    <span className="font-bold text-[var(--accent)]">Sipster:</span> Don't know what to make? Let's talk about what you're craving...
                 </h1>
                 <div className="flex items-center justify-center gap-4">
                     <p className="text-gray-400 font-light">
@@ -173,7 +181,7 @@ export default function Chat() {
                     {messages.length > 0 && (
                         <button
                             onClick={clearChat}
-                            className="text-gray-500 hover:text-[var(--color-neon-pink)] hover:scale-110 transition-all text-xl"
+                            className="text-gray-500 hover:text-[var(--secondary)] hover:scale-110 transition-all text-xl"
                             title="Clear Chat History"
                         >
                             🗑️
@@ -195,7 +203,7 @@ export default function Chat() {
                             <div
                                 className={`max-w-[80%] rounded-2xl px-6 py-4 shadow-lg ${m.role === 'user'
                                     ? 'bg-white/10 text-white border border-white/20 rounded-tr-none'
-                                    : 'bg-black/40 text-gray-200 border border-[var(--color-neon-green)]/30 rounded-tl-none drop-shadow-[0_0_15px_rgba(57,255,20,0.15)]'
+                                    : 'bg-black/40 text-gray-200 border border-[var(--primary)]/30 rounded-tl-none drop-shadow-[0_0_15px_var(--primary-glow)]'
                                     }`}
                             >
                                 <div className="font-bold text-sm mb-1 opacity-50">
@@ -217,7 +225,7 @@ export default function Chat() {
                                                     content = (
                                                         <div key={i} className="flex flex-col gap-4 mt-4">
                                                             {generatedImages[m.id] ? (
-                                                                <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_rgba(255,0,255,0.2)] border border-[var(--color-neon-pink)]/30">
+                                                                <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_var(--primary-glow)] border border-[var(--secondary)]/30">
                                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                                                     <img src={generatedImages[m.id]} alt="AI Generated Cocktail" className="w-full h-full object-cover" />
                                                                 </div>
@@ -225,15 +233,15 @@ export default function Chat() {
                                                                 <button
                                                                     onClick={() => handleGenerateImage(m.id, part.props.name)}
                                                                     disabled={isGeneratingImg === m.id}
-                                                                    className="text-xs bg-black/40 border border-[var(--color-neon-pink)]/30 text-[var(--color-neon-pink)] px-4 py-2 rounded-full hover:bg-[var(--color-neon-pink)]/20 transition-all duration-300 disabled:opacity-50 self-start"
+                                                                    className="text-xs bg-black/40 border border-[var(--secondary)]/30 text-[var(--secondary)] px-4 py-2 rounded-full hover:bg-[var(--secondary)]/20 transition-all duration-300 disabled:opacity-50 self-start"
                                                                 >
                                                                     {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
                                                                 </button>
                                                             )}
-                                                            <div className="flex flex-col gap-2 mt-4 ml-2 border-l-2 border-[var(--color-neon-purple)]/30 pl-4 w-full max-w-sm">
+                                                            <div className="flex flex-col gap-2 mt-4 ml-2 border-l-2 border-[var(--primary)]/30 pl-4 w-full max-w-sm">
                                                                 {part.props.steps.map((step: any, stepIdx: number) => (
                                                                     <div key={stepIdx} className="flex gap-3 text-sm text-gray-300 bg-gray-900/50 p-2 rounded-lg border border-gray-800/80">
-                                                                        <span className="text-[var(--color-neon-purple)] font-mono font-bold">{stepIdx + 1}.</span>
+                                                                        <span className="text-[var(--primary)] font-mono font-bold">{stepIdx + 1}.</span>
                                                                         <span className="leading-relaxed">{step}</span>
                                                                     </div>
                                                                 ))}
@@ -271,7 +279,7 @@ export default function Chat() {
                 )}
                 {isLoading && (
                     <div className="flex justify-start">
-                        <div className="bg-black/40 border border-[var(--color-neon-green)]/30 rounded-2xl rounded-tl-none px-6 py-4 text-[var(--color-neon-green)] flex items-center gap-3 drop-shadow-[0_0_15px_rgba(57,255,20,0.15)]">
+                        <div className="bg-black/40 border border-[var(--primary)]/30 rounded-2xl rounded-tl-none px-6 py-4 text-[var(--primary)] flex items-center gap-3 drop-shadow-[0_0_15px_var(--primary-glow)]">
                             <span className="text-2xl animate-bounce">🍸</span>
                             <span className="animate-pulse tracking-widest font-semibold">Shaking...</span>
                         </div>
@@ -281,22 +289,33 @@ export default function Chat() {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="relative w-full group">
-                <input
-                    value={input}
-                    onChange={handleInputChange}
-                    placeholder="e.g., I have bourbon, lemon, and a bad day..."
-                    className="w-full bg-white/5 border border-white/20 rounded-full px-6 py-4 pr-16 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-green)] focus:shadow-[0_0_15px_rgba(57,255,20,0.3)] transition-all duration-300"
-                />
-                <button
-                    type="submit"
-                    disabled={!input || isLoading}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[var(--color-neon-green)] flex items-center justify-center text-black font-bold hover:scale-105 hover:bg-white disabled:opacity-50 disabled:hover:scale-100 transition-all duration-300 shadow-[0_0_10px_rgba(57,255,20,0.5)]"
-                >
-                    ↵
-                </button>
-            </form>
+            <form onSubmit={handleSubmit} className="relative w-full group flex items-end gap-3">
+                <div className="relative flex-grow">
+                    <input
+                        value={input}
+                        onChange={handleInputChange}
+                        placeholder="Say 'I have rum, lime, and ginger...'"
+                        disabled={isLoading}
+                        className="w-full bg-black/50 border border-gray-700 text-white rounded-full py-4 pl-6 pr-14 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-inner disabled:opacity-50"
+                    />
+                    <button
+                        type="submit"
+                        disabled={isLoading || !input.trim()}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-[var(--accent)] text-black font-bold hover:scale-110 transition-transform disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_10px_var(--primary-glow)]"
+                        title="Send Message"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                        </svg>
+                    </button>
+                </div>
 
+                {/* Voice Input Button */}
+                <VoiceInputButton
+                    onTranscription={handleTranscription}
+                    isProcessing={isLoading}
+                />
+            </form>
         </div>
     );
 }

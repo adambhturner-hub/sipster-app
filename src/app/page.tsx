@@ -4,16 +4,16 @@ import Logo from '@/components/Logo';
 
 export default function Home() {
   return (
-    <div className="min-h-screen font-sans bg-gray-950 text-white selection:bg-[var(--color-neon-purple)] selection:text-white flex flex-col pt-32 relative overflow-hidden">
+    <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white flex flex-col pt-32 relative overflow-hidden">
 
       {/* Hero Section */}
       <Logo />
       <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-6 mt-12 text-center">
-        Skip the &quot;What are we drinking?&quot; debate. Get <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple drop-shadow-[0_0_15px_rgba(176,38,255,0.6)]">Sipster</span>.
+        Skip the &quot;What are we drinking?&quot; debate. Get <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] drop-shadow-[0_0_15px_var(--primary-glow)]">Sipster</span>.
       </h2>
       <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 mt-6 z-10 text-center">
         Your Bartender <br className="hidden md:block" />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-neon-pink)] to-[var(--color-neon-blue)]">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)]">
           In Your Pocket
         </span>
       </h1>
@@ -26,7 +26,7 @@ export default function Home() {
       <div className="flex flex-col sm:flex-row gap-6 z-10 items-center justify-center w-full max-w-lg mb-24">
         <Link
           href="/chat"
-          className="w-full sm:w-auto px-8 py-4 rounded-full bg-[var(--color-neon-pink)] text-white font-bold text-lg hover: glow-pink hover:scale-105 transition-all duration-300 shadow-lg"
+          className="w-full sm:w-auto px-8 py-4 rounded-full btn-primary text-lg"
         >
           Ask the Bartender ✨
         </Link>
@@ -41,23 +41,23 @@ export default function Home() {
       {/* Feature Highlight Cards Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl z-10 pb-16">
         {/* Card 1 */}
-        <div className="glass-panel p-8 flex flex-col items-center text-center hover:shadow-[0_0_30px_rgba(0,243,255,0.2)] hover:border-[var(--color-neon-blue)]/50 transition-all duration-300 group cursor-pointer">
+        <div className="glass-panel p-8 flex flex-col items-center text-center hover:shadow-[0_0_30px_var(--primary-glow)] hover:border-[var(--primary)]/50 transition-all duration-300 group cursor-pointer">
           <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧊</div>
-          <h3 className="text-xl font-bold mb-2 text-glow-blue text-[var(--color-neon-blue)]">Dynamic Inventory</h3>
+          <h3 className="text-xl font-bold mb-2 text-glow-primary text-[var(--primary)]">Dynamic Inventory</h3>
           <p className="text-gray-400 text-sm leading-relaxed">Input your spirits and mixers, and let Sipster build the perfect drink from what you already have.</p>
         </div>
 
         {/* Card 2 */}
-        <div className="glass-panel p-8 flex flex-col items-center text-center hover:shadow-[0_0_30px_rgba(255,0,127,0.2)] hover:border-[var(--color-neon-pink)]/50 transition-all duration-300 group cursor-pointer">
+        <div className="glass-panel p-8 flex flex-col items-center text-center hover:shadow-[0_0_30px_var(--primary-glow)] hover:border-[var(--primary)]/50 transition-all duration-300 group cursor-pointer">
           <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🎓</div>
-          <h3 className="text-xl font-bold mb-2 text-glow-pink text-[var(--color-neon-pink)]">Cocktail U</h3>
+          <h3 className="text-xl font-bold mb-2 text-glow-primary text-[var(--primary)]">Cocktail U</h3>
           <p className="text-gray-400 text-sm leading-relaxed">Learn the fundamentals of mixology, discover cocktail origins, and master your technique.</p>
         </div>
 
         {/* Card 3 */}
-        <div className="glass-panel p-8 flex flex-col items-center text-center hover:shadow-[0_0_30px_rgba(176,38,255,0.2)] hover:border-[var(--color-neon-purple)]/50 transition-all duration-300 group cursor-pointer">
+        <div className="glass-panel p-8 flex flex-col items-center text-center hover:shadow-[0_0_30px_var(--primary-glow)] hover:border-[var(--primary)]/50 transition-all duration-300 group cursor-pointer">
           <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🤖</div>
-          <h3 className="text-xl font-bold mb-2 text-glow-purple text-[var(--color-neon-purple)]">AI Mixologist</h3>
+          <h3 className="text-xl font-bold mb-2 text-glow-primary text-[var(--primary)]">AI Mixologist</h3>
           <p className="text-gray-400 text-sm leading-relaxed">"I'm feeling nostalgic and it's breezy outside" – Watch our AI bartenders craft unique recipes for any mood.</p>
         </div>
       </div>

@@ -14,9 +14,9 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
 
     return (
         <Link href={href}>
-            <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 transition-all duration-300 hover:border-gray-600 hover:scale-[1.02] flex flex-col h-full cursor-pointer group group/card shadow-2xl overflow-hidden relative">
+            <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 transition-all duration-300 hover:border-[var(--primary)] focus-within:border-[var(--primary)] hover:scale-[1.02] flex flex-col h-full cursor-pointer group group/card shadow-2xl overflow-hidden relative">
                 {/* Gradient Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/5 to-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 to-[var(--secondary)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                 <div className="flex justify-between items-start mb-6">
                     <div className="text-5xl bg-gray-950 p-4 rounded-2xl border border-gray-800 shadow-inner">{cocktail.emoji}</div>
@@ -27,8 +27,8 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                             compact
                         />
                         {makeable ? (
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-neon-green/10 text-neon-green rounded-full text-xs font-medium border border-neon-green/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse"></span>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse"></span>
                                 Can Make
                             </div>
                         ) : (
@@ -39,7 +39,7 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                     </div>
                 </div>
 
-                <h3 className="text-2xl font-bold mb-2 text-white font-serif group-hover:text-neon-blue transition-colors">{cocktail.name}</h3>
+                <h3 className="text-2xl font-bold mb-2 text-white font-serif group-hover:text-[var(--accent)] transition-colors">{cocktail.name}</h3>
 
                 <div className="flex flex-wrap gap-2 mb-4">
                     <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
+import ThemeSelector from '@/components/ThemeSelector';
 
 export default function Navigation() {
     const { user, loading, signInWithGoogle, logout } = useAuth();
@@ -17,23 +18,25 @@ export default function Navigation() {
 
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
-                        <Link href="/" className="text-3xl font-bold tracking-tighter text-glow-pink text-[var(--color-neon-pink)] hover:text-glow-blue transition-all duration-300">
+                        <Link href="/" className="text-3xl font-bold tracking-tighter text-glow-primary text-[var(--primary)] hover:text-glow-accent hover:text-[var(--accent)] transition-all duration-300">
                             Sipster
                         </Link>
                     </div>
 
                     {/* Nav Links */}
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
-                        <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all duration-300">My Bar</Link>
-                        <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-purple)] hover:text-glow-purple transition-all duration-300">Menu</Link>
-                        <Link href="/discover" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all duration-300 flex items-center gap-1">Discover 🌍</Link>
-                        <Link href="/favorites" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-pink)] hover:text-glow-pink transition-all duration-300">Favorites</Link>
-                        <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-green)] hover:text-glow-green transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
-                        <Link href="/create" className="text-[var(--color-neon-purple)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_rgba(176,38,255,0.8)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
+                        <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300">My Bar</Link>
+                        <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--primary)] transition-all duration-300">Menu</Link>
+                        <Link href="/discover" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Discover 🌍</Link>
+                        <Link href="/favorites" className="text-gray-300 xl:text-lg hover:text-[var(--secondary)] transition-all duration-300">Favorites</Link>
+                        <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
+                        <Link href="/create" className="text-[var(--primary)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
                     </nav>
 
-                    {/* Auth Section (Desktop) */}
+                    {/* Auth Section & Theme (Desktop) */}
                     <div className="hidden md:flex items-center space-x-4">
+                        <ThemeSelector />
+
                         {!loading && !user && (
                             <button
                                 onClick={signInWithGoogle}
@@ -45,9 +48,9 @@ export default function Navigation() {
                         {!loading && user && (
                             <div className="flex items-center space-x-3 bg-black/40 border border-white/10 rounded-full pl-1 pr-3 py-1">
                                 {user.photoURL ? (
-                                    <Image src={user.photoURL} alt="User avatar" width={32} height={32} className="rounded-full shadow-[0_0_10px_rgba(255,0,255,0.3)]" />
+                                    <Image src={user.photoURL} alt="User avatar" width={32} height={32} className="rounded-full shadow-[0_0_10px_var(--primary-glow)]" />
                                 ) : (
-                                    <div className="w-8 h-8 rounded-full bg-[var(--color-neon-pink)] flex items-center justify-center text-black font-bold text-xs">
+                                    <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-xs">
                                         {user.displayName?.charAt(0) || 'U'}
                                     </div>
                                 )}

@@ -1,59 +1,117 @@
 @import "tailwindcss";
 
 @theme {
+  --color-theme-primary: var(--primary);
+  --color-theme-primary-glow: var(--primary-glow);
+  --color-theme-secondary: var(--secondary);
+  --color-theme-accent: var(--accent);
+  --color-theme-bg: var(--bg);
+  --color-theme-surface: var(--surface);
+  --color-theme-border: var(--border);
+
+  /* Utility colors */
   --color-neon-pink: #ff007f;
   --color-neon-blue: #00f3ff;
   --color-neon-purple: #b026ff;
-  --color-neon-green: #39ff14;
-  --color-neon-yellow: #fffb00;
-
-  --color-dark-bg: #0a0a0a;
-  --color-dark-surface: #1a1a1a;
-  --color-dark-border: #333333;
 }
 
 @layer base {
-  :root {
-    --background: var(--color-dark-bg);
-    --foreground: #ffffff;
 
-    --neon-pink: var(--color-neon-pink);
-    --neon-blue: var(--color-neon-blue);
-    --neon-purple: var(--color-neon-purple);
-    --neon-green: var(--color-neon-green);
-    --neon-yellow: var(--color-neon-yellow);
+  :root {
+    /* Default Theme: Neon Nights */
+    --primary: #b026ff;
+    --primary-glow: rgba(176, 38, 255, 0.4);
+    --secondary: #ff007f;
+    --accent: #00f3ff;
+
+    --bg: #0a0a0a;
+    --surface: rgba(176, 38, 255, 0.05);
+    --border: rgba(176, 38, 255, 0.3);
   }
 
+  /* --- THEME 1: NEON NIGHTS (Current Vibe ) --- */
+  .theme-neon {
+    --primary: #b026ff;
+    /* Neon Purple */
+    --primary-glow: rgba(176, 38, 255, 0.4);
+    --secondary: #ff007f;
+    /* Neon Pink */
+    --accent: #00f3ff;
+    /* Neon Blue */
+
+    --bg: #0a0a0a;
+    --surface: rgba(176, 38, 255, 0.05);
+    /* Very faint purple surface */
+    --border: rgba(176, 38, 255, 0.3);
+  }
+
+  /* --- THEME 2: SPEAKEASY AMBER --- */
+  .theme-speakeasy {
+    --primary: #f59e0b;
+    /* Amber */
+    --primary-glow: rgba(245, 158, 11, 0.4);
+    --secondary: #b91c1c;
+    /* Crimson */
+    --accent: #d97706;
+    /* Gold */
+
+    --bg: #171717;
+    /* Neutral Dark Gray */
+    --surface: rgba(245, 158, 11, 0.05);
+    /* Faint amber surface */
+    --border: rgba(245, 158, 11, 0.3);
+  }
+
+  /* --- THEME 3: MIAMI VICE --- */
+  .theme-miami {
+    --primary: #06b6d4;
+    /* Cyan */
+    --primary-glow: rgba(6, 182, 212, 0.4);
+    --secondary: #db2777;
+    /* Deep Pink/Magenta */
+    --accent: #fcd34d;
+    /* Bright Yellow */
+
+    --bg: #0f172a;
+    /* Slate Dark Blue */
+    --surface: rgba(6, 182, 212, 0.05);
+    --border: rgba(6, 182, 212, 0.3);
+  }
+
+
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    @apply antialiased min-h-screen selection:bg-neon-pink/30 selection:text-white;
+    background-color: var(--bg);
+    color: #ffffff;
+    @apply antialiased min-h-screen transition-colors duration-500;
   }
 }
 
 @layer utilities {
-  .glow-pink {
-    box-shadow: 0 0 10px rgba(255, 0, 127, 0.5), 0 0 20px rgba(255, 0, 127, 0.3);
+
+  /* Semantic Glows */
+  .glow-primary {
+    box-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow);
   }
 
-  .glow-blue {
-    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.3);
+  .text-glow-primary {
+    text-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow);
   }
 
-  .glow-purple {
-    box-shadow: 0 0 10px rgba(176, 38, 255, 0.5), 0 0 20px rgba(176, 38, 255, 0.3);
-  }
-
-  .text-glow-pink {
-    text-shadow: 0 0 10px rgba(255, 0, 127, 0.7), 0 0 20px rgba(255, 0, 127, 0.5);
-  }
-
-  .text-glow-blue {
-    text-shadow: 0 0 10px rgba(0, 243, 255, 0.7), 0 0 20px rgba(0, 243, 255, 0.5);
-  }
-
+  /* Premium Glass UI */
   .glass-panel {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+    background-color: var(--surface);
+    border-color: var(--border);
+    @apply backdrop-blur-md border rounded-2xl transition-all duration-300;
+  }
+
+  /* Interactive Elements */
+  .btn-primary {
+    background-color: var(--primary);
+    @apply text-white font-bold transition-all shadow-md hover:scale-105;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 20px var(--primary-glow);
   }
 
 }

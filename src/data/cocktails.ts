@@ -2764,5 +2764,688 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ratio: '5:1',
         tagline: 'The frosted, silver-cupped pride of the American South.',
         strength: 7
+    },
+    // --- 15 NEW COCKTAILS (PHASE 26 EXPANSION) ---
+    {
+        name: 'Mai Tai',
+        emoji: '🌺',
+        primarySpirit: 'Rum',
+        origin: 'USA',
+        era: 'Tiki',
+        style: 'Sour', // Technically a rum sour with orgeat
+        glass: 'Rocks', // Double rocks or Tiki mug
+        ingredients: [
+            { amount: '1 oz', item: 'Aged Jamaican Rum' },
+            { amount: '1 oz', item: 'Rhum Agricole' }, // Or just 2oz of a blended aged rum
+            { amount: '0.75 oz', item: 'Lime Juice' },
+            { amount: '0.5 oz', item: 'Orange Curaçao' },
+            { amount: '0.25 oz', item: 'Orgeat' },
+            { amount: '0.25 oz', item: 'Simple Syrup' }
+        ],
+        description: 'The undisputed king of Tiki. A deeply complex, nutty, and tart rum sour that completely bypasses the artificial sweetness of modern resort drinks.',
+        garnish: 'Mint Sprig & Spent Lime Half',
+        instructions: [
+            'Combine all ingredients in a shaker with crushed ice.',
+            'Shake vigorously until extremely cold and well aerated.',
+            'Pour the entire contents (unstrained) into a double rocks glass or Tiki mug.',
+            'Garnish with a large mint bouquet and the spent lime half (resembling a tropical island and palm tree).'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1-2 Drinks',
+        quantity: 1,
+        relationship: ['Jungle Bird', 'Daiquiri', 'Painkiller'],
+        source: 'Victor J. Bergeron (Trader Vic)',
+        city: 'Oakland, California',
+        mood: 'Tropical',
+        flavorProfile: ['Tart', 'Nutty', 'Funky', 'Complex'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Poolside',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1944',
+        trivia: [
+            '"Mai Tai-Roa Aé" translates to "Out of this world—the best!" in Tahitian, which is what Trader Vic\'s friends supposedly exclaimed upon taking the first sip.',
+            'The original recipe famously depleted the entire world supply of 17-year-old J. Wray & Nephew Jamaican rum.',
+            'A true Mai Tai does NOT contain pineapple juice, grenadine, or an umbrella, despite modern misconceptions.'
+        ],
+        ratio: '2:0.75:0.5:0.5',
+        tagline: 'The out-of-this-world masterpiece that launched the Tiki craze.',
+        strength: 7
+    },
+    {
+        name: 'Sazerac',
+        emoji: '🎭',
+        primarySpirit: 'Whiskey & Bourbon', // Rye specifically
+        origin: 'USA',
+        era: 'Pre-Prohibition',
+        style: 'Spirit-Forward',
+        glass: 'Rocks', // Served neat in a rocks glass
+        ingredients: [
+            { amount: '2 oz', item: 'Rye Whiskey' }, // Or Cognac
+            { amount: '0.25 oz', item: 'Simple Syrup' }, // Or Sugar Cube
+            { amount: '3 dashes', item: 'Peychaud\'s Bitters' },
+            { amount: 'Absinthe', item: '(For Rinsing)' }
+        ],
+        description: 'The official cocktail of New Orleans. A ritualistic, absinthe-rinsed, anise-scented variation of the Old Fashioned driven entirely by Rye and Peychaud\'s.',
+        garnish: 'Lemon Peel (Expressed and Discarded)',
+        instructions: [
+            'Chill a rocks glass by filling it with ice and a splash of Absinthe (or just rinse with Absinthe and discard).',
+            'In a separate mixing glass, muddle the sugar/syrup with Peychaud\'s bitters.',
+            'Add the Rye whiskey and ice, then stir until well chilled.',
+            'Discard the ice from the prepared rocks glass.',
+            'Strain the chilled cocktail into the absinthe-rinsed glass (served neat, no ice).',
+            'Express the oils of a lemon peel over the drink. Traditionally, the peel is discarded, not dropped in.'
+        ],
+        season: 'Winter',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Old Fashioned', 'Vieux Carré', 'Absinthe Frappé'],
+        source: 'Antoine Amedie Peychaud / Leon Lamothe',
+        city: 'New Orleans',
+        mood: 'Vintage',
+        flavorProfile: ['Anise', 'Spicy', 'Herbal', 'Strong'],
+        difficultyLevel: 'Advanced', // Due to the two-glass ritual and rinse
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1850s',
+        trivia: [
+            'It was originally made with Sazerac de Forge et Fils Cognac until a worldwide aphid epidemic destroyed French vineyards, forcing bartenders to switch to American Rye.',
+            'It was officially designated as the official cocktail of New Orleans by the Louisiana legislature in 2008.',
+            'Peychaud\'s bitters (bright red, floral, and anise-heavy) are absolutely non-negotiable for a true Sazerac.'
+        ],
+        ratio: '2:0.25 + Rinse',
+        tagline: 'A ritual of Rye, Absinthe, and New Orleans history.',
+        strength: 8
+    },
+    {
+        name: 'Last Word',
+        emoji: '🌿',
+        primarySpirit: 'Gin',
+        origin: 'USA',
+        era: 'Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '0.75 oz', item: 'Gin' },
+            { amount: '0.75 oz', item: 'Green Chartreuse' },
+            { amount: '0.75 oz', item: 'Maraschino Liqueur' },
+            { amount: '0.75 oz', item: 'Lime Juice' }
+        ],
+        description: 'A pale-green, equal-parts marvel. It balances the bracing botanical bite of gin with the aggressively herbal Chartreuse and sweet cherry liqueur.',
+        garnish: 'Brandied Cherry',
+        instructions: [
+            'Combine all four equal-parts ingredients in a shaker with ice.',
+            'Shake vigorously until well chilled.',
+            'Double strain into a chilled coupe or martini glass.',
+            'Garnish with a brandied cherry.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Corpse Reviver No. 2', 'Paper Plane', 'Naked and Famous'],
+        source: 'Frank Fogarty, Detroit Athletic Club',
+        city: 'Detroit',
+        mood: 'Sophisticated',
+        flavorProfile: ['Herbal', 'Sweet', 'Tart', 'Complex'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Pre-Dinner Starter',
+        abvContent: 'High', // Chartreuse is 110 proof
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1915',
+        trivia: [
+            'The recipe fell into total obscurity for nearly 90 years until it was rediscovered in 2004 by Murray Stenson in Seattle, kicking off the modern craft cocktail revival.',
+            'Chartreuse is famously made by Carthusian monks in France using a secret recipe of 130 herbs and plants.',
+            'Because it is perfectly equal parts, it is incredibly easy to batch or scale up for large parties.'
+        ],
+        ratio: '1:1:1:1',
+        tagline: 'The pale-green miracle of the craft cocktail revival.',
+        strength: 7
+    },
+    {
+        name: 'Clover Club',
+        emoji: '🍀',
+        primarySpirit: 'Gin',
+        origin: 'USA',
+        era: 'Pre-Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '0.5 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Raspberry Syrup' }, // Or muddled raspberries
+            { amount: '1', item: 'Egg White' }
+        ],
+        description: 'A pre-prohibition triumph of texture and flavor. Bright gin and tart lemon are smoothed into a luxurious, creamy, raspberry-hued foam.',
+        garnish: 'Raspberries on a pick',
+        instructions: [
+            'Combine gin, lemon juice, raspberry syrup, and egg white in a shaker WITHOUT ice.',
+            'Dry shake vigorously for 15 seconds to emulsify the egg white.',
+            'Add ice and wet shake for another 10-15 seconds to chill.',
+            'Double strain into a chilled coupe glass.',
+            'Garnish with 2 or 3 fresh raspberries on a cocktail pick.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Pink Lady', 'Gimlet', 'Pisco Sour'],
+        source: 'The Clover Club (Bellevue-Stratford Hotel)',
+        city: 'Philadelphia',
+        mood: 'Elegant',
+        flavorProfile: ['Fruity', 'Creamy', 'Tart', 'Botanical'],
+        difficultyLevel: 'Advanced', // Dry shake required
+        occasion: 'Garden Party',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1890s',
+        trivia: [
+            'Named after an exclusive Philadelphia men\'s club that consisted of lawyers, writers, and politicians.',
+            'Despite its bright pink color and delicate foam, it was considered a rough-and-tumble "gentleman’s drink" in its heyday.',
+            'True historical variations sometimes include a faint dash of dry vermouth.'
+        ],
+        ratio: '2:0.5:0.5',
+        tagline: 'A luxurious crimson foam straight from the Gilded Age.',
+        strength: 5
+    },
+    {
+        name: 'Sidecar',
+        emoji: '🏍️',
+        primarySpirit: 'Liqueur & Other', // Cognac/Brandy
+        origin: 'France',
+        era: 'Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Cognac' },
+            { amount: '1 oz', item: 'Cointreau' },
+            { amount: '0.75 oz', item: 'Lemon Juice' }
+        ],
+        description: 'The definitive Cognac sour. A dry, crisp, and incredibly elegant balance of deeply aged French brandy and bright orange liqueur.',
+        garnish: 'Sugar Rim (Optional) & Orange Twist',
+        instructions: [
+            'Optional: Prepare a chilled coupe glass by wiping the rim with a lemon wedge and dipping it in superfine sugar.',
+            'Combine Cognac, Cointreau, and fresh lemon juice in a shaker with ice.',
+            'Shake vigorously until well-chilled.',
+            'Double strain into the prepared glass.',
+            'Express the oils of an orange twist and drop it in.'
+        ],
+        season: 'Fall',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Margarita', 'White Lady', 'Between the Sheets'],
+        source: 'Harry\'s New York Bar / Ritz Hotel',
+        city: 'Paris',
+        mood: 'Sophisticated',
+        flavorProfile: ['Citrusy', 'Rich', 'Dry', 'Tart'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'After Dinner',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1920s',
+        trivia: [
+            'Essentially the direct ancestor to the Margarita (which swaps the Cognac for Tequila and the Lemon for Lime).',
+            'Legend says it was named after an eccentric American army captain who was driven to the Parisian bar in a motorcycle sidecar.',
+            'There is a massive debate over the sugar rim: some purists despise it because the drink should be bone dry, while others love the contrast.'
+        ],
+        ratio: '2:1:0.75',
+        tagline: 'The sleek, sophisticated French grandfather to the Margarita.',
+        strength: 6
+    },
+    {
+        name: 'Piña Colada',
+        emoji: '🥥',
+        primarySpirit: 'Rum',
+        origin: 'Puerto Rico',
+        era: 'Tiki',
+        style: 'Dessert', // Blended/Highball
+        glass: 'Highball', // Hurricane Glass
+        ingredients: [
+            { amount: '2 oz', item: 'Light Rum' },
+            { amount: '2 oz', item: 'Pineapple Juice' },
+            { amount: '1.5 oz', item: 'Cream of Coconut' },
+            { amount: '0.5 oz', item: 'Lime Juice' } // Often omitted in resorts, but crucial for balance
+        ],
+        description: 'A decadent, frosty tropical vacation in a glass. The holy trinity of rum, fresh pineapple, and rich coconut cream.',
+        garnish: 'Pineapple Wedge & Maraschino Cherry',
+        instructions: [
+            'Add rum, pineapple juice, cream of coconut, and a squeeze of fresh lime juice to a blender.',
+            'Add about 1 cup of crushed ice.',
+            'Blend on high until smooth and frosty.',
+            'Pour into a chilled hurricane glass or tall goblet.',
+            'Garnish with a pineapple wedge and a maraschino cherry (and a paper umbrella!).'
+            // Can also be shaken over pebbled ice if a blender is unavailable
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Painkiller', 'Miami Vice', 'Blue Hawaiian'],
+        source: 'Ramón "Monchito" Marrero, Caribe Hilton Hotel',
+        city: 'San Juan',
+        mood: 'Tropical',
+        flavorProfile: ['Sweet', 'Creamy', 'Fruity', 'Rich'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Beach Vacation',
+        abvContent: 'Low',
+        temperature: 'Cold', // Blended
+        countryOfPopularity: 'Global',
+        timePeriod: '1954',
+        trivia: [
+            'It is the official national drink of Puerto Rico.',
+            'The name literally translates to "Strained Pineapple" in Spanish.',
+            'While famously blended, many craft cocktail bars prefer to aggressively shake it with pebbled ice down so it doesn\'t become a watered-down slushie.'
+        ],
+        ratio: '2:2:1.5',
+        tagline: 'If you like getting caught in the rain...',
+        strength: 4
+    },
+    {
+        name: 'Jungle Bird',
+        emoji: '🦜',
+        primarySpirit: 'Rum',
+        origin: 'Malaysia',
+        era: 'Tiki',
+        style: 'Highball',
+        glass: 'Rocks', // Double Rocks
+        ingredients: [
+            { amount: '1.5 oz', item: 'Black Strap Rum' }, // Or aged Jamaican
+            { amount: '0.75 oz', item: 'Campari' },
+            { amount: '1.5 oz', item: 'Pineapple Juice' },
+            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '0.5 oz', item: 'Simple Syrup' }
+        ],
+        description: 'The bitter outlier of the Tiki universe. Intensely rich black rum crashes into the bitter bite of Campari, smoothed out by a frothy pineapple canopy.',
+        garnish: 'Pineapple Fronds',
+        instructions: [
+            'Combine rum, Campari, pineapple juice, lime juice, and simple syrup in a shaker with ice.',
+            'Shake vigorously (the pineapple juice will create a wonderful thick froth).',
+            'Strain into a double rocks glass filled with crushed or large ice cubes.',
+            'Garnish with 3 pineapple fronds fanned out (resembling the tail feathers of a jungle bird).'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1-2 Drinks',
+        quantity: 1,
+        relationship: ['Mai Tai', 'Boulevardier', 'Garibaldi'],
+        source: 'Jeffrey Ong, Kuala Lumpur Hilton',
+        city: 'Kuala Lumpur',
+        mood: 'Adventurous',
+        flavorProfile: ['Bitter', 'Tropical', 'Fruity', 'Complex'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Poolside',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1978',
+        trivia: [
+            'One of the only truly famous Tiki drinks to break the "no amaro" rule by featuring a heavy dose of Campari.',
+            'Originally served as a welcome drink to guests checking into the newly opened Aviary Bar at the Kuala Lumpur Hilton.',
+            'The use of ultra-dark, molasses-heavy Black Strap rum (like Cruzan) is a modern craft adjustment that skyrocketed its popularity.'
+        ],
+        ratio: '1.5:0.75:1.5:0.5:0.5',
+        tagline: 'A darkly bitter and fiercely tropical bird of paradise.',
+        strength: 5
+    },
+    {
+        name: 'Whiskey Smash',
+        emoji: '🍋',
+        primarySpirit: 'Whiskey & Bourbon',
+        origin: 'USA',
+        era: 'Golden Age',
+        style: 'Highball', // Crushed ice cooler
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Bourbon' },
+            { amount: '0.75 oz', item: 'Simple Syrup' },
+            { amount: '½ Lemon', item: 'Cut into wedges' },
+            { amount: '4-6 leaves', item: 'Mint' }
+        ],
+        description: 'A chaotic, citrusy, and deeply refreshing collision of bourbon, muddled lemon wedges, and fresh spearmint.',
+        garnish: 'Mint Sprig',
+        instructions: [
+            'Place the lemon wedges and simple syrup in a cocktail shaker.',
+            'Muddle aggressively to release both the lemon juice and the bitter oils from the peel.',
+            'Add the mint leaves and gently tap them with the muddler once or twice (do not shred them).',
+            'Add bourbon and ice, then shake vigorously.',
+            'Double strain into a rocks glass filled with crushed ice.',
+            'Garnish with a sprawling, aromatic mint sprig.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Mint Julep', 'Whiskey Sour', 'Mojito'],
+        source: 'Jerry Thomas',
+        city: 'New York City',
+        mood: 'Refreshing',
+        flavorProfile: ['Citrusy', 'Herbal', 'Sweet', 'Strong'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Hot Day',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1887',
+        trivia: [
+            'A "Smash" is technically an open-ended classification of drinks that involves crushing fruit and herbs, making it a rugged cousin to the Julep.',
+            'Muddling the entire lemon wedge (peel included) extracts "oleo-saccharum" oils from the skin, vastly increasing the citrus depth.',
+            'While Jerry Thomas wrote down a recipe in 1887, bartender Dale DeGroff perfected the modern Bourbon Smash at the Rainbow Room in the 1990s.'
+        ],
+        ratio: '2:0.75',
+        tagline: 'The Mint Julep\'s loud, citrus-loving cousin.',
+        strength: 6
+    },
+    {
+        name: 'Caipirinha',
+        emoji: '🇧🇷',
+        primarySpirit: 'Rum', // Cachaça
+        origin: 'Brazil',
+        era: 'Pre-Prohibition',
+        style: 'Highball', // Built over ice
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Cachaça' },
+            { amount: '½ Lime', item: 'Cut into wedges' },
+            { amount: '2 bar spoons', item: 'Superfine Sugar' }
+        ],
+        description: 'The pulsing heart of Brazil. A dangerously drinkable, muddled collision of grassy sugarcane spirit and aggressive lime.',
+        garnish: 'Lime Wedge',
+        instructions: [
+            'Place the lime wedges and sugar in the bottom of a sturdy rocks glass.',
+            'Muddle them aggressively to extract the juice and the essential oils from the lime skins.',
+            'Fill the glass to the brim with ice (cubed or crushed).',
+            'Pour in the Cachaça and stir well to lift the sugar and mix the liquids.',
+            // Traditionally built directly in the glass
+        ],
+        season: 'Summer',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Mojito', 'Daiquiri', 'Ti Punch'],
+        source: 'Farmers in São Paulo',
+        city: 'São Paulo',
+        mood: 'Party',
+        flavorProfile: ['Tart', 'Sweet', 'Funky', 'Citrusy'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Carnival / Beach',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Brazil',
+        timePeriod: '1918',
+        trivia: [
+            'It is the official national cocktail of Brazil.',
+            'Cachaça is a Brazilian rum made from freshly pressed sugarcane juice (like Rhum Agricole), rather than molasses, giving it a grassy, funky flavor.',
+            'The name loosely translates to "country bumpkin" or "little peasant girl," referencing its humble origins among sugarcane farmers.'
+        ],
+        ratio: '2:X',
+        tagline: 'Muddled, funky, and fiercely Brazilian.',
+        strength: 6
+    },
+    {
+        name: 'White Lady',
+        emoji: '👗',
+        primarySpirit: 'Gin',
+        origin: 'United Kingdom',
+        era: 'Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '0.75 oz', item: 'Cointreau' },
+            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '1', item: 'Egg White' }
+        ],
+        description: 'A ghostly pale, elegant classic. The botanical zing of gin and sharp orange liqueur are softened by a thick, velvety egg-white cloud.',
+        garnish: 'None (or Lemon Twist)',
+        instructions: [
+            'Combine gin, Cointreau, lemon juice, and egg white in a shaker WITHOUT ice.',
+            'Dry shake vigorously for 15 seconds to whip the egg white.',
+            'Add ice to the shaker and wet shake for another 15 seconds.',
+            'Double strain into a chilled coupe or martini glass.',
+            'Typically served without garnish to showcase the pristine white foam.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Sidecar', 'Margarita', 'Gimlet'],
+        source: 'Harry MacElhone / Harry Craddock',
+        city: 'Paris / London',
+        mood: 'Elegant',
+        flavorProfile: ['Tart', 'Creamy', 'Citrusy', 'Botanical'],
+        difficultyLevel: 'Advanced', // Dry shake
+        occasion: 'Pre-Dinner Starter',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Europe',
+        timePeriod: '1929',
+        trivia: [
+            'It is essentially a Sidecar that swaps the Cognac out for Gin.',
+            'Harry MacElhone\'s original 1919 recipe absurdly called for Creme de Menthe instead of Gin, making it green and minty. He wised up and changed it a decade later.',
+            'Peter Dorelli, the legendary manager of the American Bar at the Savoy, famously added a dash of simple syrup because he found the original recipe too tart.'
+        ],
+        ratio: '2:0.75:0.75',
+        tagline: 'An elegant, ghostly sour cloaked in a velvet foam.',
+        strength: 5
+    },
+    {
+        name: 'Rob Roy',
+        emoji: '⚔️',
+        primarySpirit: 'Whiskey & Bourbon', // Scotch Whisky
+        origin: 'USA',
+        era: 'Golden Age',
+        style: 'Spirit-Forward',
+        glass: 'Martini',
+        ingredients: [
+            { amount: '2 oz', item: 'Scotch Whisky' }, // Blended
+            { amount: '1 oz', item: 'Sweet Vermouth' },
+            { amount: '2 dashes', item: 'Angostura Bitters' }
+        ],
+        description: 'The Manhattan\'s smoky, rugged Scottish cousin. A dark and brooding stirred classic showcasing the heather and peat of blended Scotch.',
+        garnish: 'Brandied Cherry',
+        instructions: [
+            'Combine Scotch, sweet vermouth, and bitters in a mixing glass with ice.',
+            'Stir continuously for 20-30 seconds until well chilled and diluted.',
+            'Strain into a chilled coupe or martini glass.',
+            'Garnish with a high-quality brandied cherry.'
+        ],
+        season: 'Winter',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Manhattan', 'Rusty Nail', 'Blood and Sand'],
+        source: 'Waldorf Astoria',
+        city: 'New York City',
+        mood: 'Brooding',
+        flavorProfile: ['Smoky', 'Sweet', 'Rich', 'Woodsy'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1894',
+        trivia: [
+            'Created in 1894 at the Waldorf Astoria to celebrate the premiere of an operetta based on Scottish folk hero Rob Roy MacGregor.',
+            'It is functionally identical to a classic Manhattan, but strictly mandates Scotch Whisky instead of Rye or Bourbon.',
+            'If you request it "Perfect," the bartender will split the 1 oz of vermouth into 0.5 oz sweet and 0.5 oz dry vermouth.'
+        ],
+        ratio: '2:1',
+        tagline: 'A smoky Manhattan in a tartan kilt.',
+        strength: 7
+    },
+    {
+        name: 'Hemingway Daiquiri',
+        emoji: '⛵',
+        primarySpirit: 'Rum',
+        origin: 'Cuba',
+        era: 'Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Light Rum' },
+            { amount: '0.75 oz', item: 'Grapefruit Juice' }, // Fresh ruby red or white
+            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '0.5 oz', item: 'Maraschino Liqueur' }
+        ],
+        description: 'A sharp, complex, and notoriously dry variation on the basic Daiquiri. Bright grapefruit and bitter cherry replace the traditional sugar.',
+        garnish: 'Lime Wheel or Grapefruit Peel',
+        instructions: [
+            'Combine rum, fresh grapefruit juice, fresh lime juice, and maraschino liqueur in a shaker with ice.',
+            'Shake vigorously until intensely cold.',
+            'Double strain into a chilled coupe glass.',
+            'Garnish with a lime wheel or a delicate curled grapefruit peel.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Daiquiri', 'Aviation', 'Paloma'],
+        source: 'Constantino Ribalaigua, El Floridita',
+        city: 'Havana',
+        mood: 'Adventurous',
+        flavorProfile: ['Tart', 'Dry', 'Citrusy', 'Floral'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Afternoon Sipper',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Cuba / USA',
+        timePeriod: '1930s',
+        trivia: [
+            'Author Ernest Hemingway notoriously loathed sweet drinks and drank heavily due to a legendary tolerance. He requested a Daiquiri with "double the rum and none of the sugar."',
+            'Because pure rum and lime is incredibly harsh, the bartender added Maraschino liqueur and Grapefruit to balance it without adding actual simple syrup.',
+            'Also known as the "Papa Doble" when served with double the alcohol over crushed ice.'
+        ],
+        ratio: '2:0.75:0.5:0.5',
+        tagline: 'Double the rum, none of the sugar. Papa\'s orders.',
+        strength: 6
+    },
+    {
+        name: 'Rusty Nail',
+        emoji: '🔩',
+        primarySpirit: 'Whiskey & Bourbon', // Scotch
+        origin: 'USA',
+        era: 'Modern Classic',
+        style: 'Spirit-Forward',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Scotch Whisky' }, // Blended
+            { amount: '0.75 oz', item: 'Drambuie' }
+        ],
+        description: 'A two-ingredient powerhouse from the Rat Pack era. The smoky warmth of Scotch is perfectly sweetened by the honeyed, herbal depth of Drambuie.',
+        garnish: 'Lemon Twist',
+        instructions: [
+            'Pour the Scotch and the Drambuie directly into a rocks glass over a single large ice cube.',
+            'Stir gently to integrate and chill.',
+            'Express the oils from a lemon twist over the drink and drop it in.'
+        ],
+        season: 'Winter',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Godfather', 'Rob Roy', 'Old Fashioned'],
+        source: 'The 21 Club (Debated)',
+        city: 'New York City',
+        mood: 'Vintage',
+        flavorProfile: ['Smoky', 'Sweet', 'Herbal', 'Rich'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Room Temp', // Or slightly chilled
+        countryOfPopularity: 'USA',
+        timePeriod: '1937',
+        trivia: [
+            'It was the signature drink of the legendary Rat Pack (Frank Sinatra, Dean Martin) in the 1960s.',
+            'Drambuie is a proprietary Scottish liqueur made from aged Scotch, heather honey, spices, and herbs.',
+            'The name was supposedly cemented by the chairwoman of the Drambuie Liqueur Company in 1963 when she endorsed the moniker.'
+        ],
+        ratio: '2:0.75',
+        tagline: 'The honeyed, smoky fuel of the 1960s Rat Pack.',
+        strength: 7
+    },
+    {
+        name: 'White Russian',
+        emoji: '🎳',
+        primarySpirit: 'Vodka',
+        origin: 'Belgium', // First printed there!
+        era: 'Modern Classic',
+        style: 'Dessert',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Vodka' },
+            { amount: '1 oz', item: 'Coffee Liqueur' }, // Kahlua
+            { amount: '1 oz', item: 'Heavy Cream' }
+        ],
+        description: 'A decadent, caffeinated indulgence. The sharp bite of vodka is submerged in deep roasted coffee and a swirling cloud of heavy cream.',
+        garnish: 'None (or grated nutmeg)',
+        instructions: [
+            'Add the vodka and coffee liqueur to an old-fashioned glass filled with ice.',
+            'Stir gently to combine.',
+            'Slowly pour the heavy cream over the back of a spoon to float it spectacularly on top.',
+            'Stir it in right before drinking.'
+        ],
+        season: 'Winter',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Black Russian', 'Espresso Martini', 'Mudslide'],
+        source: 'Gustave Tops, Hotel Metropole',
+        city: 'Brussels',
+        mood: 'Relaxed',
+        flavorProfile: ['Creamy', 'Sweet', 'Coffee', 'Rich'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Dessert',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1949',
+        trivia: [
+            'It exploded into massive pop-culture immortality in 1998 because it is the signature drink of "The Dude" in the film The Big Lebowski.',
+            'The "Russian" part of the name simply refers to the vodka—the drink wasn\'t invented in Russia.',
+            'Without the heavy cream, it is known as a "Black Russian."'
+        ],
+        ratio: '2:1:1',
+        tagline: '"The Dude abides." A creamy, caffeinated classic.',
+        strength: 5
+    },
+    {
+        name: 'Penicillin',
+        emoji: '🍯',
+        primarySpirit: 'Whiskey & Bourbon', // Scotch
+        origin: 'USA',
+        era: 'Modern Classic',
+        style: 'Sour',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Blended Scotch' },
+            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Honey-Ginger Syrup' },
+            { amount: '0.25 oz', item: 'Islay Scotch' } // Very peaty float
+        ],
+        description: 'A modern masterpiece. A bright ginger-honey sour that erupts with the campfire-smoke aromatics of heavily peated Islay Scotch floating on top.',
+        garnish: 'Candied Ginger',
+        instructions: [
+            'Combine the blended Scotch, lemon juice, and honey-ginger syrup in a shaker with ice.',
+            'Shake vigorously to properly chill and integrate the thick honey.',
+            'Strain into a rocks glass over a single large ice cube.',
+            'Gently pour (float) the quarter ounce of smoky Islay Scotch over the back of a spoon so it rests on top of the drink.',
+            'Garnish with a piece of candied ginger on a pick.'
+        ],
+        season: 'Fall',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Gold Rush', 'Whiskey Sour', 'Rusty Nail'],
+        source: 'Sam Ross, Milk & Honey',
+        city: 'New York City',
+        mood: 'Sophisticated',
+        flavorProfile: ['Smoky', 'Spicy', 'Tart', 'Rich'],
+        difficultyLevel: 'Advanced', // Requires homemade syrup and a float
+        occasion: 'Nightcap',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '2005',
+        trivia: [
+            'Created in 2005 by bartender Sam Ross, it is universally considered one of the most important and famous cocktails of the 21st century.',
+            'The genius of the Islay float ensures that the very first thing you experience is the aggressive smell of campfire smoke, which then gives way to the sweet ginger sour underneath.',
+            'The honey-ginger syrup is notoriously annoying to make, requiring simmering equal parts honey, water, and fresh chopped ginger.'
+        ],
+        ratio: '2:0.75:0.75 + Float',
+        tagline: 'The smoky, gingery cure-all of the 21st century.',
+        strength: 6
     }
 ];

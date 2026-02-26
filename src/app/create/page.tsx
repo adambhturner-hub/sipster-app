@@ -17,7 +17,14 @@ export default function CreateCocktailPage() {
     const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isAutoFilling, setIsAutoFilling] = useState(false);
+    const [isImporting, setIsImporting] = useState(false);
     const [isPublic, setIsPublic] = useState(false);
+
+    // Omni-Importer State
+    const [importType, setImportType] = useState<'url' | 'text' | 'image'>('url');
+    const [importUrl, setImportUrl] = useState('');
+    const [importText, setImportText] = useState('');
 
     // 1. Basics
     const [name, setName] = useState('');
@@ -72,6 +79,155 @@ export default function CreateCocktailPage() {
         const newIngredients = [...ingredients];
         newIngredients[index][field] = value;
         setIngredients(newIngredients);
+    };
+
+    const handleAutoFill = async () => {
+        if (!name.trim() && ingredients.filter(i => i.item.trim()).length === 0) {
+            return toast.error("Please enter at least a Name or some Ingredients first!");
+        }
+
+        setIsAutoFilling(true);
+        const loadingToast = toast.loading("AI is analyzing your recipe... 🪄");
+
+        try {
+            const partialCocktail = {
+                name,
+                tagline,
+                description,
+                ingredients: ingredients.filter(i => i.item.trim()),
+                instructions: instructions.filter(i => i.trim()),
+            };
+
+            const response = await fetch('/api/generate-metadata', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ partialCocktail }),
+            });
+
+            if (!response.ok) throw new Error('Failed to generate metadata');
+
+            const data = await response.json();
+
+            // Auto-fill all the empty fields with the AI's deductions
+            if (data.tagline) setTagline(data.tagline);
+            if (data.description) setDescription(data.description);
+            if (data.emoji) setEmoji(data.emoji);
+            if (data.primarySpirit) setPrimarySpirit(data.primarySpirit);
+            if (data.style) setStyle(data.style);
+            if (data.glass) setGlass(data.glass);
+            if (data.flavorProfile && data.flavorProfile.length > 0) setFlavorProfile(data.flavorProfile.join(', '));
+            if (data.strength) setStrength(data.strength);
+            if (data.difficultyLevel) setDifficultyLevel(data.difficultyLevel);
+            if (data.abvContent) setAbvContent(data.abvContent);
+            if (data.ratio) setRatio(data.ratio);
+            if (data.season) setSeason(data.season);
+            if (data.temperature) setTemperature(data.temperature);
+            if (data.mood) setMood(data.mood);
+            if (data.occasion) setOccasion(data.occasion);
+            if (data.origin) setOrigin(data.origin);
+            if (data.city) setCity(data.city);
+            if (data.era) setEra(data.era);
+            if (data.source) setSource(data.source);
+            if (data.timePeriod) setTimePeriod(data.timePeriod);
+            if (data.countryOfPopularity) setCountryOfPopularity(data.countryOfPopularity);
+            if (data.trivia && data.trivia.length > 0) setTrivia(data.trivia);
+            if (data.garnish) setGarnish(data.garnish);
+            if (data.relationship && data.relationship.length > 0) setRelationship(data.relationship.join(', '));
+
+            toast.success("Magic! Fields auto-filled.", { id: loadingToast });
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to auto-fill metadata.", { id: loadingToast });
+        } finally {
+            setIsAutoFilling(false);
+        }
+    };
+
+    const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (file.size > 4 * 1024 * 1024) {
+            toast.error("Image must be smaller than 4MB");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64Str = reader.result as string;
+            handleImport('image', base64Str);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleImport = async (type: 'url' | 'text' | 'image', overridePayload?: string) => {
+        let payload = overridePayload;
+
+        if (type === 'url') {
+            payload = importUrl;
+            if (!payload.trim()) return toast.error("Please enter a URL first.");
+        } else if (type === 'text') {
+            payload = importText;
+            if (!payload.trim()) return toast.error("Please paste some text first.");
+        }
+
+        setIsImporting(true);
+        const loadingToast = toast.loading("AI is ingesting recipe... 🪄");
+
+        try {
+            const response = await fetch('/api/import-recipe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type, payload }),
+            });
+
+            if (!response.ok) throw new Error('Failed to import recipe');
+
+            const data = await response.json();
+
+            // Auto-fill everything!
+            if (data.name) setName(data.name);
+            if (data.tagline) setTagline(data.tagline);
+            if (data.description) setDescription(data.description);
+            if (data.emoji) setEmoji(data.emoji);
+            if (data.primarySpirit) setPrimarySpirit(data.primarySpirit);
+            if (data.style) setStyle(data.style);
+            if (data.glass) setGlass(data.glass);
+            if (data.flavorProfile && data.flavorProfile.length > 0) setFlavorProfile(data.flavorProfile.join(', '));
+            if (data.strength) setStrength(data.strength);
+            if (data.difficultyLevel) setDifficultyLevel(data.difficultyLevel);
+            if (data.abvContent) setAbvContent(data.abvContent);
+            if (data.ratio) setRatio(data.ratio);
+            if (data.season) setSeason(data.season);
+            if (data.temperature) setTemperature(data.temperature);
+            if (data.mood) setMood(data.mood);
+            if (data.occasion) setOccasion(data.occasion);
+            if (data.origin) setOrigin(data.origin);
+            if (data.city) setCity(data.city);
+            if (data.era) setEra(data.era);
+            if (data.source) setSource(data.source);
+            if (data.timePeriod) setTimePeriod(data.timePeriod);
+            if (data.countryOfPopularity) setCountryOfPopularity(data.countryOfPopularity);
+            if (data.trivia && data.trivia.length > 0) setTrivia(data.trivia);
+            if (data.garnish) setGarnish(data.garnish);
+            if (data.relationship && data.relationship.length > 0) setRelationship(data.relationship.join(', '));
+
+            if (data.ingredients && data.ingredients.length > 0) {
+                setIngredients(data.ingredients);
+            }
+            if (data.instructions && data.instructions.length > 0) {
+                setInstructions(data.instructions);
+            }
+
+            toast.success("Import Complete! ✨", { id: loadingToast });
+            setImportUrl('');
+            setImportText('');
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to import recipe.", { id: loadingToast });
+        } finally {
+            setIsImporting(false);
+        }
     };
 
     const handleSave = async (e: React.FormEvent) => {
@@ -139,7 +295,7 @@ export default function CreateCocktailPage() {
 
     if (authLoading) return (
         <div className="flex justify-center flex-col items-center min-h-[50vh]">
-            <div className="animate-pulse text-[var(--color-neon-purple)] text-4xl mb-4">✨</div>
+            <div className="animate-pulse text-[var(--color-[var(--primary)])] text-4xl mb-4">✨</div>
             <div className="text-gray-400">Loading Studio...</div>
         </div>
     );
@@ -149,7 +305,7 @@ export default function CreateCocktailPage() {
             <h2 className="text-3xl font-bold mb-4">Login Required</h2>
             <button
                 onClick={signInWithGoogle}
-                className="bg-[var(--color-neon-purple)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]"
+                className="bg-[var(--color-[var(--primary)])] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]"
             >
                 Log In with Google
             </button>
@@ -158,59 +314,114 @@ export default function CreateCocktailPage() {
 
     return (
         <div className="flex flex-col w-full max-w-5xl mx-auto z-10 relative pb-12 px-4">
-            <div className="mb-10 text-center">
+            <div className="mb-10 text-center relative">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-white">
-                    Creator <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-pink">Studio</span>
+                    Creator <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Studio</span>
                 </h1>
-                <p className="text-gray-400 font-light max-w-2xl mx-auto">
+                <p className="text-gray-400 font-light max-w-2xl mx-auto mb-6">
                     Design a masterpiece. Input all 26 metadata points so your custom drink flawlessly integrates into the Sipster universe.
                 </p>
+
+                <div className="flex justify-center mb-12">
+                    <button
+                        onClick={handleAutoFill}
+                        disabled={isAutoFilling}
+                        className="bg-gray-800 border border-[var(--primary)]/50 text-white px-6 py-3 rounded-full font-bold hover:bg-[var(--primary)]/20 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(176,38,255,0.2)] disabled:opacity-50"
+                    >
+                        {isAutoFilling ? '🪄 Analyzing...' : '🪄 Auto-Fill with AI'}
+                    </button>
+                </div>
             </div>
+
+            {/* Omni-Importer Section */}
+            <section className="bg-gray-900 border border-[var(--primary)]/30 rounded-3xl p-8 shadow-[0_0_30px_rgba(176,38,255,0.15)] mb-12 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary)]/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+                <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-2">🪄 Magic Importer</h2>
+                <p className="text-gray-400 text-sm mb-6">Pasting a link from a blog? Raw text from a TikTok description? Or a screenshot of a recipe book? Let Sipster ingest it perfectly.</p>
+
+                <div className="flex gap-2 mb-6 bg-black p-1 rounded-xl w-fit">
+                    <button onClick={() => setImportType('url')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${importType === 'url' ? 'bg-[var(--primary)] text-white' : 'text-gray-400 hover:text-white'}`}>🔗 URL</button>
+                    <button onClick={() => setImportType('text')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${importType === 'text' ? 'bg-[var(--primary)] text-white' : 'text-gray-400 hover:text-white'}`}>📝 Text</button>
+                    <button onClick={() => setImportType('image')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${importType === 'image' ? 'bg-[var(--primary)] text-white' : 'text-gray-400 hover:text-white'}`}>📸 Image</button>
+                </div>
+
+                <div className="relative z-10">
+                    {importType === 'url' && (
+                        <div className="flex gap-2">
+                            <input type="url" value={importUrl} onChange={e => setImportUrl(e.target.value)} placeholder="https://www.liquor.com/recipes/..." className="flex-1 bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all outline-none" />
+                            <button onClick={() => handleImport('url')} disabled={isImporting} className="bg-[var(--primary)] text-white px-6 font-bold rounded-xl hover:bg-[var(--accent)] transition-all disabled:opacity-50">Import</button>
+                        </div>
+                    )}
+                    {importType === 'text' && (
+                        <div className="flex flex-col gap-2">
+                            <textarea value={importText} onChange={e => setImportText(e.target.value)} placeholder="Paste the raw text of the recipe here..." rows={4} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none resize-none"></textarea>
+                            <button onClick={() => handleImport('text')} disabled={isImporting} className="bg-[var(--primary)] text-white py-3 font-bold rounded-xl hover:bg-[var(--accent)] transition-all w-full disabled:opacity-50">Import Text</button>
+                        </div>
+                    )}
+                    {importType === 'image' && (
+                        <label className="border-2 border-dashed border-gray-700 hover:border-[var(--primary)]/50 bg-black/50 hover:bg-[var(--primary)]/5 transition-all rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer group">
+                            {isImporting ? (
+                                <div className="text-[var(--primary)] animate-pulse flex flex-col items-center gap-2">
+                                    <span className="text-2xl">🪄</span>
+                                    <span className="font-bold">Analyzing image...</span>
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">📸</div>
+                                    <div className="text-white font-bold mb-1">Upload Recipe Screenshot</div>
+                                    <div className="text-gray-500 text-sm">PNG, JPG, or WEBP (Max 4MB)</div>
+                                    <input type="file" accept="image/png, image/jpeg, image/webp" className="hidden" onChange={handleImportFile} disabled={isImporting} />
+                                </>
+                            )}
+                        </label>
+                    )}
+                </div>
+            </section>
 
             <form onSubmit={handleSave} className="space-y-12">
 
                 {/* 1. Basics */}
                 <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
-                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-neon-purple">1.</span> The Basics</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">1.</span> The Basics</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Cocktail Name *</label>
-                            <input type="text" required value={name} onChange={e => setName(e.target.value)} placeholder="The Midnight Special" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple focus:ring-1 focus:ring-neon-purple transition-all outline-none" />
+                            <input type="text" required value={name} onChange={e => setName(e.target.value)} placeholder="The Midnight Special" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all outline-none" />
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Emoji Icon *</label>
-                            <input type="text" required value={emoji} onChange={e => setEmoji(e.target.value)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple focus:ring-1 focus:ring-neon-purple transition-all outline-none text-2xl" placeholder="🍸" />
+                            <input type="text" required value={emoji} onChange={e => setEmoji(e.target.value)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all outline-none text-2xl" placeholder="🍸" />
                         </div>
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Tagline</label>
-                            <input type="text" value={tagline} onChange={e => setTagline(e.target.value)} placeholder="Dark, mysterious, and surprisingly sweet." className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple focus:ring-1 focus:ring-neon-purple transition-all outline-none" />
+                            <input type="text" value={tagline} onChange={e => setTagline(e.target.value)} placeholder="Dark, mysterious, and surprisingly sweet." className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all outline-none" />
                         </div>
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Description</label>
-                            <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Share the inspiration behind the drink..." rows={3} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple focus:ring-1 focus:ring-neon-purple transition-all outline-none resize-none" />
+                            <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Share the inspiration behind the drink..." rows={3} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all outline-none resize-none" />
                         </div>
                     </div>
                 </section>
 
                 {/* 2. Classification */}
                 <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
-                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-neon-purple">2.</span> Classification</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">2.</span> Classification</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Primary Spirit</label>
-                            <select value={primarySpirit} onChange={e => setPrimarySpirit(e.target.value as PrimarySpirit)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple transition-all outline-none">
+                            <select value={primarySpirit} onChange={e => setPrimarySpirit(e.target.value as PrimarySpirit)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none">
                                 <option>Whiskey & Bourbon</option><option>Agave</option><option>Gin</option><option>Vodka</option><option>Rum</option><option>Liqueur & Other</option>
                             </select>
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Style</label>
-                            <select value={style} onChange={e => setStyle(e.target.value as CocktailStyle)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple transition-all outline-none">
+                            <select value={style} onChange={e => setStyle(e.target.value as CocktailStyle)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none">
                                 <option>Spirit-Forward</option><option>Sour</option><option>Highball</option><option>Fizzy</option><option>Dessert</option>
                             </select>
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Glass Type</label>
-                            <select value={glass} onChange={e => setGlass(e.target.value as GlassType)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple transition-all outline-none">
+                            <select value={glass} onChange={e => setGlass(e.target.value as GlassType)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none">
                                 <option>Rocks</option><option>Coupe</option><option>Highball</option><option>Martini</option><option>Mug</option>
                             </select>
                         </div>
@@ -221,11 +432,11 @@ export default function CreateCocktailPage() {
 
                     {/* 3. Tasting Notes */}
                     <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
-                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-neon-purple">3.</span> Tasting Notes</h2>
+                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">3.</span> Tasting Notes</h2>
                         <div className="space-y-6">
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Flavor Profile (Comma Separated)</label>
-                                <input type="text" value={flavorProfile} onChange={e => setFlavorProfile(e.target.value)} placeholder="Sweet, Smoky, Herbal" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-neon-purple transition-all outline-none" />
+                                <input type="text" value={flavorProfile} onChange={e => setFlavorProfile(e.target.value)} placeholder="Sweet, Smoky, Herbal" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
@@ -254,7 +465,7 @@ export default function CreateCocktailPage() {
 
                     {/* 4. Vibe & Time */}
                     <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
-                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-neon-purple">4.</span> Vibe & Time</h2>
+                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">4.</span> Vibe & Time</h2>
                         <div className="space-y-6">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
@@ -284,7 +495,7 @@ export default function CreateCocktailPage() {
 
                 {/* 5. History & Lore */}
                 <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
-                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-neon-purple">5.</span> History & Lore</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">5.</span> History & Lore</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Origin Country</label>
@@ -322,13 +533,13 @@ export default function CreateCocktailPage() {
                                 <button type="button" onClick={() => { if (trivia.length > 1) { setTrivia(trivia.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 ${trivia.length > 1 ? 'hover:text-red-400 hover:border-red-400' : 'opacity-30'}`}>✕</button>
                             </div>
                         ))}
-                        <button type="button" onClick={() => setTrivia([...trivia, ''])} className="text-neon-purple text-sm font-bold mt-2">+ Add Trivia</button>
+                        <button type="button" onClick={() => setTrivia([...trivia, ''])} className="text-[var(--primary)] text-sm font-bold mt-2">+ Add Trivia</button>
                     </div>
                 </section>
 
                 {/* 6. Recipe Build */}
                 <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
-                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-neon-purple">6.</span> Recipe Build *</h2>
+                    <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">6.</span> Recipe Build *</h2>
 
                     {/* Ingredients Array */}
                     <div className="space-y-4 mb-8">
@@ -341,7 +552,7 @@ export default function CreateCocktailPage() {
                                     {activeIngredientIndex === index && getSuggestions(ing.item).length > 0 && (
                                         <ul className="absolute z-20 w-full mt-1 bg-black/95 border border-gray-700 rounded-xl shadow-lg overflow-hidden">
                                             {getSuggestions(ing.item).map(suggestion => (
-                                                <li key={suggestion} onClick={() => handleIngredientChange(index, 'item', suggestion)} className="px-4 py-2 hover:bg-neon-purple/20 cursor-pointer text-gray-300">{suggestion}</li>
+                                                <li key={suggestion} onClick={() => handleIngredientChange(index, 'item', suggestion)} className="px-4 py-2 hover:bg-[var(--primary)]/20 cursor-pointer text-gray-300">{suggestion}</li>
                                             ))}
                                         </ul>
                                     )}
@@ -349,7 +560,7 @@ export default function CreateCocktailPage() {
                                 <button type="button" onClick={() => { if (ingredients.length > 1) { setIngredients(ingredients.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 ${ingredients.length > 1 ? 'hover:text-red-400 hover:border-red-400' : 'opacity-30'}`}>✕</button>
                             </div>
                         ))}
-                        <button type="button" onClick={() => setIngredients([...ingredients, { amount: '', item: '' }])} className="text-neon-purple text-sm font-bold">+ Add Ingredient</button>
+                        <button type="button" onClick={() => setIngredients([...ingredients, { amount: '', item: '' }])} className="text-[var(--primary)] text-sm font-bold">+ Add Ingredient</button>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -373,7 +584,7 @@ export default function CreateCocktailPage() {
                                 <button type="button" onClick={() => { if (instructions.length > 1) { setInstructions(instructions.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 ${instructions.length > 1 ? 'hover:text-red-400 hover:border-red-400' : 'opacity-30'}`}>✕</button>
                             </div>
                         ))}
-                        <button type="button" onClick={() => setInstructions([...instructions, ''])} className="text-neon-purple text-sm font-bold">+ Add Step</button>
+                        <button type="button" onClick={() => setInstructions([...instructions, ''])} className="text-[var(--primary)] text-sm font-bold">+ Add Step</button>
                     </div>
                 </section>
 
@@ -385,14 +596,14 @@ export default function CreateCocktailPage() {
                     <button
                         type="button"
                         onClick={() => setIsPublic(!isPublic)}
-                        className={`w-16 h-8 rounded-full transition-colors relative shadow-inner ${isPublic ? 'bg-neon-purple' : 'bg-gray-800'}`}
+                        className={`w-16 h-8 rounded-full transition-colors relative shadow-inner ${isPublic ? 'bg-[var(--primary)]' : 'bg-gray-800'}`}
                     >
                         <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${isPublic ? 'left-9' : 'left-1'}`}></div>
                     </button>
                 </div>
 
                 <div className="flex justify-end pt-4">
-                    <button type="submit" disabled={isSubmitting} className="bg-neon-purple text-white text-lg px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(176,38,255,0.4)] flex items-center gap-2">
+                    <button type="submit" disabled={isSubmitting} className="bg-[var(--primary)] text-white text-lg px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(176,38,255,0.4)] flex items-center gap-2">
                         {isSubmitting ? 'Saving Metadata...' : 'Save Full Creation ✨'}
                     </button>
                 </div>

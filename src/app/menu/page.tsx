@@ -139,7 +139,7 @@ export default function MenuPage() {
         <div className="flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4">
             <div className="mb-8 text-center">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-                    Featured <span className="text-glow-purple text-[var(--color-neon-purple)]">Menu</span>
+                    Featured <span className="text-glow-primary text-[var(--primary)]">Menu</span>
                 </h1>
                 <p className="text-gray-400 font-light max-w-2xl mx-auto mb-8">
                     A curated selection of timeless classics. Perfect when you know exactly what you want, or just need a little inspiration.
@@ -148,14 +148,14 @@ export default function MenuPage() {
                 {/* Makeable Toggle */}
                 {myBar.length > 0 && (
                     <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6 inline-flex mb-8">
-                        <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--color-neon-purple)]' : 'text-gray-500'}`}>Show All</span>
+                        <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--primary)]' : 'text-gray-500'}`}>Show All</span>
                         <button
                             onClick={() => setShowMakeableOnly(!showMakeableOnly)}
-                            className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${showMakeableOnly ? 'bg-[var(--color-neon-blue)]' : 'bg-gray-600'}`}
+                            className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${showMakeableOnly ? 'bg-[var(--accent)]' : 'bg-gray-600'}`}
                         >
                             <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${showMakeableOnly ? 'translate-x-6' : ''}`}></div>
                         </button>
-                        <span className={`text-sm font-semibold transition-colors ${showMakeableOnly ? 'text-[var(--color-neon-blue)]' : 'text-gray-500'}`}>Makeable Now</span>
+                        <span className={`text-sm font-semibold transition-colors ${showMakeableOnly ? 'text-[var(--accent)]' : 'text-gray-500'}`}>Makeable Now</span>
                     </div>
                 )}
 
@@ -171,15 +171,15 @@ export default function MenuPage() {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAiSearchQuery(e.target.value)}
                             placeholder={isSearching ? "Asking the Bartender..." : "Craving something specific? Describe your vibe..."}
                             disabled={isSearching}
-                            className={`w-full bg-black/60 border ${isSearching ? 'border-neon-purple' : 'border-white/20'} rounded-full px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--color-neon-blue)] focus:shadow-[0_0_15px_rgba(0,255,255,0.2)] transition-all pr-12`}
+                            className={`w-full bg-black/60 border ${isSearching ? 'border-[var(--primary)]' : 'border-white/20'} rounded-full px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] focus:shadow-[0_0_15px_var(--primary-glow)] transition-all pr-12`}
                         />
                         <button
                             type="submit"
                             disabled={isSearching || !aiSearchQuery.trim()}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-[var(--color-neon-blue)] transition-colors disabled:opacity-50"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-[var(--accent)] transition-colors disabled:opacity-50"
                         >
                             {isSearching ? (
-                                <div className="w-5 h-5 border-2 border-t-[var(--color-neon-blue)] border-r-transparent border-b-[var(--color-neon-blue)] border-l-transparent rounded-full animate-spin"></div>
+                                <div className="w-5 h-5 border-2 border-t-[var(--accent)] border-r-transparent border-b-[var(--accent)] border-l-transparent rounded-full animate-spin"></div>
                             ) : (
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -189,7 +189,7 @@ export default function MenuPage() {
                     </form>
 
                     {/* Glowing background effect for input */}
-                    <div className="absolute inset-0 -z-10 bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 rounded-full pointer-events-none"></div>
+                    <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--secondary)]/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 rounded-full pointer-events-none"></div>
                 </div>
 
                 {/* Advanced Filtering Toolbar */}
@@ -200,7 +200,7 @@ export default function MenuPage() {
                         className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-widest font-bold font-sans"
                     >
                         {showAdvancedFilters ? 'Hide Filters ⬆️' : 'Advanced Filters ⬇️'}
-                        {activeFilterCount > 0 && <span className="bg-neon-pink text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">{activeFilterCount}</span>}
+                        {activeFilterCount > 0 && <span className="bg-[var(--secondary)] text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">{activeFilterCount}</span>}
                     </button>
 
                     {showAdvancedFilters && (
@@ -213,7 +213,7 @@ export default function MenuPage() {
                                     <select
                                         value={selectedSpirit}
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedSpirit(e.target.value as PrimarySpirit | 'All')}
-                                        className={`w-full bg-black/60 border ${selectedSpirit !== 'All' ? 'border-[var(--color-neon-purple)] text-white shadow-[0_0_10px_rgba(176,38,255,0.2)]' : 'border-white/20 text-gray-400'} rounded-xl px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                                        className={`w-full bg-black/60 border ${selectedSpirit !== 'All' ? 'border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)]' : 'border-white/20 text-gray-400'} rounded-xl px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                                     >
                                         <option value="All">All Spirits</option>
                                         <option value="Whiskey & Bourbon">Whiskey & Bourbon</option>
@@ -227,7 +227,7 @@ export default function MenuPage() {
                                     <select
                                         value={selectedStyle}
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedStyle(e.target.value as CocktailStyle | 'All')}
-                                        className={`w-full bg-black/60 border ${selectedStyle !== 'All' ? 'border-[var(--color-neon-blue)] text-white shadow-[0_0_10px_rgba(0,255,255,0.2)]' : 'border-white/20 text-gray-400'} rounded-xl px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                                        className={`w-full bg-black/60 border ${selectedStyle !== 'All' ? 'border-[var(--accent)] text-white shadow-[0_0_10px_var(--primary-glow)]' : 'border-white/20 text-gray-400'} rounded-xl px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                                     >
                                         <option value="All">All Styles</option>
                                         <option value="Spirit-Forward">Spirit-Forward</option>
@@ -240,7 +240,7 @@ export default function MenuPage() {
                                     <select
                                         value={selectedEra}
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedEra(e.target.value as CocktailEra | 'All')}
-                                        className={`w-full bg-black/60 border ${selectedEra !== 'All' ? 'border-[var(--color-neon-green)] text-white shadow-[0_0_10px_rgba(57,255,20,0.2)]' : 'border-white/20 text-gray-400'} rounded-xl px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
+                                        className={`w-full bg-black/60 border ${selectedEra !== 'All' ? 'border-[var(--secondary)] text-white shadow-[0_0_10px_var(--primary-glow)]' : 'border-white/20 text-gray-400'} rounded-xl px-4 py-2 text-sm focus:outline-none appearance-none cursor-pointer pr-8 bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]`}
                                     >
                                         <option value="All">All Eras</option>
                                         <option value="Pre-Prohibition">Pre-Prohib</option>
@@ -333,7 +333,7 @@ export default function MenuPage() {
                     <p className="text-gray-400 max-w-md mx-auto mb-6">You don&apos;t have all the ingredients for these classics right now.</p>
                     <button
                         onClick={() => setShowMakeableOnly(false)}
-                        className="text-[var(--color-neon-blue)] border border-[var(--color-neon-blue)]/50 px-6 py-2 rounded-full hover:bg-[var(--color-neon-blue)]/10 transition-colors"
+                        className="text-[var(--accent)] border border-[var(--accent)]/50 px-6 py-2 rounded-full hover:bg-[var(--accent)]/10 transition-colors"
                     >
                         View Full Menu
                     </button>
@@ -356,14 +356,14 @@ export default function MenuPage() {
             )}
 
             <div className="mt-16 text-center border-t border-white/5 pt-12">
-                <div className="inline-block p-8 rounded-3xl bg-black/40 border border-[var(--color-neon-green)]/20 shadow-[0_0_30px_rgba(57,255,20,0.05)] backdrop-blur-md">
+                <div className="inline-block p-8 rounded-3xl bg-black/40 border border-[var(--secondary)]/20 shadow-[0_0_30px_var(--secondary)] backdrop-blur-md">
                     <h2 className="text-2xl font-bold mb-4">Want something off-menu?</h2>
                     <p className="text-gray-400 mb-6 max-w-md mx-auto">
                         Tell the bartender what flavors you&apos;re craving and let Sipster shake up a custom creation just for you.
                     </p>
                     <Link
                         href="/chat"
-                        className="inline-block bg-[var(--color-neon-green)] text-black font-bold px-8 py-4 rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(57,255,20,0.4)]"
+                        className="inline-block bg-[var(--secondary)] text-white font-bold px-8 py-4 rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_var(--primary-glow)]"
                     >
                         Talk to the Bartender 🍸
                     </Link>
