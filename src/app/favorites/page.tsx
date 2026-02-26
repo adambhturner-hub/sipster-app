@@ -37,8 +37,7 @@ export default function FavoritesPage() {
             try {
                 const q = query(
                     collection(db, 'favorites'),
-                    where('uid', '==', user.uid),
-                    orderBy('createdAt', 'desc')
+                    where('uid', '==', user.uid)
                 );
 
                 const querySnapshot = await getDocs(q);
@@ -46,6 +45,9 @@ export default function FavoritesPage() {
                 querySnapshot.forEach((doc) => {
                     fetched.push({ id: doc.id, ...doc.data() } as FavoriteRecipe);
                 });
+
+                // Sort in memory to completely avoid Firebase composite index requirements!
+                fetched.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 setFavorites(fetched);
             } catch (e) {
                 console.error("Error fetching favorites:", e);

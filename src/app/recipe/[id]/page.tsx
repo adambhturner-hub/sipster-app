@@ -97,7 +97,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                             </div>
                             <div className="flex items-center gap-4 mb-2">
                                 <span className="px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-bold tracking-widest uppercase border border-[var(--primary)]/30">
-                                    Creator Studio Original
+                                    {cocktail.source || 'Original Creation'}
                                 </span>
                                 <span className="text-gray-500 font-mono text-sm">
                                     Created {new Date(recipeData.createdAt).toLocaleDateString()}

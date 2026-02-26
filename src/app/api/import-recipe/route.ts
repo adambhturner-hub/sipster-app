@@ -130,6 +130,10 @@ export async function POST(req: Request) {
             ]
         });
 
+        if (sourceOverride) {
+            object.source = sourceOverride;
+        }
+
         return Response.json(object);
     } catch (error: any) {
         console.error('------- AI OMNI IMPORTER ERROR -------');
