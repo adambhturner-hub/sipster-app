@@ -17,6 +17,7 @@ export default function CreateCocktailPage() {
     const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isPublic, setIsPublic] = useState(false);
 
     // 1. Basics
     const [name, setName] = useState('');
@@ -122,6 +123,7 @@ export default function CreateCocktailPage() {
                 uid: user.uid,
                 type: 'custom_full',
                 cocktailData,
+                isPublic,
                 createdAt: new Date().toISOString()
             };
 
@@ -374,6 +376,20 @@ export default function CreateCocktailPage() {
                         <button type="button" onClick={() => setInstructions([...instructions, ''])} className="text-neon-purple text-sm font-bold">+ Add Step</button>
                     </div>
                 </section>
+
+                <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl flex items-center justify-between">
+                    <div>
+                        <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">Make Public to Community? 🌍</h3>
+                        <p className="text-gray-400 text-sm">Allow this recipe to appear on Sipster's global Discover feed.</p>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setIsPublic(!isPublic)}
+                        className={`w-16 h-8 rounded-full transition-colors relative shadow-inner ${isPublic ? 'bg-neon-purple' : 'bg-gray-800'}`}
+                    >
+                        <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${isPublic ? 'left-9' : 'left-1'}`}></div>
+                    </button>
+                </div>
 
                 <div className="flex justify-end pt-4">
                     <button type="submit" disabled={isSubmitting} className="bg-neon-purple text-white text-lg px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(176,38,255,0.4)] flex items-center gap-2">

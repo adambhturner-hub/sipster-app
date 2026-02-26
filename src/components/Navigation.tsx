@@ -26,6 +26,7 @@ export default function Navigation() {
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
                         <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all duration-300">My Bar</Link>
                         <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-purple)] hover:text-glow-purple transition-all duration-300">Menu</Link>
+                        <Link href="/discover" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-blue)] hover:text-glow-blue transition-all duration-300 flex items-center gap-1">Discover 🌍</Link>
                         <Link href="/favorites" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-pink)] hover:text-glow-pink transition-all duration-300">Favorites</Link>
                         <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--color-neon-green)] hover:text-glow-green transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
                         <Link href="/create" className="text-[var(--color-neon-purple)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_rgba(176,38,255,0.8)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
@@ -98,6 +99,13 @@ export default function Navigation() {
                             className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-purple)] rounded-lg transition-colors border-b border-gray-800/50"
                         >
                             Menu
+                        </Link>
+                        <Link
+                            href="/discover"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-blue)] rounded-lg transition-colors border-b border-gray-800/50"
+                        >
+                            Discover 🌍
                         </Link>
                         <Link
                             href="/favorites"

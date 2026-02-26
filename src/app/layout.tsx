@@ -29,6 +29,11 @@ export const metadata: Metadata = {
     description: 'Explore cocktail recipes, manage your back bar, and invent new drinks with your AI mixologist.',
     images: ['/logo.png'],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Sipster',
+  },
 };
 
 export default function RootLayout({

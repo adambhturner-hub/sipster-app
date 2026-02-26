@@ -6,6 +6,8 @@ import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
 import FavoriteButton from '@/components/FavoriteButton';
+import ShareButton from '@/components/ShareButton';
+import NotesAndRating from '@/components/NotesAndRating';
 
 interface CustomFullRecipe {
     id: string;
@@ -83,10 +85,15 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                             {cocktail.emoji}
                         </div>
                         <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center justify-between mb-2 gap-4">
                                 <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-pink leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
+                                <ShareButton
+                                    title={cocktail.name}
+                                    text={`Check out my custom creation: ${cocktail.name} ${cocktail.emoji} on Sipster!`}
+                                    path={`/recipe/${recipeData.id}`}
+                                />
                             </div>
                             <div className="flex items-center gap-4 mb-2">
                                 <span className="px-3 py-1 bg-neon-purple/20 text-neon-purple rounded-full text-xs font-bold tracking-widest uppercase border border-neon-purple/30">
@@ -298,6 +305,10 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                         </div>
                     </div>
                 )}
+
+                {/* Personal Notes & Ratings */}
+                <NotesAndRating cocktailId={recipeData.id} />
+
             </div>
         </div>
     );
