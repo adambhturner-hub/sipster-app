@@ -195,18 +195,21 @@ export default function Chat() {
                 customCocktailData.imageUrl = generatedImages[messageId];
             }
 
+            // Strip any explicit 'undefined' keys hallucinated by the LLM to prevent Firebase Sync Exception
+            const safeCocktailData = JSON.parse(JSON.stringify(customCocktailData));
+
             const favRef = collection(db, 'favorites');
-            await addDoc(favRef, {
+            const docRef = await addDoc(favRef, {
                 uid: user.uid,
                 type: 'custom_full',
                 messageId: messageId,
-                cocktailData: customCocktailData,
+                cocktailData: safeCocktailData,
                 createdAt: new Date().toISOString()
             });
             toast.success(
                 (t) => (
                     <span className="flex items-center gap-1">
-                        Recipe transformed! <Link href={`/recipe/${customCocktailData.id}`} onClick={() => toast.dismiss(t.id)} className="underline font-bold text-white hover:text-[var(--primary)] ml-1">View Info ❤️</Link>
+                        Recipe transformed! <Link href={`/recipe/${docRef.id}`} onClick={() => toast.dismiss(t.id)} className="underline font-bold text-white hover:text-[var(--primary)] ml-1">View Info ❤️</Link>
                     </span>
                 ),
                 { id: toastId, duration: 8000 }
