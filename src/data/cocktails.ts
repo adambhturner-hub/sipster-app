@@ -2082,6 +2082,687 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ],
         ratio: '2:1:¾',
         tagline: 'Cool under pressure.',
+        strength: 5
+    },
+    // --- 15 NEW COCKTAILS (PHASE 23 EXPANSION) ---
+    {
+        name: 'Aviation',
+        emoji: '✈️',
+        primarySpirit: 'Gin',
+        origin: 'USA',
+        era: 'Pre-Prohibition',
+        style: 'Sour',
+        glass: 'Martini',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '0.5 oz', item: 'Maraschino Liqueur' },
+            { amount: '0.25 oz', item: 'Creme de Violette' },
+            { amount: '0.75 oz', item: 'Lemon Juice' }
+        ],
+        description: 'A pale, sky-blue classic from the early 1900s featuring a delicate, floral interplay between gin, sweet cherry, and vibrant violet.',
+        garnish: 'Brandied Cherry',
+        instructions: [
+            'Add all ingredients to a shaker with ice.',
+            'Shake vigorously until well-chilled.',
+            'Strain into a chilled cocktail glass or coupe.',
+            'Drop in a brandied cherry.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Corpse Reviver No. 2', 'Last Word', 'Water Lily'],
+        source: 'Hugo Ensslin, Hotel Wallick (New York)',
+        city: 'New York City',
+        mood: 'Elegant',
+        flavorProfile: ['Floral', 'Tart', 'Botanical', 'Sweet'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Afternoon Sipper',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1910s',
+        trivia: [
+            'The recipe was lost for decades because later printings of the Savoy Cocktail Book omitted the hard-to-find Creme de Violette.',
+            'When made correctly, the drink should have a pale, slate-blue hue resembling the sky.',
+            'It was invented right at the dawn of commercial aviation, hence the name.'
+        ],
+        ratio: '3:1:1:X',
+        tagline: 'Take flight with this floral pre-prohibition masterpiece.',
         strength: 6
+    },
+    {
+        name: 'French 75',
+        emoji: '🥂',
+        primarySpirit: 'Gin',
+        origin: 'France',
+        era: 'Prohibition',
+        style: 'Fizzy',
+        glass: 'Coupe', // Often served in a flute, but coupe is classic
+        ingredients: [
+            { amount: '1.5 oz', item: 'Gin' },
+            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Simple Syrup' },
+            { amount: '3 oz', item: 'Champagne' }
+        ],
+        description: 'A vibrant, effervescent cocktail that combines the botanical notes of gin and bright citrus with the dry, celebratory pop of Champagne.',
+        garnish: 'Lemon Twist',
+        instructions: [
+            'Combine gin, lemon juice, and simple syrup in a shaker with ice.',
+            'Shake vigorously until well-chilled.',
+            'Strain into a champagne flute or coupe.',
+            'Top carefully with Champagne and gently stir.',
+            'Express the lemon twist oils over the glass and drop it in.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1-2 Drinks',
+        quantity: 1,
+        relationship: ['Tom Collins', 'Airmail', 'Mimosa'],
+        source: 'Harry MacElhone, New York Bar (Paris)',
+        city: 'Paris',
+        mood: 'Celebratory',
+        flavorProfile: ['Citrusy', 'Bubbly', 'Crisp', 'Botanical'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Brunch or Celebration',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1915',
+        trivia: [
+            'Named after the fast-firing 75mm French field gun used during World War I.',
+            'The original version was supposedly made with Calvados (apple brandy) instead of gin.',
+            'It became massively popular at the Stork Club in New York during the mid-20th century.',
+            'Arnaud’s in New Orleans famously makes theirs with Cognac instead of Gin.'
+        ],
+        ratio: '2:1:1 + Bubbles',
+        tagline: 'Packs a punch that feels like being shelled by a 75mm gun.',
+        strength: 5
+    },
+    {
+        name: 'Gimlet',
+        emoji: '⚓',
+        primarySpirit: 'Gin',
+        origin: 'United Kingdom',
+        era: 'Pre-Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '0.75 oz', item: 'Lime Juice' },
+            { amount: '0.75 oz', item: 'Simple Syrup' }
+        ],
+        description: 'A sharp, bracing, and intensely lime-forward classic. Originally a naval ration, it is the ultimate showcase of gin and citrus.',
+        garnish: 'Lime Wheel',
+        instructions: [
+            'Add gin, fresh lime juice, and simple syrup to a shaker with ice.',
+            'Shake vigorously until well-chilled.',
+            'Strain into a chilled coupe or martini glass.',
+            'Garnish with a fresh lime wheel.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Daiquiri', 'Southside', 'Margarita'],
+        source: 'British Royal Navy',
+        city: 'London (Naval Origins)',
+        mood: 'Refreshing',
+        flavorProfile: ['Tart', 'Citrusy', 'Botanical', 'Crisp'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Pre-Dinner Starter',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'United Kingdom / USA',
+        timePeriod: '1880s',
+        trivia: [
+            'Historically made with Rose’s Lime Cordial rather than fresh juice, though modern bartenders heavily prefer fresh.',
+            'Named after Surgeon Admiral Sir Thomas Gimlette, who pushed sailors to mix their gin with lime to prevent scurvy.',
+            'Raymond Chandler famously wrote that a real Gimlet is "half gin and half Rose\'s Lime Juice and nothing else."'
+        ],
+        ratio: '2:1:1',
+        tagline: 'The cocktail that cured the Royal Navy of scurvy.',
+        strength: 6
+    },
+    {
+        name: 'Tommy\'s Margarita',
+        emoji: '🌵',
+        primarySpirit: 'Agave',
+        origin: 'USA',
+        era: 'Modern Classic',
+        style: 'Sour',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Tequila' }, // Specifically asking for Reposado or Blanco usually
+            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '0.5 oz', item: 'Agave Nectar' }
+        ],
+        description: 'A brilliant modern simplification of the Margarita that replaces Orange Liqueur with pure Agave syrup, resulting in a cleaner, more tequila-forward profile.',
+        garnish: 'Lime Wedge & Salt Rim',
+        instructions: [
+            'Rub a lime wedge over half the rim of a rocks glass, and dip in kosher salt.',
+            'Combine tequila, lime juice, and agave nectar in a shaker with ice.',
+            'Shake vigorously to chill and dilute the thick syrup.',
+            'Strain over fresh ice into the prepared rocks glass.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Margarita', 'Paloma', 'Oaxaca Old Fashioned'],
+        source: 'Julio Bermejo, Tommy\'s Mexican Restaurant',
+        city: 'San Francisco',
+        mood: 'Party',
+        flavorProfile: ['Tart', 'Agave', 'Crisp', 'Earthy'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Taco Tuesday',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1990',
+        trivia: [
+            'Invented in the early 1990s at Tommy’s Mexican Restaurant in San Francisco.',
+            'Julio Bermejo specifically used Herradura Reposado Tequila in his original recipe.',
+            'By removing the Cointreau/Triple Sec, this spec is technically a "Tequila Sour," not a Daisy (Margarita translates to Daisy).'
+        ],
+        ratio: '2:1:0.5',
+        tagline: 'The modern gold-standard for how a Margarita should taste.',
+        strength: 5
+    },
+    {
+        name: 'Boulevardier',
+        emoji: '🥃',
+        primarySpirit: 'Whiskey & Bourbon',
+        origin: 'France',
+        era: 'Prohibition',
+        style: 'Spirit-Forward',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '1.25 oz', item: 'Bourbon' },
+            { amount: '1 oz', item: 'Campari' },
+            { amount: '1 oz', item: 'Sweet Vermouth' }
+        ],
+        description: 'A deeper, warmer, and woodsy variation of the Negroni that swaps gin for Bourbon or Rye whiskey, resulting in a rich autumnal masterpiece.',
+        garnish: 'Orange Peel',
+        instructions: [
+            'Combine all ingredients in a mixing glass with ice.',
+            'Stir for 20-30 seconds until well chilled and properly diluted.',
+            'Strain into a rocks glass over a single large ice cube.',
+            'Express the orange peel oils over the drink and drop it in.'
+        ],
+        season: 'Fall',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Negroni', 'Old Fashioned', 'Vieux Carré'],
+        source: 'Erskine Gwynne / Harry MacElhone',
+        city: 'Paris',
+        mood: 'Brooding',
+        flavorProfile: ['Bitter', 'Woodsy', 'Sweet', 'Herbal'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA / France',
+        timePeriod: '1927',
+        trivia: [
+            'While a Negroni is typically equal parts (1:1:1), modern bartenders often "bump" the whiskey slightly in a Boulevardier so it stands up to the Campari.',
+            'It was named after an expatriate magazine called "The Boulevardier" run by the drink\'s creator, Erskine Gwynne.',
+            'Swapping the Bourbon for Rye whiskey creates a drier, spicier variation.'
+        ],
+        ratio: '1.25:1:1',
+        tagline: 'The Negroni\'s dark, whiskey-drinking cousin.',
+        strength: 7
+    },
+    {
+        name: 'Corpse Reviver No. 2',
+        emoji: '🧟',
+        primarySpirit: 'Gin',
+        origin: 'United Kingdom',
+        era: 'Pre-Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '0.75 oz', item: 'Gin' },
+            { amount: '0.75 oz', item: 'Cointreau' },
+            { amount: '0.75 oz', item: 'Lillet Blanc' },
+            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '1 dash', item: 'Absinthe' }
+        ],
+        description: 'A flawless equal-parts "hair of the dog" remedy. Bright citrus meets botanical gin, mellowed by Lillet, with a haunting echo of Absinthe.',
+        garnish: 'Lemon Peel',
+        instructions: [
+            'Rinse the inside of a chilled coupe glass with a dash of Absinthe (discard the excess).',
+            'Combine gin, Cointreau, Lillet Blanc, and lemon juice in a shaker with ice.',
+            'Shake vigorously until deeply chilled.',
+            'Strain into the absinthe-rinsed glass.',
+            'Garnish with a lemon twist or discard.'
+        ],
+        season: 'Year-Round',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Last Word', 'Aviation', 'Paper Plane'],
+        source: 'Harry Craddock, Savoy Cocktail Book',
+        city: 'London',
+        mood: 'Revitalized',
+        flavorProfile: ['Tart', 'Anise', 'Citrusy', 'Complex'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Morning After / Brunch',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1930',
+        trivia: [
+            'Harry Craddock famously noted in his book: "Four of these taken in swift succession will unrevive the corpse again."',
+            'Lillet Blanc is technically a substitution today, as the original Kina Lillet (which contained quinine) ceased production in 1986.',
+            'There is a No. 1 version, but the No. 2 is vastly more popular.'
+        ],
+        ratio: '1:1:1:1',
+        tagline: 'Guaranteed to wake the dead before brunch.',
+        strength: 5
+    },
+    {
+        name: 'Vieux Carré',
+        emoji: '🎷',
+        primarySpirit: 'Whiskey & Bourbon', // And Cognac
+        origin: 'USA',
+        era: 'Pre-Prohibition',
+        style: 'Spirit-Forward',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '0.75 oz', item: 'Rye Whiskey' },
+            { amount: '0.75 oz', item: 'Cognac' },
+            { amount: '0.75 oz', item: 'Sweet Vermouth' },
+            { amount: '0.25 oz', item: 'Benedictine' },
+            { amount: '1 dash', item: 'Peychaud\'s Bitters' },
+            { amount: '1 dash', item: 'Angostura Bitters' }
+        ],
+        description: 'A masterclass in complexity. The spicy punch of Rye split with elegant Cognac, wrapped in herbal Benedictine and two types of bitters.',
+        garnish: 'Lemon Twist or Brandied Cherry',
+        instructions: [
+            'Combine all ingredients in a mixing glass with ice.',
+            'Stir continuously for 20-30 seconds.',
+            'Strain into a rocks glass over a single large ice cube.',
+            'Express the lemon peel oils and drop it in.'
+        ],
+        season: 'Winter',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Sazerac', 'Manhattan', 'De La Louisiane'],
+        source: 'Walter Bergeron, Hotel Monteleone',
+        city: 'New Orleans',
+        mood: 'Sophisticated',
+        flavorProfile: ['Herbal', 'Woodsy', 'Spicy', 'Rich'],
+        difficultyLevel: 'Advanced',
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1938',
+        trivia: [
+            'Pronounced "Voo-Kah-Ray," it translates to "Old Square," the French reference to the French Quarter in New Orleans.',
+            'Invented at the famous rotating Carousel Bar in the Hotel Monteleone.',
+            'It is essentially a Manhattan split-base variation that borrows the Sazerac\'s Peychaud\'s bitters and adds Benedictine.'
+        ],
+        ratio: '3:3:3:1',
+        tagline: 'The swirling, spicy, soulful heart of New Orleans in a glass.',
+        strength: 7
+    },
+    {
+        name: 'Aperol Spritz',
+        emoji: '🌞',
+        primarySpirit: 'Liqueur & Other',
+        origin: 'Italy',
+        era: 'Modern Classic',
+        style: 'Fizzy',
+        glass: 'Highball', // Or huge wine glass
+        ingredients: [
+            { amount: '3 oz', item: 'Prosecco' },
+            { amount: '2 oz', item: 'Aperol' },
+            { amount: '1 oz', item: 'Club Soda' }
+        ],
+        description: 'The undisputed king of the Italian Aperitivo hour. A vibrant orange cascade of bittersweet orange liqueur, dry prosecco, and crisp bubbles.',
+        garnish: 'Orange Slice',
+        instructions: [
+            'Fill a large wine glass or highball with ice.',
+            'Pour in the Aperol and Prosecco.',
+            'Top with a splash of Club Soda.',
+            'Gently stir to combine without losing the effervescence.',
+            'Garnish with a half orange slice.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Campari Spritz', 'Americano', 'Negroni Sbagliato'],
+        source: 'Barbieri Brothers',
+        city: 'Padua',
+        mood: 'Sunny',
+        flavorProfile: ['Bittersweet', 'Bubbly', 'Citrusy', 'Light'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Aperitivo / Happy Hour',
+        abvContent: 'Low',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1950s',
+        trivia: [
+            'The 3-2-1 ratio (3 parts Prosecco, 2 parts Aperol, 1 part soda) is heavily marketed on the back of every Aperol bottle.',
+            'Aperol was developed in 1919, but the Spritz format didn\'t explode globally until the early 2000s.',
+            'In Venice, traditional "Spritz Veneziano" uses Select Aperitivo instead of Aperol.'
+        ],
+        ratio: '3:2:1',
+        tagline: 'Sunset in a glass. The Italian way to start the evening.',
+        strength: 3
+    },
+    {
+        name: 'Dark \'n\' Stormy',
+        emoji: '⛈️',
+        primarySpirit: 'Rum',
+        origin: 'Bermuda',
+        era: 'Tiki',
+        style: 'Highball',
+        glass: 'Mug', // Often Highball, Mug works
+        ingredients: [
+            { amount: '2 oz', item: 'Dark Rum' }, // Goslings
+            { amount: '4 oz', item: 'Ginger Beer' },
+            { amount: '0.5 oz', item: 'Lime Juice' }
+        ],
+        description: 'A tempest in a glass. Bracing, spicy ginger beer is tamed by the molasses richness of a heavy float of black rum and a squeeze of lime.',
+        garnish: 'Lime Wedge',
+        instructions: [
+            'Fill a highball glass or copper mug with ice cubes.',
+            'Add the ginger beer and lime juice to the glass.',
+            'Carefully float the dark rum on top of the drink so it looks like a dark storm cloud.',
+            'Garnish with a lime wedge (stir before drinking).'
+        ],
+        season: 'Summer',
+        recommendedAmount: '2 Drinks',
+        quantity: 1,
+        relationship: ['Moscow Mule', 'Cuba Libre', 'Mai Tai'],
+        source: 'Gosling Brothers',
+        city: 'Hamilton (Bermuda)',
+        mood: 'Adventurous',
+        flavorProfile: ['Spicy', 'Rich', 'Fizzy', 'Sweet'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Afternoon Sipper',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA / UK',
+        timePeriod: '1920s',
+        trivia: [
+            'It is highly illegal for a bar to sell a "Dark \'n Stormy" if it is not made with Gosling\'s Black Seal Rum, as the company holds a strict trademark on the name.',
+            'The name supposedly originated when a sailor claimed the drink was the color of a cloud "only a fool or a dead man would sail under."',
+            'A wedge of lime is standard today, but technically optional in the strictest traditional Bermuda spec.'
+        ],
+        ratio: '2:4:0.5',
+        tagline: 'A Caribbean thunderstorm in a highball glass.',
+        strength: 5
+    },
+    {
+        name: 'Bramble',
+        emoji: '🫐',
+        primarySpirit: 'Gin',
+        origin: 'United Kingdom',
+        era: 'Modern Classic',
+        style: 'Highball', // Similar to Cobbler
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '1 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Simple Syrup' },
+            { amount: '0.5 oz', item: 'Blackberry Liqueur' } // Creme de Mure
+        ],
+        description: 'A beautiful visual treat. A bright gin sour is served over crushed ice, with dark blackberry liqueur "bleeding" down through the drink.',
+        garnish: 'Lemon Slice & fresh blackberries',
+        instructions: [
+            'Combine gin, lemon juice, and simple syrup in a shaker with regular ice.',
+            'Shake briefly to chill.',
+            'Strain into a rocks glass entirely filled with crushed ice.',
+            'Carefully drizzle the blackberry liqueur over the top so it trickles down.',
+            'Garnish with a lemon slice and two fresh blackberries.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Tom Collins', 'Gin Sour', 'Clover Club'],
+        source: 'Dick Bradsell, Fred\'s Club',
+        city: 'London',
+        mood: 'Playful',
+        flavorProfile: ['Fruity', 'Tart', 'Botanical', 'Sweet'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Garden Party',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'United Kingdom',
+        timePeriod: '1984',
+        trivia: [
+            'Created by legendary London bartender Dick Bradsell (who also invented the Espresso Martini).',
+            'He wanted to create a British national drink, recalling his childhood memories of blackberry picking on the Isle of Wight.',
+            'Traditionally relies on Creme de Mure (blackberry), but Creme de Cassis (blackcurrant) is frequently substituted.'
+        ],
+        ratio: '2:1:0.5 + Float',
+        tagline: 'Memories of British blackberry bushes, perfectly encapsulated.',
+        strength: 5
+    },
+    {
+        name: 'Vesper',
+        emoji: '🕵️',
+        primarySpirit: 'Gin', // And Vodka
+        origin: 'United Kingdom',
+        era: 'Modern Classic',
+        style: 'Spirit-Forward',
+        glass: 'Martini',
+        ingredients: [
+            { amount: '3 oz', item: 'Gin' },
+            { amount: '1 oz', item: 'Vodka' },
+            { amount: '0.5 oz', item: 'Lillet Blanc' }
+        ],
+        description: 'James Bond\'s massive, heavy-hitting original Martini. An immense pour of gin and vodka smoothed out by the subtle botanical softness of Lillet.',
+        garnish: 'Large Lemon Peel',
+        instructions: [
+            'Combine gin, vodka, and Lillet Blanc in a shaker with ice.',
+            'Shake vigorously until extremely cold (contrary to the "stirred, not shaken" rule for clear drinks).',
+            'Strain into a chilled deep goblet or large martini glass.',
+            'Express the oils of a large lemon peel and drop it in.'
+        ],
+        season: 'Winter',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Dry Martini', 'Gibson', 'Corpse Reviver No. 2'],
+        source: 'Ian Fleming (Casino Royale)',
+        city: 'London (Fictional)',
+        mood: 'Dangerous',
+        flavorProfile: ['Dry', 'Botanical', 'Strong', 'Clean'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'High Stakes Poker',
+        abvContent: 'Very High',
+        temperature: 'Cold',
+        countryOfPopularity: 'Global',
+        timePeriod: '1953',
+        trivia: [
+            'Invented by author Ian Fleming for his first James Bond novel, Casino Royale.',
+            'Bond explicitly asks for it to be served in a "deep champagne goblet" with a large slice of lemon peel.',
+            'The original recipe called for Kina Lillet, which is no longer produced; modern bartenders use Lillet Blanc or Cocchi Americano as a substitute.',
+            'At 4.5 ounces of pure liquor, it is nearly double the size of a standard modern cocktail.'
+        ],
+        ratio: '6:2:1',
+        tagline: '"Shaken, not stirred." A massive, lethal block of pure spirits.',
+        strength: 9
+    },
+    {
+        name: 'Martinez',
+        emoji: '🌉',
+        primarySpirit: 'Gin',
+        origin: 'USA',
+        era: 'Golden Age',
+        style: 'Spirit-Forward',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '1.5 oz', item: 'Old Tom Gin' },
+            { amount: '1.5 oz', item: 'Sweet Vermouth' },
+            { amount: '0.25 oz', item: 'Maraschino Liqueur' },
+            { amount: '2 dashes', item: 'Angostura Bitters' }
+        ],
+        description: 'The elusive missing link between the Manhattan and the Martini. A rich, sweet, and botanical journey using the sweeter Old Tom style of gin.',
+        garnish: 'Orange Twist',
+        instructions: [
+            'Combine Old Tom gin, sweet vermouth, maraschino liqueur, and bitters in a mixing glass with ice.',
+            'Stir continuously until well chilled and diluted.',
+            'Strain into a chilled coupe or martini glass.',
+            'Express the orange twist oils and drop it in.'
+        ],
+        season: 'Fall',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Martini', 'Manhattan', 'Aviation'],
+        source: 'O.H. Byron / Jerry Thomas',
+        city: 'Martinez, California', // Debated
+        mood: 'Vintage',
+        flavorProfile: ['Sweet', 'Botanical', 'Woodsy', 'Complex'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1884',
+        trivia: [
+            'Often credited as the direct evolutionary ancestor to the classic Dry Martini.',
+            'It specifically requires "Old Tom" Gin, a historical style that is sweeter and maltier than modern London Dry Gin.',
+            'The city of Martinez, California, claims it was invented there for a miner who had just struck gold, though bar historians fiercely debate this.'
+        ],
+        ratio: '1:1',
+        tagline: 'The sweet, botanical bridge between a Manhattan and a Martini.',
+        strength: 6
+    },
+    {
+        name: 'Painkiller',
+        emoji: '🏴‍☠️',
+        primarySpirit: 'Rum',
+        origin: 'British Virgin Islands',
+        era: 'Tiki',
+        style: 'Highball',
+        glass: 'Mug', // Usually a Tiki Mug or Hurricane
+        ingredients: [
+            { amount: '2 oz', item: 'Dark Rum' }, // Pusser's
+            { amount: '4 oz', item: 'Pineapple Juice' },
+            { amount: '1 oz', item: 'Orange Juice' },
+            { amount: '1 oz', item: 'Cream of Coconut' }
+        ],
+        description: 'A richer, more complex cousin to the Piña Colada. Heavy navy rum cuts through a luxurious blend of pineapple, orange, and thick coconut cream.',
+        garnish: 'Fresh Grated Nutmeg',
+        instructions: [
+            'Combine rum, pineapple juice, orange juice, and cream of coconut in a shaker with crushed ice.',
+            'Shake vigorously to properly emulsify the thick coconut cream.',
+            'Pour the entire contents (unstrained) into a hurricane glass, tiki mug, or snifter.',
+            'Generously grate fresh nutmeg over the entire top of the drink.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1-2 Drinks',
+        quantity: 1,
+        relationship: ['Piña Colada', 'Mai Tai', 'Jungle Bird'],
+        source: 'Daphne Henderson, Soggy Dollar Bar',
+        city: 'Jost Van Dyke (BVI)',
+        mood: 'Tropical',
+        flavorProfile: ['Tropical', 'Sweet', 'Creamy', 'Fruity'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Beach Vacation',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Caribbean / USA',
+        timePeriod: '1970s',
+        trivia: [
+            'Invented at the famous "Soggy Dollar Bar" in the British Virgin Islands, where sailors literally had to swim to shore with damp cash in their pockets.',
+            'Pusser\'s Rum trademarked the cocktail in the 1980s, similar to Gosling\'s and the Dark n Stormy.',
+            'The crucial, irreplaceable final touch is a massive dust storm of freshly grated nutmeg on top.'
+        ],
+        ratio: '2:4:1:1',
+        tagline: 'The Piña Colada\'s wealthier, more sophisticated island cousin.',
+        strength: 5
+    },
+    {
+        name: 'Pisco Sour',
+        emoji: '🏔️',
+        primarySpirit: 'Liqueur & Other', // Pisco (South American Brandy)
+        origin: 'Peru',
+        era: 'Pre-Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Pisco' },
+            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '0.75 oz', item: 'Simple Syrup' },
+            { amount: '1', item: 'Egg White' },
+            { amount: '3 dashes', item: 'Angostura Bitters' } // Traditionally Amargo Chuncho
+        ],
+        description: 'A velvety, frothy triumph of South American brandy. Earthy and grape-forward Pisco is whipped into a meringue-like foam with lime and egg white.',
+        garnish: 'Bitters Drops on foam',
+        instructions: [
+            'Combine Pisco, lime juice, simple syrup, and egg white in a shaker WITHOUT ice.',
+            'Dry shake vigorously for 15 seconds to whip the egg white into foam.',
+            'Add ice to the shaker and wet shake for another 15 seconds to chill.',
+            'Double strain into a chilled coupe glass.',
+            'Carefully drop 3 dots of bitters onto the thick foam cap.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Whiskey Sour', 'Margarita', 'White Lady'],
+        source: 'Victor Vaughen Morris',
+        city: 'Lima',
+        mood: 'Elegant',
+        flavorProfile: ['Tart', 'Creamy', 'Earthy', 'Fruity'],
+        difficultyLevel: 'Advanced',
+        occasion: 'Pre-Dinner Starter',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Peru / Chile',
+        timePeriod: '1920s',
+        trivia: [
+            'Invented by an American expatriate bartender (Victor Morris) living in Lima, Peru.',
+            'Peru and Chile have famously fought over the "ownership" and geographical origin of Pisco for a century.',
+            'The drops of bitters on top are not just for garnish; they mask the wet-dog smell that raw egg white foam can sometimes emit.'
+        ],
+        ratio: '2:1:0.75',
+        tagline: 'A cloud-like crown sitting atop earthy South American brandy.',
+        strength: 5
+    },
+    {
+        name: 'Mint Julep',
+        emoji: '🐎',
+        primarySpirit: 'Whiskey & Bourbon',
+        origin: 'USA',
+        era: 'Pre-Prohibition',
+        style: 'Highball', // Over crushed ice
+        glass: 'Mug', // Silver Julep Cup
+        ingredients: [
+            { amount: '2.5 oz', item: 'Bourbon' },
+            { amount: '0.5 oz', item: 'Simple Syrup' },
+            { amount: '8-10 leaves', item: 'Mint' }
+        ],
+        description: 'The ceremonial drink of the American South. A frosted silver cup overflowing with crushed ice, bracing bourbon, and the intensely fresh aroma of mint.',
+        garnish: 'Large Mint Sprig bouquet',
+        instructions: [
+            'Place the mint leaves and simple syrup in the bottom of a silver Julep cup or rocks glass.',
+            'Lightly muddle the mint—just enough to release the oils, do not shred the leaves.',
+            'Add the Bourbon and pack the cup tightly with crushed ice.',
+            'Stir vigorously until the outside of the cup is completely frosted over.',
+            'Top with more crushed ice, forming a snow cone over the rim. Garnish with a massive bouquet of mint.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1-2 Drinks',
+        quantity: 1,
+        relationship: ['Mojito', 'Old Fashioned', 'Whiskey Smash'],
+        source: 'Southern USA Tradition',
+        city: 'Louisville (Kentucky Derby)',
+        mood: 'Refined',
+        flavorProfile: ['Herbal', 'Sweet', 'Strong', 'Refreshing'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Kentucky Derby / Hot Day',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1800s',
+        trivia: [
+            'Over 120,000 Mint Juleps are served at the Churchill Downs racetrack over the 2-day period of the Kentucky Derby.',
+            'Properly crushing the ice and holding the silver cup by the rim/base is essential so the heat of your hand doesn\'t melt the beautiful exterior frost.',
+            'In the 1800s, it was commonly consumed as a morning drink, occasionally made with Cognac instead of Bourbon.'
+        ],
+        ratio: '5:1',
+        tagline: 'The frosted, silver-cupped pride of the American South.',
+        strength: 7
     }
 ];
