@@ -137,6 +137,21 @@ export default function MyBarPage() {
         }
     };
 
+    // --- Heuristic Price Estimation Engine ---
+    const estimateItemCost = (itemName: string): number => {
+        const item = itemName.toLowerCase();
+        if (/(whiskey|bourbon|scotch|rye|tequila|mezcal|cognac|brandy)/.test(item)) return 35;
+        if (/(vodka|rum|gin|absinthe|pisco)/.test(item)) return 22;
+        if (/(liqueur|campari|aperol|amaro|vermouth|cointreau|triple sec|kahlua|bailey|chartreuse)/.test(item)) return 25;
+        if (/(bitters)/.test(item)) return 10;
+        if (/(syrup|agave|honey)/.test(item)) return 8;
+        if (/(soda|tonic|ginger|cola|beer|wine|champagne|prosecco|juice|water)/.test(item)) return 5;
+        if (/(lemon|lime|orange|grapefruit|mint|basil|salt|sugar|cherry|olive|coffee|egg)/.test(item)) return 3;
+        return 15; // default fallback for unknown spirits/components
+    };
+
+    const totalEstimatedCost = shoppingList.reduce((acc, item) => acc + estimateItemCost(item), 0);
+
     const addItemToShoppingList = async (itemToProcess: string) => {
         const item = itemToProcess.trim();
         if (!item) return;
@@ -463,27 +478,39 @@ export default function MyBarPage() {
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3">
-                            {[...shoppingList].sort((a, b) => a.localeCompare(b)).map((item, index) => (
-                                <div key={`${item}-${index}`} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl group hover:border-white/20 hover:bg-white/10 transition-all">
-                                    <span className="font-medium text-lg">{item}</span>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => removeShoppingItem(item)}
-                                            className="w-10 h-10 rounded-full flex items-center justify-center border border-white/20 text-gray-400 hover:text-red-400 hover:border-red-400 transition-colors"
-                                            title="Delete"
-                                        >
-                                            ✕
-                                        </button>
-                                        <button
-                                            onClick={() => moveToBar(item)}
-                                            className="w-10 h-10 rounded-full flex items-center justify-center border border-[var(--color-neon-green)] text-[var(--color-neon-green)] bg-[var(--color-neon-green)]/10 hover:bg-[var(--color-neon-green)] hover:text-black hover:shadow-[0_0_15px_rgba(57,255,20,0.5)] transition-all"
-                                            title="Bought it! Move to Bar"
-                                        >
-                                            ✓
-                                        </button>
+                            {[...shoppingList].sort((a, b) => a.localeCompare(b)).map((item, index) => {
+                                const cost = estimateItemCost(item);
+                                return (
+                                    <div key={`${item}-${index}`} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl group hover:border-white/20 hover:bg-white/10 transition-all">
+                                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                            <span className="font-medium text-lg text-white">{item}</span>
+                                            <span className="text-sm font-mono text-gray-400 bg-black/50 px-2 py-0.5 rounded border border-white/10">~${cost}</span>
+                                        </div>
+                                        <div className="flex gap-2 shrink-0">
+                                            <button
+                                                onClick={() => removeShoppingItem(item)}
+                                                className="w-10 h-10 rounded-full flex items-center justify-center border border-white/20 text-gray-400 hover:text-red-400 hover:border-red-400 transition-colors"
+                                                title="Delete"
+                                            >
+                                                ✕
+                                            </button>
+                                            <button
+                                                onClick={() => moveToBar(item)}
+                                                className="w-10 h-10 rounded-full flex items-center justify-center border border-[var(--color-neon-green)] text-[var(--color-neon-green)] bg-[var(--color-neon-green)]/10 hover:bg-[var(--color-neon-green)] hover:text-black hover:shadow-[0_0_15px_rgba(57,255,20,0.5)] transition-all"
+                                                title="Bought it! Move to Bar"
+                                            >
+                                                ✓
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
+                            <div className="mt-6 p-6 bg-[var(--color-neon-green)]/10 border border-[var(--color-neon-green)]/30 rounded-2xl flex items-center justify-between shadow-[0_0_20px_rgba(57,255,20,0.15)] backdrop-blur-sm">
+                                <span className="text-xl font-bold text-gray-200">Estimated Total</span>
+                                <span className="text-3xl font-mono font-bold text-[var(--color-neon-green)] drop-shadow-[0_0_10px_rgba(57,255,20,0.4)]">
+                                    ${totalEstimatedCost}
+                                </span>
+                            </div>
                         </div>
                     )}
                 </div>
