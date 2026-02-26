@@ -1,5 +1,7 @@
 import { openai } from '@ai-sdk/openai';
-import { streamText, convertToModelMessages } from 'ai';
+import { streamText, convertToModelMessages, tool } from 'ai';
+import { z } from 'zod';
+import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -16,7 +18,8 @@ When providing a recipe:
 2. Provide a brief, engaging description (and maybe a fun trivia fact).
 3. List the ingredients clearly with measurements.
 4. Give step-by-step mixology instructions.
-5. Keep your formatting clean using Markdown.`;
+5. Keep your formatting clean using Markdown.
+6. If the user asks for a well-known classic cocktail (e.g. "Old Fashioned", "Margarita", "Negroni", "Manhattan", "Whiskey Sour"), ALWAYS use the \`suggestClassicCocktail\` tool to return the curated Sipster recipe card FIRST, and then add a playful conversational response asking if they want a creative riff on it.`;
 
     const lastMessage = messages[messages.length - 1];
     const myBar = lastMessage?.metadata?.myBar as string[] | undefined;
@@ -30,6 +33,27 @@ When they ask for a recommendation, you must heavily prioritize suggesting recip
         model: openai('gpt-4o'),
         system: systemPrompt,
         messages: await convertToModelMessages(messages),
+        tools: {
+            suggestClassicCocktail: tool({
+                description: 'Suggest a curated classic Sipster cocktail recipe when the user asks for a common drink by name.',
+                parameters: z.object({
+                    cocktailName: z.string().describe('The name of the classic cocktail (e.g. "Old Fashioned", "Margarita")')
+                }),
+                // @ts-ignore
+                execute: async ({ cocktailName }: { cocktailName: string }) => {
+                    const normalizedQuery = cocktailName.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const matchedCocktail = CLASSIC_COCKTAILS.find(c =>
+                        c.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedQuery) ||
+                        normalizedQuery.includes(c.name.toLowerCase().replace(/[^a-z0-9]/g, ''))
+                    );
+
+                    if (matchedCocktail) {
+                        return { found: true, cocktail: matchedCocktail, message: `I found ${matchedCocktail.name} in our classic recipe book!` };
+                    }
+                    return { found: false, message: `Could not find a classic recipe for ${cocktailName}. Feel free to invent one!` };
+                }
+            })
+        }
     });
 
     return result.toUIMessageStreamResponse();

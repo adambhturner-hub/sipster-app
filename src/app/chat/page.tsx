@@ -8,6 +8,7 @@ import { doc, onSnapshot, setDoc, getDoc, collection, addDoc } from 'firebase/fi
 import { db } from '@/lib/firebase';
 import toast from 'react-hot-toast';
 import VoiceInputButton from '@/components/VoiceInputButton';
+import CocktailCard from '@/components/CocktailCard';
 import Link from 'next/link';
 
 export default function Chat() {
@@ -322,7 +323,31 @@ export default function Chat() {
                                             if (part.type !== 'tool-invocation') return null;
 
                                             let content;
-                                            switch (part.toolInvocationId) {
+                                            switch (part.toolName || part.toolInvocationId) {
+                                                case 'suggestClassicCocktail':
+                                                    content = part.result ? (
+                                                        <div key={i} className="mt-4 max-w-sm w-full block">
+                                                            {part.result.found ? (
+                                                                <div className="flex flex-col gap-3">
+                                                                    <p className="text-sm font-medium text-[var(--accent)] italic">{part.result.message}</p>
+                                                                    <div className="pointer-events-auto h-[26rem]">
+                                                                        <CocktailCard
+                                                                            cocktail={part.result.cocktail}
+                                                                            makeable={true}
+                                                                            hasIngredient={(ing) => myBar.map(item => item.toLowerCase()).includes(ing.toLowerCase())}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            ) : (
+                                                                <p className="text-sm italic text-gray-400">{part.result.message}</p>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse flex items-center gap-2">
+                                                            <span className="text-xl">📚</span> Checking the classic recipe book...
+                                                        </div>
+                                                    );
+                                                    break;
                                                 case 'generate_cocktail_recipe':
                                                     content = (
                                                         <div key={i} className="flex flex-col gap-4 mt-4">
@@ -355,7 +380,7 @@ export default function Chat() {
                                                     );
                                                     break;
                                                 default:
-                                                    content = <div key={i} className="text-gray-500 italic">Unsupported tool: {part.toolInvocationId}</div>;
+                                                    content = <div key={i} className="text-gray-500 italic">Unsupported tool: {part.toolName || part.toolInvocationId}</div>;
                                             }
                                             return content;
                                         })}
