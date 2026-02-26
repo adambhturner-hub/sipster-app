@@ -19,8 +19,24 @@ export default function Chat() {
 
     const { messages, setMessages, sendMessage, status } = useChat();
     const [input, setInput] = useState('');
+    const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const isLoading = status === 'submitted' || status === 'streaming';
+
+    const placeholders = [
+        "Say 'I have rum, lime, and ginger...'",
+        "Ask 'What can I make with tequila?'",
+        "Say 'Give me something smoky and sweet.'",
+        "Ask 'How do I make a classic Manhattan?'",
+        "Say 'Surprise me with a spicy margarita variant.'"
+    ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
 
@@ -375,7 +391,7 @@ export default function Chat() {
                     <input
                         value={input}
                         onChange={handleInputChange}
-                        placeholder="Say 'I have rum, lime, and ginger...'"
+                        placeholder={placeholders[placeholderIndex]}
                         disabled={isLoading}
                         className="w-full bg-black/50 border border-gray-700 text-white rounded-full py-4 pl-6 pr-14 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-inner disabled:opacity-50"
                     />

@@ -414,7 +414,7 @@ export default function MyBarPage() {
                         Add items you're missing. When you buy them, click the checkmark to instantly move them to your My Bar inventory!
                     </p>
 
-                    <form onSubmit={handleAddShoppingItem} className="flex gap-4 w-full mb-10 relative">
+                    <form onSubmit={handleAddShoppingItem} className="flex flex-col sm:flex-row gap-4 w-full mb-10 relative">
                         <div className="flex-1 relative">
                             <input
                                 type="text"
@@ -433,11 +433,14 @@ export default function MyBarPage() {
                                     {filteredSuggestions.map((suggestion) => (
                                         <li
                                             key={suggestion}
-                                            onClick={() => addItemToShoppingList(suggestion)}
+                                            onMouseDown={(e) => {
+                                                e.preventDefault();
+                                                addItemToShoppingList(suggestion);
+                                            }}
                                             className="px-6 py-3 hover:bg-[var(--color-neon-green)]/20 cursor-pointer text-gray-200 hover:text-white transition-colors border-b border-white/5 last:border-0 flex items-center justify-between group"
                                         >
                                             <span className="font-medium">{suggestion}</span>
-                                            <span className="text-[var(--color-neon-green)] opacity-0 group-hover:opacity-100 transition-opacity text-sm font-bold">+ Add</span>
+                                            <span className="text-[var(--color-neon-green)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-sm font-bold">+ Add</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -460,7 +463,7 @@ export default function MyBarPage() {
                         </div>
                     ) : (
                         <div className="flex flex-col gap-3">
-                            {shoppingList.map((item, index) => (
+                            {[...shoppingList].sort((a, b) => a.localeCompare(b)).map((item, index) => (
                                 <div key={`${item}-${index}`} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl group hover:border-white/20 hover:bg-white/10 transition-all">
                                     <span className="font-medium text-lg">{item}</span>
                                     <div className="flex gap-2">
