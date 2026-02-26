@@ -12,11 +12,12 @@ import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 
 interface FavoriteRecipe {
     id: string;
-    type: 'classic' | 'custom';
-    cocktailId?: string;
-    name?: string;
-    content?: string;
-    imageUrl?: string | null;
+    type: 'classic' | 'custom' | 'custom_full';
+    cocktailId?: string; // For classic
+    name?: string; // For markdown custom
+    content?: string; // For markdown custom
+    imageUrl?: string | null; // For markdown custom
+    cocktailData?: any; // For custom_full
     createdAt: string;
 }
 
@@ -138,7 +139,22 @@ export default function FavoritesPage() {
                             );
                         }
 
-                        // Custom AI Recipe Card
+                        if (fav.type === 'custom_full' && fav.cocktailData) {
+                            const customCocktail = fav.cocktailData;
+                            const makeable = customCocktail.ingredients.every((ing: any) => hasIngredient(ing.item));
+
+                            return (
+                                <CocktailCard
+                                    key={fav.id}
+                                    cocktail={customCocktail}
+                                    makeable={makeable}
+                                    hasIngredient={hasIngredient}
+                                    customHref={`/recipe/${fav.id}`}
+                                />
+                            );
+                        }
+
+                        // Custom AI Recipe Card (Legacy Markdown Style)
                         return (
                             <Link href={`/recipe/${fav.id}`} key={fav.id}>
                                 <div className="bg-gray-900 border border-neon-pink/30 rounded-3xl p-6 transition-all duration-300 hover:border-neon-pink hover:scale-[1.02] flex flex-col h-full cursor-pointer group shadow-2xl overflow-hidden relative">

@@ -6,11 +6,14 @@ interface CocktailCardProps {
     cocktail: Cocktail;
     makeable: boolean;
     hasIngredient: (item: string) => boolean;
+    customHref?: string;
 }
 
-export default function CocktailCard({ cocktail, makeable, hasIngredient }: CocktailCardProps) {
+export default function CocktailCard({ cocktail, makeable, hasIngredient, customHref }: CocktailCardProps) {
+    const href = customHref || `/menu/${cocktail.name.toLowerCase().replace(/ /g, '-')}`;
+
     return (
-        <Link href={`/menu/${cocktail.name.toLowerCase().replace(/ /g, '-')}`}>
+        <Link href={href}>
             <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 transition-all duration-300 hover:border-gray-600 hover:scale-[1.02] flex flex-col h-full cursor-pointer group group/card shadow-2xl overflow-hidden relative">
                 {/* Gradient Hover Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/5 to-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
