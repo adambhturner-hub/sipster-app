@@ -24,6 +24,15 @@ When providing a recipe:
     const lastMessage = messages[messages.length - 1];
     const myBar = lastMessage?.metadata?.myBar as string[] | undefined;
 
+    // The newer Vercel AI SDK core strictly expects the 'parts' nested array.
+    // Ensure older client-side payloads (using 'content' directly) are cleanly mapped over to prevent the Vercel router from crashing with 'Cannot read properties of undefined (reading map)'
+    const normalizedMessages = messages.map((m: any) => {
+        if (!m.parts) {
+            return { ...m, parts: [{ type: 'text', text: m.content || '' }] };
+        }
+        return m;
+    });
+
     if (myBar && myBar.length > 0) {
         systemPrompt += `\n\nCRITICAL CONTEXT: The user's "My Bar" currently contains the following ingredients: ${myBar.join(', ')}. 
 When they ask for a recommendation, you must heavily prioritize suggesting recipes that utilize these specific ingredients they already have on hand.`;
@@ -32,11 +41,11 @@ When they ask for a recommendation, you must heavily prioritize suggesting recip
     const result = streamText({
         model: openai('gpt-4o'),
         system: systemPrompt,
-        messages: await convertToModelMessages(messages),
+        messages: await convertToModelMessages(normalizedMessages),
         tools: {
             suggestClassicCocktail: tool({
                 description: 'Suggest a curated classic Sipster cocktail recipe when the user asks for a common drink by name.',
-                parameters: z.object({
+                inputSchema: z.object({
                     cocktailName: z.string().describe('The name of the classic cocktail (e.g. "Old Fashioned", "Margarita")')
                 }),
                 // @ts-ignore

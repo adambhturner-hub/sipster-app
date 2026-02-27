@@ -319,27 +319,34 @@ export default function Chat() {
                                 </div>
                                 {m.role === 'assistant' && (
                                     <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
+
                                         {Array.isArray(m.parts) && m.parts.map((part: any, i) => {
-                                            if (part.type !== 'tool-invocation') return null;
+                                            const isTool = part.type === 'tool-invocation' || part.type?.startsWith('tool-') || part.type === 'dynamic-tool';
+                                            if (!isTool) return null;
+
+                                            // Fallbacks for standardizing Vercel AI SDK cross-version shape differences
+                                            const typeName = part.type?.startsWith('tool-') && part.type !== 'tool-invocation' ? part.type.replace('tool-', '') : undefined;
+                                            const toolName = part.toolName || part.toolInvocation?.toolName || typeName || part.toolInvocationId;
+                                            const result = part.result !== undefined ? part.result : part.output;
 
                                             let content;
-                                            switch (part.toolName || part.toolInvocationId) {
+                                            switch (toolName) {
                                                 case 'suggestClassicCocktail':
-                                                    content = part.result ? (
+                                                    content = result ? (
                                                         <div key={i} className="mt-4 max-w-sm w-full block">
-                                                            {part.result.found ? (
+                                                            {result.found ? (
                                                                 <div className="flex flex-col gap-3">
-                                                                    <p className="text-sm font-medium text-[var(--accent)] italic">{part.result.message}</p>
-                                                                    <div className="pointer-events-auto h-[26rem]">
+                                                                    <p className="text-sm font-medium text-[var(--accent)] italic">{result.message}</p>
+                                                                    <div className="pointer-events-auto w-full mt-2">
                                                                         <CocktailCard
-                                                                            cocktail={part.result.cocktail}
+                                                                            cocktail={result.cocktail}
                                                                             makeable={true}
                                                                             hasIngredient={(ing) => myBar.map(item => item.toLowerCase()).includes(ing.toLowerCase())}
                                                                         />
                                                                     </div>
                                                                 </div>
                                                             ) : (
-                                                                <p className="text-sm italic text-gray-400">{part.result.message}</p>
+                                                                <p className="text-sm italic text-gray-400">{result.message}</p>
                                                             )}
                                                         </div>
                                                     ) : (
@@ -380,19 +387,21 @@ export default function Chat() {
                                                     );
                                                     break;
                                                 default:
-                                                    content = <div key={i} className="text-gray-500 italic">Unsupported tool: {part.toolName || part.toolInvocationId}</div>;
+                                                    content = <div key={i} className="text-gray-500 italic">Unsupported tool: {toolName}</div>;
                                             }
                                             return content;
                                         })}
-                                        <button
-                                            onClick={() => {
-                                                const textContent = Array.isArray(m.parts) ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ');
-                                                handleFavorite(m.id, textContent);
-                                            }}
-                                            className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
-                                        >
-                                            <span>❤️</span> Save Recipe
-                                        </button>
+                                        {!m.parts?.some((p: any) => p.toolName === 'suggestClassicCocktail' || p.toolInvocation?.toolName === 'suggestClassicCocktail' || p.toolInvocationId === 'suggestClassicCocktail') && (
+                                            <button
+                                                onClick={() => {
+                                                    const textContent = Array.isArray(m.parts) ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ');
+                                                    handleFavorite(m.id, textContent);
+                                                }}
+                                                className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
+                                            >
+                                                <span>❤️</span> Save Recipe
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                             </div>
