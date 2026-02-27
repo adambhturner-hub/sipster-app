@@ -19,7 +19,7 @@ const simplifiedCocktailDB = CLASSIC_COCKTAILS.map((c: Cocktail) => ({
 
 export async function POST(req: NextRequest) {
     try {
-        const { theme, customLogic } = await req.json();
+        const { theme, customLogic, userId } = await req.json();
 
         if (!theme) {
             return new Response('Theme is required', { status: 400 });
@@ -96,7 +96,8 @@ ${JSON.stringify(simplifiedCocktailDB)}`;
             theme,
             introduction: menuData.menuIntroduction,
             cocktails: selectedCocktails,
-            backgroundImage: imageUrl
+            backgroundImage: imageUrl,
+            userId: userId || null
         }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },

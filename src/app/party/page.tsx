@@ -27,7 +27,11 @@ export default function PartyPlanner() {
             const response = await fetch('/api/generate-party', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ theme, customLogic }),
+                body: JSON.stringify({
+                    theme,
+                    customLogic,
+                    userId: user?.uid || null
+                }),
             });
 
             if (!response.ok) {
@@ -40,6 +44,7 @@ export default function PartyPlanner() {
             const docRef = await addDoc(collection(db, 'party_menus'), {
                 ...menuData,
                 createdBy: user ? user.uid : 'anonymous',
+                userId: user?.uid || null,
                 createdAt: serverTimestamp()
             });
 
