@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, doc, deleteDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -19,6 +19,36 @@ export default function MenusDashboard() {
     const { user, loading: authLoading } = useAuth();
     const [menus, setMenus] = useState<MenuRecord[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDeleting, setIsDeleting] = useState<string | null>(null);
+
+    const deleteMenu = async (e: React.MouseEvent, menuId: string) => {
+        e.preventDefault(); // Prevent navigating to the menu
+        if (!user || !window.confirm("Are you sure you want to permanently delete this party menu?")) return;
+
+        setIsDeleting(menuId);
+        try {
+            // 1. Hard delete the document from Firestore using the client SDK
+            await deleteDoc(doc(db, 'party_menus', menuId));
+
+            // 2. Remove from UI state
+            setMenus(prev => prev.filter(m => m.id !== menuId));
+
+            // 3. Best-effort ping to the backend to purge the DALL-E image
+            const menuToDelete = menus.find(m => m.id === menuId);
+            if (menuToDelete?.backgroundImage) {
+                fetch('/api/delete-dalle-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ imageUrl: menuToDelete.backgroundImage }),
+                }).catch(err => console.warn("Failed to purge background image", err));
+            }
+        } catch (err) {
+            console.error("Error deleting menu:", err);
+            alert("Failed to delete menu. Please try again.");
+        } finally {
+            setIsDeleting(null);
+        }
+    };
 
     useEffect(() => {
         const fetchMenus = async () => {
@@ -119,6 +149,18 @@ export default function MenusDashboard() {
                                         <div className="bg-black/50 backdrop-blur border border-white/20 px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-widest shadow-lg">
                                             {menu.cocktails?.length || 0} Drinks
                                         </div>
+                                        <button
+                                            onClick={(e) => deleteMenu(e, menu.id)}
+                                            disabled={isDeleting === menu.id}
+                                            className="bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 text-white rounded-full p-2 backdrop-blur transition-colors"
+                                            title="Delete Menu"
+                                        >
+                                            {isDeleting === menu.id ? (
+                                                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                            ) : (
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            )}
+                                        </button>
                                     </div>
                                     <div className="absolute inset-x-0 bottom-0 p-6 space-y-3 z-20">
                                         <h2 className="text-3xl font-serif font-bold text-[var(--primary)] max-w-[90%] leading-none drop-shadow-md">

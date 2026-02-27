@@ -12,7 +12,12 @@ if (!admin.apps.length) {
             });
             console.log('[FIREBASE_ADMIN] Initialized with Service Account Key');
         } else {
-            console.warn('[FIREBASE_ADMIN] No FIREBASE_SERVICE_ACCOUNT_KEY found. Uploads may fail if application default credentials are not present in Vercel.');
+            console.log('[FIREBASE_ADMIN] No Service Key found. Falling back to Application Default Credentials...');
+            admin.initializeApp({
+                projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'sipster-c38d3',
+                storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || 'sipster-c38d3.firebasestorage.app'
+            });
+            console.log('[FIREBASE_ADMIN] Initialized with Application Default Credentials');
         }
     } catch (error) {
         console.error('[FIREBASE_ADMIN] Initialization Error:', error);
