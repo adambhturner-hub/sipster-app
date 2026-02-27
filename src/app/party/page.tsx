@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -155,6 +156,12 @@ export default function PartyPlanner() {
                         )}
 
                     </form>
+
+                    <div className="mt-8 text-center">
+                        <Link href="/menus" className="text-gray-400 hover:text-white transition-colors text-sm font-semibold tracking-wide uppercase group">
+                            View my saved Party Menus <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+                        </Link>
+                    </div>
                 </div>
 
             </main>

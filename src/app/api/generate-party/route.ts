@@ -104,7 +104,8 @@ ${JSON.stringify(simplifiedCocktailDB)}`;
                         await file.save(buffer, { contentType: 'image/png' });
                         await file.makePublic();
 
-                        imageUrl = file.publicUrl();
+                        // Construct proper Firebase Storage download URL
+                        imageUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileName)}?alt=media`;
                         console.log(`[PARTY_GEN] Successfully saved to Firebase at ${imageUrl}`);
                     } catch (uploadErr) {
                         console.error("[PARTY_GEN] Failed to upload to Storage, falling back to DALL-E URL:", uploadErr);

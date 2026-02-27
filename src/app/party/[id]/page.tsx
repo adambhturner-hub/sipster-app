@@ -24,6 +24,7 @@ interface GeneratedMenu {
     backgroundImage: string;
     userId?: string;
     createdAt: any;
+    isCollaborative?: boolean;
 }
 
 export default function PrintedMenuPage({ params }: { params: Promise<{ id: string }> }) {
@@ -33,18 +34,25 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
-    // Editing State
+    // Editing State (Cocktails)
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
     const [editingField, setEditingField] = useState<'name' | 'tagline' | null>(null);
     const [editValue, setEditValue] = useState('');
+
+    // Editing State (Metadata)
+    const [editingMetaField, setEditingMetaField] = useState<'theme' | 'introduction' | null>(null);
+    const [editMetaValue, setEditMetaValue] = useState('');
 
     // Swap State
     const [swapModalOpen, setSwapModalOpen] = useState(false);
     const [swapIndex, setSwapIndex] = useState<number | null>(null);
     const [activeSwapCategory, setActiveSwapCategory] = useState<string>('All');
+    const [swapSearchTerm, setSwapSearchTerm] = useState('');
     const [userDrinks, setUserDrinks] = useState<Cocktail[]>([]);
 
-    const isOwner = user && menu && user.uid === menu.userId;
+    const isActualOwner = user && menu && user.uid === menu.userId;
+    const isCollaborator = menu?.isCollaborative && user;
+    const isOwner = isActualOwner || isCollaborator;
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -167,6 +175,46 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         }
     };
 
+    const startEditMeta = (field: 'theme' | 'introduction', currentValue: string) => {
+        if (!isOwner) return;
+        setEditingMetaField(field);
+        setEditMetaValue(currentValue);
+    };
+
+    const saveEditMeta = async () => {
+        if (editingMetaField === null || !menu) return;
+
+        const newMenuObj = { ...menu, [editingMetaField]: editMetaValue };
+        setMenu(newMenuObj);
+
+        setEditingMetaField(null);
+
+        try {
+            const docRef = doc(db, 'party_menus', resolvedParams.id);
+            await updateDoc(docRef, { [editingMetaField]: editMetaValue });
+            toast.success('Menu updated!');
+        } catch (err) {
+            console.error('Error updating menu metadata', err);
+            toast.error('Failed to save changes.');
+        }
+    };
+
+    const toggleCollaborative = async () => {
+        if (!isActualOwner || !menu) return;
+
+        const newValue = !menu.isCollaborative;
+        setMenu({ ...menu, isCollaborative: newValue });
+
+        try {
+            const docRef = doc(db, 'party_menus', resolvedParams.id);
+            await updateDoc(docRef, { isCollaborative: newValue });
+            toast.success(newValue ? 'Collaboration enabled! Guests can now edit.' : 'Collaboration disabled. Menu locked.');
+        } catch (err) {
+            console.error('Error updating collaboration mode', err);
+            toast.error('Failed to update settings.');
+        }
+    };
+
     const openSwapModal = (index: number) => {
         if (!isOwner) return;
         setSwapIndex(index);
@@ -214,10 +262,25 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         }
     };
 
-    const swapCategories = ['All', ...Array.from(new Set(CLASSIC_COCKTAILS.map(c => c.primarySpirit)))];
-    const filteredSwapCocktails = activeSwapCategory === 'All'
-        ? CLASSIC_COCKTAILS
-        : CLASSIC_COCKTAILS.filter(c => c.primarySpirit === activeSwapCategory);
+    const swapCategories = ['All', 'My Drinks', ...Array.from(new Set(CLASSIC_COCKTAILS.map(c => c.primarySpirit)))];
+
+    // Combine standard drinks and custom AI drinks for the Swap view
+    const allAvailableDrinks = [...CLASSIC_COCKTAILS, ...userDrinks];
+
+    const filteredSwapCocktails = allAvailableDrinks.filter(c => {
+        const matchesCategory = activeSwapCategory === 'All'
+            ? true
+            : activeSwapCategory === 'My Drinks'
+                ? (c.primarySpirit as string) === 'Custom' || (c.primarySpirit as string) === 'AI' // assuming custom drinks mark their spirit this way or we flag it
+                : c.primarySpirit === activeSwapCategory;
+
+        const searchLower = swapSearchTerm.toLowerCase();
+        const matchesSearch = swapSearchTerm.trim() === ''
+            ? true
+            : c.name.toLowerCase().includes(searchLower) || c.ingredients.some(i => i.item.toLowerCase().includes(searchLower));
+
+        return matchesCategory && matchesSearch;
+    });
 
     return (
         <div className="min-h-screen bg-[var(--bg)] text-white relative">
@@ -227,7 +290,16 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                 <Link href="/party" className="text-white/70 hover:text-white flex items-center gap-2 transition-colors">
                     <span>←</span> Menu Generator
                 </Link>
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
+                    {isActualOwner && (
+                        <button
+                            onClick={toggleCollaborative}
+                            className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${menu.isCollaborative ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'}`}
+                            title={menu.isCollaborative ? "Guests logged into Sipster can edit this menu." : "Only you can edit this menu."}
+                        >
+                            {menu.isCollaborative ? '🔓 Collab On' : '🔒 Locked'}
+                        </button>
+                    )}
                     <button
                         onClick={() => window.print()}
                         className="btn-primary px-6 py-2 rounded-full font-bold shadow-[0_0_15px_rgba(56,189,248,0.4)] flex items-center gap-2"
@@ -265,14 +337,48 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                 <div className="relative z-30 h-full flex flex-col justify-between p-12 sm:p-20 text-center text-white">
 
                     {/* Header */}
-                    <div className="flex flex-col items-center mt-[-10px]">
+                    <div className="flex flex-col items-center sm:items-start mt-[-10px] sm:pl-4">
                         <div className="w-16 h-[2px] bg-[var(--primary)] mb-6 shadow-[0_0_10px_var(--primary-glow)]"></div>
-                        <h1 className="text-4xl sm:text-6xl font-serif font-bold tracking-tight uppercase" style={{ textShadow: '2px 4px 10px rgba(0,0,0,0.8)' }}>
-                            {menu.theme}
-                        </h1>
-                        <p className="mt-8 text-lg sm:text-xl font-light italic text-white/90 max-w-lg leading-relaxed drop-shadow-md">
-                            "{menu.introduction}"
-                        </p>
+
+                        {isOwner && editingMetaField === 'theme' ? (
+                            <input
+                                autoFocus
+                                type="text"
+                                value={editMetaValue}
+                                onChange={(e) => setEditMetaValue(e.target.value)}
+                                onBlur={saveEditMeta}
+                                onKeyDown={(e) => { if (e.key === 'Enter') saveEditMeta(); }}
+                                className="bg-black/50 border border-[var(--primary)] rounded px-4 py-2 text-4xl sm:text-6xl font-serif font-bold tracking-tight uppercase text-center sm:text-left focus:outline-none w-full"
+                            />
+                        ) : (
+                            <h1
+                                onClick={() => startEditMeta('theme', menu.theme)}
+                                className={`text-4xl sm:text-6xl font-serif font-bold tracking-tight uppercase group relative ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
+                                style={{ textShadow: '2px 4px 10px rgba(0,0,0,0.8)' }}
+                            >
+                                {menu.theme}
+                                {isOwner && <span className="opacity-0 group-hover:opacity-100 print:hidden absolute -top-4 -right-8 text-xs text-[var(--primary)] bg-black/80 px-2 py-1 rounded">✎</span>}
+                            </h1>
+                        )}
+
+                        {isOwner && editingMetaField === 'introduction' ? (
+                            <textarea
+                                autoFocus
+                                value={editMetaValue}
+                                onChange={(e) => setEditMetaValue(e.target.value)}
+                                onBlur={saveEditMeta}
+                                onKeyDown={(e) => { if (e.key === 'Enter') saveEditMeta(); }}
+                                className="bg-black/50 border border-[var(--primary)] rounded px-4 py-2 mt-8 text-lg sm:text-xl font-light italic text-center focus:outline-none w-full max-w-lg resize-none h-32"
+                            />
+                        ) : (
+                            <p
+                                onClick={() => startEditMeta('introduction', menu.introduction)}
+                                className={`mt-8 text-lg sm:text-xl font-light italic text-white/90 max-w-lg leading-relaxed drop-shadow-md group relative ${isOwner ? 'cursor-pointer hover:text-white transition-all' : ''}`}
+                            >
+                                "{menu.introduction}"
+                                {isOwner && <span className="opacity-0 group-hover:opacity-100 print:hidden absolute -top-4 -right-4 text-xs text-[var(--primary)] bg-black/80 px-2 py-1 rounded not-italic">✎</span>}
+                            </p>
+                        )}
                     </div>
 
                     {/* Cocktail List */}
@@ -287,9 +393,9 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                     <div
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
-                                                        className={`text-center group relative p-4 rounded-2xl transition-all ${snapshot.isDragging ? 'bg-white/10 shadow-2xl scale-105 z-50' : 'hover:bg-white/5'}`}
+                                                        className={`text-left group relative p-4 rounded-2xl transition-all ${snapshot.isDragging ? 'bg-white/10 shadow-2xl scale-105 z-50' : 'hover:bg-white/5'}`}
                                                     >
-                                                        <div className="flex items-center justify-center gap-3 mb-2">
+                                                        <div className="flex items-center justify-start gap-3 mb-2">
                                                             {/* Drag Handle & Index */}
                                                             <div {...provided.dragHandleProps} className={`flex items-center gap-2 ${isOwner ? 'cursor-grab active:cursor-grabbing' : ''}`}>
                                                                 {isOwner && <span className="text-white/20 hover:text-white/60 transition-colors print:hidden">⣿</span>}
@@ -305,7 +411,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                                     onChange={(e) => setEditValue(e.target.value)}
                                                                     onBlur={saveEdit}
                                                                     onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
-                                                                    className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md text-center focus:outline-none w-full max-w-[300px]"
+                                                                    className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md text-left focus:outline-none w-full max-w-[300px]"
                                                                 />
                                                             ) : (
                                                                 <h2
@@ -333,7 +439,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                             )}
                                                         </div>
 
-                                                        <p className="text-xs sm:text-sm text-[var(--primary)] font-medium mb-1 drop-shadow uppercase tracking-widest">
+                                                        <p className="text-xs sm:text-sm text-[var(--primary)] font-medium mb-1 drop-shadow uppercase tracking-widest pl-20 sm:pl-28">
                                                             {cocktail.ingredients.map(i => i.item).slice(0, 4).join(' • ')}
                                                             {cocktail.ingredients.length > 4 ? ' • ...' : ''}
                                                         </p>
@@ -345,12 +451,12 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                                 onChange={(e) => setEditValue(e.target.value)}
                                                                 onBlur={saveEdit}
                                                                 onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
-                                                                className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xs sm:text-sm text-white/90 italic text-center focus:outline-none w-full max-w-[400px] block mx-auto resize-none h-16"
+                                                                className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xs sm:text-sm text-white/90 italic text-left focus:outline-none w-full max-w-[400px] resize-none h-16 ml-20 sm:ml-28"
                                                             />
                                                         ) : (
                                                             <p
                                                                 onClick={() => startEdit(index, 'tagline', cocktail.tagline || cocktail.description || '')}
-                                                                className={`text-xs sm:text-sm text-white/70 italic max-w-sm mx-auto ${isOwner ? 'cursor-pointer hover:text-white transition-all' : ''}`}
+                                                                className={`text-xs sm:text-sm text-white/70 italic max-w-lg pl-20 sm:pl-28 ${isOwner ? 'cursor-pointer hover:text-white transition-all' : ''}`}
                                                             >
                                                                 {cocktail.tagline || cocktail.description?.slice(0, 80) + '...'}
                                                             </p>
@@ -423,6 +529,17 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                     {cat}
                                 </button>
                             ))}
+                        </div>
+
+                        {/* Search Input */}
+                        <div className="p-4">
+                            <input
+                                type="text"
+                                placeholder="Search by name or ingredient..."
+                                value={swapSearchTerm}
+                                onChange={(e) => setSwapSearchTerm(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--secondary)] transition-colors"
+                            />
                         </div>
 
                         {/* Cocktail Grid */}
