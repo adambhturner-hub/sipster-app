@@ -8,11 +8,19 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import RiffButton from '@/components/RiffButton';
+import dynamic from 'next/dynamic';
+
+const DragDropContext = dynamic(() => import('@hello-pangea/dnd').then(mod => mod.DragDropContext), { ssr: false });
+const Droppable = dynamic(() => import('@hello-pangea/dnd').then(mod => mod.Droppable), { ssr: false });
+const Draggable = dynamic(() => import('@hello-pangea/dnd').then(mod => mod.Draggable), { ssr: false });
 
 interface GeneratedMenu {
     theme: string;
     introduction: string;
     cocktails: Cocktail[];
+    shoppingList?: string[];
+    prepPlan?: string[];
+    guestCount?: number;
     backgroundImage: string;
     userId?: string;
     createdAt: any;
@@ -187,6 +195,25 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         }
     };
 
+    const handleDragEnd = async (result: any) => {
+        if (!result.destination || !menu || !isOwner) return;
+
+        const items = Array.from(menu.cocktails);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        const newMenuObj = { ...menu, cocktails: items };
+        setMenu(newMenuObj);
+
+        try {
+            const docRef = doc(db, 'party_menus', resolvedParams.id);
+            await updateDoc(docRef, { cocktails: items });
+        } catch (err) {
+            console.error('Error saving reorder:', err);
+            toast.error('Failed to save new order.');
+        }
+    };
+
     const swapCategories = ['All', ...Array.from(new Set(CLASSIC_COCKTAILS.map(c => c.primarySpirit)))];
     const filteredSwapCocktails = activeSwapCategory === 'All'
         ? CLASSIC_COCKTAILS
@@ -250,72 +277,93 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
 
                     {/* Cocktail List */}
                     <div className="flex-grow flex flex-col justify-center gap-6 mt-8">
-                        {menu.cocktails.map((cocktail, index) => (
-                            <div key={cocktail.name + index} className="text-center group relative">
+                        <DragDropContext onDragEnd={handleDragEnd}>
+                            <Droppable droppableId="party-drinks">
+                                {(provided) => (
+                                    <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col gap-6">
+                                        {menu.cocktails.map((cocktail, index) => (
+                                            <Draggable key={cocktail.name + index} draggableId={cocktail.name + index} index={index} isDragDisabled={!isOwner}>
+                                                {(provided, snapshot) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        className={`text-center group relative p-4 rounded-2xl transition-all ${snapshot.isDragging ? 'bg-white/10 shadow-2xl scale-105 z-50' : 'hover:bg-white/5'}`}
+                                                    >
+                                                        <div className="flex items-center justify-center gap-3 mb-2">
+                                                            {/* Drag Handle & Index */}
+                                                            <div {...provided.dragHandleProps} className={`flex items-center gap-2 ${isOwner ? 'cursor-grab active:cursor-grabbing' : ''}`}>
+                                                                {isOwner && <span className="text-white/20 hover:text-white/60 transition-colors print:hidden">⣿</span>}
+                                                                <span className="text-white/40 text-sm font-sans tracking-normal hidden sm:inline">— 0{index + 1} —</span>
+                                                                <span className="text-2xl drop-shadow-md" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}>{cocktail.emoji || '🍸'}</span>
+                                                            </div>
 
-                                <div className="flex items-center justify-center gap-3 mb-2">
-                                    <span className="text-white/40 text-sm font-sans tracking-normal hidden sm:inline">— 0{index + 1} —</span>
+                                                            {isOwner && editingIndex === index && editingField === 'name' ? (
+                                                                <input
+                                                                    autoFocus
+                                                                    type="text"
+                                                                    value={editValue}
+                                                                    onChange={(e) => setEditValue(e.target.value)}
+                                                                    onBlur={saveEdit}
+                                                                    onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
+                                                                    className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md text-center focus:outline-none w-full max-w-[300px]"
+                                                                />
+                                                            ) : (
+                                                                <h2
+                                                                    onClick={() => startEdit(index, 'name', cocktail.name)}
+                                                                    className={`text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
+                                                                >
+                                                                    {cocktail.name}
+                                                                    {isOwner && <span className="opacity-0 group-hover:opacity-100 print:hidden text-xs ml-2 text-[var(--primary)] bg-black/50 px-2 py-1 rounded">✎ Edit</span>}
+                                                                </h2>
+                                                            )}
 
-                                    {isOwner && editingIndex === index && editingField === 'name' ? (
-                                        <input
-                                            autoFocus
-                                            type="text"
-                                            value={editValue}
-                                            onChange={(e) => setEditValue(e.target.value)}
-                                            onBlur={saveEdit}
-                                            onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
-                                            className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md text-center focus:outline-none w-full max-w-[300px]"
-                                        />
-                                    ) : (
-                                        <h2
-                                            onClick={() => startEdit(index, 'name', cocktail.name)}
-                                            className={`text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
-                                        >
-                                            {cocktail.name}
-                                            {isOwner && <span className="opacity-0 group-hover:opacity-100 print:hidden text-xs ml-2 text-[var(--primary)] bg-black/50 px-2 py-1 rounded">✎ Edit</span>}
-                                        </h2>
-                                    )}
+                                                            {isOwner && (
+                                                                <button
+                                                                    onClick={() => openSwapModal(index)}
+                                                                    className="opacity-0 group-hover:opacity-100 print:hidden ml-2 text-xs font-bold text-[var(--secondary)] hover:text-white transition-all bg-black/50 px-3 py-1 rounded-full border border-[var(--secondary)]/30 hover:border-[var(--secondary)]"
+                                                                >
+                                                                    Swap ↻
+                                                                </button>
+                                                            )}
 
-                                    {isOwner && (
-                                        <button
-                                            onClick={() => openSwapModal(index)}
-                                            className="opacity-0 group-hover:opacity-100 print:hidden ml-2 text-xs font-bold text-[var(--secondary)] hover:text-white transition-all bg-black/50 px-3 py-1 rounded-full border border-[var(--secondary)]/30 hover:border-[var(--secondary)]"
-                                        >
-                                            Swap ↻
-                                        </button>
-                                    )}
+                                                            {isOwner && (
+                                                                <div className="opacity-0 group-hover:opacity-100 print:hidden ml-1">
+                                                                    <RiffButton cocktail={cocktail} className="py-1 px-3 text-xs" />
+                                                                </div>
+                                                            )}
+                                                        </div>
 
-                                    {isOwner && (
-                                        <div className="opacity-0 group-hover:opacity-100 print:hidden ml-1">
-                                            <RiffButton cocktail={cocktail} className="py-1 px-3 text-xs" />
-                                        </div>
-                                    )}
-                                </div>
+                                                        <p className="text-xs sm:text-sm text-[var(--primary)] font-medium mb-1 drop-shadow uppercase tracking-widest">
+                                                            {cocktail.ingredients.map(i => i.item).slice(0, 4).join(' • ')}
+                                                            {cocktail.ingredients.length > 4 ? ' • ...' : ''}
+                                                        </p>
 
-                                <p className="text-xs sm:text-sm text-[var(--primary)] font-medium mb-1 drop-shadow uppercase tracking-widest">
-                                    {cocktail.ingredients.map(i => i.item).slice(0, 4).join(' • ')}
-                                    {cocktail.ingredients.length > 4 ? ' • ...' : ''}
-                                </p>
-
-                                {isOwner && editingIndex === index && editingField === 'tagline' ? (
-                                    <textarea
-                                        autoFocus
-                                        value={editValue}
-                                        onChange={(e) => setEditValue(e.target.value)}
-                                        onBlur={saveEdit}
-                                        onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
-                                        className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xs sm:text-sm text-white/90 italic text-center focus:outline-none w-full max-w-[400px] block mx-auto resize-none h-16"
-                                    />
-                                ) : (
-                                    <p
-                                        onClick={() => startEdit(index, 'tagline', cocktail.tagline || cocktail.description || '')}
-                                        className={`text-xs sm:text-sm text-white/70 italic max-w-sm mx-auto ${isOwner ? 'cursor-pointer hover:text-white transition-all' : ''}`}
-                                    >
-                                        {cocktail.tagline || cocktail.description?.slice(0, 80) + '...'}
-                                    </p>
+                                                        {isOwner && editingIndex === index && editingField === 'tagline' ? (
+                                                            <textarea
+                                                                autoFocus
+                                                                value={editValue}
+                                                                onChange={(e) => setEditValue(e.target.value)}
+                                                                onBlur={saveEdit}
+                                                                onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
+                                                                className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xs sm:text-sm text-white/90 italic text-center focus:outline-none w-full max-w-[400px] block mx-auto resize-none h-16"
+                                                            />
+                                                        ) : (
+                                                            <p
+                                                                onClick={() => startEdit(index, 'tagline', cocktail.tagline || cocktail.description || '')}
+                                                                className={`text-xs sm:text-sm text-white/70 italic max-w-sm mx-auto ${isOwner ? 'cursor-pointer hover:text-white transition-all' : ''}`}
+                                                            >
+                                                                {cocktail.tagline || cocktail.description?.slice(0, 80) + '...'}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
                                 )}
-                            </div>
-                        ))}
+                            </Droppable>
+                        </DragDropContext>
 
                         {/* Add Drink Button (Owner Only) */}
                         {isOwner && (

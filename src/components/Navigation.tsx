@@ -27,6 +27,7 @@ export default function Navigation() {
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
                         <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300">My Bar</Link>
                         <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--primary)] transition-all duration-300">Menu</Link>
+                        <Link href="/menus" className="text-gray-300 xl:text-lg hover:text-[var(--primary)] transition-all duration-300">Menus</Link>
                         <Link href="/discover" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Discover 🌍</Link>
                         <Link href="/journal" className="text-gray-300 xl:text-lg hover:text-[var(--secondary)] transition-all duration-300 flex items-center gap-1">Journal 📓</Link>
                         <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
@@ -103,6 +104,13 @@ export default function Navigation() {
                             className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-purple)] rounded-lg transition-colors border-b border-gray-800/50"
                         >
                             Menu
+                        </Link>
+                        <Link
+                            href="/menus"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-purple)] rounded-lg transition-colors border-b border-gray-800/50"
+                        >
+                            Menus
                         </Link>
                         <Link
                             href="/discover"

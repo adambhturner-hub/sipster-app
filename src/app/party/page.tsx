@@ -8,8 +8,9 @@ import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function PartyPlanner() {
-    const [theme, setTheme] = useState('');
-    const [customLogic, setCustomLogic] = useState('');
+    const [vibe, setVibe] = useState('');
+    const [guestCount, setGuestCount] = useState('4');
+    const [spiritsAvailable, setSpiritsAvailable] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();
@@ -17,7 +18,7 @@ export default function PartyPlanner() {
 
     const generateMenu = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!theme) return;
+        if (!vibe) return;
 
         setIsGenerating(true);
         setError('');
@@ -28,8 +29,9 @@ export default function PartyPlanner() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    theme,
-                    customLogic,
+                    vibe,
+                    spiritsAvailable,
+                    guestCount: parseInt(guestCount) || 4,
                     userId: user?.uid || null
                 }),
             });
@@ -79,28 +81,42 @@ export default function PartyPlanner() {
                     <form onSubmit={generateMenu} className="relative z-10 space-y-8 flex flex-col">
 
                         <div>
-                            <label className="block text-xl font-bold mb-2">What's the vibe?</label>
-                            <p className="text-gray-400 text-sm mb-4">Describe the theme, era, or mood of your gathering.</p>
+                            <label className="block text-xl font-bold mb-2">1. Number of guests</label>
                             <input
-                                type="text"
-                                value={theme}
-                                onChange={(e) => setTheme(e.target.value)}
-                                placeholder="e.g. Roaring 20s Speakeasy, Tropical Luau, elegant dinner..."
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all placeholder:text-gray-600 text-lg"
+                                type="number"
+                                min="1"
+                                max="100"
+                                value={guestCount}
+                                onChange={(e) => setGuestCount(e.target.value)}
+                                className="w-full sm:w-1/3 bg-black/40 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all placeholder:text-gray-600 text-lg"
                                 required
                                 disabled={isGenerating}
                             />
                         </div>
 
                         <div>
-                            <label className="block text-xl font-bold mb-2">Any preferences? <span className="text-sm font-normal text-gray-500">(Optional)</span></label>
-                            <p className="text-gray-400 text-sm mb-4">Tell us if you want strictly Vodka drinks, no highly difficult recipes, etc.</p>
+                            <label className="block text-xl font-bold mb-2">2. Spirits available</label>
+                            <p className="text-gray-400 text-sm mb-4">What liquors do you have on hand? (Leave blank to use any)</p>
                             <input
                                 type="text"
-                                value={customLogic}
-                                onChange={(e) => setCustomLogic(e.target.value)}
-                                placeholder="e.g. Only tequila and mezcal, keep them easy to make"
+                                value={spiritsAvailable}
+                                onChange={(e) => setSpiritsAvailable(e.target.value)}
+                                placeholder="e.g. Tequila, Mezcal, Gin"
                                 className="w-full bg-black/40 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all placeholder:text-gray-600 text-lg"
+                                disabled={isGenerating}
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-xl font-bold mb-2">3. Vibe</label>
+                            <p className="text-gray-400 text-sm mb-4">Describe the theme, era, or mood of your gathering.</p>
+                            <input
+                                type="text"
+                                value={vibe}
+                                onChange={(e) => setVibe(e.target.value)}
+                                placeholder="e.g. Derby, Summer Patio, Moody Jazz Night"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all placeholder:text-gray-600 text-lg"
+                                required
                                 disabled={isGenerating}
                             />
                         </div>
@@ -113,8 +129,8 @@ export default function PartyPlanner() {
 
                         <button
                             type="submit"
-                            disabled={!theme || isGenerating}
-                            className={`w-full py-5 rounded-2xl font-bold text-xl uppercase tracking-wider transition-all duration-300 mt-4 ${isGenerating || !theme
+                            disabled={!vibe || isGenerating}
+                            className={`w-full py-5 rounded-2xl font-bold text-xl uppercase tracking-wider transition-all duration-300 mt-4 ${isGenerating || !vibe
                                 ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
                                 : 'btn-primary shadow-[0_0_30px_rgba(56,189,248,0.3)] hover:shadow-[0_0_50px_rgba(56,189,248,0.5)] hover:-translate-y-1'
                                 }`}

@@ -1,6 +1,8 @@
 import { OpenAI } from 'openai';
 import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
 import { NextRequest } from 'next/server';
+import { adminStorage } from '@/lib/firebase-admin';
+import { v4 as uuidv4 } from 'uuid';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60; // Max out Vercel pro tier timeout for DALL-E 3 wait times
@@ -19,26 +21,28 @@ const simplifiedCocktailDB = CLASSIC_COCKTAILS.map((c: Cocktail) => ({
 
 export async function POST(req: NextRequest) {
     try {
-        const { theme, customLogic, userId } = await req.json();
+        const { vibe, spiritsAvailable, guestCount, userId } = await req.json();
 
-        if (!theme) {
-            return new Response('Theme is required', { status: 400 });
+        if (!vibe) {
+            return new Response('Vibe is required', { status: 400 });
         }
 
         // --- STEP 1: Generate the Menu Selection ---
-        console.log(`[PARTY_GEN] Curating menu for theme: "${theme}"...`);
+        console.log(`[PARTY_GEN] Curating menu for vibe: "${vibe}" for ${guestCount || 4} guests...`);
 
-        const systemPrompt = `You are a master mixologist curating a specialized 4-drink cocktail menu for an event. 
-The user wants a menu themed around: "${theme}". 
-${customLogic ? `The user also requested: "${customLogic}".` : ''}
+        const systemPrompt = `You are a master mixologist curating a specialized 3-drink cocktail menu for a gathering of ${guestCount || 4} guests. 
+The user wants a menu themed around the vibe: "${vibe}". 
+${spiritsAvailable ? `The user ONLY has these spirits available: "${spiritsAvailable}". You must heavily bias towards these, or suggest highly accessible alternatives.` : ''}
 
-You MUST select exactly 4 cocktails from the provided JSON database that best fit this theme. 
+You MUST select exactly 3 cocktails from the provided JSON database that best fit this theme and the available spirits. 
 
 Return a strict JSON object with this EXACT structure:
 {
-  "cocktailNames": ["Name 1", "Name 2", "Name 3", "Name 4"],
+  "cocktailNames": ["Name 1", "Name 2", "Name 3"],
   "menuIntroduction": "A fun, creative, 2-3 sentence introduction to this specific menu. Example: 'Welcome to the ultimate Tiki Bash! Cool down with these tropical classics.'",
-  "artPrompt": "A highly detailed prompt for DALL-E 3 to generate a background illustration for this physical printed paper menu. It should be stylistic, moody, and fit the theme perfectly. Do not include text in the image prompt."
+  "artPrompt": "A highly detailed prompt for DALL-E 3 to generate a background illustration for this physical printed paper menu. It should be stylistic, moody, and fit the theme perfectly. Do not include text in the image prompt.",
+  "shoppingList": ["Specific Item 1 - Quantity needed for ${guestCount || 4} guests", "Item 2", "Item 3"],
+  "prepPlan": ["1. The day before: Do this...", "2. 1 hour before: Do this...", "3. When serving: Do this..."]
 }
 
 Do NOT hallucinate names that do not exist in the JSON.
@@ -58,10 +62,10 @@ ${JSON.stringify(simplifiedCocktailDB)}`;
         const content = chatCompletion.choices[0].message.content || "{}";
         const menuData = JSON.parse(content);
 
-        if (!menuData.cocktailNames || menuData.cocktailNames.length !== 4) {
-            console.error("[PARTY_GEN] AI failed to return exactly 4 cocktails:", menuData.cocktailNames);
-            // Fallback to ensuring exactly 4
-            menuData.cocktailNames = CLASSIC_COCKTAILS.slice(0, 4).map(c => c.name);
+        if (!menuData.cocktailNames || menuData.cocktailNames.length !== 3) {
+            console.error("[PARTY_GEN] AI failed to return exactly 3 cocktails:", menuData.cocktailNames);
+            // Fallback to ensuring exactly 3
+            menuData.cocktailNames = CLASSIC_COCKTAILS.slice(0, 3).map(c => c.name);
         }
 
         // --- STEP 2: Fetch full objects ---
@@ -83,7 +87,36 @@ ${JSON.stringify(simplifiedCocktailDB)}`;
                 quality: "hd",
                 style: "vivid"
             });
-            imageUrl = imageResponse.data?.[0]?.url || '';
+            const dalleUrl = imageResponse.data?.[0]?.url;
+
+            if (dalleUrl) {
+                if (adminStorage) {
+                    try {
+                        console.log(`[PARTY_GEN] Downloading image from OpenAI and uploading to Firebase Storage...`);
+                        const response = await fetch(dalleUrl);
+                        const arrayBuffer = await response.arrayBuffer();
+                        const buffer = Buffer.from(arrayBuffer);
+
+                        const bucket = adminStorage.bucket();
+                        const fileName = `party-backgrounds/${uuidv4()}.png`;
+                        const file = bucket.file(fileName);
+
+                        await file.save(buffer, { contentType: 'image/png' });
+                        await file.makePublic();
+
+                        imageUrl = file.publicUrl();
+                        console.log(`[PARTY_GEN] Successfully saved to Firebase at ${imageUrl}`);
+                    } catch (uploadErr) {
+                        console.error("[PARTY_GEN] Failed to upload to Storage, falling back to DALL-E URL:", uploadErr);
+                        imageUrl = dalleUrl;
+                    }
+                } else {
+                    console.log("[PARTY_GEN] Admin Storage not initialized, using expiring DALL-E URL.");
+                    imageUrl = dalleUrl;
+                }
+            } else {
+                throw new Error("No URL returned from DALL-E");
+            }
         } catch (imgErr) {
             console.error("[PARTY_GEN] DALL-E failed:", imgErr);
             // Fallback gracefully without an image
@@ -93,9 +126,12 @@ ${JSON.stringify(simplifiedCocktailDB)}`;
         console.log(`[PARTY_GEN] Success! URL generated.`);
 
         return new Response(JSON.stringify({
-            theme,
+            theme: vibe,
             introduction: menuData.menuIntroduction,
             cocktails: selectedCocktails,
+            shoppingList: menuData.shoppingList || [],
+            prepPlan: menuData.prepPlan || [],
+            guestCount: guestCount || 4,
             backgroundImage: imageUrl,
             userId: userId || null
         }), {
