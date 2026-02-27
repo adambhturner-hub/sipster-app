@@ -5,6 +5,13 @@ import { User, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup 
 import { auth, db } from '../lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 
+export interface TasteProfile {
+    nickname: string;
+    description: string;
+    topFlavors: string[];
+    updatedAt: string;
+}
+
 interface AuthContextType {
     user: User | null;
     loading: boolean;
@@ -12,6 +19,7 @@ interface AuthContextType {
     logout: () => Promise<void>;
     myBar: string[];
     shoppingList: string[];
+    tasteProfile: TasteProfile | null;
     addToBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
 }
@@ -23,6 +31,7 @@ const AuthContext = createContext<AuthContextType>({
     logout: async () => { },
     myBar: [],
     shoppingList: [],
+    tasteProfile: null,
     addToBar: async () => { },
     addToShoppingList: async () => { },
 });
@@ -34,6 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
+    const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -97,6 +107,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 if (docSnap.exists()) {
                     setMyBar(docSnap.data().myBar || []);
                     setShoppingList(docSnap.data().shoppingList || []);
+                    setTasteProfile(docSnap.data().tasteProfile || null);
                 }
             });
             return () => unsubscribe();
@@ -144,10 +155,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <AuthContext.Provider value={{
-            user, loading, signInWithGoogle, logout,
-            myBar, shoppingList, addToBar, addToShoppingList
+            user,
+            loading,
+            signInWithGoogle,
+            logout,
+            myBar,
+            shoppingList,
+            tasteProfile,
+            addToBar,
+            addToShoppingList
         }}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     );
 };

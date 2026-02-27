@@ -28,7 +28,7 @@ export default function Navigation() {
                         <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300">My Bar</Link>
                         <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--primary)] transition-all duration-300">Menu</Link>
                         <Link href="/discover" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Discover 🌍</Link>
-                        <Link href="/favorites" className="text-gray-300 xl:text-lg hover:text-[var(--secondary)] transition-all duration-300">Favorites</Link>
+                        <Link href="/journal" className="text-gray-300 xl:text-lg hover:text-[var(--secondary)] transition-all duration-300 flex items-center gap-1">Journal 📓</Link>
                         <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
                         <Link href="/create" className="text-[var(--primary)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
                     </nav>
@@ -111,11 +111,11 @@ export default function Navigation() {
                             Discover 🌍
                         </Link>
                         <Link
-                            href="/favorites"
+                            href="/journal"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-pink)] rounded-lg transition-colors border-b border-gray-800/50"
                         >
-                            Favorites
+                            Journal 📓
                         </Link>
                         <Link
                             href="/chat"
