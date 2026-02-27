@@ -286,11 +286,11 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         <div className="min-h-screen bg-[var(--bg)] text-white relative">
 
             {/* Screen-Only Controls (Hidden during print) */}
-            <div className="print:hidden absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent">
+            <div className="print:hidden absolute top-0 left-0 right-0 p-4 sm:p-6 flex flex-wrap justify-between items-start sm:items-center gap-4 z-50 bg-gradient-to-b from-black/80 to-transparent">
                 <Link href="/party" className="text-white/70 hover:text-white flex items-center gap-2 transition-colors">
                     <span>←</span> Menu Generator
                 </Link>
-                <div className="flex gap-4 items-center">
+                <div className="flex flex-wrap gap-2 sm:gap-4 items-center justify-end max-w-full">
                     {isActualOwner && (
                         <button
                             onClick={toggleCollaborative}
@@ -325,6 +325,9 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                     alt={`Background art for ${menu.theme}`}
                     className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
                     crossOrigin="anonymous" // Helpful for printing if images are on another domain
+                    onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                    }}
                 />
 
                 {/* Dark Vignette to ensure text readability */}
@@ -348,12 +351,12 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                 onChange={(e) => setEditMetaValue(e.target.value)}
                                 onBlur={saveEditMeta}
                                 onKeyDown={(e) => { if (e.key === 'Enter') saveEditMeta(); }}
-                                className="bg-black/50 border border-[var(--primary)] rounded px-4 py-2 text-4xl sm:text-6xl font-serif font-bold tracking-tight uppercase text-center sm:text-left focus:outline-none w-full"
+                                className="bg-black/50 border border-[var(--primary)] rounded px-4 py-2 text-4xl sm:text-6xl font-bold tracking-tight uppercase text-center sm:text-left focus:outline-none w-full"
                             />
                         ) : (
                             <h1
                                 onClick={() => startEditMeta('theme', menu.theme)}
-                                className={`text-4xl sm:text-6xl font-serif font-bold tracking-tight uppercase group relative ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
+                                className={`text-4xl sm:text-6xl font-bold tracking-tight uppercase group relative ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
                                 style={{ textShadow: '2px 4px 10px rgba(0,0,0,0.8)' }}
                             >
                                 {menu.theme}
@@ -411,12 +414,12 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                                     onChange={(e) => setEditValue(e.target.value)}
                                                                     onBlur={saveEdit}
                                                                     onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); }}
-                                                                    className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md text-left focus:outline-none w-full max-w-[300px]"
+                                                                    className="bg-black/50 border border-[var(--primary)] rounded px-2 py-1 text-xl sm:text-2xl font-bold uppercase tracking-widest text-[#e0f2fe] drop-shadow-md text-left focus:outline-none w-full max-w-[300px]"
                                                                 />
                                                             ) : (
                                                                 <h2
                                                                     onClick={() => startEdit(index, 'name', cocktail.name)}
-                                                                    className={`text-xl sm:text-2xl font-bold font-serif uppercase tracking-widest text-[#e0f2fe] drop-shadow-md ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
+                                                                    className={`text-xl sm:text-2xl font-bold uppercase tracking-widest text-[#e0f2fe] drop-shadow-md ${isOwner ? 'cursor-pointer hover:text-white hover:drop-shadow-[0_0_8px_var(--primary-glow)] transition-all' : ''}`}
                                                                 >
                                                                     {cocktail.name}
                                                                     {isOwner && <span className="opacity-0 group-hover:opacity-100 print:hidden text-xs ml-2 text-[var(--primary)] bg-black/50 px-2 py-1 rounded">✎ Edit</span>}
@@ -426,14 +429,14 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                             {isOwner && (
                                                                 <button
                                                                     onClick={() => openSwapModal(index)}
-                                                                    className="opacity-0 group-hover:opacity-100 print:hidden ml-2 text-xs font-bold text-[var(--secondary)] hover:text-white transition-all bg-black/50 px-3 py-1 rounded-full border border-[var(--secondary)]/30 hover:border-[var(--secondary)]"
+                                                                    className="opacity-0 group-hover:opacity-100 print:hidden ml-2 text-xs font-bold text-[var(--secondary)] hover:text-white transition-all bg-black/50 px-3 py-1 rounded-full border border-[var(--secondary)]/30 hover:border-[var(--secondary)] whitespace-nowrap"
                                                                 >
                                                                     Swap ↻
                                                                 </button>
                                                             )}
 
                                                             {isOwner && (
-                                                                <div className="opacity-0 group-hover:opacity-100 print:hidden ml-1">
+                                                                <div className="opacity-0 group-hover:opacity-100 print:hidden ml-1 flex-shrink-0">
                                                                     <RiffButton cocktail={cocktail} className="py-1 px-3 text-xs" />
                                                                 </div>
                                                             )}
@@ -515,6 +518,17 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                             <button onClick={() => setSwapModalOpen(false)} className="text-gray-500 hover:text-white transition-colors text-2xl font-bold">&times;</button>
                         </div>
 
+                        {/* Search Input */}
+                        <div className="p-4 bg-gray-900/80 border-b border-white/5">
+                            <input
+                                type="text"
+                                placeholder="Search by name or ingredient..."
+                                value={swapSearchTerm}
+                                onChange={(e) => setSwapSearchTerm(e.target.value)}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--secondary)] transition-colors"
+                            />
+                        </div>
+
                         {/* Categories List */}
                         <div className="flex gap-2 p-4 overflow-x-auto border-b border-white/5 bg-gray-900/50">
                             {swapCategories.map(cat => (
@@ -523,23 +537,12 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                     onClick={() => setActiveSwapCategory(cat)}
                                     className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-semibold transition-all ${activeSwapCategory === cat
                                         ? 'bg-[var(--primary)] text-black shadow-[0_0_10px_var(--primary-glow)]'
-                                        : 'bg-black/40 text-gray-400 hover:text-white hover:bg-white/10'
+                                        : 'bg-white/10 text-white/80 hover:text-white hover:bg-white/20'
                                         }`}
                                 >
                                     {cat}
                                 </button>
                             ))}
-                        </div>
-
-                        {/* Search Input */}
-                        <div className="p-4">
-                            <input
-                                type="text"
-                                placeholder="Search by name or ingredient..."
-                                value={swapSearchTerm}
-                                onChange={(e) => setSwapSearchTerm(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[var(--secondary)] transition-colors"
-                            />
                         </div>
 
                         {/* Cocktail Grid */}
