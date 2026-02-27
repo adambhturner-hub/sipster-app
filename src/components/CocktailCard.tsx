@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { Cocktail } from '@/data/cocktails';
 import FavoriteButton from './FavoriteButton';
+import RiffButton from './RiffButton';
 
 interface CocktailCardProps {
     cocktail: Cocktail;
@@ -36,17 +37,7 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                             type={favoriteType}
                             onChange={onFavoriteChange}
                         />
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                localStorage.setItem('sipster-riff-cocktail', JSON.stringify(cocktail));
-                                window.location.href = '/create?mode=riff';
-                            }}
-                            className="flex items-center justify-center gap-1.5 px-3 py-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 rounded-full text-xs font-bold border border-purple-500/20 transition-all font-sans tracking-wide uppercase"
-                            title="Duplicate this recipe into the Creator Studio"
-                        >
-                            Riff ✨
-                        </button>
+                        <RiffButton cocktail={cocktail} />
                         {makeable ? (
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse"></span>
@@ -108,7 +99,7 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                                 <span className={officiallyHasIt ? "text-gray-200" : "text-gray-600 line-through decoration-gray-700 flex items-center gap-2"}>
                                     {ing?.item || 'Mystery Ingredient'}
                                     {!officiallyHasIt && (
-                                        <div className="flex gap-1 opacity-0 group-hover/ing:opacity-100 transition-opacity translate-y-0.5 pointer-events-auto absolute left-full ml-2 whitespace-nowrap z-50">
+                                        <div className="hidden group-hover/ing:flex gap-1 pointer-events-auto z-50">
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault();
@@ -131,7 +122,7 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                                         </div>
                                     )}
                                 </span>
-                                <div className="flex items-center gap-3">
+                                <div className={`flex items-center gap-3 ${!officiallyHasIt && 'group-hover/ing:hidden'}`}>
                                     <span className="text-gray-500 font-mono text-xs">{ing?.amount || 'To taste'}</span>
                                 </div>
                             </div>

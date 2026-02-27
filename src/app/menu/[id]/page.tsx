@@ -3,6 +3,8 @@ import Link from 'next/link';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
+import RiffButton from '@/components/RiffButton';
+import InteractiveIngredients from '@/components/InteractiveIngredients';
 
 export async function generateStaticParams() {
     return CLASSIC_COCKTAILS.map((cocktail) => ({
@@ -52,6 +54,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                     {cocktail.name}
                                 </h1>
                                 <div className="flex items-center gap-3">
+                                    <RiffButton cocktail={cocktail} />
                                     <ShareButton
                                         title={cocktail.name}
                                         text={`Check out the ${cocktail.name} on Sipster! ${cocktail.tagline}`}
@@ -166,14 +169,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                 <span className="text-gray-500 text-sm">Ratio: {cocktail.ratio}</span>
                             </div>
 
-                            <ul className="space-y-3 mb-6">
-                                {cocktail.ingredients.map((ing, idx) => (
-                                    <li key={idx} className="flex justify-between items-center bg-gray-950 p-3 rounded-lg border border-gray-800/50">
-                                        <span className="font-medium text-gray-200">{ing.item}</span>
-                                        <span className="text-[var(--primary)] font-mono text-sm">{ing.amount}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            <InteractiveIngredients ingredients={cocktail.ingredients} />
 
                             <div className="flex justify-between text-sm text-gray-400 bg-gray-950 p-4 rounded-xl border border-gray-800/50">
                                 <div><span className="block text-xs uppercase tracking-wider text-gray-500 mb-1">Garnish</span> <span className="text-white">{cocktail.garnish}</span></div>
