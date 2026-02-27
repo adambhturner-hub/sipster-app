@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
     if (!cocktail) return { title: 'Cocktail Not Found' };
 
-    const ogUrl = new URL('https://sipster.app/api/og');
+    const ogUrl = new URL('https://sipster-app.vercel.app/api/og');
     ogUrl.searchParams.set('title', cocktail.name);
     ogUrl.searchParams.set('subtitle', `${cocktail.primarySpirit} • ${cocktail.style}`);
     ogUrl.searchParams.set('emoji', cocktail.emoji);

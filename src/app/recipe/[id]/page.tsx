@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         }
 
         const cocktail = docSnap.data().cocktailData as Cocktail;
-        const ogUrl = new URL('https://sipster.app/api/og');
+        const ogUrl = new URL('https://sipster-app.vercel.app/api/og');
         ogUrl.searchParams.set('title', cocktail.name || 'Custom AI Recipe');
         ogUrl.searchParams.set('subtitle', `${cocktail.primarySpirit || 'Mystery'} • AI Original`);
         ogUrl.searchParams.set('emoji', cocktail.emoji || '✨');

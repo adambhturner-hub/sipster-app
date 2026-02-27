@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export default function BigNeonLogo() {
     const [isHovering, setIsHovering] = useState(false);
@@ -151,46 +152,23 @@ export default function BigNeonLogo() {
             onClick={playSpark}
         >
             <div className="relative w-48 h-48 md:w-80 md:h-80 flex items-center justify-center">
-                {/* 
-                    The Mustache SVG. We use intricate drop-shadows to simulate neon tubing. 
-                    - Multiple drop-shadows stack to create the glowing aura.
-                    - We use a specific vibrant blue for the 'tube' stroke.
-                */}
-                <svg
+                <Image
                     id="neon-mustache-svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    src="/logo.png"
+                    alt="Sipster Logo"
+                    fill
+                    priority
                     className={`
-                        w-full h-full text-[#38bdf8] transition-all duration-300
+                        object-contain transition-all duration-300
                         ${isHovering
                             ? 'drop-shadow-[0_0_10px_#0ea5e9] drop-shadow-[0_0_20px_#0284c7] drop-shadow-[0_0_40px_#0369a1] drop-shadow-[0_0_80px_#0c4a6e] scale-[1.03]'
                             : 'drop-shadow-[0_0_5px_#0ea5e9] drop-shadow-[0_0_15px_#0284c7] drop-shadow-[0_0_30px_#0369a1]'}
                         animate-[flicker_4s_infinite_alternate]
                     `}
                     style={{
-                        // A custom flicker animation specifically targeting the brightness and glow
                         animationName: isHovering ? 'hoverFlicker' : 'flicker'
                     }}
-                >
-                    <path d="M12 18.252c-2.454 0-4.665-1.464-5.592-3.693-.578-1.39-2.022-2.316-3.56-2.316-1.574 0-2.848 1.25-2.848 2.805 0 3.235 2.502 5.952 5.766 5.952 2.378 0 4.453-1.408 5.378-3.46l.856-2.112z" />
-                    <path d="M12 18.252c2.454 0 4.665-1.464 5.592-3.693.578-1.39 2.022-2.316 3.56-2.316 1.574 0 2.848 1.25 2.848 2.805 0 3.235-2.502 5.952-5.766 5.952-2.378 0-4.453-1.408-5.378-3.46l-.856-2.112z" />
-                    <path d="M8.2 13.5c1.2-1.5 2.5-3.5 3.8-3.5 1.3 0 2.6 2 3.8 3.5" />
-                </svg>
-
-                {/* Sub-label */}
-                <span
-                    className={`
-                        absolute -bottom-4 md:-bottom-8 font-serif font-bold text-4xl md:text-6xl text-white tracking-widest
-                        ${isHovering ? 'drop-shadow-[0_0_15px_#38bdf8] text-[#e0f2fe]' : ''}
-                        transition-all duration-300
-                    `}
-                >
-                    SIPSTER
-                </span>
+                />
             </div>
 
             {/* Global CSS for the flicker animations */}
