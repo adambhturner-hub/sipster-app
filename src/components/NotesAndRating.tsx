@@ -86,50 +86,13 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                 updatedAt: new Date().toISOString()
             };
 
-            // 2. We use a transaction to safely update the Global Cocktail Stats AND save the personal record
-            await runTransaction(db, async (transaction) => {
-                // A. Read Global Stats
-                const statsRef = doc(db, 'cocktail_stats', cocktailId);
-                const statsDoc = await transaction.get(statsRef);
+            // 2. Save the personal record
+            // The `setDoc` import is already at the top, no need to re-import here.
 
-                let totalReviews = 0;
-                let sumRatings = 0;
-
-                if (statsDoc.exists()) {
-                    totalReviews = statsDoc.data().totalReviews || 0;
-                    sumRatings = statsDoc.data().sumRatings || 0;
-                }
-
-                // B. Update math for new rating
-                if (rating > 0) {
-                    if (previousRating > 0) {
-                        // They changed their rating
-                        sumRatings = sumRatings - previousRating + rating;
-                    } else {
-                        // Brand new rating
-                        totalReviews += 1;
-                        sumRatings += rating;
-                    }
-
-                    const averageRating = sumRatings / totalReviews;
-
-                    transaction.set(statsRef, {
-                        totalReviews,
-                        sumRatings,
-                        averageRating: parseFloat(averageRating.toFixed(1))
-                    }, { merge: true });
-                }
-
-                // C. Write the personal record
-                if (docId) {
-                    const userRecordRef = doc(db, 'favorites', docId);
-                    transaction.set(userRecordRef, interactionData, { merge: true });
-                }
-            });
-
-            // If we didn't have a docId, the transaction couldn't create a new document easily while returning the ID 
-            // without complex ref generation. So we handle creation outside if needed.
-            if (!docId) {
+            if (docId) {
+                const userRecordRef = doc(db, 'favorites', docId);
+                await setDoc(userRecordRef, interactionData, { merge: true });
+            } else {
                 const newDocRef = await addDoc(collection(db, 'favorites'), {
                     ...interactionData,
                     createdAt: new Date().toISOString()
@@ -137,11 +100,49 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                 setDocId(newDocRef.id);
             }
 
+            // 3. Attempt to update Global Cocktail Stats in a separate transaction
+            // We wrap this in a separate try/catch so that if the user doesn't have 
+            // Firestore Security Rule permissions for the new `cocktail_stats` collection, 
+            // it won't crash their personal note saving!
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const statsRef = doc(db, 'cocktail_stats', cocktailId);
+                    const statsDoc = await transaction.get(statsRef);
+
+                    let totalReviews = 0;
+                    let sumRatings = 0;
+
+                    if (statsDoc.exists()) {
+                        totalReviews = statsDoc.data().totalReviews || 0;
+                        sumRatings = statsDoc.data().sumRatings || 0;
+                    }
+
+                    if (rating > 0) {
+                        if (previousRating > 0) {
+                            sumRatings = sumRatings - previousRating + rating;
+                        } else {
+                            totalReviews += 1;
+                            sumRatings += rating;
+                        }
+
+                        const averageRating = sumRatings / totalReviews;
+
+                        transaction.set(statsRef, {
+                            totalReviews,
+                            sumRatings,
+                            averageRating: parseFloat(averageRating.toFixed(1))
+                        }, { merge: true });
+                    }
+                });
+
+                // Dispatch custom event to refresh UI if successful
+                window.dispatchEvent(new Event('globalRatingUpdated'));
+            } catch (statsError) {
+                console.warn("Could not update global cocktail_stats (likely missing Firestore security rules). Personal notes were still saved:", statsError);
+            }
+
             setPreviousRating(rating);
             toast.success("Notes saved successfully! 📝");
-
-            // Dispatch a custom event so the UI can refresh the global score immediately
-            window.dispatchEvent(new Event('globalRatingUpdated'));
 
         } catch (error) {
             console.error("Error saving notes:", error);
