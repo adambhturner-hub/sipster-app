@@ -140,7 +140,7 @@ export default function BigNeonLogo() {
 
     return (
         <div
-            className="flex justify-center items-center cursor-pointer mb-6 z-20 relative select-none w-full"
+            className="flex justify-center items-center cursor-pointer z-20 relative select-none w-full"
             onMouseEnter={() => {
                 setIsHovering(true);
                 playHiss();
@@ -151,7 +151,7 @@ export default function BigNeonLogo() {
             }}
             onClick={playSpark}
         >
-            <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center -mt-8 -mb-16">
+            <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center -mt-12 -mb-24 md:-mt-24 md:-mb-36">
                 <Image
                     id="neon-mustache-svg"
                     src="/logo.png"
