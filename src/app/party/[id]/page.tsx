@@ -286,7 +286,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         <div className="min-h-screen bg-[var(--bg)] text-white relative">
 
             {/* Screen-Only Controls (Hidden during print) */}
-            <div className="print:hidden absolute top-0 left-0 right-0 p-4 sm:p-6 flex flex-wrap justify-between items-start sm:items-center gap-4 z-50 bg-gradient-to-b from-black/80 to-transparent">
+            <div className="print:hidden w-full max-w-7xl mx-auto p-4 sm:p-6 flex flex-wrap justify-between items-start sm:items-center gap-4 z-50">
                 <Link href="/party" className="text-white/70 hover:text-white flex items-center gap-2 transition-colors">
                     <span>←</span> Menu Generator
                 </Link>
@@ -317,7 +317,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
             </div>
 
             {/* Printable Menu Wrapper (A4 / Letter Proportions) */}
-            <div className="printable-menu-wrapper mx-auto mt-24 print:mt-0 print:m-0 w-full max-w-[816px] aspect-[8.5/11] relative overflow-hidden shadow-2xl print:shadow-none bg-black">
+            <div className="printable-menu-wrapper mx-auto mt-6 print:mt-0 print:m-0 w-full max-w-[816px] aspect-[8.5/11] relative overflow-hidden shadow-2xl print:shadow-none bg-black">
 
                 {/* DALL-E 3 Background Image */}
                 <img
