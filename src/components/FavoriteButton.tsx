@@ -89,11 +89,10 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 [interactionType]: !interactions[interactionType]
             };
 
-            // If they just tried it, maybe they no longer "want to try" it
+            // Strictly exclusive states
             if (interactionType === 'isTried' && newInteractions.isTried) {
                 newInteractions.isWantToTry = false;
             }
-            // If they want to try it, they probably haven't tried it
             if (interactionType === 'isWantToTry' && newInteractions.isWantToTry) {
                 newInteractions.isTried = false;
             }

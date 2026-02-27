@@ -14,9 +14,23 @@ interface CocktailCardProps {
     favoriteId?: string;
     favoriteType?: 'classic' | 'custom_full' | 'custom';
     onFavoriteChange?: (isFavorited: boolean) => void;
+    userRating?: number;
+    userNotes?: string;
+    showReviewPrompt?: boolean;
 }
 
-export default function CocktailCard({ cocktail, makeable, hasIngredient, customHref, favoriteId, favoriteType = 'classic', onFavoriteChange }: CocktailCardProps) {
+export default function CocktailCard({
+    cocktail,
+    makeable,
+    hasIngredient,
+    customHref,
+    favoriteId,
+    favoriteType = 'classic',
+    onFavoriteChange,
+    userRating,
+    userNotes,
+    showReviewPrompt
+}: CocktailCardProps) {
     const { addToBar, addToShoppingList, shoppingList = [] } = useAuth();
     const href = customHref || `/menu/${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`;
 
@@ -129,6 +143,29 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                         );
                     })}
                 </div>
+
+                {/* Review Prompt or Display */}
+                {showReviewPrompt && (
+                    <div className="mt-6 pt-4 border-t border-gray-800 relative z-20">
+                        {userRating ? (
+                            <div className="bg-black/30 rounded-xl p-3 border border-yellow-500/20 shadow-inner">
+                                <div className="flex items-center gap-1 mb-1 text-sm text-yellow-500">
+                                    <span className="font-bold">{userRating.toFixed(1)}</span>
+                                    <span>★</span>
+                                </div>
+                                {userNotes && (
+                                    <p className="text-gray-400 text-xs italic line-clamp-2">"{userNotes}"</p>
+                                )}
+                            </div>
+                        ) : (
+                            <Link href={href} className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-800 hover:bg-[var(--primary)] hover:text-white transition-all text-gray-300 text-sm font-bold tracking-wider border border-gray-700 hover:border-[var(--primary)] shadow-lg group/btn">
+                                <span>⭐</span>
+                                Leave a Review
+                                <span className="group-hover/btn:translate-x-1 transition-transform">&rarr;</span>
+                            </Link>
+                        )}
+                    </div>
+                )}
             </div>
         </Link>
     );

@@ -176,19 +176,38 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                 </div>
 
                 {/* Star Rating System */}
-                <div className="flex gap-1 bg-black/50 p-3 rounded-full border border-gray-800">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <button
-                            key={star}
-                            onClick={() => setRating(star)}
-                            onMouseEnter={() => setHoverRating(star)}
-                            onMouseLeave={() => setHoverRating(0)}
-                            className={`text-2xl outline-none focus:outline-none transition-all transform hover:scale-125 ${(hoverRating || rating) >= star ? 'text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]' : 'text-gray-700'
-                                }`}
-                        >
-                            ★
-                        </button>
-                    ))}
+                <div className="flex gap-1 bg-black/50 p-3 rounded-full border border-gray-800" onMouseLeave={() => setHoverRating(0)}>
+                    {[1, 2, 3, 4, 5].map((star) => {
+                        const currentFill = hoverRating || rating;
+                        const isHalf = currentFill === star - 0.5;
+                        const isFull = currentFill >= star;
+
+                        return (
+                            <div
+                                key={star}
+                                className="relative cursor-pointer text-3xl outline-none focus:outline-none transition-all transform hover:scale-125"
+                                onMouseMove={(e) => {
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const isLeftSide = e.clientX - rect.left < rect.width / 2;
+                                    setHoverRating(isLeftSide ? star - 0.5 : star);
+                                }}
+                                onClick={() => {
+                                    setRating(hoverRating);
+                                }}
+                            >
+                                {/* Base empty star */}
+                                <span className="text-gray-700">★</span>
+
+                                {/* Overlay star (full or partial depending on state) */}
+                                <span
+                                    className={`absolute left-0 top-0 overflow-hidden text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)] transition-all`}
+                                    style={{ width: isFull ? '100%' : isHalf ? '50%' : '0%' }}
+                                >
+                                    ★
+                                </span>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 

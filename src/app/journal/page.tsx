@@ -24,6 +24,8 @@ interface InteractionRecord {
     isFavorite?: boolean;
     isWantToTry?: boolean;
     isTried?: boolean;
+    rating?: number;
+    notes?: string;
 }
 
 export default function JournalPage() {
@@ -60,7 +62,9 @@ export default function JournalPage() {
                         ...data,
                         isFavorite: data.isFavorite || isLegacyFavorite,
                         isWantToTry: !!data.isWantToTry,
-                        isTried: !!data.isTried
+                        isTried: !!data.isTried,
+                        rating: data.rating,
+                        notes: data.notes
                     } as InteractionRecord);
                 });
 
@@ -203,6 +207,9 @@ export default function JournalPage() {
                                             setInteractions(prev => prev.filter(f => f.id !== fav.id));
                                         }
                                     }}
+                                    userRating={fav.rating}
+                                    userNotes={fav.notes}
+                                    showReviewPrompt={activeTab === 'triedIt'}
                                 />
                             );
                         }
@@ -226,6 +233,9 @@ export default function JournalPage() {
                                             setInteractions(prev => prev.filter(f => f.id !== fav.id));
                                         }
                                     }}
+                                    userRating={fav.rating}
+                                    userNotes={fav.notes}
+                                    showReviewPrompt={activeTab === 'triedIt'}
                                 />
                             );
                         }
