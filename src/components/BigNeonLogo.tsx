@@ -159,7 +159,7 @@ export default function BigNeonLogo() {
                     fill
                     priority
                     className={`
-                        object-contain transition-all duration-300 mix-blend-screen
+                        object-contain transition-all duration-300
                         ${isHovering
                             ? 'drop-shadow-[0_0_10px_#0ea5e9] drop-shadow-[0_0_20px_#0284c7] drop-shadow-[0_0_40px_#0369a1] drop-shadow-[0_0_80px_#0c4a6e] scale-[1.05]'
                             : 'drop-shadow-[0_0_5px_#0ea5e9] drop-shadow-[0_0_15px_#0284c7] drop-shadow-[0_0_30px_#0369a1]'}
