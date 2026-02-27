@@ -13,6 +13,42 @@ export async function generateStaticParams() {
     }));
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+    const resolvedParams = await params;
+    const decodedId = decodeURIComponent(resolvedParams.id).replace(/-/g, ' ');
+    const cocktail = CLASSIC_COCKTAILS.find((c) => c.name.toLowerCase() === decodedId);
+
+    if (!cocktail) return { title: 'Cocktail Not Found' };
+
+    const ogUrl = new URL('https://sipster.app/api/og');
+    ogUrl.searchParams.set('title', cocktail.name);
+    ogUrl.searchParams.set('subtitle', `${cocktail.primarySpirit} • ${cocktail.style}`);
+    ogUrl.searchParams.set('emoji', cocktail.emoji);
+
+    return {
+        title: `${cocktail.name} | Sipster`,
+        description: cocktail.tagline,
+        openGraph: {
+            title: cocktail.name,
+            description: cocktail.tagline,
+            images: [
+                {
+                    url: ogUrl.toString(),
+                    width: 1200,
+                    height: 630,
+                    alt: cocktail.name,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: cocktail.name,
+            description: cocktail.tagline,
+            images: [ogUrl.toString()],
+        },
+    };
+}
+
 export default async function CocktailProfilePage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = await params;
     const decodedId = decodeURIComponent(resolvedParams.id).replace(/-/g, ' ');

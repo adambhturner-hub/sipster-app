@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import Logo from '@/components/Logo';
+import BigNeonLogo from '@/components/BigNeonLogo';
 
 export default function Home() {
   return (
     <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white flex flex-col pt-32 relative overflow-hidden">
 
       {/* Hero Section */}
-      <Logo />
-      <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-6 mt-12 text-center">
+      <BigNeonLogo />
+      <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-6 mt-16 text-center z-10">
         Your Bartender <br className="hidden md:block" />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--secondary)] to-[var(--primary)] drop-shadow-[0_0_15px_var(--primary-glow)]">
           In Your Pocket

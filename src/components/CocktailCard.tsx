@@ -5,6 +5,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Cocktail } from '@/data/cocktails';
 import FavoriteButton from './FavoriteButton';
 import RiffButton from './RiffButton';
+import { db } from '@/lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 interface CocktailCardProps {
     cocktail: Cocktail;
@@ -33,6 +36,40 @@ export default function CocktailCard({
 }: CocktailCardProps) {
     const { addToBar, addToShoppingList, shoppingList = [] } = useAuth();
     const href = customHref || `/menu/${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`;
+
+    // Global Rating State
+    const [globalRating, setGlobalRating] = useState<{ average: number, total: number } | null>(null);
+
+    useEffect(() => {
+        let unsubscribe: () => void;
+        const fetchRating = async () => {
+            try {
+                const docId = (cocktail?.name || 'custom').toLowerCase().replace(/ /g, '-');
+                // Don't try to fetch stats for raw custom drinks that haven't been saved/shared yet
+                if (docId === 'custom' && !favoriteId) return;
+
+                const actualId = favoriteId || docId;
+                const statsRef = doc(db, 'cocktail_stats', actualId);
+
+                unsubscribe = onSnapshot(statsRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        if (data.averageRating > 0) {
+                            setGlobalRating({
+                                average: data.averageRating,
+                                total: data.totalReviews || 0
+                            });
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching card rating:", error);
+            }
+        };
+
+        fetchRating();
+        return () => { if (unsubscribe) unsubscribe(); };
+    }, [cocktail?.name, favoriteId]);
 
     return (
         <Link href={href}>
@@ -65,9 +102,18 @@ export default function CocktailCard({
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-2xl font-bold text-white font-serif group-hover:text-[var(--accent)] transition-colors">{cocktail?.name || 'AI Original'}</h3>
-                    <div className="relative group/cost flex items-center">
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                    <h3 className="text-2xl font-bold text-white font-serif group-hover:text-[var(--accent)] transition-colors inline-block">{cocktail?.name || 'AI Original'}</h3>
+
+                    {globalRating && (
+                        <div className="flex items-center gap-1 bg-black/40 px-2 py-0.5 rounded-md border border-yellow-500/20 shadow-inner">
+                            <span className="text-yellow-500 text-[10px]">⭐</span>
+                            <span className="text-yellow-500 text-[11px] font-bold">{globalRating.average.toFixed(1)}</span>
+                            <span className="text-gray-500 text-[10px]">({globalRating.total})</span>
+                        </div>
+                    )}
+
+                    <div className="relative group/cost flex items-center ml-auto">
                         <span className="text-[10px] tracking-widest font-mono text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-0.5 rounded-full border border-[var(--accent)]/30 cursor-help">
                             {'$'.repeat(cocktail?.estimatedCost || 2)}
                         </span>
