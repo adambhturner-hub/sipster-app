@@ -151,7 +151,7 @@ export default function BigNeonLogo() {
             }}
             onClick={playSpark}
         >
-            <div className="relative w-48 h-48 md:w-80 md:h-80 flex items-center justify-center">
+            <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center -mt-8 -mb-16">
                 <Image
                     id="neon-mustache-svg"
                     src="/logo.png"
@@ -159,9 +159,9 @@ export default function BigNeonLogo() {
                     fill
                     priority
                     className={`
-                        object-contain transition-all duration-300
+                        object-contain transition-all duration-300 mix-blend-screen
                         ${isHovering
-                            ? 'drop-shadow-[0_0_10px_#0ea5e9] drop-shadow-[0_0_20px_#0284c7] drop-shadow-[0_0_40px_#0369a1] drop-shadow-[0_0_80px_#0c4a6e] scale-[1.03]'
+                            ? 'drop-shadow-[0_0_10px_#0ea5e9] drop-shadow-[0_0_20px_#0284c7] drop-shadow-[0_0_40px_#0369a1] drop-shadow-[0_0_80px_#0c4a6e] scale-[1.05]'
                             : 'drop-shadow-[0_0_5px_#0ea5e9] drop-shadow-[0_0_15px_#0284c7] drop-shadow-[0_0_30px_#0369a1]'}
                         animate-[flicker_4s_infinite_alternate]
                     `}
