@@ -5,6 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Cocktail } from '@/data/cocktails';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 interface GeneratedMenu {
     theme: string;
@@ -42,6 +43,16 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         fetchMenu();
     }, [resolvedParams.id]);
 
+    const copyLink = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            toast.success('Link copied to clipboard! Share the vibe.');
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            toast.error('Failed to copy. Please copy the URL from your browser bar.');
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center text-[var(--primary)] text-2xl font-serif">
@@ -78,7 +89,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                         Print (Save PDF)
                     </button>
                     <button
-                        onClick={() => navigator.clipboard.writeText(window.location.href)}
+                        onClick={copyLink}
                         className="glass-panel px-6 py-2 rounded-full text-white/80 hover:text-white transition-colors flex items-center gap-2"
                     >
                         Copy Link
@@ -164,29 +175,33 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                     body {
                         -webkit-print-color-adjust: exact !important;
                         print-color-adjust: exact !important;
-                        background: black;
+                        background-color: black !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
                     }
-                    /* Hide EVERYTHING except our wrapper */
-                    body > *:not(#__next), 
-                    #__next > *:not(.min-h-screen) {
-                        display: none !important;
+                    /* Ensure Next.js roots don't restrict full page rendering */
+                    html, body, #__next, .min-h-screen {
+                        height: 100% !important;
+                        min-height: 100% !important;
+                        width: 100% !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        position: static !important;
                     }
                     .print\\:hidden {
                         display: none !important;
                     }
                     .printable-menu-wrapper {
-                        position: absolute !important;
-                        top: 0 !important;
-                        left: 0 !important;
                         margin: 0 !important;
                         padding: 0 !important;
-                        width: 100vw !important;
-                        height: 100vh !important;
+                        width: 100% !important;
+                        height: 100% !important;
                         max-width: none !important;
+                        aspect-ratio: auto !important;
                         border-radius: 0 !important;
                         box-shadow: none !important;
-                        page-break-after: avoid;
-                        page-break-before: avoid;
+                        position: relative !important;
+                        page-break-inside: avoid !important;
                     }
                 }
             `}</style>
