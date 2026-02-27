@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import {
     CLASSIC_COCKTAILS,
@@ -16,9 +16,7 @@ import {
 import CocktailCard from '@/components/CocktailCard';
 
 export default function MenuPage() {
-    const { user, loading: authLoading } = useAuth();
-    const [myBar, setMyBar] = useState<string[]>([]);
-    const [shoppingList, setShoppingList] = useState<string[]>([]);
+    const { user, loading: authLoading, myBar, shoppingList } = useAuth();
     const [showMakeableOnly, setShowMakeableOnly] = useState(false);
 
     // New Advanced Filters
@@ -31,33 +29,6 @@ export default function MenuPage() {
     const [selectedSeason, setSelectedSeason] = useState<string>('All');
 
     const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        if (authLoading) return;
-
-        if (user) {
-            const userRef = doc(db, 'users', user.uid);
-            const unsubscribe = onSnapshot(userRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    setMyBar(docSnap.data().myBar || []);
-                    setShoppingList(docSnap.data().shoppingList || []);
-                }
-                setIsLoaded(true);
-            });
-            return () => unsubscribe();
-        } else {
-            const savedBar = localStorage.getItem('sipster-my-bar');
-            if (savedBar) {
-                try { setMyBar(JSON.parse(savedBar)); } catch (e) { }
-            }
-            const savedList = localStorage.getItem('sipster-shopping-list');
-            if (savedList) {
-                try { setShoppingList(JSON.parse(savedList)); } catch (e) { }
-            }
-            setIsLoaded(true);
-        }
-    }, [user, authLoading]);
 
     const hasIngredient = (ingredientItem: string) => {
         return myBar.some(barItem => barItem.toLowerCase() === ingredientItem.toLowerCase());
@@ -109,9 +80,12 @@ export default function MenuPage() {
         if (selectedSeason !== 'All' && cocktail.season !== selectedSeason) return false;
         if (selectedFlavor !== 'All' && !cocktail.flavorProfile.includes(selectedFlavor)) return false;
 
-        // Makeable Filter
+        // Makeable (>= 75%) Filter
         if (showMakeableOnly) {
-            return cocktail.ingredients.every(ing => hasIngredient(ing.item));
+            const totalIngredients = cocktail.ingredients.length;
+            if (totalIngredients === 0) return true;
+            const ownedCount = cocktail.ingredients.filter(ing => hasIngredient(ing.item)).length;
+            return (ownedCount / totalIngredients) >= 0.75;
         }
 
         return true;
@@ -133,7 +107,7 @@ export default function MenuPage() {
         setShowMakeableOnly(false);
     };
 
-    if (!isLoaded) return null; // Prevent hydration mismatch
+    if (authLoading) return null; // Prevent hydration mismatch
 
     return (
         <div className="flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4">

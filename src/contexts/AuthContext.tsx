@@ -10,6 +10,10 @@ interface AuthContextType {
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
     logout: () => Promise<void>;
+    myBar: string[];
+    shoppingList: string[];
+    addToBar: (item: string) => Promise<void>;
+    addToShoppingList: (item: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -17,6 +21,10 @@ const AuthContext = createContext<AuthContextType>({
     loading: true,
     signInWithGoogle: async () => { },
     logout: async () => { },
+    myBar: [],
+    shoppingList: [],
+    addToBar: async () => { },
+    addToShoppingList: async () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -24,6 +32,8 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [myBar, setMyBar] = useState<string[]>([]);
+    const [shoppingList, setShoppingList] = useState<string[]>([]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -73,6 +83,47 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return () => unsubscribe();
     }, []);
 
+    // Listen to user inventory document changes
+    useEffect(() => {
+        if (!user) {
+            setMyBar([]);
+            setShoppingList([]);
+            return;
+        }
+
+        import('firebase/firestore').then(({ onSnapshot }) => {
+            const userRef = doc(db, 'users', user.uid);
+            const unsubscribe = onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    setMyBar(docSnap.data().myBar || []);
+                    setShoppingList(docSnap.data().shoppingList || []);
+                }
+            });
+            return () => unsubscribe();
+        });
+    }, [user]);
+
+    const addToBar = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+        if (myBar.some(i => i.toLowerCase() === normalized)) return;
+
+        const newBar = [...myBar, item];
+        setMyBar(newBar);
+        await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
+    };
+
+    const addToShoppingList = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+        if (shoppingList.some(i => i.toLowerCase() === normalized)) return;
+        if (myBar.some(i => i.toLowerCase() === normalized)) return; // Don't add if already in bar
+
+        const newList = [...shoppingList, item];
+        setShoppingList(newList);
+        await setDoc(doc(db, 'users', user.uid), { shoppingList: newList }, { merge: true });
+    };
+
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         try {
@@ -92,7 +143,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, signInWithGoogle, logout }}>
+        <AuthContext.Provider value={{
+            user, loading, signInWithGoogle, logout,
+            myBar, shoppingList, addToBar, addToShoppingList
+        }}>
             {!loading && children}
         </AuthContext.Provider>
     );

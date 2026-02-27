@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
@@ -69,6 +69,55 @@ export default function CreateCocktailPage() {
     const [relationship, setRelationship] = useState(''); // Comma separated
 
     // Helpers
+    // Riff Auto-Fill Effect
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('mode') === 'riff') {
+                try {
+                    const dataStr = localStorage.getItem('sipster-riff-cocktail');
+                    if (dataStr) {
+                        const data = JSON.parse(dataStr);
+                        if (data.name) setName(data.name);
+                        if (data.tagline) setTagline(data.tagline);
+                        if (data.description) setDescription(data.description);
+                        if (data.emoji) setEmoji(data.emoji);
+                        if (data.primarySpirit) setPrimarySpirit(data.primarySpirit);
+                        if (data.style) setStyle(data.style);
+                        if (data.glass) setGlass(data.glass);
+                        if (data.flavorProfile && data.flavorProfile.length > 0) {
+                            setFlavorProfile(Array.isArray(data.flavorProfile) ? data.flavorProfile.join(', ') : data.flavorProfile);
+                        }
+                        if (data.strength) setStrength(data.strength);
+                        if (data.difficultyLevel) setDifficultyLevel(data.difficultyLevel);
+                        if (data.abvContent) setAbvContent(data.abvContent);
+                        if (data.ratio) setRatio(data.ratio);
+                        if (data.season) setSeason(data.season);
+                        if (data.temperature) setTemperature(data.temperature);
+                        if (data.mood) setMood(data.mood);
+                        if (data.occasion) setOccasion(data.occasion);
+                        if (data.origin) setOrigin(data.origin);
+                        if (data.city) setCity(data.city);
+                        if (data.era) setEra(data.era);
+                        if (data.source) setSource(data.source);
+                        if (data.timePeriod) setTimePeriod(data.timePeriod);
+                        if (data.countryOfPopularity) setCountryOfPopularity(data.countryOfPopularity);
+                        if (data.trivia && data.trivia.length > 0) setTrivia(data.trivia);
+                        if (data.garnish) setGarnish(data.garnish);
+                        if (data.relationship && data.relationship.length > 0) {
+                            setRelationship(Array.isArray(data.relationship) ? data.relationship.join(', ') : data.relationship);
+                        }
+                        if (data.ingredients && data.ingredients.length > 0) setIngredients(data.ingredients);
+                        if (data.instructions && data.instructions.length > 0) setInstructions(data.instructions);
+
+                        window.history.replaceState({}, '', '/create');
+                        toast.success("Ready to Riff! Recipe loaded.", { icon: "✨" });
+                    }
+                } catch (e) { console.error(e) }
+            }
+        }
+    }, []);
+
     const getSuggestions = (query: string) => {
         if (!query.trim()) return [];
         const q = query.toLowerCase();

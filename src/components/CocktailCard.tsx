@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 import { Cocktail } from '@/data/cocktails';
 import FavoriteButton from './FavoriteButton';
 
@@ -13,6 +16,7 @@ interface CocktailCardProps {
 }
 
 export default function CocktailCard({ cocktail, makeable, hasIngredient, customHref, favoriteId, favoriteType = 'classic', onFavoriteChange }: CocktailCardProps) {
+    const { addToBar, addToShoppingList, shoppingList = [] } = useAuth();
     const href = customHref || `/menu/${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`;
 
     return (
@@ -32,6 +36,17 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                             type={favoriteType}
                             onChange={onFavoriteChange}
                         />
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                localStorage.setItem('sipster-riff-cocktail', JSON.stringify(cocktail));
+                                window.location.href = '/create?mode=riff';
+                            }}
+                            className="flex items-center justify-center gap-1.5 px-3 py-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 rounded-full text-xs font-bold border border-purple-500/20 transition-all font-sans tracking-wide uppercase"
+                            title="Duplicate this recipe into the Creator Studio"
+                        >
+                            Riff ✨
+                        </button>
                         {makeable ? (
                             <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20">
                                 <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse"></span>
@@ -84,10 +99,37 @@ export default function CocktailCard({ cocktail, makeable, hasIngredient, custom
                     </div>
                     {(Array.isArray(cocktail?.ingredients) ? cocktail.ingredients : []).map((ing, idx) => {
                         const hasIt = ing?.item ? hasIngredient(ing.item) : false;
+                        const isGarnishOrBasic = ing?.item === 'Simple Syrup' || ing?.item === 'Club Soda' || ing?.item === 'Egg White' || ing?.amount === 'Garnish';
+                        const officiallyHasIt = hasIt || isGarnishOrBasic;
+                        const inCart = ing?.item ? shoppingList.some(i => i.toLowerCase() === ing.item.toLowerCase()) : false;
+
                         return (
-                            <div key={idx} className="flex justify-between items-center text-sm group/ing">
-                                <span className={(hasIt || ing?.item === 'Simple Syrup' || ing?.item === 'Club Soda' || ing?.item === 'Egg White' || ing?.amount === 'Garnish') ? "text-gray-200" : "text-gray-600 line-through decoration-gray-700"}>
+                            <div key={idx} className="flex justify-between items-center text-sm group/ing relative">
+                                <span className={officiallyHasIt ? "text-gray-200" : "text-gray-600 line-through decoration-gray-700 flex items-center gap-2"}>
                                     {ing?.item || 'Mystery Ingredient'}
+                                    {!officiallyHasIt && (
+                                        <div className="flex gap-1 opacity-0 group-hover/ing:opacity-100 transition-opacity translate-y-0.5 pointer-events-auto absolute left-full ml-2 whitespace-nowrap z-50">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (ing?.item) addToBar(ing.item);
+                                                }}
+                                                className="text-[10px] bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 rounded transition-colors no-underline uppercase tracking-widest"
+                                            >
+                                                + Bar
+                                            </button>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (ing?.item && !inCart) addToShoppingList(ing.item);
+                                                }}
+                                                disabled={inCart}
+                                                className={`text-[10px] px-1.5 py-0.5 rounded transition-colors no-underline uppercase tracking-widest border ${inCart ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 cursor-not-allowed' : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/30'}`}
+                                            >
+                                                {inCart ? '✓ Cart' : '+ Cart'}
+                                            </button>
+                                        </div>
+                                    )}
                                 </span>
                                 <div className="flex items-center gap-3">
                                     <span className="text-gray-500 font-mono text-xs">{ing?.amount || 'To taste'}</span>
