@@ -44,7 +44,7 @@ export default function Chat() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || isLoading) return;
-        sendMessage({ parts: [{ type: 'text', text: input }], role: 'user', metadata: { myBar } });
+        sendMessage({ text: input, data: { myBar } } as any);
         setInput('');
     };
 
