@@ -109,12 +109,41 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
     }, [isOwner, user]);
 
     const copyLink = async () => {
+        const url = window.location.href;
+
+        // Try modern navigator API
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(url);
+                toast.success('Link copied! Share the vibe.');
+                return;
+            } catch (err) {
+                console.warn('Clipboard API failed, trying fallback...', err);
+            }
+        }
+
+        // Fallback for non-secure contexts (HTTP) or older browsers
         try {
-            await navigator.clipboard.writeText(window.location.href);
-            toast.success('Link copied to clipboard! Share the vibe.');
+            const textArea = document.createElement("textarea");
+            textArea.value = url;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            if (successful) {
+                toast.success('Link copied! Share the vibe.');
+            } else {
+                toast.error('Failed to copy. Please manually copy the URL field.');
+            }
         } catch (err) {
-            console.error('Failed to copy text: ', err);
-            toast.error('Failed to copy. Please copy the URL from your browser bar.');
+            console.error('Fallback copy failed: ', err);
+            toast.error('Failed to copy. Please manually copy the URL field.');
         }
     };
 
@@ -291,15 +320,15 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                     <span>←</span> Menu Generator
                 </Link>
                 <div className="flex flex-wrap gap-2 sm:gap-4 items-center justify-end max-w-full">
-                    {isActualOwner && (
-                        <button
-                            onClick={toggleCollaborative}
-                            className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${menu.isCollaborative ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'bg-white/5 text-white/50 border-white/10 hover:bg-white/10'}`}
-                            title={menu.isCollaborative ? "Guests logged into Sipster can edit this menu." : "Only you can edit this menu."}
-                        >
-                            {menu.isCollaborative ? '🔓 Collab On' : '🔒 Locked'}
-                        </button>
-                    )}
+                    <button
+                        onClick={isActualOwner ? toggleCollaborative : undefined}
+                        className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${menu.isCollaborative ? 'bg-green-500/20 text-green-400 border-green-500/50' : 'bg-white/5 text-white/50 border-white/10'} ${isActualOwner ? 'cursor-pointer hover:bg-white/10 hover:border-white/30' : 'cursor-default opacity-80'}`}
+                        title={isActualOwner
+                            ? (menu.isCollaborative ? "Click to lock: Guests can edit this menu." : "Click to unlock: Only you can edit this menu.")
+                            : (menu.isCollaborative ? "Unlocked: You can help edit this menu!" : "Locked: Only the creator can edit this menu.")}
+                    >
+                        {menu.isCollaborative ? '🔓 Collab On' : '🔒 Locked'}
+                    </button>
                     <button
                         onClick={() => window.print()}
                         className="btn-primary px-6 py-2 rounded-full font-bold shadow-[0_0_15px_rgba(56,189,248,0.4)] flex items-center gap-2"
