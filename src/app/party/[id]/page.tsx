@@ -503,7 +503,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                 <div className="print:hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
                     <div className="bg-gray-950 border border-white/20 rounded-2xl w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl overflow-hidden">
                         {/* Modal Header */}
-                        <div className="p-6 border-b border-white/10 flex justify-between items-center bg-gradient-to-r from-gray-900 to-black">
+                        <div className="p-6 border-b border-white/10 flex justify-between items-center bg-gradient-to-r from-gray-900 to-black shrink-0">
                             <div>
                                 <h3 className="text-2xl font-bold font-serif text-[var(--primary)]">
                                     {swapIndex === menu.cocktails.length ? 'Add Drink' : 'Swap Drink'}
@@ -519,7 +519,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                         </div>
 
                         {/* Search Input */}
-                        <div className="p-4 bg-gray-900/80 border-b border-white/5">
+                        <div className="p-4 bg-gray-900/80 border-b border-white/5 shrink-0">
                             <input
                                 type="text"
                                 placeholder="Search by name or ingredient..."
@@ -530,7 +530,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                         </div>
 
                         {/* Categories List */}
-                        <div className="flex gap-2 p-4 overflow-x-auto border-b border-white/5 bg-gray-900/50">
+                        <div className="flex gap-2 p-4 overflow-x-auto border-b border-white/5 bg-gray-900/50 shrink-0">
                             {swapCategories.map(cat => (
                                 <button
                                     key={cat}
