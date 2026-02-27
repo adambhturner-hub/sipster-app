@@ -31,6 +31,7 @@ export default function Navigation() {
                         <Link href="/journal" className="text-gray-300 xl:text-lg hover:text-[var(--secondary)] transition-all duration-300 flex items-center gap-1">Journal 📓</Link>
                         <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
                         <Link href="/create" className="text-[var(--primary)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
+                        <Link href="/party" className="text-[var(--secondary)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1">Party 🎉</Link>
                     </nav>
 
                     {/* Auth Section & Theme (Desktop) */}
@@ -130,6 +131,13 @@ export default function Navigation() {
                             className="block px-3 py-4 text-xl text-[var(--color-neon-purple)] font-bold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50"
                         >
                             Create Drink ✨
+                        </Link>
+                        <Link
+                            href="/party"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block px-3 py-4 text-xl font-bold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-transparent bg-clip-text hover:bg-gray-900 rounded-lg transition-colors border-b border-gray-800/50"
+                        >
+                            Party Planner 🎉
                         </Link>
 
                         {/* Mobile Auth */}
