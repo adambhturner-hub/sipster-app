@@ -20,7 +20,7 @@ When providing a recipe:
 4. Give step-by-step mixology instructions.
 5. Keep your formatting clean using Markdown.
 6. If the user asks for a known Sipster classic cocktail by name, use the \`suggestClassicCocktail\` tool to return the curated Recipe Card.
-7. CRITICAL NEW RULE: If a user lists ingredients that very closely match a known Sipster classic (e.g. "I have rum, lime, and grapefruit"), you MUST use the \`offerRecipeChoices\` tool to ask the user if they want the classic recipe or a brand new custom drink.
+7. CRITICAL NEW RULE: If a user lists ingredients that very closely match ANY known global classic cocktail (e.g. "I have vodka and kahlua"), you MUST use the \`offerRecipeChoices\` tool to ask the user if they want the classic recipe or a brand new custom drink. It does NOT matter if it's in the Sipster database or not.
 
 ### SIPSTER CLASSIC COCKTAILS DATABASE ###
 You have exactly ${CLASSIC_COCKTAILS.length} classic cocktails in your permanent database. You must NEVER hallucinate a classic that isn't on this list.
@@ -61,14 +61,58 @@ When they ask for a recommendation, you must heavily prioritize suggesting recip
         messages: await convertToModelMessages(normalizedMessages),
         tools: {
             offerRecipeChoices: tool({
-                description: 'Offer the user a choice between a matching classic recipe or a brand new custom build. Use this ONLY when the user\'s requested flavor profile or ingredient list strongly resembles a specific classic from your database.',
+                description: 'Offer the user a choice between a matching classic recipe or a brand new custom build. Use this ONLY when the user\'s requested flavor profile or ingredient list strongly resembles a specific classic cocktail, whether or not it is in the Sipster database.',
                 inputSchema: z.object({
-                    closestClassicName: z.string().describe('The exact name of the closest matching classic cocktail from the database.'),
-                    reason: z.string().describe('A brief, playful sentence explaining why you made this connection and asking them to choose. Example: "With rum, lime, and grapefruit, you are practically asking for a classic Navy Grog! Do you want the official recipe, or should we make something entirely brand new?"')
+                    closestClassicName: z.string().describe('The exact name of the closest matching classic cocktail.'),
+                    reason: z.string().describe('A brief, playful sentence explaining why you made this connection and asking them to choose.'),
+                    inSipsterDatabase: z.boolean().describe('True ONLY IF the classic exactly matches one of the names in the provided Sipster Classic Cocktails Database list above. False otherwise.')
                 }),
                 // @ts-ignore
-                execute: async ({ closestClassicName, reason }: { closestClassicName: string, reason: string }) => {
-                    return { action: 'offer_choices', closestClassicName, reason };
+                execute: async ({ closestClassicName, reason, inSipsterDatabase }: { closestClassicName: string, reason: string, inSipsterDatabase: boolean }) => {
+                    return { action: 'offer_choices', closestClassicName, reason, inSipsterDatabase };
+                }
+            }),
+            generateDynamicCocktailCard: tool({
+                description: 'Generate all 26 exact metadata points required to render a beautiful interactive Cocktail Card for a drink that the user requested, but which does not exist in the Sipster database.',
+                inputSchema: z.object({
+                    name: z.string(),
+                    emoji: z.string().describe('A single fitting emoji'),
+                    primarySpirit: z.enum(['Whiskey & Bourbon', 'Agave', 'Gin', 'Vodka', 'Rum', 'Liqueur & Other']),
+                    origin: z.string().describe('Country of origin'),
+                    era: z.enum(['Pre-Prohibition', 'Prohibition', 'Tiki', 'Modern Classic', 'Golden Age']),
+                    style: z.enum(['Spirit-Forward', 'Sour', 'Highball', 'Fizzy', 'Dessert']),
+                    glass: z.enum(['Rocks', 'Coupe', 'Highball', 'Martini', 'Mug']),
+                    ingredients: z.array(z.object({
+                        amount: z.string(),
+                        item: z.string()
+                    })),
+                    description: z.string(),
+                    garnish: z.string(),
+                    instructions: z.array(z.string()),
+                    season: z.enum(['Summer', 'Fall', 'Winter', 'Spring', 'Year-Round']),
+                    recommendedAmount: z.string().describe('e.g. "1 Drink"'),
+                    quantity: z.number().describe('e.g. 1'),
+                    relationship: z.array(z.string()).describe('List of 1-3 similar drinks'),
+                    source: z.string().describe('Invented by whom or where'),
+                    city: z.string(),
+                    mood: z.string(),
+                    flavorProfile: z.array(z.string()),
+                    difficultyLevel: z.enum(['Beginner', 'Intermediate', 'Advanced']),
+                    occasion: z.string(),
+                    abvContent: z.enum(['Low', 'Medium', 'High', 'Very High']),
+                    temperature: z.enum(['Cold', 'Hot', 'Room Temp']),
+                    countryOfPopularity: z.string(),
+                    timePeriod: z.string().describe('Exact decade, e.g. "1940s"'),
+                    trivia: z.array(z.string()).describe('Fun facts'),
+                    ratio: z.string().describe('e.g. "2:1"'),
+                    tagline: z.string(),
+                    strength: z.number().describe('1-10 scale'),
+                    estimatedCost: z.number().describe('1-4 scale representing $, $$, $$$, $$$$')
+                }),
+                // @ts-ignore
+                execute: async (schemaData) => {
+                    // Send this exact schema object straight back to the frontend to render the CocktailCard component dynamically
+                    return { action: 'render_dynamic_card', cocktailData: schemaData };
                 }
             }),
             suggestClassicCocktail: tool({

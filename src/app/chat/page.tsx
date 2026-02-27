@@ -362,7 +362,13 @@ export default function Chat() {
                                                             <p className="text-sm font-medium text-white italic">{result.reason}</p>
                                                             <div className="flex flex-col gap-2 pointer-events-auto">
                                                                 <button
-                                                                    onClick={() => sendMessage({ text: `Give me the classic ${result.closestClassicName}`, data: { myBar } } as any)}
+                                                                    onClick={() => {
+                                                                        if (result.inSipsterDatabase) {
+                                                                            sendMessage({ text: `Give me the classic ${result.closestClassicName}`, data: { myBar } } as any);
+                                                                        } else {
+                                                                            sendMessage({ text: `Generate a dynamic interactive CocktailCard for the classic ${result.closestClassicName}`, data: { myBar } } as any);
+                                                                        }
+                                                                    }}
                                                                     className="w-full py-3 px-4 rounded-lg font-bold text-white bg-gradient-to-r from-[var(--primary)]/40 to-[var(--secondary)]/40 hover:from-[var(--primary)]/60 hover:to-[var(--secondary)]/60 border border-[var(--primary)]/50 transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
                                                                 >
                                                                     <span>🍹 Classic {result.closestClassicName}</span>
@@ -380,6 +386,26 @@ export default function Chat() {
                                                     ) : (
                                                         <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse">
                                                             Thinking...
+                                                        </div>
+                                                    );
+                                                    break;
+                                                case 'generateDynamicCocktailCard':
+                                                    content = result ? (
+                                                        <div key={i} className="mt-4 max-w-sm w-full block">
+                                                            <div className="flex flex-col gap-3">
+                                                                <p className="text-sm font-medium text-[var(--accent)] italic">Here is your interactive recipe card!</p>
+                                                                <div className="pointer-events-auto w-full mt-2">
+                                                                    <CocktailCard
+                                                                        cocktail={result.cocktailData}
+                                                                        makeable={true}
+                                                                        hasIngredient={(ing) => myBar.map(item => item.toLowerCase()).includes(ing.toLowerCase())}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse flex items-center gap-2">
+                                                            <span className="text-xl">✨</span> Crafting interactive Cocktail Card...
                                                         </div>
                                                     );
                                                     break;
