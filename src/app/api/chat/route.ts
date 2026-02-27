@@ -7,7 +7,7 @@ import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    const { messages } = await req.json();
+    const { messages, data } = await req.json();
 
     let systemPrompt = `You are Sipster, a 'bartender in your pocket'. You are a playful, vibrant, and highly knowledgeable mixologist. 
 Your goal is to help users discover and craft the perfect cocktail based on their available ingredients, mood, or flavor preferences. 
@@ -22,12 +22,22 @@ When providing a recipe:
 6. If the user asks for a well-known classic cocktail (e.g. "Old Fashioned", "Margarita", "Negroni", "Manhattan", "Whiskey Sour"), ALWAYS use the \`suggestClassicCocktail\` tool to return the curated Sipster recipe card FIRST, and then add a playful conversational response asking if they want a creative riff on it.`;
 
     const lastMessage = messages[messages.length - 1];
-    const myBar = lastMessage?.metadata?.myBar as string[] | undefined;
+
+    // In Vercel AI SDK >3.1, custom data passed to sendMessage({ data: {...} }) arrives alongside messages, or sometimes inside the message annotations/data
+    // Let's check both the root request data and the message data
+    let myBar: string[] | undefined = undefined;
+    if (data && data.myBar && Array.isArray(data.myBar)) {
+        myBar = data.myBar;
+    } else if (lastMessage?.data?.myBar && Array.isArray(lastMessage.data.myBar)) {
+        myBar = lastMessage.data.myBar;
+    } else if (lastMessage?.metadata?.myBar && Array.isArray(lastMessage.metadata.myBar)) {
+        myBar = lastMessage.metadata.myBar;
+    }
 
     // The newer Vercel AI SDK core strictly expects the 'parts' nested array.
     // Ensure older client-side payloads (using 'content' directly) are cleanly mapped over to prevent the Vercel router from crashing with 'Cannot read properties of undefined (reading map)'
     const normalizedMessages = messages.map((m: any) => {
-        if (!m.parts) {
+        if (m.role === 'user' && !m.parts) {
             return { ...m, parts: [{ type: 'text', text: m.content || '' }] };
         }
         return m;
