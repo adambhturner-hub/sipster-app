@@ -55,7 +55,6 @@ export default function PartyPlanner() {
 
     return (
         <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white">
-            <Navigation />
             <main className="max-w-4xl mx-auto pt-32 pb-16 px-4">
 
                 <div className="text-center mb-16">
