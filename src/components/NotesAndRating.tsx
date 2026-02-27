@@ -7,26 +7,53 @@ import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 interface NotesAndRatingProps {
-    cocktailId: string; // The unique ID of the drink (e.g. 'old-fashioned' or custom UUID)
+    cocktailId: string;
+    type?: 'classic' | 'custom_full' | 'custom';
+    favoriteId?: string;
 }
 
-export default function NotesAndRating({ cocktailId }: NotesAndRatingProps) {
+export default function NotesAndRating({ cocktailId, type = 'classic', favoriteId }: NotesAndRatingProps) {
     const { user } = useAuth();
     const [rating, setRating] = useState<number>(0);
     const [hoverRating, setHoverRating] = useState<number>(0);
     const [notes, setNotes] = useState('');
     const [isSaving, setIsSaving] = useState(false);
     const [loaded, setLoaded] = useState(false);
+    const [docId, setDocId] = useState<string | null>(null);
+    const [previousRating, setPreviousRating] = useState<number>(0);
 
     useEffect(() => {
         const fetchNotes = async () => {
             if (!user) return;
             try {
-                const docRef = doc(db, 'user_notes', `${user.uid}_${cocktailId}`);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    setRating(docSnap.data().rating || 0);
-                    setNotes(docSnap.data().notes || '');
+                let currentDocId = null;
+
+                if (favoriteId && type !== 'classic') {
+                    currentDocId = favoriteId;
+                } else {
+                    const { query, collection, where, getDocs } = await import('firebase/firestore');
+                    const q = query(
+                        collection(db, 'favorites'),
+                        where('uid', '==', user.uid),
+                        where('type', '==', 'classic'),
+                        where('cocktailId', '==', cocktailId)
+                    );
+                    const docSnap = await getDocs(q);
+                    if (!docSnap.empty) {
+                        currentDocId = docSnap.docs[0].id;
+                    }
+                }
+
+                if (currentDocId) {
+                    const docRef = doc(db, 'favorites', currentDocId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        setRating(data.rating || 0);
+                        setPreviousRating(data.rating || 0);
+                        setNotes(data.notes || '');
+                        setDocId(currentDocId);
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching notes:", error);
@@ -36,7 +63,7 @@ export default function NotesAndRating({ cocktailId }: NotesAndRatingProps) {
         };
 
         fetchNotes();
-    }, [user, cocktailId]);
+    }, [user, cocktailId, type, favoriteId]);
 
     const handleSave = async () => {
         if (!user) {
@@ -46,14 +73,76 @@ export default function NotesAndRating({ cocktailId }: NotesAndRatingProps) {
 
         setIsSaving(true);
         try {
-            await setDoc(doc(db, 'user_notes', `${user.uid}_${cocktailId}`), {
+            const { runTransaction, collection, addDoc } = await import('firebase/firestore');
+
+            // 1. Prepare interaction record data
+            const interactionData = {
                 uid: user.uid,
                 cocktailId,
+                type,
                 rating,
                 notes,
+                isTried: true, // Automatically mark as tried if they are leaving notes/ratings!
                 updatedAt: new Date().toISOString()
+            };
+
+            // 2. We use a transaction to safely update the Global Cocktail Stats AND save the personal record
+            await runTransaction(db, async (transaction) => {
+                // A. Read Global Stats
+                const statsRef = doc(db, 'cocktail_stats', cocktailId);
+                const statsDoc = await transaction.get(statsRef);
+
+                let totalReviews = 0;
+                let sumRatings = 0;
+
+                if (statsDoc.exists()) {
+                    totalReviews = statsDoc.data().totalReviews || 0;
+                    sumRatings = statsDoc.data().sumRatings || 0;
+                }
+
+                // B. Update math for new rating
+                if (rating > 0) {
+                    if (previousRating > 0) {
+                        // They changed their rating
+                        sumRatings = sumRatings - previousRating + rating;
+                    } else {
+                        // Brand new rating
+                        totalReviews += 1;
+                        sumRatings += rating;
+                    }
+
+                    const averageRating = sumRatings / totalReviews;
+
+                    transaction.set(statsRef, {
+                        totalReviews,
+                        sumRatings,
+                        averageRating: parseFloat(averageRating.toFixed(1))
+                    }, { merge: true });
+                }
+
+                // C. Write the personal record
+                if (docId) {
+                    const userRecordRef = doc(db, 'favorites', docId);
+                    transaction.set(userRecordRef, interactionData, { merge: true });
+                }
             });
+
+            // If we didn't have a docId, the transaction couldn't create a new document easily while returning the ID 
+            // without complex ref generation. So we handle creation outside if needed.
+            if (!docId) {
+                const newDocRef = await addDoc(collection(db, 'favorites'), {
+                    ...interactionData,
+                    createdAt: new Date().toISOString()
+                });
+                setDocId(newDocRef.id);
+            }
+
+            setPreviousRating(rating);
             toast.success("Notes saved successfully! 📝");
+
+            // Dispatch a custom event so the UI can refresh the global score immediately
+            window.dispatchEvent(new Event('globalRatingUpdated'));
+
         } catch (error) {
             console.error("Error saving notes:", error);
             toast.error("Failed to save notes.");

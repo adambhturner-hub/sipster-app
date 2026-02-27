@@ -11,6 +11,7 @@ import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
 import RiffButton from '@/components/RiffButton';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
+import GlobalStarRating from '@/components/GlobalStarRating';
 
 interface CustomFullRecipe {
     id: string;
@@ -93,7 +94,8 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                                 <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
-                                <div className="flex items-center gap-3">
+                                <GlobalStarRating cocktailId={recipeData.id} />
+                                <div className="flex items-center gap-3 mt-4">
                                     <FavoriteButton
                                         cocktailId={(cocktail.name || 'custom').toLowerCase().replace(/ /g, '-')}
                                         cocktailName={cocktail.name}
@@ -336,7 +338,7 @@ export default function RecipeProfilePage({ params }: { params: Promise<{ id: st
                 )}
 
                 {/* Personal Notes & Ratings */}
-                <NotesAndRating cocktailId={recipeData.id} />
+                <NotesAndRating cocktailId={recipeData.id} type={recipeData.type} favoriteId={recipeData.id} />
 
             </div>
         </div>

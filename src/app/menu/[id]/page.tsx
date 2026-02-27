@@ -5,6 +5,7 @@ import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
 import RiffButton from '@/components/RiffButton';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
+import GlobalStarRating from '@/components/GlobalStarRating';
 
 export async function generateStaticParams() {
     return CLASSIC_COCKTAILS.map((cocktail) => ({
@@ -53,7 +54,8 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                 <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
-                                <div className="flex items-center gap-3">
+                                <GlobalStarRating cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')} />
+                                <div className="flex items-center gap-3 mt-4">
                                     <RiffButton cocktail={cocktail} />
                                     <ShareButton
                                         title={cocktail.name}
