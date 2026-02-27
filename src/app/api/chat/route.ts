@@ -19,7 +19,14 @@ When providing a recipe:
 3. List the ingredients clearly with measurements.
 4. Give step-by-step mixology instructions.
 5. Keep your formatting clean using Markdown.
-6. If the user asks for a well-known classic cocktail (e.g. "Old Fashioned", "Margarita", "Negroni", "Manhattan", "Whiskey Sour"), ALWAYS use the \`suggestClassicCocktail\` tool to return the curated Sipster recipe card FIRST, and then add a playful conversational response asking if they want a creative riff on it.`;
+6. If the user asks for a known Sipster classic cocktail by name, use the \`suggestClassicCocktail\` tool to return the curated Recipe Card.
+7. CRITICAL NEW RULE: If a user lists ingredients that very closely match a known Sipster classic (e.g. "I have rum, lime, and grapefruit"), you MUST use the \`offerRecipeChoices\` tool to ask the user if they want the classic recipe or a brand new custom drink.
+
+### SIPSTER CLASSIC COCKTAILS DATABASE ###
+You have exactly ${CLASSIC_COCKTAILS.length} classic cocktails in your permanent database. You must NEVER hallucinate a classic that isn't on this list.
+Here are their exact names and core ingredients:
+${CLASSIC_COCKTAILS.map(c => `- ${c.name}: ${c.ingredients.map(i => i.item).join(', ')}`).join('\n')}
+`;
 
     const lastMessage = messages[messages.length - 1];
 
@@ -53,6 +60,17 @@ When they ask for a recommendation, you must heavily prioritize suggesting recip
         system: systemPrompt,
         messages: await convertToModelMessages(normalizedMessages),
         tools: {
+            offerRecipeChoices: tool({
+                description: 'Offer the user a choice between a matching classic recipe or a brand new custom build. Use this ONLY when the user\'s requested flavor profile or ingredient list strongly resembles a specific classic from your database.',
+                inputSchema: z.object({
+                    closestClassicName: z.string().describe('The exact name of the closest matching classic cocktail from the database.'),
+                    reason: z.string().describe('A brief, playful sentence explaining why you made this connection and asking them to choose. Example: "With rum, lime, and grapefruit, you are practically asking for a classic Navy Grog! Do you want the official recipe, or should we make something entirely brand new?"')
+                }),
+                // @ts-ignore
+                execute: async ({ closestClassicName, reason }: { closestClassicName: string, reason: string }) => {
+                    return { action: 'offer_choices', closestClassicName, reason };
+                }
+            }),
             suggestClassicCocktail: tool({
                 description: 'Suggest a curated classic Sipster cocktail recipe when the user asks for a common drink by name.',
                 inputSchema: z.object({

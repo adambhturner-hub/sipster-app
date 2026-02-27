@@ -355,6 +355,34 @@ export default function Chat() {
                                                         </div>
                                                     );
                                                     break;
+                                                case 'offerRecipeChoices':
+                                                    // Ensure the button states don't re-appear on scroll if already handled, though we'll just keep them alive for simplicity for now
+                                                    content = result ? (
+                                                        <div key={i} className="mt-4 flex flex-col gap-4 max-w-sm w-full bg-black/40 border border-[var(--primary)]/30 p-4 rounded-xl shadow-[0_0_15px_var(--primary-glow)]">
+                                                            <p className="text-sm font-medium text-white italic">{result.reason}</p>
+                                                            <div className="flex flex-col gap-2 pointer-events-auto">
+                                                                <button
+                                                                    onClick={() => sendMessage({ text: `Give me the classic ${result.closestClassicName}`, data: { myBar } } as any)}
+                                                                    className="w-full py-3 px-4 rounded-lg font-bold text-white bg-gradient-to-r from-[var(--primary)]/40 to-[var(--secondary)]/40 hover:from-[var(--primary)]/60 hover:to-[var(--secondary)]/60 border border-[var(--primary)]/50 transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
+                                                                >
+                                                                    <span>🍹 Classic {result.closestClassicName}</span>
+                                                                    <span className="text-xl">➔</span>
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => sendMessage({ text: `Nah, I want a brand new custom build using those ingredients.`, data: { myBar } } as any)}
+                                                                    className="w-full py-3 px-4 rounded-lg font-bold text-[var(--accent)] bg-black/60 hover:bg-black/80 border border-[var(--accent)]/30 hover:border-[var(--accent)] transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
+                                                                >
+                                                                    <span>✨ Custom Build</span>
+                                                                    <span className="text-[var(--accent)]">➔</span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse">
+                                                            Thinking...
+                                                        </div>
+                                                    );
+                                                    break;
                                                 case 'generate_cocktail_recipe':
                                                     content = (
                                                         <div key={i} className="flex flex-col gap-4 mt-4">
