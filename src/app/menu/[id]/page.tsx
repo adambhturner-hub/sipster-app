@@ -1,11 +1,13 @@
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
 import Link from 'next/link';
+import ClientRelationshipGrid from './ClientRelationshipGrid';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
 import RiffButton from '@/components/RiffButton';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
+import CocktailCard from '@/components/CocktailCard';
 
 export async function generateStaticParams() {
     return CLASSIC_COCKTAILS.map((cocktail) => ({
@@ -283,30 +285,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                     <h3 className="text-white text-xl font-serif font-bold mb-6">
                         If you like the {cocktail.name}, try...
                     </h3>
-                    <div className="flex flex-wrap gap-3 font-sans">
-                        {cocktail.relationship.map(rel => {
-                            const linkedCocktail = CLASSIC_COCKTAILS.find(c => c.name === rel);
-                            const formattedHref = rel.toLowerCase().replace(/ /g, '-');
-
-                            if (linkedCocktail) {
-                                return (
-                                    <Link
-                                        href={`/menu/${formattedHref}`}
-                                        key={rel}
-                                        className="px-5 py-3 rounded-xl bg-gray-800 hover:bg-[var(--primary)] hover:text-black hover:border-[var(--primary)] transition-all border border-gray-700 flex items-center gap-2"
-                                    >
-                                        <span className="text-xl">{linkedCocktail.emoji}</span>
-                                        <span className="font-medium">{rel}</span>
-                                    </Link>
-                                )
-                            }
-                            return (
-                                <span key={rel} className="px-5 py-3 rounded-xl bg-gray-950 border border-gray-800 text-gray-500 flex items-center gap-2 cursor-not-allowed">
-                                    <span className="font-medium">{rel} (Coming Soon)</span>
-                                </span>
-                            )
-                        })}
-                    </div>
+                    <ClientRelationshipGrid relationships={cocktail.relationship} />
                 </div>
 
                 {/* Personal Notes & Ratings */}

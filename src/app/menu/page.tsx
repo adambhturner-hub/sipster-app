@@ -90,12 +90,10 @@ export default function MenuPage() {
         if (selectedSeason !== 'All' && cocktail.season !== selectedSeason) return false;
         if (selectedFlavor !== 'All' && !cocktail.flavorProfile.includes(selectedFlavor)) return false;
 
-        // Makeable (>= 75%) Filter
+        // Makeable Only Filter (100% Match)
         if (showMakeableOnly) {
-            const totalIngredients = cocktail.ingredients.length;
-            if (totalIngredients === 0) return true;
-            const ownedCount = cocktail.ingredients.filter(ing => hasIngredient(ing.item)).length;
-            return (ownedCount / totalIngredients) >= 0.75;
+            const missingCount = cocktail.ingredients.filter(ing => !hasIngredient(ing.item)).length;
+            if (missingCount > 0) return false;
         }
 
         return true;
@@ -129,22 +127,8 @@ export default function MenuPage() {
                     A curated selection of timeless classics. Perfect when you know exactly what you want, or just need a little inspiration.
                 </p>
 
-                {/* Actions Row: Makeable Toggle & Sort & Text Search */}
+                {/* Actions Row: Search & Sort */}
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 z-30 relative px-4 text-left w-full max-w-4xl mx-auto">
-                    {/* Makeable Toggle */}
-                    {myBar.length > 0 && (
-                        <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6 shrink-0">
-                            <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--primary)]' : 'text-gray-500'}`}>Show All</span>
-                            <button
-                                onClick={() => setShowMakeableOnly(!showMakeableOnly)}
-                                className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${showMakeableOnly ? 'bg-[var(--accent)]' : 'bg-gray-600'}`}
-                            >
-                                <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${showMakeableOnly ? 'translate-x-6' : ''}`}></div>
-                            </button>
-                            <span className={`text-sm font-semibold transition-colors flex items-center gap-1 ${showMakeableOnly ? 'text-[var(--accent)]' : 'text-gray-500'}`}>Makeable Now <span className="hidden sm:inline">✅</span></span>
-                        </div>
-                    )}
-
                     {/* Text Search Bar */}
                     <div className="relative w-full group flex-grow max-w-sm">
                         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
@@ -170,6 +154,7 @@ export default function MenuPage() {
                             className="bg-black/90 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
                         >
                             <option value="popular">🔥 Most Popular</option>
+                            <option value="makeable-first">✅ Makeable First</option>
                             <option value="drank">🍹 Most Mixed</option>
                             <option value="name-asc">🔤 A-Z</option>
                             <option value="cost-asc">💵 $ to $$$$</option>
@@ -180,8 +165,19 @@ export default function MenuPage() {
                     </div>
                 </div>
 
-                {/* AI Search Bar */}
-                <div className="max-w-xl mx-auto mb-6 relative group z-20">
+                {/* Master Switch & AI Search Bar */}
+                <div className="max-w-xl mx-auto mb-6 relative z-30">
+                    <div className="flex justify-end mb-3">
+                        <div className="flex items-center gap-3 bg-black/40 border border-white/10 px-4 py-2 rounded-2xl cursor-pointer group/switch hover:border-[var(--primary)]/50 transition-colors" onClick={() => setShowMakeableOnly(!showMakeableOnly)}>
+                            <div className={`w-10 h-5 rounded-full transition-colors relative flex items-center ${showMakeableOnly ? 'bg-[var(--primary)]' : 'bg-gray-700'}`}>
+                                <span className={`w-3.5 h-3.5 rounded-full bg-white absolute transition-transform ${showMakeableOnly ? 'translate-x-6' : 'translate-x-1'}`}></span>
+                            </div>
+                            <span className={`text-xs font-bold tracking-wider uppercase transition-colors select-none ${showMakeableOnly ? 'text-[var(--primary)] text-shadow-[0_0_10px_var(--primary)]' : 'text-gray-400'}`}>
+                                100% Makeable
+                            </span>
+                        </div>
+                    </div>
+
                     <form
                         onSubmit={(e: React.FormEvent<HTMLFormElement>) => { e.preventDefault(); handleAISearch(); }}
                         className="relative"
@@ -211,6 +207,66 @@ export default function MenuPage() {
 
                     {/* Glowing background effect for input */}
                     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--secondary)]/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 rounded-full pointer-events-none"></div>
+                </div>
+
+                {/* Explore by Path / Curated Journeys */}
+                <div className="w-full mb-8 relative z-20 overflow-hidden hidden sm:block">
+                    <div className="flex items-center gap-3 overflow-x-auto pb-4 no-scrollbar max-w-5xl mx-auto px-4 snap-x">
+                        <button
+                            onClick={() => { clearFilters(); setSelectedEra('Prohibition'); }}
+                            className="shrink-0 snap-start flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gray-900 border border-gray-800 hover:border-yellow-500/50 hover:bg-yellow-500/10 transition-all group"
+                        >
+                            <span className="text-xl group-hover:scale-110 transition-transform">🏺</span>
+                            <div className="flex flex-col items-start leading-tight">
+                                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">Explore</span>
+                                <span className="text-sm font-medium text-white group-hover:text-yellow-400 transition-colors">Prohibition Era</span>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={() => { clearFilters(); setSelectedEra('Tiki'); }}
+                            className="shrink-0 snap-start flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gray-900 border border-gray-800 hover:border-orange-500/50 hover:bg-orange-500/10 transition-all group"
+                        >
+                            <span className="text-xl group-hover:scale-110 transition-transform">🗿</span>
+                            <div className="flex flex-col items-start leading-tight">
+                                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">Explore</span>
+                                <span className="text-sm font-medium text-white group-hover:text-orange-400 transition-colors">Tiki & Tropical</span>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={() => { clearFilters(); setSelectedStyle('Spirit-Forward'); setSelectedEra('Modern Classic'); }}
+                            className="shrink-0 snap-start flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gray-900 border border-gray-800 hover:border-[var(--primary)]/50 hover:bg-[var(--primary)]/10 transition-all group"
+                        >
+                            <span className="text-xl group-hover:scale-110 transition-transform">⚖️</span>
+                            <div className="flex flex-col items-start leading-tight">
+                                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">Explore</span>
+                                <span className="text-sm font-medium text-white group-hover:text-[var(--primary)] transition-colors">Modern Equal Parts</span>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={() => { clearFilters(); setSelectedSeason('Summer'); setSelectedDifficulty('Beginner'); }}
+                            className="shrink-0 snap-start flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gray-900 border border-gray-800 hover:border-pink-500/50 hover:bg-pink-500/10 transition-all group"
+                        >
+                            <span className="text-xl group-hover:scale-110 transition-transform">🏖️</span>
+                            <div className="flex flex-col items-start leading-tight">
+                                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">Explore</span>
+                                <span className="text-sm font-medium text-white group-hover:text-pink-400 transition-colors">Easy Summer Crushes</span>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={() => { clearFilters(); setSelectedStyle('Spirit-Forward'); setSelectedEra('Golden Age'); }}
+                            className="shrink-0 snap-start flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gray-900 border border-gray-800 hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all group"
+                        >
+                            <span className="text-xl group-hover:scale-110 transition-transform">🥃</span>
+                            <div className="flex flex-col items-start leading-tight">
+                                <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">Explore</span>
+                                <span className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">Golden Age Heavyweights</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Advanced Filtering Toolbar */}
@@ -362,7 +418,28 @@ export default function MenuPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                     {[...cocktailsToShow].sort((a, b) => {
+                        // Pre-calculate Match Percentage for 'makeable-first' sorting
+                        const getMatchPercentage = (cocktail: any) => {
+                            const rawIngredients = Array.isArray(cocktail?.ingredients) ? cocktail.ingredients : [];
+                            const missingCount = rawIngredients.filter((ing: any) => !hasIngredient(ing.item)).length;
+
+                            const trackedIngredients = rawIngredients.filter((ing: any) => {
+                                const isGarnishOrBasic = ing?.item === 'Simple Syrup' || ing?.item === 'Club Soda' || ing?.item === 'Egg White' || ing?.amount === 'Garnish';
+                                return ing?.item && !isGarnishOrBasic;
+                            });
+
+                            const totalTracked = trackedIngredients.length;
+                            return totalTracked > 0
+                                ? Math.round(((totalTracked - missingCount) / totalTracked) * 100)
+                                : 100;
+                        };
+
                         switch (sortBy) {
+                            case 'makeable-first':
+                                const matchA = getMatchPercentage(a);
+                                const matchB = getMatchPercentage(b);
+                                if (matchA !== matchB) return matchB - matchA; // Descending Match %
+                                return (b.popularity || 0) - (a.popularity || 0); // fallback to popularity
                             case 'popular':
                                 return (b.popularity || 0) - (a.popularity || 0);
                             case 'drank':
@@ -380,13 +457,15 @@ export default function MenuPage() {
                                 return a.name.localeCompare(b.name);
                         }
                     }).map((cocktail) => {
-                        const makeable = cocktail.ingredients.every(ing => hasIngredient(ing.item));
+                        const missingCount = cocktail.ingredients.filter(ing => !hasIngredient(ing.item)).length;
+                        const makeable = missingCount === 0;
 
                         return (
                             <CocktailCard
                                 key={cocktail.name}
                                 cocktail={cocktail}
                                 makeable={makeable}
+                                missingCount={missingCount}
                                 hasIngredient={hasIngredient}
                             />
                         );

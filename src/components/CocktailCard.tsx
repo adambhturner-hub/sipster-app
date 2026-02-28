@@ -12,8 +12,9 @@ import { useEffect, useState } from 'react';
 
 interface CocktailCardProps {
     cocktail: Cocktail;
-    makeable: boolean;
-    hasIngredient: (item: string) => boolean;
+    makeable?: boolean;
+    missingCount?: number;
+    hasIngredient?: (item: string) => boolean;
     customHref?: string;
     favoriteId?: string;
     favoriteType?: 'classic' | 'custom_full' | 'custom';
@@ -25,7 +26,8 @@ interface CocktailCardProps {
 
 export default function CocktailCard({
     cocktail,
-    makeable,
+    makeable = true, // default to true if omitted, for related drinks
+    missingCount = 0,
     hasIngredient,
     customHref,
     favoriteId,
@@ -91,16 +93,56 @@ export default function CocktailCard({
                             onChange={onFavoriteChange}
                         />
                         <RiffButton cocktail={cocktail} />
-                        {makeable ? (
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse"></span>
-                                Can Make
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-800 text-gray-400 rounded-full text-xs font-medium border border-gray-700">
-                                Missing Items
-                            </div>
-                        )}
+                        {(() => {
+                            if (!makeable && missingCount === 0) {
+                                return (
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-pulse"></span>
+                                        Recipe
+                                    </div>
+                                );
+                            }
+
+                            const rawIngredients = Array.isArray(cocktail?.ingredients) ? cocktail.ingredients : [];
+                            const trackedIngredients = rawIngredients.filter(ing => {
+                                const isGarnishOrBasic = ing?.item === 'Simple Syrup' || ing?.item === 'Club Soda' || ing?.item === 'Egg White' || ing?.amount === 'Garnish';
+                                return ing?.item && !isGarnishOrBasic;
+                            });
+
+                            const totalTracked = trackedIngredients.length;
+                            const matchPercentage = totalTracked > 0
+                                ? Math.round(((totalTracked - missingCount) / totalTracked) * 100)
+                                : 100;
+
+                            if (matchPercentage === 100) {
+                                return (
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full text-xs font-medium border border-[var(--primary)]/20 shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] animate-[pulse_2s_ease-in-out_infinite] shadow-[0_0_5px_var(--primary)]"></span>
+                                        100% Match
+                                    </div>
+                                );
+                            } else if (matchPercentage >= 75) {
+                                return (
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-yellow-500/10 text-yellow-500 rounded-full text-xs font-medium border border-yellow-500/30 shadow-[0_0_10px_rgba(234,179,8,0.1)] transition-colors hover:bg-yellow-500/20">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 shadow-[0_0_4px_rgba(234,179,8,0.8)]"></span>
+                                        {matchPercentage}% Match
+                                    </div>
+                                );
+                            } else if (matchPercentage >= 50) {
+                                return (
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-orange-500/10 text-orange-400 rounded-full text-xs font-medium border border-orange-500/20">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                                        {matchPercentage}% Match
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-800/80 text-gray-400 rounded-full text-xs font-medium border border-gray-700 backdrop-blur-sm">
+                                        {matchPercentage}% Match
+                                    </div>
+                                );
+                            }
+                        })()}
                     </div>
                 </div>
 
@@ -157,7 +199,7 @@ export default function CocktailCard({
                         <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">{cocktail?.glass || 'Any'} Glass</span>
                     </div>
                     {(Array.isArray(cocktail?.ingredients) ? cocktail.ingredients : []).map((ing, idx) => {
-                        const hasIt = ing?.item ? hasIngredient(ing.item) : false;
+                        const hasIt = ing?.item && hasIngredient ? hasIngredient(ing.item) : true; // default true if no fn provided
                         const isGarnishOrBasic = ing?.item === 'Simple Syrup' || ing?.item === 'Club Soda' || ing?.item === 'Egg White' || ing?.amount === 'Garnish';
                         const officiallyHasIt = hasIt || isGarnishOrBasic;
                         const inCart = ing?.item ? shoppingList.some(i => i.toLowerCase() === ing.item.toLowerCase()) : false;
