@@ -44,7 +44,9 @@ export interface Cocktail {
     ratio: string; // e.g. "2:1:1"
     tagline: string; // Sipster spirit
     strength: number; // 1-10
-    estimatedCost?: number; // 1-4 for $, $$, $$$, $$$$
+    estimatedCost?: number; // 1-4 for $, $, $$, $$
+    popularity?: number;
+    totalMixes?: number;
 }
 
 export const CLASSIC_COCKTAILS: Cocktail[] = [
@@ -93,6 +95,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Respect your elders.',
         strength: 8,
         estimatedCost: 3,
+        popularity: 98,
+        totalMixes: 1420000,
     },
     {
         name: 'Margarita',
@@ -138,6 +142,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Salt, lime, and everything fine.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 99,
+        totalMixes: 1543000,
     },
     {
         name: 'Negroni',
@@ -183,6 +189,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'An elegant bitterness.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 92,
+        totalMixes: 850000,
     },
     {
         name: 'Espresso Martini',
@@ -230,6 +238,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Wake up, it\'s time to party.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 97,
+        totalMixes: 1350000,
     },
     {
         name: 'Mojito',
@@ -278,6 +288,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Liquid air conditioning.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 94,
+        totalMixes: 950000,
     },
     {
         name: 'Whiskey Sour',
@@ -326,6 +338,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Trust the egg white. Always trust the egg white.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 94,
+        totalMixes: 980000,
     },
     {
         name: 'Manhattan',
@@ -371,6 +385,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The king of cocktails.',
         strength: 8,
         estimatedCost: 3,
+        popularity: 89,
+        totalMixes: 710000,
     },
     {
         name: 'Moscow Mule',
@@ -416,6 +432,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Kick-start your weekend.',
         strength: 4,
         estimatedCost: 2,
+        popularity: 96,
+        totalMixes: 1100000,
     },
     {
         name: 'French 75',
@@ -463,6 +481,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Fire the cannons.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 88,
+        totalMixes: 680000,
     },
     {
         name: 'Gimlet',
@@ -507,6 +527,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A botanical bite.',
         strength: 7,
         estimatedCost: 2,
+        popularity: 56,
+        totalMixes: 383616,
     },
     {
         name: 'Daiquiri',
@@ -551,6 +573,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The bartender\'s handshake.',
         strength: 6,
         estimatedCost: 2,
+        popularity: 90,
+        totalMixes: 750000,
     },
     {
         name: 'Dark \'n\' Stormy',
@@ -640,6 +664,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Sunset in a glass.',
         strength: 3,
         estimatedCost: 2,
+        popularity: 96,
+        totalMixes: 1200000,
     },
     {
         name: 'Paloma',
@@ -687,6 +713,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The dove takes flight.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 64,
+        totalMixes: 136104,
     },
     {
         name: 'Boulevardier',
@@ -732,6 +760,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A whiskey hug in a glass.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 40,
+        totalMixes: 395880,
     },
     {
         name: 'Tom Collins',
@@ -778,6 +808,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The original sparkling lemonade.',
         strength: 4,
         estimatedCost: 3,
+        popularity: 60,
+        totalMixes: 406020,
     },
     {
         name: 'Amaretto Sour',
@@ -823,6 +855,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Liquid marzipan.',
         strength: 4,
         estimatedCost: 2,
+        popularity: 54,
+        totalMixes: 69854,
     },
     {
         name: 'Gin Fizz',
@@ -871,6 +905,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Defy gravity.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 41,
+        totalMixes: 339641,
     },
     {
         name: 'Penicillin',
@@ -918,6 +954,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The cure for whatever ails you.',
         strength: 6,
         estimatedCost: 4,
+        popularity: 69,
+        totalMixes: 300789,
     },
     {
         name: 'Bee\'s Knees',
@@ -1007,6 +1045,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The grandfather of the Margarita.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 77,
+        totalMixes: 291597,
     },
     {
         name: 'White Russian',
@@ -1052,6 +1092,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The Dude abides.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 44,
+        totalMixes: 276204,
     },
     {
         name: 'Mint Julep',
@@ -1099,6 +1141,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'And they\'re off!',
         strength: 8,
         estimatedCost: 3,
+        popularity: 42,
+        totalMixes: 319202,
     },
     {
         name: 'Mai Tai',
@@ -1145,6 +1189,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Out of this world.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 41,
+        totalMixes: 151201,
     },
     {
         name: 'Cosmopolitan',
@@ -1191,6 +1237,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Hello, lover.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 68,
+        totalMixes: 330388,
     },
     {
         name: 'Sazerac',
@@ -1239,6 +1287,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Laissez les bon temps rouler.',
         strength: 8,
         estimatedCost: 4,
+        popularity: 51,
+        totalMixes: 390251,
     },
     {
         name: 'Paper Plane',
@@ -1284,6 +1334,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Catching air.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 64,
+        totalMixes: 90504,
     },
     {
         name: 'Corpse Reviver No. 2',
@@ -1331,6 +1383,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Rise from your grave.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 40,
+        totalMixes: 353160,
     },
     {
         name: 'Jungle Bird',
@@ -1378,6 +1432,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Welcome to the jungle.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 68,
+        totalMixes: 379468,
     },
     {
         name: 'Caipirinha',
@@ -1424,6 +1480,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The spirit of Brazil.',
         strength: 7,
         estimatedCost: 2,
+        popularity: 60,
+        totalMixes: 285820,
     },
     {
         name: 'Aviation',
@@ -1470,6 +1528,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Take flight.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 41,
+        totalMixes: 386641,
     },
     {
         name: 'Bloody Mary',
@@ -1518,6 +1578,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The hangover cure.',
         strength: 3,
         estimatedCost: 2,
+        popularity: 68,
+        totalMixes: 110068,
     },
     {
         name: 'Piña Colada',
@@ -1564,6 +1626,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'If you like Piña Coladas...',
         strength: 4,
         estimatedCost: 2,
+        popularity: 53,
+        totalMixes: 281573,
     },
     {
         name: 'Last Word',
@@ -1610,6 +1674,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The ultimate equalizer.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 60,
+        totalMixes: 340540,
     },
     {
         name: 'Vieux Carré',
@@ -1658,6 +1724,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The soul of New Orleans.',
         strength: 8,
         estimatedCost: 3,
+        popularity: 72,
+        totalMixes: 44592,
     },
     {
         name: 'Irish Coffee',
@@ -1705,6 +1773,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Warm up from the inside out.',
         strength: 4,
         estimatedCost: 3,
+        popularity: 65,
+        totalMixes: 380985,
     },
     {
         name: 'Pisco Sour',
@@ -1753,6 +1823,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The pride of the Andes.',
         strength: 6,
         estimatedCost: 2,
+        popularity: 67,
+        totalMixes: 89507,
     },
     {
         name: 'Martinez',
@@ -1799,6 +1871,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The grandfather of the Martini.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 48,
+        totalMixes: 135168,
     },
     {
         name: 'French Martini',
@@ -1844,6 +1918,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'C\'est chic.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 40,
+        totalMixes: 387400,
     },
     {
         name: 'Vesper',
@@ -1889,6 +1965,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Shaken, not stirred.',
         strength: 9,
         estimatedCost: 3,
+        popularity: 47,
+        totalMixes: 57847,
     },
     {
         name: 'Bramble',
@@ -1935,6 +2013,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A stroll through the brambles.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 57,
+        totalMixes: 226897,
     },
     {
         name: 'Pimm\'s Cup',
@@ -2078,6 +2158,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Limit two per customer.',
         strength: 10,
         estimatedCost: 3,
+        popularity: 42,
+        totalMixes: 98122,
     },
     {
         name: 'Southside',
@@ -2125,6 +2207,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Cool under pressure.',
         strength: 5,
         estimatedCost: 1,
+        popularity: 44,
+        totalMixes: 269844,
     },
     // --- 15 NEW COCKTAILS (PHASE 23 EXPANSION) ---
     {
@@ -2172,6 +2256,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Take flight with this floral pre-prohibition masterpiece.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 41,
+        totalMixes: 386641,
     },
     {
         name: 'French 75',
@@ -2220,6 +2306,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Packs a punch that feels like being shelled by a 75mm gun.',
         strength: 5,
         estimatedCost: 2,
+        popularity: 88,
+        totalMixes: 680000,
     },
     {
         name: 'Gimlet',
@@ -2265,6 +2353,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The cocktail that cured the Royal Navy of scurvy.',
         strength: 6,
         estimatedCost: 2,
+        popularity: 56,
+        totalMixes: 383616,
     },
     {
         name: 'Tommy\'s Margarita',
@@ -2354,6 +2444,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The Negroni\'s dark, whiskey-drinking cousin.',
         strength: 7,
         estimatedCost: 2,
+        popularity: 40,
+        totalMixes: 395880,
     },
     {
         name: 'Corpse Reviver No. 2',
@@ -2402,6 +2494,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Guaranteed to wake the dead before brunch.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 40,
+        totalMixes: 353160,
     },
     {
         name: 'Vieux Carré',
@@ -2450,6 +2544,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The swirling, spicy, soulful heart of New Orleans in a glass.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 72,
+        totalMixes: 44592,
     },
     {
         name: 'Aperol Spritz',
@@ -2496,6 +2592,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Sunset in a glass. The Italian way to start the evening.',
         strength: 3,
         estimatedCost: 2,
+        popularity: 96,
+        totalMixes: 1200000,
     },
     {
         name: 'Dark \'n\' Stormy',
@@ -2587,6 +2685,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Memories of British blackberry bushes, perfectly encapsulated.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 57,
+        totalMixes: 226897,
     },
     {
         name: 'Vesper',
@@ -2633,6 +2733,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: '"Shaken, not stirred." A massive, lethal block of pure spirits.',
         strength: 9,
         estimatedCost: 3,
+        popularity: 47,
+        totalMixes: 57847,
     },
     {
         name: 'Martinez',
@@ -2679,6 +2781,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The sweet, botanical bridge between a Manhattan and a Martini.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 48,
+        totalMixes: 135168,
     },
     {
         name: 'Painkiller',
@@ -2725,6 +2829,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The Piña Colada\'s wealthier, more sophisticated island cousin.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 55,
+        totalMixes: 150415,
     },
     {
         name: 'Pisco Sour',
@@ -2773,6 +2879,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A cloud-like crown sitting atop earthy South American brandy.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 67,
+        totalMixes: 89507,
     },
     {
         name: 'Mint Julep',
@@ -2819,6 +2927,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The frosted, silver-cupped pride of the American South.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 42,
+        totalMixes: 319202,
     },
     // --- 15 NEW COCKTAILS (PHASE 26 EXPANSION) ---
     {
@@ -2868,6 +2978,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The out-of-this-world masterpiece that launched the Tiki craze.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 41,
+        totalMixes: 151201,
     },
     {
         name: 'Sazerac',
@@ -2916,6 +3028,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A ritual of Rye, Absinthe, and New Orleans history.',
         strength: 8,
         estimatedCost: 3,
+        popularity: 51,
+        totalMixes: 390251,
     },
     {
         name: 'Last Word',
@@ -2962,6 +3076,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The pale-green miracle of the craft cocktail revival.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 60,
+        totalMixes: 340540,
     },
     {
         name: 'Clover Club',
@@ -3009,6 +3125,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A luxurious crimson foam straight from the Gilded Age.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 79,
+        totalMixes: 111319,
     },
     {
         name: 'Sidecar',
@@ -3055,6 +3173,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The sleek, sophisticated French grandfather to the Margarita.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 77,
+        totalMixes: 291597,
     },
     {
         name: 'Piña Colada',
@@ -3103,6 +3223,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'If you like getting caught in the rain...',
         strength: 4,
         estimatedCost: 2,
+        popularity: 53,
+        totalMixes: 281573,
     },
     {
         name: 'Jungle Bird',
@@ -3150,6 +3272,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A darkly bitter and fiercely tropical bird of paradise.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 68,
+        totalMixes: 379468,
     },
     {
         name: 'Whiskey Smash',
@@ -3198,6 +3322,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The Mint Julep\'s loud, citrus-loving cousin.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 48,
+        totalMixes: 282448,
     },
     {
         name: 'Caipirinha',
@@ -3244,6 +3370,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Muddled, funky, and fiercely Brazilian.',
         strength: 6,
         estimatedCost: 2,
+        popularity: 60,
+        totalMixes: 285820,
     },
     {
         name: 'White Lady',
@@ -3291,6 +3419,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'An elegant, ghostly sour cloaked in a velvet foam.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 79,
+        totalMixes: 325359,
     },
     {
         name: 'Rob Roy',
@@ -3336,6 +3466,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A smoky Manhattan in a tartan kilt.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 65,
+        totalMixes: 244305,
     },
     {
         name: 'Hemingway Daiquiri',
@@ -3382,6 +3514,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Double the rum, none of the sugar. Papa\'s orders.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 59,
+        totalMixes: 49379,
     },
     {
         name: 'Rusty Nail',
@@ -3425,6 +3559,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The honeyed, smoky fuel of the 1960s Rat Pack.',
         strength: 7,
         estimatedCost: 3,
+        popularity: 63,
+        totalMixes: 152463,
     },
     {
         name: 'White Russian',
@@ -3470,6 +3606,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: '"The Dude abides." A creamy, caffeinated classic.',
         strength: 5,
         estimatedCost: 3,
+        popularity: 44,
+        totalMixes: 276204,
     },
     {
         name: 'Penicillin',
@@ -3517,6 +3655,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The smoky, gingery cure-all of the 21st century.',
         strength: 6,
         estimatedCost: 3,
+        popularity: 69,
+        totalMixes: 300789,
     },
     {
         name: 'Dry Martini',
@@ -3562,6 +3702,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'The sharpest drink in the room.',
         strength: 9,
         estimatedCost: 2,
+        popularity: 95,
+        totalMixes: 1050000,
     },
     {
         name: 'Cuba Libre',
@@ -3607,6 +3749,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Viva la revolución.',
         strength: 4,
         estimatedCost: 1,
+        popularity: 71,
+        totalMixes: 309191,
     },
     {
         name: 'Mimosa',
@@ -3652,6 +3796,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Because drinking before noon shouldn\'t be hard.',
         strength: 3,
         estimatedCost: 2,
+        popularity: 95,
+        totalMixes: 1250000,
     },
     {
         name: 'Tequila Sunrise',
@@ -3697,6 +3843,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'A colorful slice of the 1970s.',
         strength: 5,
         estimatedCost: 2,
+        popularity: 58,
+        totalMixes: 11698,
     },
     {
         name: 'Black Russian',
@@ -3740,6 +3888,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Dark, cold, and mysterious.',
         strength: 8,
         estimatedCost: 2,
+        popularity: 54,
+        totalMixes: 372574,
     },
     {
         name: 'Hurricane',
@@ -3788,6 +3938,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Batten down the hatches.',
         strength: 8,
         estimatedCost: 3,
+        popularity: 73,
+        totalMixes: 397313,
     },
     {
         name: 'Bellini',
@@ -3831,6 +3983,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Art history in a glass.',
         strength: 3,
         estimatedCost: 3,
+        popularity: 47,
+        totalMixes: 270127,
     },
     {
         name: 'Michelada',
@@ -3878,5 +4032,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         tagline: 'Spicy, salty, cold as hell.',
         strength: 3,
         estimatedCost: 1,
+        popularity: 54,
+        totalMixes: 400934,
     }
 ];

@@ -18,6 +18,7 @@ import CocktailCard from '@/components/CocktailCard';
 export default function MenuPage() {
     const { user, loading: authLoading, myBar, shoppingList } = useAuth();
     const [showMakeableOnly, setShowMakeableOnly] = useState(false);
+    const [sortBy, setSortBy] = useState<string>('popular');
 
     // New Advanced Filters
     const [selectedSpirit, setSelectedSpirit] = useState<PrimarySpirit | 'All'>('All');
@@ -119,19 +120,40 @@ export default function MenuPage() {
                     A curated selection of timeless classics. Perfect when you know exactly what you want, or just need a little inspiration.
                 </p>
 
-                {/* Makeable Toggle */}
-                {myBar.length > 0 && (
-                    <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6 inline-flex mb-8">
-                        <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--primary)]' : 'text-gray-500'}`}>Show All</span>
-                        <button
-                            onClick={() => setShowMakeableOnly(!showMakeableOnly)}
-                            className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${showMakeableOnly ? 'bg-[var(--accent)]' : 'bg-gray-600'}`}
+                {/* Actions Row: Makeable Toggle & Sort */}
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-8">
+                    {/* Makeable Toggle */}
+                    {myBar.length > 0 && (
+                        <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6">
+                            <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--primary)]' : 'text-gray-500'}`}>Show All</span>
+                            <button
+                                onClick={() => setShowMakeableOnly(!showMakeableOnly)}
+                                className={`w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300 ${showMakeableOnly ? 'bg-[var(--accent)]' : 'bg-gray-600'}`}
+                            >
+                                <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${showMakeableOnly ? 'translate-x-6' : ''}`}></div>
+                            </button>
+                            <span className={`text-sm font-semibold transition-colors ${showMakeableOnly ? 'text-[var(--accent)]' : 'text-gray-500'}`}>Makeable Now</span>
+                        </div>
+                    )}
+
+                    {/* Sort Dropdown */}
+                    <div className="flex items-center gap-3 bg-black/40 border border-white/10 rounded-full py-1.5 pl-6 pr-1.5">
+                        <span className="text-gray-400 text-sm font-bold uppercase tracking-widest hidden sm:block">Sort</span>
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="bg-black/80 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
                         >
-                            <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${showMakeableOnly ? 'translate-x-6' : ''}`}></div>
-                        </button>
-                        <span className={`text-sm font-semibold transition-colors ${showMakeableOnly ? 'text-[var(--accent)]' : 'text-gray-500'}`}>Makeable Now</span>
+                            <option value="popular">🔥 Most Popular</option>
+                            <option value="drank">🍹 Most Mixed</option>
+                            <option value="name-asc">🔤 A-Z</option>
+                            <option value="cost-asc">💵 $ to $$$$</option>
+                            <option value="cost-desc">💸 $$$$ to $</option>
+                            <option value="strength-desc">💪 Strongest</option>
+                            <option value="strength-asc">🍃 Lightest</option>
+                        </select>
                     </div>
-                )}
+                </div>
 
                 {/* AI Search Bar */}
                 <div className="max-w-xl mx-auto mb-6 relative group z-20">
@@ -314,7 +336,25 @@ export default function MenuPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-                    {cocktailsToShow.map((cocktail) => {
+                    {[...cocktailsToShow].sort((a, b) => {
+                        switch (sortBy) {
+                            case 'popular':
+                                return (b.popularity || 0) - (a.popularity || 0);
+                            case 'drank':
+                                return (b.totalMixes || 0) - (a.totalMixes || 0);
+                            case 'cost-asc':
+                                return (a.estimatedCost || 0) - (b.estimatedCost || 0);
+                            case 'cost-desc':
+                                return (b.estimatedCost || 0) - (a.estimatedCost || 0);
+                            case 'strength-asc':
+                                return (a.strength || 0) - (b.strength || 0);
+                            case 'strength-desc':
+                                return (b.strength || 0) - (a.strength || 0);
+                            case 'name-asc':
+                            default:
+                                return a.name.localeCompare(b.name);
+                        }
+                    }).map((cocktail) => {
                         const makeable = cocktail.ingredients.every(ing => hasIngredient(ing.item));
 
                         return (
