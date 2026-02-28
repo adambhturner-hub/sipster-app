@@ -97,8 +97,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 98,
         totalMixes: 1420000,
-    },
-    {
+    },    {
         name: 'Margarita',
         emoji: '🍸',
         primarySpirit: 'Agave',
@@ -144,8 +143,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 99,
         totalMixes: 1543000,
-    },
-    {
+    },    {
         name: 'Negroni',
         emoji: '🥃',
         primarySpirit: 'Gin',
@@ -191,8 +189,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 92,
         totalMixes: 850000,
-    },
-    {
+    },    {
         name: 'Espresso Martini',
         emoji: '☕',
         primarySpirit: 'Vodka',
@@ -240,8 +237,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 97,
         totalMixes: 1350000,
-    },
-    {
+    },    {
         name: 'Mojito',
         emoji: '🌿',
         primarySpirit: 'Rum',
@@ -290,8 +286,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 94,
         totalMixes: 950000,
-    },
-    {
+    },    {
         name: 'Whiskey Sour',
         emoji: '🍋',
         primarySpirit: 'Whiskey & Bourbon',
@@ -340,8 +335,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 94,
         totalMixes: 980000,
-    },
-    {
+    },    {
         name: 'Manhattan',
         emoji: '🍸',
         primarySpirit: 'Whiskey & Bourbon',
@@ -387,8 +381,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 89,
         totalMixes: 710000,
-    },
-    {
+    },    {
         name: 'Moscow Mule',
         emoji: '🧊',
         primarySpirit: 'Vodka',
@@ -434,8 +427,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 96,
         totalMixes: 1100000,
-    },
-    {
+    },    {
         name: 'French 75',
         emoji: '🥂',
         primarySpirit: 'Gin',
@@ -483,8 +475,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 88,
         totalMixes: 680000,
-    },
-    {
+    },    {
         name: 'Gimlet',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -529,8 +520,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 56,
         totalMixes: 383616,
-    },
-    {
+    },    {
         name: 'Daiquiri',
         emoji: '🍸',
         primarySpirit: 'Rum',
@@ -575,52 +565,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 90,
         totalMixes: 750000,
-    },
-    {
-        name: 'Dark \'n\' Stormy',
-        emoji: '🍹',
-        primarySpirit: 'Rum',
-        origin: 'Bermuda',
-        era: 'Modern Classic',
-        style: 'Highball',
-        glass: 'Highball',
-        ingredients: [
-            { amount: '2 oz', item: 'Dark/Aged Rum' },
-            { amount: '0.5 oz', item: 'Limes' },
-            { amount: '3 oz', item: 'Ginger Beer' }
-        ],
-        description: 'A treacherous tempest of rich, aged rum and biting ginger spice.',
-        garnish: 'Lime wedge',
-        instructions: [
-            'Fill a highball glass with ice cubes.',
-            'Pour in the ginger beer and a squeeze of lime juice.',
-            'Gently pour the dark rum over the back of a spoon to float it on top (creating the "storm cloud").',
-            'Serve with a straw for the drinker to mix.'
-        ],
-        season: 'Fall',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Moscow Mule', 'Rum & Tonic', 'Mai Tai'],
-        source: 'British Naval Officers',
-        city: 'Bermuda',
-        mood: 'Adventurous',
-        flavorProfile: ['Spicy', 'Rich', 'Molasses', 'Zesty'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Stormy Night',
-        abvContent: 'Low',
-        temperature: 'Cold',
-        countryOfPopularity: 'Bermuda',
-        timePeriod: '1920s',
-        trivia: [
-            'The name is actually heavily trademarked by Gosling Brothers; legally, it is only a Dark \'n Stormy if it uses Gosling\'s Black Seal Rum.',
-            'It was supposedly named by a sailor who claimed the drink was the color of a cloud "only a fool or a dead man would sail under".',
-            'Ginger beer is used, not ginger ale, because ginger beer is fermented and packs a significantly spicier kick.'
-        ],
-        ratio: '2:½:3',
-        tagline: 'Sail into the tempest.',
-        strength: 5
-    },
-    {
+    },    {
         name: 'Aperol Spritz',
         emoji: '🍹',
         primarySpirit: 'Liqueur & Other',
@@ -666,8 +611,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 96,
         totalMixes: 1200000,
-    },
-    {
+    },    {
         name: 'Paloma',
         emoji: '🍹',
         primarySpirit: 'Agave',
@@ -715,8 +659,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 64,
         totalMixes: 136104,
-    },
-    {
+    },    {
         name: 'Boulevardier',
         emoji: '🥃',
         primarySpirit: 'Whiskey & Bourbon',
@@ -762,8 +705,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 40,
         totalMixes: 395880,
-    },
-    {
+    },    {
         name: 'Tom Collins',
         emoji: ' tall ',
         primarySpirit: 'Gin',
@@ -810,8 +752,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 60,
         totalMixes: 406020,
-    },
-    {
+    },    {
         name: 'Amaretto Sour',
         emoji: '🥃',
         primarySpirit: 'Liqueur & Other',
@@ -857,8 +798,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 54,
         totalMixes: 69854,
-    },
-    {
+    },    {
         name: 'Gin Fizz',
         emoji: '🫧',
         primarySpirit: 'Gin',
@@ -907,8 +847,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 41,
         totalMixes: 339641,
-    },
-    {
+    },    {
         name: 'Penicillin',
         emoji: '🍯',
         primarySpirit: 'Whiskey & Bourbon',
@@ -956,52 +895,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 4,
         popularity: 69,
         totalMixes: 300789,
-    },
-    {
-        name: 'Bee\'s Knees',
-        emoji: '🐝',
-        primarySpirit: 'Gin',
-        origin: 'France',
-        era: 'Prohibition',
-        style: 'Sour',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '2 oz', item: 'Gin (London Dry)' },
-            { amount: '0.75 oz', item: 'Lemons' },
-            { amount: '0.75 oz', item: 'Honey' }
-        ],
-        description: 'A prohibition-era staple where rich honey beautifully masks the harshness of bathtub gin.',
-        garnish: 'Lemon twist',
-        instructions: [
-            'Create a honey syrup by cutting the honey with a tiny splash of warm water (so it doesn\'t seize in the shaker).',
-            'Add the gin, lemon juice, and honey syrup to a cocktail shaker.',
-            'Fill with ice and shake vigorously.',
-            'Double strain into a chilled coupe glass.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Gold Rush', 'Gimlet', 'White Lady'],
-        source: 'Frank Meier (Debated)',
-        city: 'Paris',
-        mood: 'Cheery',
-        flavorProfile: ['Sweet', 'Floral', 'Sour', 'Botanical'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Garden Party',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1920s',
-        trivia: [
-            '"The Bee\'s Knees" was jazz-age slang meaning "the best" or "the absolute coolest".',
-            'The rich honey and strong citrus were specifically utilized to hide the awful, turpentine-like taste of illegal Prohibition gin.',
-            'If you swap the gin for bourbon, the drink becomes a "Gold Rush" (invented much later at Milk & Honey).'
-        ],
-        ratio: '2:¾:¾',
-        tagline: 'An absolute delight.',
-        strength: 6
-    },
-    {
+    },    {
         name: 'Sidecar',
         emoji: '🍸',
         primarySpirit: 'Whiskey & Bourbon', // Cognac historically, but keeping to Bourbon for local DB ease
@@ -1047,8 +941,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 77,
         totalMixes: 291597,
-    },
-    {
+    },    {
         name: 'White Russian',
         emoji: '🥛',
         primarySpirit: 'Vodka',
@@ -1094,8 +987,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 44,
         totalMixes: 276204,
-    },
-    {
+    },    {
         name: 'Mint Julep',
         emoji: '🌿',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1143,8 +1035,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 42,
         totalMixes: 319202,
-    },
-    {
+    },    {
         name: 'Mai Tai',
         emoji: '🍹',
         primarySpirit: 'Rum',
@@ -1191,8 +1082,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 41,
         totalMixes: 151201,
-    },
-    {
+    },    {
         name: 'Cosmopolitan',
         emoji: '🍸',
         primarySpirit: 'Vodka',
@@ -1239,8 +1129,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 68,
         totalMixes: 330388,
-    },
-    {
+    },    {
         name: 'Sazerac',
         emoji: '🥃',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1289,8 +1178,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 4,
         popularity: 51,
         totalMixes: 390251,
-    },
-    {
+    },    {
         name: 'Paper Plane',
         emoji: '✈️',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1336,8 +1224,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 64,
         totalMixes: 90504,
-    },
-    {
+    },    {
         name: 'Corpse Reviver No. 2',
         emoji: '💀',
         primarySpirit: 'Gin',
@@ -1385,8 +1272,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 40,
         totalMixes: 353160,
-    },
-    {
+    },    {
         name: 'Jungle Bird',
         emoji: '🦜',
         primarySpirit: 'Rum',
@@ -1434,8 +1320,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 68,
         totalMixes: 379468,
-    },
-    {
+    },    {
         name: 'Caipirinha',
         emoji: '🇧🇷',
         primarySpirit: 'Rum',
@@ -1482,8 +1367,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 60,
         totalMixes: 285820,
-    },
-    {
+    },    {
         name: 'Aviation',
         emoji: '✈️',
         primarySpirit: 'Gin',
@@ -1530,8 +1414,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 41,
         totalMixes: 386641,
-    },
-    {
+    },    {
         name: 'Bloody Mary',
         emoji: '🍅',
         primarySpirit: 'Vodka',
@@ -1580,8 +1463,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 68,
         totalMixes: 110068,
-    },
-    {
+    },    {
         name: 'Piña Colada',
         emoji: '🍍',
         primarySpirit: 'Rum',
@@ -1628,8 +1510,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 53,
         totalMixes: 281573,
-    },
-    {
+    },    {
         name: 'Last Word',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -1676,8 +1557,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 60,
         totalMixes: 340540,
-    },
-    {
+    },    {
         name: 'Vieux Carré',
         emoji: '🥃',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1726,8 +1606,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 72,
         totalMixes: 44592,
-    },
-    {
+    },    {
         name: 'Irish Coffee',
         emoji: '☕',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1775,8 +1654,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 65,
         totalMixes: 380985,
-    },
-    {
+    },    {
         name: 'Pisco Sour',
         emoji: '🍋',
         primarySpirit: 'Liqueur & Other', // Mapping Pisco
@@ -1825,8 +1703,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 67,
         totalMixes: 89507,
-    },
-    {
+    },    {
         name: 'Martinez',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -1873,8 +1750,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 48,
         totalMixes: 135168,
-    },
-    {
+    },    {
         name: 'French Martini',
         emoji: '🍸',
         primarySpirit: 'Vodka',
@@ -1920,8 +1796,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 40,
         totalMixes: 387400,
-    },
-    {
+    },    {
         name: 'Vesper',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -1967,8 +1842,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 47,
         totalMixes: 57847,
-    },
-    {
+    },    {
         name: 'Bramble',
         emoji: '🫐',
         primarySpirit: 'Gin',
@@ -2015,99 +1889,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 57,
         totalMixes: 226897,
-    },
-    {
-        name: 'Pimm\'s Cup',
-        emoji: '🥒',
-        primarySpirit: 'Liqueur & Other',
-        origin: 'UK',
-        era: 'Pre-Prohibition',
-        style: 'Highball',
-        glass: 'Highball',
-        ingredients: [
-            { amount: '2 oz', item: 'Pimm\'s No. 1' },
-            { amount: '4 oz', item: 'Lemon-Lime Soda' }, // Or ginger ale/lemonade
-            { amount: 'Handful', item: 'Mint' },
-            { amount: 'Slices', item: 'Lemons' },
-            { amount: 'Slices', item: 'Cucumber' } // Often strawberries too, but let's keep it simple
-        ],
-        description: 'The definitive British summer drink. Essentially an adult fruit salad in a glass.',
-        garnish: 'Cucumber ribbon, mint bouquet, strawberry slice, lemon',
-        instructions: [
-            'Fill a tall highball glass or a large goblet with ice.',
-            'Toss in slices of cucumber, lemon, and strawberries as you build the ice.',
-            'Pour in the Pimm\'s No. 1.',
-            'Top with lemon-lime soda (or traditional sparkling British lemonade).',
-            'Stir gently to combine and garnish abundantly.'
-        ],
-        season: 'Summer',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Aperol Spritz', 'Sangria', 'Tom Collins'],
-        source: 'James Pimm',
-        city: 'London',
-        mood: 'Sunny & Lazy',
-        flavorProfile: ['Fruity', 'Herbal', 'Sweet', 'Refreshing'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Wimbledon',
-        abvContent: 'Low',
-        temperature: 'Cold',
-        countryOfPopularity: 'UK',
-        timePeriod: '1840s',
-        trivia: [
-            'It is the official drink of the Wimbledon tennis tournament, where over 300,000 glasses are served each year.',
-            'Pimm\'s No. 1 is a gin-based liqueur infused with a secretive blend of herbs, spices, and caramelized orange.',
-            'Originally served in a small tankard known as a "No. 1 Cup", which gave the drink its name.'
-        ],
-        ratio: '2:4',
-        tagline: 'Anyone for tennis?',
-        strength: 3
-    },
-    {
-        name: 'Tommy\'s Margarita',
-        emoji: '🍸',
-        primarySpirit: 'Agave',
-        origin: 'USA',
-        era: 'Modern Classic',
-        style: 'Sour',
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '2 oz', item: 'Tequila (Blanco)' },
-            { amount: '1 oz', item: 'Limes' },
-            { amount: '0.5 oz', item: 'Agave Nectar' }
-        ],
-        description: 'A purist\'s Margarita. Strips away the orange liqueur in favor of pure agave flavor.',
-        garnish: 'Salt rim & Lime wedge',
-        instructions: [
-            'Optionally rim half of a rocks glass with salt.',
-            'Combine 100% agave tequila, fresh lime juice, and agave nectar in a shaker.',
-            'Add ice and shake vigorously to chill and dilute.',
-            'Strain into the rocks glass over fresh ice.'
-        ],
-        season: 'Summer',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Margarita', 'Paloma', 'Daiquiri'],
-        source: 'Julio Bermejo',
-        city: 'San Francisco',
-        mood: 'Purist',
-        flavorProfile: ['Tart', 'Agave', 'Crisp', 'Clean'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Taco Tuesday',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1990s',
-        trivia: [
-            'Invented at Tommy\'s Mexican Restaurant in San Francisco, widely considered a global mecca for tequila lovers.',
-            'By swapping traditional triple sec (orange liqueur) for agave nectar, the drink celebrates the native flavor of the tequila rather than masking it.',
-            'It was the first modern variation of a classic cocktail to become a global standard.'
-        ],
-        ratio: '2:1:½',
-        tagline: 'Respect the agave.',
-        strength: 6
-    },
-    {
+    },    {
         name: 'Zombie',
         emoji: '🧟',
         primarySpirit: 'Rum',
@@ -2160,8 +1942,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 42,
         totalMixes: 98122,
-    },
-    {
+    },    {
         name: 'Southside',
         emoji: '🍃',
         primarySpirit: 'Gin',
@@ -2209,582 +1990,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 1,
         popularity: 44,
         totalMixes: 269844,
-    },
-    // --- 15 NEW COCKTAILS (PHASE 23 EXPANSION) ---
-    {
-        name: 'Aviation',
-        emoji: '✈️',
-        primarySpirit: 'Gin',
-        origin: 'USA',
-        era: 'Pre-Prohibition',
-        style: 'Sour',
-        glass: 'Martini',
-        ingredients: [
-            { amount: '2 oz', item: 'Gin' },
-            { amount: '0.5 oz', item: 'Maraschino Liqueur' },
-            { amount: '0.25 oz', item: 'Creme de Violette' },
-            { amount: '0.75 oz', item: 'Lemon Juice' }
-        ],
-        description: 'A pale, sky-blue classic from the early 1900s featuring a delicate, floral interplay between gin, sweet cherry, and vibrant violet.',
-        garnish: 'Brandied Cherry',
-        instructions: [
-            'Add all ingredients to a shaker with ice.',
-            'Shake vigorously until well-chilled.',
-            'Strain into a chilled cocktail glass or coupe.',
-            'Drop in a brandied cherry.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Corpse Reviver No. 2', 'Last Word', 'Water Lily'],
-        source: 'Hugo Ensslin, Hotel Wallick (New York)',
-        city: 'New York City',
-        mood: 'Elegant',
-        flavorProfile: ['Floral', 'Tart', 'Botanical', 'Sweet'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Afternoon Sipper',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1910s',
-        trivia: [
-            'The recipe was lost for decades because later printings of the Savoy Cocktail Book omitted the hard-to-find Creme de Violette.',
-            'When made correctly, the drink should have a pale, slate-blue hue resembling the sky.',
-            'It was invented right at the dawn of commercial aviation, hence the name.'
-        ],
-        ratio: '3:1:1:X',
-        tagline: 'Take flight with this floral pre-prohibition masterpiece.',
-        strength: 6,
-        estimatedCost: 3,
-        popularity: 41,
-        totalMixes: 386641,
-    },
-    {
-        name: 'French 75',
-        emoji: '🥂',
-        primarySpirit: 'Gin',
-        origin: 'France',
-        era: 'Prohibition',
-        style: 'Fizzy',
-        glass: 'Coupe', // Often served in a flute, but coupe is classic
-        ingredients: [
-            { amount: '1.5 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
-            { amount: '0.5 oz', item: 'Simple Syrup' },
-            { amount: '3 oz', item: 'Champagne' }
-        ],
-        description: 'A vibrant, effervescent cocktail that combines the botanical notes of gin and bright citrus with the dry, celebratory pop of Champagne.',
-        garnish: 'Lemon Twist',
-        instructions: [
-            'Combine gin, lemon juice, and simple syrup in a shaker with ice.',
-            'Shake vigorously until well-chilled.',
-            'Strain into a champagne flute or coupe.',
-            'Top carefully with Champagne and gently stir.',
-            'Express the lemon twist oils over the glass and drop it in.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1-2 Drinks',
-        quantity: 1,
-        relationship: ['Tom Collins', 'Airmail', 'Mimosa'],
-        source: 'Harry MacElhone, New York Bar (Paris)',
-        city: 'Paris',
-        mood: 'Celebratory',
-        flavorProfile: ['Citrusy', 'Bubbly', 'Crisp', 'Botanical'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Brunch or Celebration',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1915',
-        trivia: [
-            'Named after the fast-firing 75mm French field gun used during World War I.',
-            'The original version was supposedly made with Calvados (apple brandy) instead of gin.',
-            'It became massively popular at the Stork Club in New York during the mid-20th century.',
-            'Arnaud’s in New Orleans famously makes theirs with Cognac instead of Gin.'
-        ],
-        ratio: '2:1:1 + Bubbles',
-        tagline: 'Packs a punch that feels like being shelled by a 75mm gun.',
-        strength: 5,
-        estimatedCost: 2,
-        popularity: 88,
-        totalMixes: 680000,
-    },
-    {
-        name: 'Gimlet',
-        emoji: '⚓',
-        primarySpirit: 'Gin',
-        origin: 'United Kingdom',
-        era: 'Pre-Prohibition',
-        style: 'Sour',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '2 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Lime Juice' },
-            { amount: '0.75 oz', item: 'Simple Syrup' }
-        ],
-        description: 'A sharp, bracing, and intensely lime-forward classic. Originally a naval ration, it is the ultimate showcase of gin and citrus.',
-        garnish: 'Lime Wheel',
-        instructions: [
-            'Add gin, fresh lime juice, and simple syrup to a shaker with ice.',
-            'Shake vigorously until well-chilled.',
-            'Strain into a chilled coupe or martini glass.',
-            'Garnish with a fresh lime wheel.'
-        ],
-        season: 'Summer',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Daiquiri', 'Southside', 'Margarita'],
-        source: 'British Royal Navy',
-        city: 'London (Naval Origins)',
-        mood: 'Refreshing',
-        flavorProfile: ['Tart', 'Citrusy', 'Botanical', 'Crisp'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Pre-Dinner Starter',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'United Kingdom / USA',
-        timePeriod: '1880s',
-        trivia: [
-            'Historically made with Rose’s Lime Cordial rather than fresh juice, though modern bartenders heavily prefer fresh.',
-            'Named after Surgeon Admiral Sir Thomas Gimlette, who pushed sailors to mix their gin with lime to prevent scurvy.',
-            'Raymond Chandler famously wrote that a real Gimlet is "half gin and half Rose\'s Lime Juice and nothing else."'
-        ],
-        ratio: '2:1:1',
-        tagline: 'The cocktail that cured the Royal Navy of scurvy.',
-        strength: 6,
-        estimatedCost: 2,
-        popularity: 56,
-        totalMixes: 383616,
-    },
-    {
-        name: 'Tommy\'s Margarita',
-        emoji: '🌵',
-        primarySpirit: 'Agave',
-        origin: 'USA',
-        era: 'Modern Classic',
-        style: 'Sour',
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '2 oz', item: 'Tequila' }, // Specifically asking for Reposado or Blanco usually
-            { amount: '1 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Agave Nectar' }
-        ],
-        description: 'A brilliant modern simplification of the Margarita that replaces Orange Liqueur with pure Agave syrup, resulting in a cleaner, more tequila-forward profile.',
-        garnish: 'Lime Wedge & Salt Rim',
-        instructions: [
-            'Rub a lime wedge over half the rim of a rocks glass, and dip in kosher salt.',
-            'Combine tequila, lime juice, and agave nectar in a shaker with ice.',
-            'Shake vigorously to chill and dilute the thick syrup.',
-            'Strain over fresh ice into the prepared rocks glass.'
-        ],
-        season: 'Summer',
-        recommendedAmount: '2 Drinks',
-        quantity: 1,
-        relationship: ['Margarita', 'Paloma', 'Oaxaca Old Fashioned'],
-        source: 'Julio Bermejo, Tommy\'s Mexican Restaurant',
-        city: 'San Francisco',
-        mood: 'Party',
-        flavorProfile: ['Tart', 'Agave', 'Crisp', 'Earthy'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Taco Tuesday',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1990',
-        trivia: [
-            'Invented in the early 1990s at Tommy’s Mexican Restaurant in San Francisco.',
-            'Julio Bermejo specifically used Herradura Reposado Tequila in his original recipe.',
-            'By removing the Cointreau/Triple Sec, this spec is technically a "Tequila Sour," not a Daisy (Margarita translates to Daisy).'
-        ],
-        ratio: '2:1:0.5',
-        tagline: 'The modern gold-standard for how a Margarita should taste.',
-        strength: 5
-    },
-    {
-        name: 'Boulevardier',
-        emoji: '🥃',
-        primarySpirit: 'Whiskey & Bourbon',
-        origin: 'France',
-        era: 'Prohibition',
-        style: 'Spirit-Forward',
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '1.25 oz', item: 'Bourbon' },
-            { amount: '1 oz', item: 'Campari' },
-            { amount: '1 oz', item: 'Sweet Vermouth' }
-        ],
-        description: 'A deeper, warmer, and woodsy variation of the Negroni that swaps gin for Bourbon or Rye whiskey, resulting in a rich autumnal masterpiece.',
-        garnish: 'Orange Peel',
-        instructions: [
-            'Combine all ingredients in a mixing glass with ice.',
-            'Stir for 20-30 seconds until well chilled and properly diluted.',
-            'Strain into a rocks glass over a single large ice cube.',
-            'Express the orange peel oils over the drink and drop it in.'
-        ],
-        season: 'Fall',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Negroni', 'Old Fashioned', 'Vieux Carré'],
-        source: 'Erskine Gwynne / Harry MacElhone',
-        city: 'Paris',
-        mood: 'Brooding',
-        flavorProfile: ['Bitter', 'Woodsy', 'Sweet', 'Herbal'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Nightcap',
-        abvContent: 'High',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA / France',
-        timePeriod: '1927',
-        trivia: [
-            'While a Negroni is typically equal parts (1:1:1), modern bartenders often "bump" the whiskey slightly in a Boulevardier so it stands up to the Campari.',
-            'It was named after an expatriate magazine called "The Boulevardier" run by the drink\'s creator, Erskine Gwynne.',
-            'Swapping the Bourbon for Rye whiskey creates a drier, spicier variation.'
-        ],
-        ratio: '1.25:1:1',
-        tagline: 'The Negroni\'s dark, whiskey-drinking cousin.',
-        strength: 7,
-        estimatedCost: 2,
-        popularity: 40,
-        totalMixes: 395880,
-    },
-    {
-        name: 'Corpse Reviver No. 2',
-        emoji: '🧟',
-        primarySpirit: 'Gin',
-        origin: 'United Kingdom',
-        era: 'Pre-Prohibition',
-        style: 'Sour',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '0.75 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Cointreau' },
-            { amount: '0.75 oz', item: 'Lillet Blanc' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
-            { amount: '1 dash', item: 'Absinthe' }
-        ],
-        description: 'A flawless equal-parts "hair of the dog" remedy. Bright citrus meets botanical gin, mellowed by Lillet, with a haunting echo of Absinthe.',
-        garnish: 'Lemon Peel',
-        instructions: [
-            'Rinse the inside of a chilled coupe glass with a dash of Absinthe (discard the excess).',
-            'Combine gin, Cointreau, Lillet Blanc, and lemon juice in a shaker with ice.',
-            'Shake vigorously until deeply chilled.',
-            'Strain into the absinthe-rinsed glass.',
-            'Garnish with a lemon twist or discard.'
-        ],
-        season: 'Year-Round',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Last Word', 'Aviation', 'Paper Plane'],
-        source: 'Harry Craddock, Savoy Cocktail Book',
-        city: 'London',
-        mood: 'Revitalized',
-        flavorProfile: ['Tart', 'Anise', 'Citrusy', 'Complex'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Morning After / Brunch',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1930',
-        trivia: [
-            'Harry Craddock famously noted in his book: "Four of these taken in swift succession will unrevive the corpse again."',
-            'Lillet Blanc is technically a substitution today, as the original Kina Lillet (which contained quinine) ceased production in 1986.',
-            'There is a No. 1 version, but the No. 2 is vastly more popular.'
-        ],
-        ratio: '1:1:1:1',
-        tagline: 'Guaranteed to wake the dead before brunch.',
-        strength: 5,
-        estimatedCost: 3,
-        popularity: 40,
-        totalMixes: 353160,
-    },
-    {
-        name: 'Vieux Carré',
-        emoji: '🎷',
-        primarySpirit: 'Whiskey & Bourbon', // And Cognac
-        origin: 'USA',
-        era: 'Pre-Prohibition',
-        style: 'Spirit-Forward',
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '0.75 oz', item: 'Rye Whiskey' },
-            { amount: '0.75 oz', item: 'Cognac' },
-            { amount: '0.75 oz', item: 'Sweet Vermouth' },
-            { amount: '0.25 oz', item: 'Benedictine' },
-            { amount: '1 dash', item: 'Peychaud\'s Bitters' },
-            { amount: '1 dash', item: 'Angostura Bitters' }
-        ],
-        description: 'A masterclass in complexity. The spicy punch of Rye split with elegant Cognac, wrapped in herbal Benedictine and two types of bitters.',
-        garnish: 'Lemon Twist or Brandied Cherry',
-        instructions: [
-            'Combine all ingredients in a mixing glass with ice.',
-            'Stir continuously for 20-30 seconds.',
-            'Strain into a rocks glass over a single large ice cube.',
-            'Express the lemon peel oils and drop it in.'
-        ],
-        season: 'Winter',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Sazerac', 'Manhattan', 'De La Louisiane'],
-        source: 'Walter Bergeron, Hotel Monteleone',
-        city: 'New Orleans',
-        mood: 'Sophisticated',
-        flavorProfile: ['Herbal', 'Woodsy', 'Spicy', 'Rich'],
-        difficultyLevel: 'Advanced',
-        occasion: 'Nightcap',
-        abvContent: 'High',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1938',
-        trivia: [
-            'Pronounced "Voo-Kah-Ray," it translates to "Old Square," the French reference to the French Quarter in New Orleans.',
-            'Invented at the famous rotating Carousel Bar in the Hotel Monteleone.',
-            'It is essentially a Manhattan split-base variation that borrows the Sazerac\'s Peychaud\'s bitters and adds Benedictine.'
-        ],
-        ratio: '3:3:3:1',
-        tagline: 'The swirling, spicy, soulful heart of New Orleans in a glass.',
-        strength: 7,
-        estimatedCost: 3,
-        popularity: 72,
-        totalMixes: 44592,
-    },
-    {
-        name: 'Aperol Spritz',
-        emoji: '🌞',
-        primarySpirit: 'Liqueur & Other',
-        origin: 'Italy',
-        era: 'Modern Classic',
-        style: 'Fizzy',
-        glass: 'Highball', // Or huge wine glass
-        ingredients: [
-            { amount: '3 oz', item: 'Prosecco' },
-            { amount: '2 oz', item: 'Aperol' },
-            { amount: '1 oz', item: 'Club Soda' }
-        ],
-        description: 'The undisputed king of the Italian Aperitivo hour. A vibrant orange cascade of bittersweet orange liqueur, dry prosecco, and crisp bubbles.',
-        garnish: 'Orange Slice',
-        instructions: [
-            'Fill a large wine glass or highball with ice.',
-            'Pour in the Aperol and Prosecco.',
-            'Top with a splash of Club Soda.',
-            'Gently stir to combine without losing the effervescence.',
-            'Garnish with a half orange slice.'
-        ],
-        season: 'Summer',
-        recommendedAmount: '2 Drinks',
-        quantity: 1,
-        relationship: ['Campari Spritz', 'Americano', 'Negroni Sbagliato'],
-        source: 'Barbieri Brothers',
-        city: 'Padua',
-        mood: 'Sunny',
-        flavorProfile: ['Bittersweet', 'Bubbly', 'Citrusy', 'Light'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Aperitivo / Happy Hour',
-        abvContent: 'Low',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1950s',
-        trivia: [
-            'The 3-2-1 ratio (3 parts Prosecco, 2 parts Aperol, 1 part soda) is heavily marketed on the back of every Aperol bottle.',
-            'Aperol was developed in 1919, but the Spritz format didn\'t explode globally until the early 2000s.',
-            'In Venice, traditional "Spritz Veneziano" uses Select Aperitivo instead of Aperol.'
-        ],
-        ratio: '3:2:1',
-        tagline: 'Sunset in a glass. The Italian way to start the evening.',
-        strength: 3,
-        estimatedCost: 2,
-        popularity: 96,
-        totalMixes: 1200000,
-    },
-    {
-        name: 'Dark \'n\' Stormy',
-        emoji: '⛈️',
-        primarySpirit: 'Rum',
-        origin: 'Bermuda',
-        era: 'Tiki',
-        style: 'Highball',
-        glass: 'Mug', // Often Highball, Mug works
-        ingredients: [
-            { amount: '2 oz', item: 'Dark Rum' }, // Goslings
-            { amount: '4 oz', item: 'Ginger Beer' },
-            { amount: '0.5 oz', item: 'Lime Juice' }
-        ],
-        description: 'A tempest in a glass. Bracing, spicy ginger beer is tamed by the molasses richness of a heavy float of black rum and a squeeze of lime.',
-        garnish: 'Lime Wedge',
-        instructions: [
-            'Fill a highball glass or copper mug with ice cubes.',
-            'Add the ginger beer and lime juice to the glass.',
-            'Carefully float the dark rum on top of the drink so it looks like a dark storm cloud.',
-            'Garnish with a lime wedge (stir before drinking).'
-        ],
-        season: 'Summer',
-        recommendedAmount: '2 Drinks',
-        quantity: 1,
-        relationship: ['Moscow Mule', 'Cuba Libre', 'Mai Tai'],
-        source: 'Gosling Brothers',
-        city: 'Hamilton (Bermuda)',
-        mood: 'Adventurous',
-        flavorProfile: ['Spicy', 'Rich', 'Fizzy', 'Sweet'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Afternoon Sipper',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA / UK',
-        timePeriod: '1920s',
-        trivia: [
-            'It is highly illegal for a bar to sell a "Dark \'n Stormy" if it is not made with Gosling\'s Black Seal Rum, as the company holds a strict trademark on the name.',
-            'The name supposedly originated when a sailor claimed the drink was the color of a cloud "only a fool or a dead man would sail under."',
-            'A wedge of lime is standard today, but technically optional in the strictest traditional Bermuda spec.'
-        ],
-        ratio: '2:4:0.5',
-        tagline: 'A Caribbean thunderstorm in a highball glass.',
-        strength: 5
-    },
-    {
-        name: 'Bramble',
-        emoji: '🫐',
-        primarySpirit: 'Gin',
-        origin: 'United Kingdom',
-        era: 'Modern Classic',
-        style: 'Highball', // Similar to Cobbler
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '2 oz', item: 'Gin' },
-            { amount: '1 oz', item: 'Lemon Juice' },
-            { amount: '0.5 oz', item: 'Simple Syrup' },
-            { amount: '0.5 oz', item: 'Blackberry Liqueur' } // Creme de Mure
-        ],
-        description: 'A beautiful visual treat. A bright gin sour is served over crushed ice, with dark blackberry liqueur "bleeding" down through the drink.',
-        garnish: 'Lemon Slice & fresh blackberries',
-        instructions: [
-            'Combine gin, lemon juice, and simple syrup in a shaker with regular ice.',
-            'Shake briefly to chill.',
-            'Strain into a rocks glass entirely filled with crushed ice.',
-            'Carefully drizzle the blackberry liqueur over the top so it trickles down.',
-            'Garnish with a lemon slice and two fresh blackberries.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Tom Collins', 'Gin Sour', 'Clover Club'],
-        source: 'Dick Bradsell, Fred\'s Club',
-        city: 'London',
-        mood: 'Playful',
-        flavorProfile: ['Fruity', 'Tart', 'Botanical', 'Sweet'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Garden Party',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'United Kingdom',
-        timePeriod: '1984',
-        trivia: [
-            'Created by legendary London bartender Dick Bradsell (who also invented the Espresso Martini).',
-            'He wanted to create a British national drink, recalling his childhood memories of blackberry picking on the Isle of Wight.',
-            'Traditionally relies on Creme de Mure (blackberry), but Creme de Cassis (blackcurrant) is frequently substituted.'
-        ],
-        ratio: '2:1:0.5 + Float',
-        tagline: 'Memories of British blackberry bushes, perfectly encapsulated.',
-        strength: 5,
-        estimatedCost: 3,
-        popularity: 57,
-        totalMixes: 226897,
-    },
-    {
-        name: 'Vesper',
-        emoji: '🕵️',
-        primarySpirit: 'Gin', // And Vodka
-        origin: 'United Kingdom',
-        era: 'Modern Classic',
-        style: 'Spirit-Forward',
-        glass: 'Martini',
-        ingredients: [
-            { amount: '3 oz', item: 'Gin' },
-            { amount: '1 oz', item: 'Vodka' },
-            { amount: '0.5 oz', item: 'Lillet Blanc' }
-        ],
-        description: 'James Bond\'s massive, heavy-hitting original Martini. An immense pour of gin and vodka smoothed out by the subtle botanical softness of Lillet.',
-        garnish: 'Large Lemon Peel',
-        instructions: [
-            'Combine gin, vodka, and Lillet Blanc in a shaker with ice.',
-            'Shake vigorously until extremely cold (contrary to the "stirred, not shaken" rule for clear drinks).',
-            'Strain into a chilled deep goblet or large martini glass.',
-            'Express the oils of a large lemon peel and drop it in.'
-        ],
-        season: 'Winter',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Dry Martini', 'Gibson', 'Corpse Reviver No. 2'],
-        source: 'Ian Fleming (Casino Royale)',
-        city: 'London (Fictional)',
-        mood: 'Dangerous',
-        flavorProfile: ['Dry', 'Botanical', 'Strong', 'Clean'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'High Stakes Poker',
-        abvContent: 'Very High',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1953',
-        trivia: [
-            'Invented by author Ian Fleming for his first James Bond novel, Casino Royale.',
-            'Bond explicitly asks for it to be served in a "deep champagne goblet" with a large slice of lemon peel.',
-            'The original recipe called for Kina Lillet, which is no longer produced; modern bartenders use Lillet Blanc or Cocchi Americano as a substitute.',
-            'At 4.5 ounces of pure liquor, it is nearly double the size of a standard modern cocktail.'
-        ],
-        ratio: '6:2:1',
-        tagline: '"Shaken, not stirred." A massive, lethal block of pure spirits.',
-        strength: 9,
-        estimatedCost: 3,
-        popularity: 47,
-        totalMixes: 57847,
-    },
-    {
-        name: 'Martinez',
-        emoji: '🌉',
-        primarySpirit: 'Gin',
-        origin: 'USA',
-        era: 'Golden Age',
-        style: 'Spirit-Forward',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '1.5 oz', item: 'Old Tom Gin' },
-            { amount: '1.5 oz', item: 'Sweet Vermouth' },
-            { amount: '0.25 oz', item: 'Maraschino Liqueur' },
-            { amount: '2 dashes', item: 'Angostura Bitters' }
-        ],
-        description: 'The elusive missing link between the Manhattan and the Martini. A rich, sweet, and botanical journey using the sweeter Old Tom style of gin.',
-        garnish: 'Orange Twist',
-        instructions: [
-            'Combine Old Tom gin, sweet vermouth, maraschino liqueur, and bitters in a mixing glass with ice.',
-            'Stir continuously until well chilled and diluted.',
-            'Strain into a chilled coupe or martini glass.',
-            'Express the orange twist oils and drop it in.'
-        ],
-        season: 'Fall',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Martini', 'Manhattan', 'Aviation'],
-        source: 'O.H. Byron / Jerry Thomas',
-        city: 'Martinez, California', // Debated
-        mood: 'Vintage',
-        flavorProfile: ['Sweet', 'Botanical', 'Woodsy', 'Complex'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Nightcap',
-        abvContent: 'High',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1884',
-        trivia: [
-            'Often credited as the direct evolutionary ancestor to the classic Dry Martini.',
-            'It specifically requires "Old Tom" Gin, a historical style that is sweeter and maltier than modern London Dry Gin.',
-            'The city of Martinez, California, claims it was invented there for a miner who had just struck gold, though bar historians fiercely debate this.'
-        ],
-        ratio: '1:1',
-        tagline: 'The sweet, botanical bridge between a Manhattan and a Martini.',
-        strength: 6,
-        estimatedCost: 3,
-        popularity: 48,
-        totalMixes: 135168,
-    },
-    {
+    },    {
         name: 'Painkiller',
         emoji: '🏴‍☠️',
         primarySpirit: 'Rum',
@@ -2831,255 +2037,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 55,
         totalMixes: 150415,
-    },
-    {
-        name: 'Pisco Sour',
-        emoji: '🏔️',
-        primarySpirit: 'Liqueur & Other', // Pisco (South American Brandy)
-        origin: 'Peru',
-        era: 'Pre-Prohibition',
-        style: 'Sour',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '2 oz', item: 'Pisco' },
-            { amount: '1 oz', item: 'Lime Juice' },
-            { amount: '0.75 oz', item: 'Simple Syrup' },
-            { amount: '1', item: 'Egg White' },
-            { amount: '3 dashes', item: 'Angostura Bitters' } // Traditionally Amargo Chuncho
-        ],
-        description: 'A velvety, frothy triumph of South American brandy. Earthy and grape-forward Pisco is whipped into a meringue-like foam with lime and egg white.',
-        garnish: 'Bitters Drops on foam',
-        instructions: [
-            'Combine Pisco, lime juice, simple syrup, and egg white in a shaker WITHOUT ice.',
-            'Dry shake vigorously for 15 seconds to whip the egg white into foam.',
-            'Add ice to the shaker and wet shake for another 15 seconds to chill.',
-            'Double strain into a chilled coupe glass.',
-            'Carefully drop 3 dots of bitters onto the thick foam cap.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Whiskey Sour', 'Margarita', 'White Lady'],
-        source: 'Victor Vaughen Morris',
-        city: 'Lima',
-        mood: 'Elegant',
-        flavorProfile: ['Tart', 'Creamy', 'Earthy', 'Fruity'],
-        difficultyLevel: 'Advanced',
-        occasion: 'Pre-Dinner Starter',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Peru / Chile',
-        timePeriod: '1920s',
-        trivia: [
-            'Invented by an American expatriate bartender (Victor Morris) living in Lima, Peru.',
-            'Peru and Chile have famously fought over the "ownership" and geographical origin of Pisco for a century.',
-            'The drops of bitters on top are not just for garnish; they mask the wet-dog smell that raw egg white foam can sometimes emit.'
-        ],
-        ratio: '2:1:0.75',
-        tagline: 'A cloud-like crown sitting atop earthy South American brandy.',
-        strength: 5,
-        estimatedCost: 3,
-        popularity: 67,
-        totalMixes: 89507,
-    },
-    {
-        name: 'Mint Julep',
-        emoji: '🐎',
-        primarySpirit: 'Whiskey & Bourbon',
-        origin: 'USA',
-        era: 'Pre-Prohibition',
-        style: 'Highball', // Over crushed ice
-        glass: 'Mug', // Silver Julep Cup
-        ingredients: [
-            { amount: '2.5 oz', item: 'Bourbon' },
-            { amount: '0.5 oz', item: 'Simple Syrup' },
-            { amount: '8-10 leaves', item: 'Mint' }
-        ],
-        description: 'The ceremonial drink of the American South. A frosted silver cup overflowing with crushed ice, bracing bourbon, and the intensely fresh aroma of mint.',
-        garnish: 'Large Mint Sprig bouquet',
-        instructions: [
-            'Place the mint leaves and simple syrup in the bottom of a silver Julep cup or rocks glass.',
-            'Lightly muddle the mint—just enough to release the oils, do not shred the leaves.',
-            'Add the Bourbon and pack the cup tightly with crushed ice.',
-            'Stir vigorously until the outside of the cup is completely frosted over.',
-            'Top with more crushed ice, forming a snow cone over the rim. Garnish with a massive bouquet of mint.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1-2 Drinks',
-        quantity: 1,
-        relationship: ['Mojito', 'Old Fashioned', 'Whiskey Smash'],
-        source: 'Southern USA Tradition',
-        city: 'Louisville (Kentucky Derby)',
-        mood: 'Refined',
-        flavorProfile: ['Herbal', 'Sweet', 'Strong', 'Refreshing'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Kentucky Derby / Hot Day',
-        abvContent: 'High',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1800s',
-        trivia: [
-            'Over 120,000 Mint Juleps are served at the Churchill Downs racetrack over the 2-day period of the Kentucky Derby.',
-            'Properly crushing the ice and holding the silver cup by the rim/base is essential so the heat of your hand doesn\'t melt the beautiful exterior frost.',
-            'In the 1800s, it was commonly consumed as a morning drink, occasionally made with Cognac instead of Bourbon.'
-        ],
-        ratio: '5:1',
-        tagline: 'The frosted, silver-cupped pride of the American South.',
-        strength: 7,
-        estimatedCost: 3,
-        popularity: 42,
-        totalMixes: 319202,
-    },
-    // --- 15 NEW COCKTAILS (PHASE 26 EXPANSION) ---
-    {
-        name: 'Mai Tai',
-        emoji: '🌺',
-        primarySpirit: 'Rum',
-        origin: 'USA',
-        era: 'Tiki',
-        style: 'Sour', // Technically a rum sour with orgeat
-        glass: 'Rocks', // Double rocks or Tiki mug
-        ingredients: [
-            { amount: '1 oz', item: 'Aged Jamaican Rum' },
-            { amount: '1 oz', item: 'Rhum Agricole' }, // Or just 2oz of a blended aged rum
-            { amount: '0.75 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Orange Curaçao' },
-            { amount: '0.25 oz', item: 'Orgeat' },
-            { amount: '0.25 oz', item: 'Simple Syrup' }
-        ],
-        description: 'The undisputed king of Tiki. A deeply complex, nutty, and tart rum sour that completely bypasses the artificial sweetness of modern resort drinks.',
-        garnish: 'Mint Sprig & Spent Lime Half',
-        instructions: [
-            'Combine all ingredients in a shaker with crushed ice.',
-            'Shake vigorously until extremely cold and well aerated.',
-            'Pour the entire contents (unstrained) into a double rocks glass or Tiki mug.',
-            'Garnish with a large mint bouquet and the spent lime half (resembling a tropical island and palm tree).'
-        ],
-        season: 'Summer',
-        recommendedAmount: '1-2 Drinks',
-        quantity: 1,
-        relationship: ['Jungle Bird', 'Daiquiri', 'Painkiller'],
-        source: 'Victor J. Bergeron (Trader Vic)',
-        city: 'Oakland, California',
-        mood: 'Tropical',
-        flavorProfile: ['Tart', 'Nutty', 'Funky', 'Complex'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Poolside',
-        abvContent: 'High',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1944',
-        trivia: [
-            '"Mai Tai-Roa Aé" translates to "Out of this world—the best!" in Tahitian, which is what Trader Vic\'s friends supposedly exclaimed upon taking the first sip.',
-            'The original recipe famously depleted the entire world supply of 17-year-old J. Wray & Nephew Jamaican rum.',
-            'A true Mai Tai does NOT contain pineapple juice, grenadine, or an umbrella, despite modern misconceptions.'
-        ],
-        ratio: '2:0.75:0.5:0.5',
-        tagline: 'The out-of-this-world masterpiece that launched the Tiki craze.',
-        strength: 7,
-        estimatedCost: 3,
-        popularity: 41,
-        totalMixes: 151201,
-    },
-    {
-        name: 'Sazerac',
-        emoji: '🎭',
-        primarySpirit: 'Whiskey & Bourbon', // Rye specifically
-        origin: 'USA',
-        era: 'Pre-Prohibition',
-        style: 'Spirit-Forward',
-        glass: 'Rocks', // Served neat in a rocks glass
-        ingredients: [
-            { amount: '2 oz', item: 'Rye Whiskey' }, // Or Cognac
-            { amount: '0.25 oz', item: 'Simple Syrup' }, // Or Sugar Cube
-            { amount: '3 dashes', item: 'Peychaud\'s Bitters' },
-            { amount: 'Absinthe', item: '(For Rinsing)' }
-        ],
-        description: 'The official cocktail of New Orleans. A ritualistic, absinthe-rinsed, anise-scented variation of the Old Fashioned driven entirely by Rye and Peychaud\'s.',
-        garnish: 'Lemon Peel (Expressed and Discarded)',
-        instructions: [
-            'Chill a rocks glass by filling it with ice and a splash of Absinthe (or just rinse with Absinthe and discard).',
-            'In a separate mixing glass, muddle the sugar/syrup with Peychaud\'s bitters.',
-            'Add the Rye whiskey and ice, then stir until well chilled.',
-            'Discard the ice from the prepared rocks glass.',
-            'Strain the chilled cocktail into the absinthe-rinsed glass (served neat, no ice).',
-            'Express the oils of a lemon peel over the drink. Traditionally, the peel is discarded, not dropped in.'
-        ],
-        season: 'Winter',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Old Fashioned', 'Vieux Carré', 'Absinthe Frappé'],
-        source: 'Antoine Amedie Peychaud / Leon Lamothe',
-        city: 'New Orleans',
-        mood: 'Vintage',
-        flavorProfile: ['Anise', 'Spicy', 'Herbal', 'Strong'],
-        difficultyLevel: 'Advanced', // Due to the two-glass ritual and rinse
-        occasion: 'Nightcap',
-        abvContent: 'High',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1850s',
-        trivia: [
-            'It was originally made with Sazerac de Forge et Fils Cognac until a worldwide aphid epidemic destroyed French vineyards, forcing bartenders to switch to American Rye.',
-            'It was officially designated as the official cocktail of New Orleans by the Louisiana legislature in 2008.',
-            'Peychaud\'s bitters (bright red, floral, and anise-heavy) are absolutely non-negotiable for a true Sazerac.'
-        ],
-        ratio: '2:0.25 + Rinse',
-        tagline: 'A ritual of Rye, Absinthe, and New Orleans history.',
-        strength: 8,
-        estimatedCost: 3,
-        popularity: 51,
-        totalMixes: 390251,
-    },
-    {
-        name: 'Last Word',
-        emoji: '🌿',
-        primarySpirit: 'Gin',
-        origin: 'USA',
-        era: 'Prohibition',
-        style: 'Sour',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '0.75 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Green Chartreuse' },
-            { amount: '0.75 oz', item: 'Maraschino Liqueur' },
-            { amount: '0.75 oz', item: 'Lime Juice' }
-        ],
-        description: 'A pale-green, equal-parts marvel. It balances the bracing botanical bite of gin with the aggressively herbal Chartreuse and sweet cherry liqueur.',
-        garnish: 'Brandied Cherry',
-        instructions: [
-            'Combine all four equal-parts ingredients in a shaker with ice.',
-            'Shake vigorously until well chilled.',
-            'Double strain into a chilled coupe or martini glass.',
-            'Garnish with a brandied cherry.'
-        ],
-        season: 'Spring',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Corpse Reviver No. 2', 'Paper Plane', 'Naked and Famous'],
-        source: 'Frank Fogarty, Detroit Athletic Club',
-        city: 'Detroit',
-        mood: 'Sophisticated',
-        flavorProfile: ['Herbal', 'Sweet', 'Tart', 'Complex'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Pre-Dinner Starter',
-        abvContent: 'High', // Chartreuse is 110 proof
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1915',
-        trivia: [
-            'The recipe fell into total obscurity for nearly 90 years until it was rediscovered in 2004 by Murray Stenson in Seattle, kicking off the modern craft cocktail revival.',
-            'Chartreuse is famously made by Carthusian monks in France using a secret recipe of 130 herbs and plants.',
-            'Because it is perfectly equal parts, it is incredibly easy to batch or scale up for large parties.'
-        ],
-        ratio: '1:1:1:1',
-        tagline: 'The pale-green miracle of the craft cocktail revival.',
-        strength: 7,
-        estimatedCost: 3,
-        popularity: 60,
-        totalMixes: 340540,
-    },
-    {
+    },    {
         name: 'Clover Club',
         emoji: '🍀',
         primarySpirit: 'Gin',
@@ -3127,155 +2085,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 79,
         totalMixes: 111319,
-    },
-    {
-        name: 'Sidecar',
-        emoji: '🏍️',
-        primarySpirit: 'Liqueur & Other', // Cognac/Brandy
-        origin: 'France',
-        era: 'Prohibition',
-        style: 'Sour',
-        glass: 'Coupe',
-        ingredients: [
-            { amount: '2 oz', item: 'Cognac' },
-            { amount: '1 oz', item: 'Cointreau' },
-            { amount: '0.75 oz', item: 'Lemon Juice' }
-        ],
-        description: 'The definitive Cognac sour. A dry, crisp, and incredibly elegant balance of deeply aged French brandy and bright orange liqueur.',
-        garnish: 'Sugar Rim (Optional) & Orange Twist',
-        instructions: [
-            'Optional: Prepare a chilled coupe glass by wiping the rim with a lemon wedge and dipping it in superfine sugar.',
-            'Combine Cognac, Cointreau, and fresh lemon juice in a shaker with ice.',
-            'Shake vigorously until well-chilled.',
-            'Double strain into the prepared glass.',
-            'Express the oils of an orange twist and drop it in.'
-        ],
-        season: 'Fall',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Margarita', 'White Lady', 'Between the Sheets'],
-        source: 'Harry\'s New York Bar / Ritz Hotel',
-        city: 'Paris',
-        mood: 'Sophisticated',
-        flavorProfile: ['Citrusy', 'Rich', 'Dry', 'Tart'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'After Dinner',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1920s',
-        trivia: [
-            'Essentially the direct ancestor to the Margarita (which swaps the Cognac for Tequila and the Lemon for Lime).',
-            'Legend says it was named after an eccentric American army captain who was driven to the Parisian bar in a motorcycle sidecar.',
-            'There is a massive debate over the sugar rim: some purists despise it because the drink should be bone dry, while others love the contrast.'
-        ],
-        ratio: '2:1:0.75',
-        tagline: 'The sleek, sophisticated French grandfather to the Margarita.',
-        strength: 6,
-        estimatedCost: 3,
-        popularity: 77,
-        totalMixes: 291597,
-    },
-    {
-        name: 'Piña Colada',
-        emoji: '🥥',
-        primarySpirit: 'Rum',
-        origin: 'Puerto Rico',
-        era: 'Tiki',
-        style: 'Dessert', // Blended/Highball
-        glass: 'Highball', // Hurricane Glass
-        ingredients: [
-            { amount: '2 oz', item: 'Light Rum' },
-            { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '1.5 oz', item: 'Cream of Coconut' },
-            { amount: '0.5 oz', item: 'Lime Juice' } // Often omitted in resorts, but crucial for balance
-        ],
-        description: 'A decadent, frosty tropical vacation in a glass. The holy trinity of rum, fresh pineapple, and rich coconut cream.',
-        garnish: 'Pineapple Wedge & Maraschino Cherry',
-        instructions: [
-            'Add rum, pineapple juice, cream of coconut, and a squeeze of fresh lime juice to a blender.',
-            'Add about 1 cup of crushed ice.',
-            'Blend on high until smooth and frosty.',
-            'Pour into a chilled hurricane glass or tall goblet.',
-            'Garnish with a pineapple wedge and a maraschino cherry (and a paper umbrella!).'
-            // Can also be shaken over pebbled ice if a blender is unavailable
-        ],
-        season: 'Summer',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Painkiller', 'Miami Vice', 'Blue Hawaiian'],
-        source: 'Ramón "Monchito" Marrero, Caribe Hilton Hotel',
-        city: 'San Juan',
-        mood: 'Tropical',
-        flavorProfile: ['Sweet', 'Creamy', 'Fruity', 'Rich'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Beach Vacation',
-        abvContent: 'Low',
-        temperature: 'Cold', // Blended
-        countryOfPopularity: 'Global',
-        timePeriod: '1954',
-        trivia: [
-            'It is the official national drink of Puerto Rico.',
-            'The name literally translates to "Strained Pineapple" in Spanish.',
-            'While famously blended, many craft cocktail bars prefer to aggressively shake it with pebbled ice down so it doesn\'t become a watered-down slushie.'
-        ],
-        ratio: '2:2:1.5',
-        tagline: 'If you like getting caught in the rain...',
-        strength: 4,
-        estimatedCost: 2,
-        popularity: 53,
-        totalMixes: 281573,
-    },
-    {
-        name: 'Jungle Bird',
-        emoji: '🦜',
-        primarySpirit: 'Rum',
-        origin: 'Malaysia',
-        era: 'Tiki',
-        style: 'Highball',
-        glass: 'Rocks', // Double Rocks
-        ingredients: [
-            { amount: '1.5 oz', item: 'Black Strap Rum' }, // Or aged Jamaican
-            { amount: '0.75 oz', item: 'Campari' },
-            { amount: '1.5 oz', item: 'Pineapple Juice' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Simple Syrup' }
-        ],
-        description: 'The bitter outlier of the Tiki universe. Intensely rich black rum crashes into the bitter bite of Campari, smoothed out by a frothy pineapple canopy.',
-        garnish: 'Pineapple Fronds',
-        instructions: [
-            'Combine rum, Campari, pineapple juice, lime juice, and simple syrup in a shaker with ice.',
-            'Shake vigorously (the pineapple juice will create a wonderful thick froth).',
-            'Strain into a double rocks glass filled with crushed or large ice cubes.',
-            'Garnish with 3 pineapple fronds fanned out (resembling the tail feathers of a jungle bird).'
-        ],
-        season: 'Summer',
-        recommendedAmount: '1-2 Drinks',
-        quantity: 1,
-        relationship: ['Mai Tai', 'Boulevardier', 'Garibaldi'],
-        source: 'Jeffrey Ong, Kuala Lumpur Hilton',
-        city: 'Kuala Lumpur',
-        mood: 'Adventurous',
-        flavorProfile: ['Bitter', 'Tropical', 'Fruity', 'Complex'],
-        difficultyLevel: 'Intermediate',
-        occasion: 'Poolside',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '1978',
-        trivia: [
-            'One of the only truly famous Tiki drinks to break the "no amaro" rule by featuring a heavy dose of Campari.',
-            'Originally served as a welcome drink to guests checking into the newly opened Aviary Bar at the Kuala Lumpur Hilton.',
-            'The use of ultra-dark, molasses-heavy Black Strap rum (like Cruzan) is a modern craft adjustment that skyrocketed its popularity.'
-        ],
-        ratio: '1.5:0.75:1.5:0.5:0.5',
-        tagline: 'A darkly bitter and fiercely tropical bird of paradise.',
-        strength: 5,
-        estimatedCost: 3,
-        popularity: 68,
-        totalMixes: 379468,
-    },
-    {
+    },    {
         name: 'Whiskey Smash',
         emoji: '🍋',
         primarySpirit: 'Whiskey & Bourbon',
@@ -3324,56 +2134,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 48,
         totalMixes: 282448,
-    },
-    {
-        name: 'Caipirinha',
-        emoji: '🇧🇷',
-        primarySpirit: 'Rum', // Cachaça
-        origin: 'Brazil',
-        era: 'Pre-Prohibition',
-        style: 'Highball', // Built over ice
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '2 oz', item: 'Cachaça' },
-            { amount: '½ Lime', item: 'Cut into wedges' },
-            { amount: '2 bar spoons', item: 'Superfine Sugar' }
-        ],
-        description: 'The pulsing heart of Brazil. A dangerously drinkable, muddled collision of grassy sugarcane spirit and aggressive lime.',
-        garnish: 'Lime Wedge',
-        instructions: [
-            'Place the lime wedges and sugar in the bottom of a sturdy rocks glass.',
-            'Muddle them aggressively to extract the juice and the essential oils from the lime skins.',
-            'Fill the glass to the brim with ice (cubed or crushed).',
-            'Pour in the Cachaça and stir well to lift the sugar and mix the liquids.',
-            // Traditionally built directly in the glass
-        ],
-        season: 'Summer',
-        recommendedAmount: '2 Drinks',
-        quantity: 1,
-        relationship: ['Mojito', 'Daiquiri', 'Ti Punch'],
-        source: 'Farmers in São Paulo',
-        city: 'São Paulo',
-        mood: 'Party',
-        flavorProfile: ['Tart', 'Sweet', 'Funky', 'Citrusy'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Carnival / Beach',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Brazil',
-        timePeriod: '1918',
-        trivia: [
-            'It is the official national cocktail of Brazil.',
-            'Cachaça is a Brazilian rum made from freshly pressed sugarcane juice (like Rhum Agricole), rather than molasses, giving it a grassy, funky flavor.',
-            'The name loosely translates to "country bumpkin" or "little peasant girl," referencing its humble origins among sugarcane farmers.'
-        ],
-        ratio: '2:X',
-        tagline: 'Muddled, funky, and fiercely Brazilian.',
-        strength: 6,
-        estimatedCost: 2,
-        popularity: 60,
-        totalMixes: 285820,
-    },
-    {
+    },    {
         name: 'White Lady',
         emoji: '👗',
         primarySpirit: 'Gin',
@@ -3421,8 +2182,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 79,
         totalMixes: 325359,
-    },
-    {
+    },    {
         name: 'Rob Roy',
         emoji: '⚔️',
         primarySpirit: 'Whiskey & Bourbon', // Scotch Whisky
@@ -3468,8 +2228,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 65,
         totalMixes: 244305,
-    },
-    {
+    },    {
         name: 'Hemingway Daiquiri',
         emoji: '⛵',
         primarySpirit: 'Rum',
@@ -3516,8 +2275,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 59,
         totalMixes: 49379,
-    },
-    {
+    },    {
         name: 'Rusty Nail',
         emoji: '🔩',
         primarySpirit: 'Whiskey & Bourbon', // Scotch
@@ -3561,104 +2319,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 63,
         totalMixes: 152463,
-    },
-    {
-        name: 'White Russian',
-        emoji: '🎳',
-        primarySpirit: 'Vodka',
-        origin: 'Belgium', // First printed there!
-        era: 'Modern Classic',
-        style: 'Dessert',
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '2 oz', item: 'Vodka' },
-            { amount: '1 oz', item: 'Coffee Liqueur' }, // Kahlua
-            { amount: '1 oz', item: 'Heavy Cream' }
-        ],
-        description: 'A decadent, caffeinated indulgence. The sharp bite of vodka is submerged in deep roasted coffee and a swirling cloud of heavy cream.',
-        garnish: 'None (or grated nutmeg)',
-        instructions: [
-            'Add the vodka and coffee liqueur to an old-fashioned glass filled with ice.',
-            'Stir gently to combine.',
-            'Slowly pour the heavy cream over the back of a spoon to float it spectacularly on top.',
-            'Stir it in right before drinking.'
-        ],
-        season: 'Winter',
-        recommendedAmount: '2 Drinks',
-        quantity: 1,
-        relationship: ['Black Russian', 'Espresso Martini', 'Mudslide'],
-        source: 'Gustave Tops, Hotel Metropole',
-        city: 'Brussels',
-        mood: 'Relaxed',
-        flavorProfile: ['Creamy', 'Sweet', 'Coffee', 'Rich'],
-        difficultyLevel: 'Beginner',
-        occasion: 'Dessert',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'USA',
-        timePeriod: '1949',
-        trivia: [
-            'It exploded into massive pop-culture immortality in 1998 because it is the signature drink of "The Dude" in the film The Big Lebowski.',
-            'The "Russian" part of the name simply refers to the vodka—the drink wasn\'t invented in Russia.',
-            'Without the heavy cream, it is known as a "Black Russian."'
-        ],
-        ratio: '2:1:1',
-        tagline: '"The Dude abides." A creamy, caffeinated classic.',
-        strength: 5,
-        estimatedCost: 3,
-        popularity: 44,
-        totalMixes: 276204,
-    },
-    {
-        name: 'Penicillin',
-        emoji: '🍯',
-        primarySpirit: 'Whiskey & Bourbon', // Scotch
-        origin: 'USA',
-        era: 'Modern Classic',
-        style: 'Sour',
-        glass: 'Rocks',
-        ingredients: [
-            { amount: '2 oz', item: 'Blended Scotch' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
-            { amount: '0.75 oz', item: 'Honey-Ginger Syrup' },
-            { amount: '0.25 oz', item: 'Islay Scotch' } // Very peaty float
-        ],
-        description: 'A modern masterpiece. A bright ginger-honey sour that erupts with the campfire-smoke aromatics of heavily peated Islay Scotch floating on top.',
-        garnish: 'Candied Ginger',
-        instructions: [
-            'Combine the blended Scotch, lemon juice, and honey-ginger syrup in a shaker with ice.',
-            'Shake vigorously to properly chill and integrate the thick honey.',
-            'Strain into a rocks glass over a single large ice cube.',
-            'Gently pour (float) the quarter ounce of smoky Islay Scotch over the back of a spoon so it rests on top of the drink.',
-            'Garnish with a piece of candied ginger on a pick.'
-        ],
-        season: 'Fall',
-        recommendedAmount: '1 Drink',
-        quantity: 1,
-        relationship: ['Gold Rush', 'Whiskey Sour', 'Rusty Nail'],
-        source: 'Sam Ross, Milk & Honey',
-        city: 'New York City',
-        mood: 'Sophisticated',
-        flavorProfile: ['Smoky', 'Spicy', 'Tart', 'Rich'],
-        difficultyLevel: 'Advanced', // Requires homemade syrup and a float
-        occasion: 'Nightcap',
-        abvContent: 'Medium',
-        temperature: 'Cold',
-        countryOfPopularity: 'Global',
-        timePeriod: '2005',
-        trivia: [
-            'Created in 2005 by bartender Sam Ross, it is universally considered one of the most important and famous cocktails of the 21st century.',
-            'The genius of the Islay float ensures that the very first thing you experience is the aggressive smell of campfire smoke, which then gives way to the sweet ginger sour underneath.',
-            'The honey-ginger syrup is notoriously annoying to make, requiring simmering equal parts honey, water, and fresh chopped ginger.'
-        ],
-        ratio: '2:0.75:0.75 + Float',
-        tagline: 'The smoky, gingery cure-all of the 21st century.',
-        strength: 6,
-        estimatedCost: 3,
-        popularity: 69,
-        totalMixes: 300789,
-    },
-    {
+    },    {
         name: 'Dry Martini',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -3704,8 +2365,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 95,
         totalMixes: 1050000,
-    },
-    {
+    },    {
         name: 'Cuba Libre',
         emoji: '🥤',
         primarySpirit: 'Rum',
@@ -3751,8 +2411,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 1,
         popularity: 71,
         totalMixes: 309191,
-    },
-    {
+    },    {
         name: 'Mimosa',
         emoji: '🥂',
         primarySpirit: 'Liqueur & Other',
@@ -3798,8 +2457,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 95,
         totalMixes: 1250000,
-    },
-    {
+    },    {
         name: 'Tequila Sunrise',
         emoji: '🌅',
         primarySpirit: 'Agave',
@@ -3845,8 +2503,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 58,
         totalMixes: 11698,
-    },
-    {
+    },    {
         name: 'Black Russian',
         emoji: '☕',
         primarySpirit: 'Vodka',
@@ -3890,8 +2547,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 54,
         totalMixes: 372574,
-    },
-    {
+    },    {
         name: 'Hurricane',
         emoji: '🌪️',
         primarySpirit: 'Rum',
@@ -3940,8 +2596,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 73,
         totalMixes: 397313,
-    },
-    {
+    },    {
         name: 'Bellini',
         emoji: '🍑',
         primarySpirit: 'Liqueur & Other',
@@ -3985,8 +2640,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 47,
         totalMixes: 270127,
-    },
-    {
+    },    {
         name: 'Michelada',
         emoji: '🍺',
         primarySpirit: 'Liqueur & Other',
