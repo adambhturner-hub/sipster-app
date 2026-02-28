@@ -97,7 +97,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 98,
         totalMixes: 1420000,
-    },    {
+    }, {
         name: 'Margarita',
         emoji: '🍸',
         primarySpirit: 'Agave',
@@ -143,7 +143,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 99,
         totalMixes: 1543000,
-    },    {
+    }, {
         name: 'Negroni',
         emoji: '🥃',
         primarySpirit: 'Gin',
@@ -189,7 +189,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 92,
         totalMixes: 850000,
-    },    {
+    }, {
         name: 'Espresso Martini',
         emoji: '☕',
         primarySpirit: 'Vodka',
@@ -237,7 +237,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 97,
         totalMixes: 1350000,
-    },    {
+    }, {
         name: 'Mojito',
         emoji: '🌿',
         primarySpirit: 'Rum',
@@ -286,7 +286,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 94,
         totalMixes: 950000,
-    },    {
+    }, {
         name: 'Whiskey Sour',
         emoji: '🍋',
         primarySpirit: 'Whiskey & Bourbon',
@@ -335,7 +335,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 94,
         totalMixes: 980000,
-    },    {
+    }, {
         name: 'Manhattan',
         emoji: '🍸',
         primarySpirit: 'Whiskey & Bourbon',
@@ -381,7 +381,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 89,
         totalMixes: 710000,
-    },    {
+    }, {
         name: 'Moscow Mule',
         emoji: '🧊',
         primarySpirit: 'Vodka',
@@ -427,7 +427,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 96,
         totalMixes: 1100000,
-    },    {
+    }, {
         name: 'French 75',
         emoji: '🥂',
         primarySpirit: 'Gin',
@@ -475,7 +475,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 88,
         totalMixes: 680000,
-    },    {
+    }, {
         name: 'Gimlet',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -520,7 +520,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 56,
         totalMixes: 383616,
-    },    {
+    }, {
         name: 'Daiquiri',
         emoji: '🍸',
         primarySpirit: 'Rum',
@@ -565,7 +565,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 90,
         totalMixes: 750000,
-    },    {
+    }, {
         name: 'Aperol Spritz',
         emoji: '🍹',
         primarySpirit: 'Liqueur & Other',
@@ -611,7 +611,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 96,
         totalMixes: 1200000,
-    },    {
+    }, {
         name: 'Paloma',
         emoji: '🍹',
         primarySpirit: 'Agave',
@@ -659,7 +659,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 64,
         totalMixes: 136104,
-    },    {
+    }, {
         name: 'Boulevardier',
         emoji: '🥃',
         primarySpirit: 'Whiskey & Bourbon',
@@ -705,7 +705,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 40,
         totalMixes: 395880,
-    },    {
+    }, {
         name: 'Tom Collins',
         emoji: ' tall ',
         primarySpirit: 'Gin',
@@ -752,7 +752,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 60,
         totalMixes: 406020,
-    },    {
+    }, {
         name: 'Amaretto Sour',
         emoji: '🥃',
         primarySpirit: 'Liqueur & Other',
@@ -798,7 +798,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 54,
         totalMixes: 69854,
-    },    {
+    }, {
         name: 'Gin Fizz',
         emoji: '🫧',
         primarySpirit: 'Gin',
@@ -847,7 +847,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 41,
         totalMixes: 339641,
-    },    {
+    }, {
         name: 'Penicillin',
         emoji: '🍯',
         primarySpirit: 'Whiskey & Bourbon',
@@ -895,7 +895,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 4,
         popularity: 69,
         totalMixes: 300789,
-    },    {
+    }, {
         name: 'Sidecar',
         emoji: '🍸',
         primarySpirit: 'Whiskey & Bourbon', // Cognac historically, but keeping to Bourbon for local DB ease
@@ -941,7 +941,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 77,
         totalMixes: 291597,
-    },    {
+    }, {
         name: 'White Russian',
         emoji: '🥛',
         primarySpirit: 'Vodka',
@@ -987,7 +987,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 44,
         totalMixes: 276204,
-    },    {
+    }, {
         name: 'Mint Julep',
         emoji: '🌿',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1035,7 +1035,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 42,
         totalMixes: 319202,
-    },    {
+    }, {
         name: 'Mai Tai',
         emoji: '🍹',
         primarySpirit: 'Rum',
@@ -1082,7 +1082,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 41,
         totalMixes: 151201,
-    },    {
+    }, {
         name: 'Cosmopolitan',
         emoji: '🍸',
         primarySpirit: 'Vodka',
@@ -1129,7 +1129,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 68,
         totalMixes: 330388,
-    },    {
+    }, {
         name: 'Sazerac',
         emoji: '🥃',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1178,7 +1178,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 4,
         popularity: 51,
         totalMixes: 390251,
-    },    {
+    }, {
         name: 'Paper Plane',
         emoji: '✈️',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1224,7 +1224,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 64,
         totalMixes: 90504,
-    },    {
+    }, {
         name: 'Corpse Reviver No. 2',
         emoji: '💀',
         primarySpirit: 'Gin',
@@ -1272,7 +1272,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 40,
         totalMixes: 353160,
-    },    {
+    }, {
         name: 'Jungle Bird',
         emoji: '🦜',
         primarySpirit: 'Rum',
@@ -1320,7 +1320,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 68,
         totalMixes: 379468,
-    },    {
+    }, {
         name: 'Caipirinha',
         emoji: '🇧🇷',
         primarySpirit: 'Rum',
@@ -1367,7 +1367,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 60,
         totalMixes: 285820,
-    },    {
+    }, {
         name: 'Aviation',
         emoji: '✈️',
         primarySpirit: 'Gin',
@@ -1414,7 +1414,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 41,
         totalMixes: 386641,
-    },    {
+    }, {
         name: 'Bloody Mary',
         emoji: '🍅',
         primarySpirit: 'Vodka',
@@ -1463,7 +1463,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 68,
         totalMixes: 110068,
-    },    {
+    }, {
         name: 'Piña Colada',
         emoji: '🍍',
         primarySpirit: 'Rum',
@@ -1510,7 +1510,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 53,
         totalMixes: 281573,
-    },    {
+    }, {
         name: 'Last Word',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -1557,7 +1557,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 60,
         totalMixes: 340540,
-    },    {
+    }, {
         name: 'Vieux Carré',
         emoji: '🥃',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1606,7 +1606,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 72,
         totalMixes: 44592,
-    },    {
+    }, {
         name: 'Irish Coffee',
         emoji: '☕',
         primarySpirit: 'Whiskey & Bourbon',
@@ -1654,7 +1654,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 65,
         totalMixes: 380985,
-    },    {
+    }, {
         name: 'Pisco Sour',
         emoji: '🍋',
         primarySpirit: 'Liqueur & Other', // Mapping Pisco
@@ -1703,7 +1703,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 67,
         totalMixes: 89507,
-    },    {
+    }, {
         name: 'Martinez',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -1750,7 +1750,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 48,
         totalMixes: 135168,
-    },    {
+    }, {
         name: 'French Martini',
         emoji: '🍸',
         primarySpirit: 'Vodka',
@@ -1796,7 +1796,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 40,
         totalMixes: 387400,
-    },    {
+    }, {
         name: 'Vesper',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -1842,7 +1842,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 47,
         totalMixes: 57847,
-    },    {
+    }, {
         name: 'Bramble',
         emoji: '🫐',
         primarySpirit: 'Gin',
@@ -1889,7 +1889,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 57,
         totalMixes: 226897,
-    },    {
+    }, {
         name: 'Zombie',
         emoji: '🧟',
         primarySpirit: 'Rum',
@@ -1942,7 +1942,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 42,
         totalMixes: 98122,
-    },    {
+    }, {
         name: 'Southside',
         emoji: '🍃',
         primarySpirit: 'Gin',
@@ -1990,7 +1990,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 1,
         popularity: 44,
         totalMixes: 269844,
-    },    {
+    }, {
         name: 'Painkiller',
         emoji: '🏴‍☠️',
         primarySpirit: 'Rum',
@@ -2037,7 +2037,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 55,
         totalMixes: 150415,
-    },    {
+    }, {
         name: 'Clover Club',
         emoji: '🍀',
         primarySpirit: 'Gin',
@@ -2085,7 +2085,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 79,
         totalMixes: 111319,
-    },    {
+    }, {
         name: 'Whiskey Smash',
         emoji: '🍋',
         primarySpirit: 'Whiskey & Bourbon',
@@ -2134,7 +2134,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 48,
         totalMixes: 282448,
-    },    {
+    }, {
         name: 'White Lady',
         emoji: '👗',
         primarySpirit: 'Gin',
@@ -2182,7 +2182,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 79,
         totalMixes: 325359,
-    },    {
+    }, {
         name: 'Rob Roy',
         emoji: '⚔️',
         primarySpirit: 'Whiskey & Bourbon', // Scotch Whisky
@@ -2228,7 +2228,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 65,
         totalMixes: 244305,
-    },    {
+    }, {
         name: 'Hemingway Daiquiri',
         emoji: '⛵',
         primarySpirit: 'Rum',
@@ -2275,7 +2275,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 59,
         totalMixes: 49379,
-    },    {
+    }, {
         name: 'Rusty Nail',
         emoji: '🔩',
         primarySpirit: 'Whiskey & Bourbon', // Scotch
@@ -2319,7 +2319,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 63,
         totalMixes: 152463,
-    },    {
+    }, {
         name: 'Dry Martini',
         emoji: '🍸',
         primarySpirit: 'Gin',
@@ -2365,7 +2365,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 95,
         totalMixes: 1050000,
-    },    {
+    }, {
         name: 'Cuba Libre',
         emoji: '🥤',
         primarySpirit: 'Rum',
@@ -2411,7 +2411,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 1,
         popularity: 71,
         totalMixes: 309191,
-    },    {
+    }, {
         name: 'Mimosa',
         emoji: '🥂',
         primarySpirit: 'Liqueur & Other',
@@ -2457,7 +2457,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 95,
         totalMixes: 1250000,
-    },    {
+    }, {
         name: 'Tequila Sunrise',
         emoji: '🌅',
         primarySpirit: 'Agave',
@@ -2503,7 +2503,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 58,
         totalMixes: 11698,
-    },    {
+    }, {
         name: 'Black Russian',
         emoji: '☕',
         primarySpirit: 'Vodka',
@@ -2547,7 +2547,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 2,
         popularity: 54,
         totalMixes: 372574,
-    },    {
+    }, {
         name: 'Hurricane',
         emoji: '🌪️',
         primarySpirit: 'Rum',
@@ -2596,7 +2596,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 73,
         totalMixes: 397313,
-    },    {
+    }, {
         name: 'Bellini',
         emoji: '🍑',
         primarySpirit: 'Liqueur & Other',
@@ -2640,7 +2640,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 3,
         popularity: 47,
         totalMixes: 270127,
-    },    {
+    }, {
         name: 'Michelada',
         emoji: '🍺',
         primarySpirit: 'Liqueur & Other',
@@ -2688,5 +2688,491 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         estimatedCost: 1,
         popularity: 54,
         totalMixes: 400934,
+    },
+    {
+        name: 'Bee\'s Knees',
+        emoji: '🐝',
+        primarySpirit: 'Gin',
+        origin: 'USA / France',
+        era: 'Prohibition',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Honey Syrup' }
+        ],
+        description: 'A Prohibition-era classic that originally used honey to mask the harshness of bathtub gin, resulting in a beautifully floral and bright libation.',
+        garnish: 'Lemon twist',
+        instructions: [
+            'Add the gin, lemon juice, and honey syrup to a shaker.',
+            'Fill with ice and shake vigorously until well-chilled.',
+            'Double strain into a chilled coupe glass.',
+            'Garnish with a lemon twist.'
+        ],
+        season: 'Spring',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Gold Rush', 'Brown Derby', 'Gimlet'],
+        source: 'Frank Meier (Ritz Bar)',
+        city: 'Paris',
+        mood: 'Uplifting & Bright',
+        flavorProfile: ['Sweet', 'Tart', 'Floral', 'Botanical'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Afternoon Sip',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1920s',
+        trivia: [
+            'The phrase "bee\'s knees" was roaring twenties slang meaning "the best" or "the height of excellence".',
+            'Honey syrup is preferred over raw honey because raw honey seizes up and clumps when hit with cold ice.',
+            'It was likely invented at the Ritz Bar in Paris by Frank Meier, rather than in an American speakeasy.'
+        ],
+        ratio: '2:¾:¾',
+        tagline: 'The absolute best.',
+        strength: 6,
+        estimatedCost: 2,
+        popularity: 82,
+        totalMixes: 450000,
+    },
+    {
+        name: 'Gold Rush',
+        emoji: '🍯',
+        primarySpirit: 'Whiskey & Bourbon',
+        origin: 'USA',
+        era: 'Modern Classic',
+        style: 'Sour',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '2 oz', item: 'Bourbon' },
+            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Honey Syrup' }
+        ],
+        description: 'A brilliant modern classic created at Milk & Honey. It swaps the gin in a Bee\'s Knees for the rich depth of Bourbon, creating an effortless Whiskey Sour riff.',
+        garnish: 'None',
+        instructions: [
+            'Add the bourbon, lemon juice, and honey syrup to a shaker.',
+            'Fill with ice and shake vigorously until well-chilled.',
+            'Strain into a rocks glass over a single large block of ice.'
+        ],
+        season: 'Fall',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Bee\'s Knees', 'Whiskey Sour', 'Penicillin'],
+        source: 'T.J. Siegal (Milk & Honey)',
+        city: 'New York City',
+        mood: 'Warm & Cozy',
+        flavorProfile: ['Sweet', 'Tart', 'Rich', 'Oak'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Evening Drink',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '2000s',
+        trivia: [
+            'The drink was born out of a regular customer\'s request who wanted something fast without any muddling or egg white.',
+            'Sasha Petraske famously mandated that this drink be served without a garnish because it didn\'t need one.',
+            'It forms the structural bedrock for another famous modern classic: the Penicillin.'
+        ],
+        ratio: '2:¾:¾',
+        tagline: 'Liquid gold.',
+        strength: 7,
+        estimatedCost: 2,
+        popularity: 85,
+        totalMixes: 580000,
+    },
+    {
+        name: 'Naked & Famous',
+        emoji: '🌵',
+        primarySpirit: 'Agave',
+        origin: 'USA',
+        era: 'Modern Classic',
+        style: 'Sour',
+        glass: 'Coupe',
+        ingredients: [
+            { amount: '0.75 oz', item: 'Mezcal' },
+            { amount: '0.75 oz', item: 'Aperol' },
+            { amount: '0.75 oz', item: 'Yellow Chartreuse' },
+            { amount: '0.75 oz', item: 'Lime Juice' }
+        ],
+        description: 'A masterful equal-parts cocktail balancing earthy Mezcal smoke, bittersweet Aperol citrus, and the honeyed herbaceous notes of Yellow Chartreuse.',
+        garnish: 'Lime wheel (optional)',
+        instructions: [
+            'Add all ingredients into a shaker.',
+            'Fill with ice and shake vigorously until well-chilled.',
+            'Double strain into a chilled coupe or Nick & Nora glass.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Last Word', 'Paper Plane', 'Division Bell'],
+        source: 'Joaquín Simó (Death & Co)',
+        city: 'New York City',
+        mood: 'Adventurous',
+        flavorProfile: ['Smoky', 'Bitter', 'Herbal', 'Tart'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Pre-Dinner',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '2011',
+        trivia: [
+            'Invented by Joaquín Simó, who famously called it the "bastard love child" of a Last Word and a Paper Plane.',
+            'It aggressively pushed Mezcal away from purely Margarita riffs into the territory of complex mixology logic.',
+            'The name is inspired by a song by the post-punk band The Presidents of the United States of America.'
+        ],
+        ratio: '1:1:1:1',
+        tagline: 'Shameless, smoky, and unforgettable.',
+        strength: 7,
+        estimatedCost: 4,
+        popularity: 75,
+        totalMixes: 290000,
+    },
+    {
+        name: 'Dark \'n\' Stormy',
+        emoji: '⛈️',
+        primarySpirit: 'Rum',
+        origin: 'Bermuda',
+        era: 'Golden Age',
+        style: 'Highball',
+        glass: 'Highball',
+        ingredients: [
+            { amount: '2 oz', item: 'Dark Rum' },
+            { amount: '3 oz', item: 'Ginger Beer' },
+            { amount: '0.5 oz', item: 'Lime Juice' }
+        ],
+        description: 'A stormy highball combining the rich molasses notes of dark rum with the sharp, spicy bite of a high-quality ginger beer.',
+        garnish: 'Lime wedge',
+        instructions: [
+            'Fill a highball glass completely with ice.',
+            'Add the ginger beer and lime juice to the glass.',
+            'Gently pour the dark rum over the back of a spoon so it floats on top like a dark storm cloud.',
+            'Garnish with a lime wedge.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Moscow Mule', 'Kentucky Mule'],
+        source: 'Gosling Brothers',
+        city: 'Hamilton',
+        mood: 'Relaxed',
+        flavorProfile: ['Spicy', 'Sweet', 'Rum', 'Tart'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Casual Sipping',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'Bermuda',
+        timePeriod: 'Post-WW1',
+        trivia: [
+            'The name is heavily trademarked by Gosling Brothers; legally, it can only be called a Dark \'n\' Stormy if it specifically uses Gosling\'s Black Seal Rum.',
+            'Rumored to be named by a sailor who said the murky drink resembled "the color of a cloud only a fool or a dead man would sail under".',
+            'It is the unofficial national drink of Bermuda.'
+        ],
+        ratio: '2:3',
+        tagline: 'Weather the storm.',
+        strength: 5,
+        estimatedCost: 2,
+        popularity: 88,
+        totalMixes: 720000,
+    },
+    {
+        name: 'Japanese Highball',
+        emoji: '🧊',
+        primarySpirit: 'Whiskey & Bourbon',
+        origin: 'Japan',
+        era: 'Modern Classic',
+        style: 'Highball',
+        glass: 'Highball',
+        ingredients: [
+            { amount: '1.5 oz', item: 'Japanese Whisky' },
+            { amount: '4.5 oz', item: 'Club Soda' }
+        ],
+        description: 'A zen-like approach to the standard mixed drink, emphasizing ultra-chilled ingredients, pristine block ice, and soaring carbonation.',
+        garnish: 'Lemon twist (sometimes expressed, then discarded)',
+        instructions: [
+            'Fill a highball glass with crystal clear block ice.',
+            'Stir continuously to chill the glass, then pour out any resulting meltwater.',
+            'Pour the Japanese Whisky over the ice and stir exactly thirteen and a half times to chill the spirit.',
+            'Add more ice if needed to fill the glass to the brim.',
+            'Gently pour soda water down the side of the glass to avoid hitting the ice directly.',
+            'Carefully slide a barspoon down the side and lift the ice exactly once to mix without sacrificing carbonation.'
+        ],
+        season: 'Year-Round',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Tom Collins', 'Scotch and Soda'],
+        source: 'Suntory / Japanese Bartending Culture',
+        city: 'Tokyo',
+        mood: 'Refined & Minimalist',
+        flavorProfile: ['Crisp', 'Dry', 'Oak', 'Effervescent'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'With Dinner',
+        abvContent: 'Low',
+        temperature: 'Cold',
+        countryOfPopularity: 'Japan',
+        timePeriod: '1950s',
+        trivia: [
+            'In Japan, crafting the perfect highball is considered an obsessive art form involving exact stirring counts and meticulous glass freezing.',
+            'It was heavily popularized by Suntory as the ideal accompaniment to Japanese cuisine because it acts as a palate cleanser.',
+            'Some highball bars in Tokyo use dedicated draft machines that dispense ultra-carbonated soda water at freezing temperatures.'
+        ],
+        ratio: '1:3',
+        tagline: 'Precision in a glass.',
+        strength: 3,
+        estimatedCost: 3,
+        popularity: 78,
+        totalMixes: 340000,
+    },
+    {
+        name: 'Americano',
+        emoji: '☕',
+        primarySpirit: 'Liqueur & Other',
+        origin: 'Italy',
+        era: 'Pre-Prohibition',
+        style: 'Highball',
+        glass: 'Highball',
+        ingredients: [
+            { amount: '1.5 oz', item: 'Campari' },
+            { amount: '1.5 oz', item: 'Sweet Vermouth' },
+            { amount: 'Top', item: 'Club Soda' }
+        ],
+        description: 'The stylistic precursor to the mighty Negroni. A light, bitter, and endlessly refreshing Italian aperitivo.',
+        garnish: 'Orange slice or half-wheel',
+        instructions: [
+            'Fill a highball or rocks glass with ice.',
+            'Add the Campari and Sweet Vermouth.',
+            'Top with a heavy splash of club soda.',
+            'Gently stir to incorporate the ingredients.',
+            'Garnish heavily with a fresh orange slice.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Negroni', 'Aperol Spritz', 'Boulevardier'],
+        source: 'Gaspare Campari',
+        city: 'Milan',
+        mood: 'Relaxed & Breezy',
+        flavorProfile: ['Bitter', 'Herbal', 'Sweet', 'Fizzy'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Aperitivo',
+        abvContent: 'Low',
+        temperature: 'Cold',
+        countryOfPopularity: 'Italy',
+        timePeriod: '1860s',
+        trivia: [
+            'Originally known as the "Milano-Torino" because Campari came from Milan and the vermouth came from Turin.',
+            'It was supposedly renamed the "Americano" after the influx of American tourists who fled to Italy during Prohibition and ordered the drink heavily.',
+            'This is actually the very first drink James Bond orders in Ian Fleming\'s original novel, Casino Royale.'
+        ],
+        ratio: '1:1:Top',
+        tagline: 'The original bitter Italian.',
+        strength: 3,
+        estimatedCost: 2,
+        popularity: 70,
+        totalMixes: 250000,
+    },
+    {
+        name: 'Ramos Gin Fizz',
+        emoji: '🥚',
+        primarySpirit: 'Gin',
+        origin: 'USA',
+        era: 'Golden Age',
+        style: 'Fizzy',
+        glass: 'Highball',
+        ingredients: [
+            { amount: '2 oz', item: 'Gin' },
+            { amount: '0.5 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '0.75 oz', item: 'Simple Syrup' },
+            { amount: '1 oz', item: 'Heavy Cream' },
+            { amount: '1', item: 'Egg White' },
+            { amount: '3 dashes', item: 'Orange Flower Water' },
+            { amount: 'Top', item: 'Club Soda' }
+        ],
+        description: 'A textural masterpiece. Shaken furiously until intensely frothy and thick, rising like a stiff soufflé over the rim of the glass.',
+        garnish: 'None',
+        instructions: [
+            'Add all ingredients EXCEPT the club soda into a shaker without ice.',
+            'Dry shake aggressively for 1 full minute to emulsify the egg and cream.',
+            'Open the shaker, add ice, and wet shake for another 1-2 minutes until extremely cold and frothy.',
+            'Strain into a chilled narrow highball (Collins) glass without ice.',
+            'Let the foam rest and set for 30 seconds.',
+            'Carefully pour cold club soda down the center or side to lift the foam perfectly above the rim.'
+        ],
+        season: 'Year-Round',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Gin Fizz', 'Tom Collins', 'Pisco Sour'],
+        source: 'Henry C. Ramos (Imperial Cabinet Saloon)',
+        city: 'New Orleans',
+        mood: 'Extravagant',
+        flavorProfile: ['Creamy', 'Citrus', 'Floral', 'Sweet'],
+        difficultyLevel: 'Advanced',
+        occasion: 'Brunch',
+        abvContent: 'Medium',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1888',
+        trivia: [
+            'Ramos famously employed a physical chain of "shaker boys" to pass the drink down a line, shaking it for an alleged 12 minutes straight during Mardi Gras.',
+            'It is to this day the absolute bane of impatient bartenders during a busy rush.',
+            'The texture should be so stiff that a straw stands perfectly completely upright in the center.'
+        ],
+        ratio: 'Complex',
+        tagline: 'The 12-minute bicep workout.',
+        strength: 5,
+        estimatedCost: 3,
+        popularity: 80,
+        totalMixes: 150000,
+    },
+    {
+        name: 'Planter\'s Punch',
+        emoji: '🌴',
+        primarySpirit: 'Rum',
+        origin: 'Jamaica',
+        era: 'Golden Age',
+        style: 'Sour',
+        glass: 'Highball',
+        ingredients: [
+            { amount: '3 oz', item: 'Dark Jamaican Rum' },
+            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '0.75 oz', item: 'Simple Syrup' },
+            { amount: '0.25 oz', item: 'Grenadine' },
+            { amount: '3 dashes', item: 'Angostura Bitters' }
+        ],
+        description: 'A massive, potent Caribbean classic that showcased Jamaican rum and laid the undeniable foundation for the mid-century Tiki movement.',
+        garnish: 'Mint sprig and an orange wheel',
+        instructions: [
+            'Add all ingredients to a shaker.',
+            'Fill with ice and shake vigorously until well-chilled.',
+            'Strain into a tall tiki or highball glass packed with crushed ice.',
+            'Garnish elaborately with a huge sprig of slapped mint and fresh fruit.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Mai Tai', 'Zombie', 'Painkiller'],
+        source: 'Myrtle Bank Hotel (Disputed)',
+        city: 'Kingston',
+        mood: 'Tropical & Bold',
+        flavorProfile: ['Sweet', 'Rum', 'Spice', 'Tart'],
+        difficultyLevel: 'Intermediate',
+        occasion: 'Vacation',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'Jamaica',
+        timePeriod: 'Late 1800s',
+        trivia: [
+            'The recipe was historically remembered via a famous rhyme: "One of sour, two of sweet, three of strong, and four of weak."',
+            'Don the Beachcomber based almost his entire initial rum-mixing philosophy directly upon analyzing the Jamaican Planter\'s Punch.',
+            'There are dozens of highly debated variations, but the core always highlights funky Jamaican pot-still rum.'
+        ],
+        ratio: '3:1:1:Accents',
+        tagline: 'The king of Jamaican rum punches.',
+        strength: 8,
+        estimatedCost: 2,
+        popularity: 74,
+        totalMixes: 220000,
+    },
+    {
+        name: 'Navy Grog',
+        emoji: '⚓',
+        primarySpirit: 'Rum',
+        origin: 'USA',
+        era: 'Tiki',
+        style: 'Sour',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '1 oz', item: 'Light Rum' },
+            { amount: '1 oz', item: 'Dark Rum' },
+            { amount: '1 oz', item: 'Overproof Rum' },
+            { amount: '0.5 oz', item: 'Honey Syrup' },
+            { amount: '0.75 oz', item: 'Lime Juice' },
+            { amount: '0.75 oz', item: 'Grapefruit Juice' },
+            { amount: '0.5 oz', item: 'Club Soda' }
+        ],
+        description: 'A Don the Beachcomber masterpiece balancing a dangerously strong split overproof rum base with tart tropical citrus and rich honey.',
+        garnish: 'Mint sprig and an ice cone (traditionally)',
+        instructions: [
+            'Add all ingredients, except club soda, into a shaker with crushed ice.',
+            'Shake vigorously until frosted and well-chilled.',
+            'Pour unstrained into a large double rocks glass.',
+            'Top with a quick splash of club soda.',
+            'Garnish with a slapped mint sprig and, if capable, thread a straw through a molded ice cone.'
+        ],
+        season: 'Summer',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Zombie', 'Mai Tai', 'Planter\'s Punch'],
+        source: 'Don the Beachcomber',
+        city: 'Hollywood',
+        mood: 'Adventurous',
+        flavorProfile: ['Rum', 'Tart', 'Honey', 'Complex'],
+        difficultyLevel: 'Advanced',
+        occasion: 'Luau',
+        abvContent: 'Very High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '1941',
+        trivia: [
+            'Richard Nixon supposedly enjoyed this drink so intensely that he regularly snuck out of the White House to drink them at Trader Vic\'s.',
+            'The name stems from the brutal historic Royal Navy ration of watering down sailor\'s rum to keep them from mutinying.',
+            'Serving it perfectly requires shaping an intricate, towering cone of crushed ice around the drinking straw.'
+        ],
+        ratio: '3:1.5:0.5',
+        tagline: 'Three rums to sink a battleship.',
+        strength: 9,
+        estimatedCost: 4,
+        popularity: 69,
+        totalMixes: 110000,
+    },
+    {
+        name: 'Oaxaca Old Fashioned',
+        emoji: '🏜️',
+        primarySpirit: 'Agave',
+        origin: 'USA',
+        era: 'Modern Classic',
+        style: 'Spirit-Forward',
+        glass: 'Rocks',
+        ingredients: [
+            { amount: '1.5 oz', item: 'Reposado Tequila' },
+            { amount: '0.5 oz', item: 'Mezcal' },
+            { amount: '1 tsp', item: 'Agave Nectar' },
+            { amount: '2 dashes', item: 'Angostura Bitters' }
+        ],
+        description: 'The drink that essentially kickstarted the modern American Mezcal craze. An earthy, subtly smoky, and vastly superior twist on the classic formulation.',
+        garnish: 'Orange twist (flamed)',
+        instructions: [
+            'Add the tequila, mezcal, agave nectar, and bitters to a mixing glass.',
+            'Add ice and stir for 20-30 seconds until properly chilled and diluted.',
+            'Strain into a rocks glass over a single large ice cube.',
+            'Cut a coin of orange peel, aggressively flame the oils over the surface of the drink, and drop it in.'
+        ],
+        season: 'Year-Round',
+        recommendedAmount: '1 Drink',
+        quantity: 1,
+        relationship: ['Old Fashioned', 'Margarita', 'Naked & Famous'],
+        source: 'Phil Ward (Death & Co)',
+        city: 'New York City',
+        mood: 'Nuanced & Complex',
+        flavorProfile: ['Smoky', 'Oak', 'Sweet', 'Bitter'],
+        difficultyLevel: 'Beginner',
+        occasion: 'Nightcap',
+        abvContent: 'High',
+        temperature: 'Cold',
+        countryOfPopularity: 'USA',
+        timePeriod: '2007',
+        trivia: [
+            'Its creation and runaway success at Death & Co directly led to a nationwide shortage of certain Mezcal brands in the late 2000s.',
+            'Phil Ward created it by treating the Reposado as the "base" and using the intensely smoky Mezcal essentially as a seasoning.',
+            'Flaming the orange peel is non-negotiable; the burnt citrus oil perfectly balances the smoke.'
+        ],
+        ratio: '2:¼',
+        tagline: 'The Mexican renaissance.',
+        strength: 8,
+        estimatedCost: 3,
+        popularity: 81,
+        totalMixes: 410000,
     }
 ];
