@@ -19,6 +19,7 @@ export default function MenuPage() {
     const { user, loading: authLoading, myBar, shoppingList } = useAuth();
     const [showMakeableOnly, setShowMakeableOnly] = useState(false);
     const [sortBy, setSortBy] = useState<string>('popular');
+    const [searchQuery, setSearchQuery] = useState('');
 
     // New Advanced Filters
     const [selectedSpirit, setSelectedSpirit] = useState<PrimarySpirit | 'All'>('All');
@@ -70,6 +71,14 @@ export default function MenuPage() {
     };
 
     const cocktailsToShow = CLASSIC_COCKTAILS.filter(cocktail => {
+        // Text Search Filter
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            const matchesName = cocktail.name.toLowerCase().includes(query);
+            const matchesIngredient = cocktail.ingredients.some(ing => ing.item.toLowerCase().includes(query));
+            if (!matchesName && !matchesIngredient) return false;
+        }
+
         // Base Filters
         if (selectedSpirit !== 'All' && cocktail.primarySpirit !== selectedSpirit) return false;
         if (selectedEra !== 'All' && cocktail.era !== selectedEra) return false;
@@ -120,11 +129,11 @@ export default function MenuPage() {
                     A curated selection of timeless classics. Perfect when you know exactly what you want, or just need a little inspiration.
                 </p>
 
-                {/* Actions Row: Makeable Toggle & Sort */}
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-8">
+                {/* Actions Row: Makeable Toggle & Sort & Text Search */}
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 z-30 relative px-4 text-left w-full max-w-4xl mx-auto">
                     {/* Makeable Toggle */}
                     {myBar.length > 0 && (
-                        <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6">
+                        <div className="flex justify-center items-center gap-4 bg-black/40 border border-white/10 rounded-full py-2 px-6 shrink-0">
                             <span className={`text-sm font-semibold transition-colors ${!showMakeableOnly ? 'text-[var(--primary)]' : 'text-gray-500'}`}>Show All</span>
                             <button
                                 onClick={() => setShowMakeableOnly(!showMakeableOnly)}
@@ -132,17 +141,33 @@ export default function MenuPage() {
                             >
                                 <div className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${showMakeableOnly ? 'translate-x-6' : ''}`}></div>
                             </button>
-                            <span className={`text-sm font-semibold transition-colors ${showMakeableOnly ? 'text-[var(--accent)]' : 'text-gray-500'}`}>Makeable Now</span>
+                            <span className={`text-sm font-semibold transition-colors flex items-center gap-1 ${showMakeableOnly ? 'text-[var(--accent)]' : 'text-gray-500'}`}>Makeable Now <span className="hidden sm:inline">✅</span></span>
                         </div>
                     )}
 
+                    {/* Text Search Bar */}
+                    <div className="relative w-full group flex-grow max-w-sm">
+                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-gray-500 group-focus-within:text-[var(--primary)] transition-colors">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Find a drink or ingredient..."
+                            className="w-full bg-black/60 border border-white/20 rounded-full py-3 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--primary)] focus:shadow-[0_0_15px_var(--primary-glow)] transition-all"
+                        />
+                    </div>
+
                     {/* Sort Dropdown */}
-                    <div className="flex items-center gap-3 bg-black/40 border border-white/10 rounded-full py-1.5 pl-6 pr-1.5">
-                        <span className="text-gray-400 text-sm font-bold uppercase tracking-widest hidden sm:block">Sort</span>
+                    <div className="flex items-center gap-3 bg-black/40 border border-white/10 rounded-full py-2 pl-6 pr-2 shrink-0 relative overflow-hidden">
+                        <span className="text-gray-400 text-sm font-bold uppercase tracking-widest hidden lg:block">Sort</span>
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className="bg-black/80 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
+                            className="bg-black/90 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
                         >
                             <option value="popular">🔥 Most Popular</option>
                             <option value="drank">🍹 Most Mixed</option>
