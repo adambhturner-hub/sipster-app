@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { useMeasurement } from '@/contexts/MeasurementContext';
 import { Cocktail } from '@/data/cocktails';
 import FavoriteButton from './FavoriteButton';
 import RiffButton from './RiffButton';
@@ -35,6 +36,7 @@ export default function CocktailCard({
     showReviewPrompt
 }: CocktailCardProps) {
     const { addToBar, addToShoppingList, shoppingList = [] } = useAuth();
+    const { system, setSystem, convertMeasurement } = useMeasurement();
     const href = customHref || `/menu/${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`;
 
     // Global Rating State
@@ -145,7 +147,13 @@ export default function CocktailCard({
 
                 <div className="space-y-4 pt-6 border-t border-gray-800 relative z-20">
                     <div className="flex justify-between items-center bg-gray-950 px-3 py-1.5 rounded-lg border border-gray-800/50 mb-3">
-                        <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Recipe</span>
+                        <div className="flex items-center gap-3">
+                            <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">Recipe</span>
+                            <div className="flex items-center bg-black rounded p-0.5 border border-gray-700/50 cursor-pointer pointer-events-auto z-50">
+                                <button onClick={(e) => { e.preventDefault(); setSystem('imperial'); }} className={`text-[8px] font-bold px-1.5 py-0.5 rounded transition-colors ${system === 'imperial' ? 'bg-[var(--primary)]/20 text-[var(--primary)]' : 'text-gray-500 hover:text-gray-300'}`}>oz</button>
+                                <button onClick={(e) => { e.preventDefault(); setSystem('metric'); }} className={`text-[8px] font-bold px-1.5 py-0.5 rounded transition-colors ${system === 'metric' ? 'bg-[var(--primary)]/20 text-[var(--primary)]' : 'text-gray-500 hover:text-gray-300'}`}>ml</button>
+                            </div>
+                        </div>
                         <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase">{cocktail?.glass || 'Any'} Glass</span>
                     </div>
                     {(Array.isArray(cocktail?.ingredients) ? cocktail.ingredients : []).map((ing, idx) => {
@@ -183,7 +191,7 @@ export default function CocktailCard({
                                     )}
                                 </span>
                                 <div className={`flex items-center gap-3 ${!officiallyHasIt && 'group-hover/ing:hidden'}`}>
-                                    <span className="text-gray-500 font-mono text-xs">{ing?.amount || 'To taste'}</span>
+                                    <span className="text-gray-500 font-mono text-xs">{convertMeasurement(ing?.amount || 'To taste')}</span>
                                 </div>
                             </div>
                         );

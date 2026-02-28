@@ -1,11 +1,134 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import BigNeonLogo from '@/components/BigNeonLogo';
+import { useAuth } from '@/contexts/AuthContext';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 
 export default function Home() {
+  const { user, loading: authLoading } = useAuth();
+  const [myBar, setMyBar] = useState<string[]>([]);
+  const [makeableCount, setMakeableCount] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+    const unsub = onSnapshot(doc(db, 'users', user.uid), (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const bar = data.myBar || [];
+        setMyBar(bar);
+
+        let count = 0;
+        CLASSIC_COCKTAILS.forEach(cocktail => {
+          const makeable = (cocktail.ingredients || []).filter(i =>
+            i.item !== 'Garnish' && i.item !== 'Simple Syrup' && i.item !== 'Club Soda'
+          ).length > 0 ? (cocktail.ingredients.filter(ing =>
+            bar.some((item: string) => item.toLowerCase() === ing.item.toLowerCase()) || ing.item === 'Garnish' ||
+            ing.item === 'Simple Syrup' || ing.item === 'Club Soda'
+          ).length / cocktail.ingredients.length) >= 0.75 : true;
+
+          if (makeable) count++;
+        });
+        setMakeableCount(count);
+      }
+    });
+    return () => unsub();
+  }, [user]);
+
+  // If loading Auth state, just show a subtle pulse
+  if (authLoading) {
+    return <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center"><div className="w-16 h-16 rounded-full border-t-2 border-[var(--primary)] animate-spin"></div></div>;
+  }
+
+  // --- LOGGED IN DASHBOARD ---
+  if (user) {
+    return (
+      <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white pt-24 pb-32">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div className="mb-12 flex items-center gap-4">
+            {user.photoURL ? (
+              <Image src={user.photoURL} alt="User avatar" width={64} height={64} className="rounded-full shadow-[0_0_20px_var(--primary-glow)] border-2 border-[var(--primary)]" />
+            ) : (
+              <div className="w-16 h-16 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-2xl shadow-[0_0_20px_var(--primary-glow)]">
+                {user.displayName?.charAt(0) || 'U'}
+              </div>
+            )}
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold font-serif">
+                Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)]">{user.displayName ? user.displayName.split(' ')[0] : 'Sipster'}</span>.
+              </h1>
+              <p className="text-gray-400 mt-1 uppercase tracking-widest text-sm font-bold">Your Personal Mixology Engine</p>
+            </div>
+          </div>
+
+          {/* Contextual CTA */}
+          <div className="mb-16">
+            {myBar.length === 0 ? (
+              <div className="bg-gradient-to-br from-[var(--primary)]/20 to-[var(--accent)]/10 border border-[var(--primary)]/50 rounded-3xl p-8 sm:p-12 text-center shadow-[0_0_30px_rgba(176,38,255,0.15)] backdrop-blur-sm relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+                <h2 className="text-3xl font-bold mb-4 font-serif relative z-10">Your Bar is Empty</h2>
+                <p className="text-gray-300 mb-8 max-w-lg mx-auto relative z-10 text-lg">
+                  Log the bottles you own. We'll instantly uncover hundreds of classic cocktails you didn't know you could make.
+                </p>
+                <Link href="/my-bar" className="inline-block px-8 py-4 bg-[var(--primary)] hover:bg-[var(--accent)] transition-colors rounded-full font-bold text-lg shadow-[0_0_20px_var(--primary-glow)] relative z-10 text-white">
+                  Stock Your Bar 🍾
+                </Link>
+              </div>
+            ) : (
+              <div className="bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/50 rounded-3xl p-8 sm:p-12 shadow-[0_0_30px_rgba(16,185,129,0.15)] backdrop-blur-sm relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+                <div className="relative z-10 flex-1">
+                  <h2 className="text-4xl font-bold mb-3 font-serif">
+                    You can make <span className="text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">{makeableCount}</span> drinks.
+                  </h2>
+                  <p className="text-gray-300 text-lg">
+                    Based on the {myBar.length} ingredients in your Bar, you have {makeableCount} classic recipes fully unlocked tonight.
+                  </p>
+                </div>
+                <div className="relative z-10 flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                  <Link href="/make" className="px-8 py-4 bg-emerald-500 hover:bg-emerald-400 transition-colors rounded-full font-bold text-lg shadow-[0_0_20px_rgba(16,185,129,0.4)] text-white text-center whitespace-nowrap">
+                    Make a Drink 🍸
+                  </Link>
+                  <Link href="/my-bar" className="px-8 py-4 bg-black/40 hover:bg-black/60 border border-emerald-500/50 transition-colors rounded-full font-bold text-lg text-emerald-400 text-center whitespace-nowrap">
+                    Manage Bar
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Quick Actions Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <Link href="/journal" className="group glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300">
+              <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">📓</span>
+              <h3 className="font-bold text-white mb-1">Tasting Journal</h3>
+              <p className="text-xs text-gray-400">Review your collection</p>
+            </Link>
+            <Link href="/create" className="group glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300">
+              <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">✨</span>
+              <h3 className="font-bold text-white mb-1">Create Drink</h3>
+              <p className="text-xs text-gray-400">Save a custom recipe</p>
+            </Link>
+            <Link href="/discover" className="group glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300">
+              <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🌍</span>
+              <h3 className="font-bold text-white mb-1">Community Feed</h3>
+              <p className="text-xs text-gray-400">See what's trending</p>
+            </Link>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // --- LOGGED OUT MARKETING PAGE ---
   return (
     <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white flex flex-col pt-16 md:pt-24 relative overflow-hidden">
-
       {/* Hero Section */}
       <BigNeonLogo />
       <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-6 mt-8 md:mt-12 text-center z-10">
@@ -16,59 +139,59 @@ export default function Home() {
       </h2>
 
       <div className="mx-auto text-xl md:text-2xl text-gray-400 max-w-2xl mb-8 z-10 leading-relaxed font-light text-center space-y-2">
-        <p>Sipster knows your bar.</p>
-        <p>Understands your mood.</p>
-        <p className="text-white font-medium">Crafts the perfect drink — classic or custom — in seconds.</p>
+        <p>Invent original recipes instantly.</p>
+        <p>Digitize your home bar inventory.</p>
+        <p className="text-white font-medium">Design custom cocktail menus for your next party.</p>
       </div>
 
       <p className="text-sm text-gray-500 uppercase tracking-widest font-bold mb-12 z-10 text-center">
-        For home bartenders, party hosts, and the Sipsters of the world.
+        The most powerful mixology engine ever built.
       </p>
 
       {/* CTA Buttons */}
       <div className="mx-auto flex flex-col sm:flex-row gap-6 z-10 items-center justify-center w-full max-w-lg mb-24">
         <Link
           href="/chat"
-          className="w-full sm:w-auto px-8 py-4 rounded-full btn-primary text-lg"
+          className="w-full sm:w-auto px-8 py-4 rounded-full btn-primary text-lg text-center"
         >
           Ask the Bartender ✨
         </Link>
         <Link
           href="/my-bar"
-          className="w-full sm:w-auto px-8 py-4 rounded-full glass-panel text-white font-bold text-lg hover:bg-white/10 hover:scale-105 transition-all duration-300"
+          className="w-full sm:w-auto px-8 py-4 rounded-full glass-panel text-white font-bold text-lg hover:bg-white/10 hover:scale-105 transition-all duration-300 text-center"
         >
           Open Your Back Bar
         </Link>
       </div>
 
       {/* Feature Highlight Cards Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl z-10 pb-16 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl z-10 pb-16 px-4 mx-auto">
         {/* Card 1 */}
         <div className="glass-panel p-6 flex flex-col items-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300 group cursor-pointer">
-          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🍾</div>
-          <h3 className="text-lg font-bold mb-2 text-white">Your Back Bar</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">Snap a photo or add your bottles. Sipster remembers what's on your shelf.</p>
+          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧠</div>
+          <h3 className="text-lg font-bold mb-2 text-white">Conversational Mixologist</h3>
+          <p className="text-gray-400 text-sm leading-relaxed">Chat with Sipster about what you're craving. It generates a bespoke original recipe instantly.</p>
         </div>
 
         {/* Card 2 */}
         <div className="glass-panel p-6 flex flex-col items-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300 group cursor-pointer">
-          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🍸</div>
-          <h3 className="text-lg font-bold mb-2 text-white">Conversational Mixologist</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">Tell Sipster what you're craving. It mixes something up.</p>
+          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🍾</div>
+          <h3 className="text-lg font-bold mb-2 text-white">Smart Inventory</h3>
+          <p className="text-gray-400 text-sm leading-relaxed">Log your bottles. We'll tell you exactly how many hundreds of drinks you can craft.</p>
         </div>
 
         {/* Card 3 */}
         <div className="glass-panel p-6 flex flex-col items-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300 group cursor-pointer">
-          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🧪</div>
-          <h3 className="text-lg font-bold mb-2 text-white">Creator Studio</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">Invent your own signature drinks and share them.</p>
+          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🎊</div>
+          <h3 className="text-lg font-bold mb-2 text-white">Party Builder</h3>
+          <p className="text-gray-400 text-sm leading-relaxed">Enter a theme. Generate a 6-drink interactive cocktail menu. Send the link to guests.</p>
         </div>
 
         {/* Card 4 */}
         <div className="glass-panel p-6 flex flex-col items-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300 group cursor-pointer">
-          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🌎</div>
-          <h3 className="text-lg font-bold mb-2 text-white">Community Feed</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">Discover what others are mixing — and save your favorites.</p>
+          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🏆</div>
+          <h3 className="text-lg font-bold mb-2 text-white">Tasting Journal</h3>
+          <p className="text-gray-400 text-sm leading-relaxed">Rank your favorites, discover your Bartender Personality, and unlock Mixology badges.</p>
         </div>
       </div>
 
@@ -79,24 +202,24 @@ export default function Home() {
 
           <div className="flex flex-col items-center text-center max-w-xs relative">
             <div className="w-16 h-16 rounded-full bg-[var(--surface)] border border-[var(--primary)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4 shadow-[0_0_15px_var(--primary-glow)]">1</div>
-            <h4 className="text-lg font-bold text-white mb-2">Add Your Bar</h4>
-            <p className="text-sm text-gray-400">Snap a quick photo or tap your bottles. We’ll build your digital shelf.</p>
+            <h4 className="text-lg font-bold text-white mb-2">Build Your Inventory</h4>
+            <p className="text-sm text-gray-400">Log your bottles. Instantly uncover hundreds of classics you didn't know you could make.</p>
             {/* Connector Line (Desktop Only) */}
             <div className="hidden md:block absolute top-8 left-full w-full h-[1px] bg-gradient-to-r from-[var(--primary)]/50 to-transparent -ml-4 z-[-1]"></div>
           </div>
 
           <div className="flex flex-col items-center text-center max-w-xs relative">
             <div className="w-16 h-16 rounded-full bg-[var(--surface)] border border-[var(--primary)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4 shadow-[0_0_15px_var(--primary-glow)]">2</div>
-            <h4 className="text-lg font-bold text-white mb-2">Tell Sipster What You're Craving</h4>
-            <p className="text-sm text-gray-400">"I'm feeling nostalgic," "Something smoky," or "Just use the rum."</p>
+            <h4 className="text-lg font-bold text-white mb-2">Invent Signatures</h4>
+            <p className="text-sm text-gray-400">Chat with Sipster to invent an original recipe. Name it. Add it to your public Collector Portfolio.</p>
             {/* Connector Line (Desktop Only) */}
             <div className="hidden md:block absolute top-8 left-full w-full h-[1px] bg-gradient-to-r from-[var(--primary)]/50 to-transparent -ml-4 z-[-1]"></div>
           </div>
 
           <div className="flex flex-col items-center text-center max-w-xs">
             <div className="w-16 h-16 rounded-full bg-[var(--surface)] border border-[var(--primary)] text-[var(--primary)] flex items-center justify-center text-2xl font-bold mb-4 shadow-[0_0_15px_var(--primary-glow)]">3</div>
-            <h4 className="text-lg font-bold text-white mb-2">Pour, Stir, Sip</h4>
-            <p className="text-sm text-gray-400">Follow the custom recipe and enjoy a perfectly tailored cocktail.</p>
+            <h4 className="text-lg font-bold text-white mb-2">Host with Style</h4>
+            <p className="text-sm text-gray-400">Generate a digital cocktail menu for your next party. Share the link so guests can order from their phones.</p>
           </div>
 
         </div>

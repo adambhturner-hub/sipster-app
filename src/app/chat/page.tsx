@@ -222,14 +222,23 @@ export default function Chat() {
             // Strip any explicit 'undefined' keys hallucinated by the LLM to prevent Firebase Sync Exception
             const safeCocktailData = JSON.parse(JSON.stringify(customCocktailData));
 
+            const isPublic = window.confirm("Would you like to publish this creation to the public Community Feed?");
+
             const favRef = collection(db, 'favorites');
-            const docRef = await addDoc(favRef, {
+            const payload: any = {
                 uid: user.uid,
                 type: 'custom_full',
                 messageId: messageId,
                 cocktailData: safeCocktailData,
+                isPublic: isPublic,
                 createdAt: new Date().toISOString()
-            });
+            };
+
+            if (isPublic) {
+                payload.authorName = user.displayName || 'Anonymous Mixologist';
+            }
+
+            const docRef = await addDoc(favRef, payload);
             toast.success(
                 (t) => (
                     <span className="flex items-center gap-1">

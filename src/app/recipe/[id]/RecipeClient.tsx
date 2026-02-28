@@ -60,11 +60,11 @@ export default function RecipeClient({ id }: { id: string }) {
 
     if (error || !recipeData || !recipeData.cocktailData) {
         return (
-            <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-white p-6 pb-24">
-                <h1 className="text-4xl font-bold mb-4 font-serif">Recipe Not Found</h1>
-                <p className="text-gray-400 mb-8">This custom creation doesn't seem to exist.</p>
-                <Link href="/favorites" className="px-6 py-3 bg-[var(--primary)] rounded-full font-medium text-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]">
-                    Back to Favorites
+            <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 text-center text-white font-sans">
+                <h1 className="text-3xl font-bold mb-4">Cocktail Not Found</h1>
+                <p className="text-gray-400 mb-8 max-w-md">The secret recipe you're looking for doesn't seem to exist. It may have been kept private by its creator or deleted.</p>
+                <Link href="/journal" className="px-6 py-3 bg-[var(--primary)] rounded-full font-medium text-white hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]">
+                    Back to Journal
                 </Link>
             </div>
         );
@@ -78,11 +78,11 @@ export default function RecipeClient({ id }: { id: string }) {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
             <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--accent)]/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
-                {/* Header Section */}
-                <div className="mb-12">
-                    <Link href="/favorites" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
-                        &larr; Back to Favorites
+            <div className="min-h-screen bg-[var(--bg)] text-white font-serif selection:bg-[var(--primary-glow)] selection:text-white pt-24 pb-32">
+                <div className="max-w-4xl mx-auto px-4 md:px-8">
+
+                    <Link href="/journal" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
+                        &larr; Back to Journal
                     </Link>
                     <div className="flex items-center gap-6 mt-4">
                         <div className="text-7xl bg-gray-900 h-32 w-32 rounded-3xl flex items-center justify-center shadow-[0_0_30px_rgba(176,38,255,0.2)] border border-[var(--primary)]/30">
@@ -103,7 +103,7 @@ export default function RecipeClient({ id }: { id: string }) {
                                         type="custom_full"
                                         onChange={(isFavorited) => {
                                             if (!isFavorited) {
-                                                router.push('/favorites');
+                                                router.push('/journal');
                                             }
                                         }}
                                     />

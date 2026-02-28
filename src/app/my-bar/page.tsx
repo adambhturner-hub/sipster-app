@@ -7,6 +7,7 @@ import { db } from '@/lib/firebase';
 import toast from 'react-hot-toast';
 
 import { INGREDIENT_CATEGORIES, FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
+import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 
 export default function MyBarPage() {
     const { user, loading: authLoading } = useAuth();
@@ -18,6 +19,22 @@ export default function MyBarPage() {
     const [customIngredient, setCustomIngredient] = useState('');
     const [customShoppingItem, setCustomShoppingItem] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
+
+    // Calculate how many drinks a given bar inventory can make
+    const calculateMakeableDrinks = (currentBar: string[]): number => {
+        let count = 0;
+        CLASSIC_COCKTAILS.forEach(cocktail => {
+            const makeable = (cocktail.ingredients || []).filter(i =>
+                i.item !== 'Garnish' && i.item !== 'Simple Syrup' && i.item !== 'Club Soda'
+            ).length > 0 ? (cocktail.ingredients.filter(ing =>
+                currentBar.some(item => item.toLowerCase() === ing.item.toLowerCase()) || ing.item === 'Garnish' ||
+                ing.item === 'Simple Syrup' || ing.item === 'Club Soda'
+            ).length / cocktail.ingredients.length) >= 0.75 : true;
+
+            if (makeable) count++;
+        });
+        return count;
+    };
 
     // Helpers for parsing and fuzzy search
     const parseShoppingInput = (rawInput: string): string[] => {
@@ -109,7 +126,11 @@ export default function MyBarPage() {
         }
 
         if (!myBar.includes(ingredient)) {
-            toast.success(`Added ${ingredient}`, { id: 'bar-update' });
+            const makeableCount = calculateMakeableDrinks(newBar);
+            toast.success(
+                <span>Added {ingredient}! ✨ You can now make <strong>{makeableCount}</strong> drinks.</span>,
+                { id: 'bar-update' }
+            );
         } else {
             toast(`Removed ${ingredient}`, { id: 'bar-update', icon: '🗑️' });
         }
@@ -129,7 +150,11 @@ export default function MyBarPage() {
         const newBar = [...myBar, item];
         setMyBar(newBar);
         setCustomIngredient('');
-        toast.success(`Added ${item}`);
+
+        const makeableCount = calculateMakeableDrinks(newBar);
+        toast.success(
+            <span>Added {item}! ✨ You can now make <strong>{makeableCount}</strong> drinks.</span>
+        );
 
         if (user) {
             const userRef = doc(db, 'users', user.uid);
@@ -231,7 +256,11 @@ export default function MyBarPage() {
             const userRef = doc(db, 'users', user.uid);
             await setDoc(userRef, { myBar: newBar, shoppingList: newList }, { merge: true });
         }
-        toast.success(`Bought ${ingredient}! Added to My Bar 🎉`);
+
+        const makeableCount = calculateMakeableDrinks(newBar);
+        toast.success(
+            <span>Bought {ingredient}! ✨ You can now make <strong>{makeableCount}</strong> drinks.</span>
+        );
     };
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

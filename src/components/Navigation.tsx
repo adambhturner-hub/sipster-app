@@ -25,14 +25,12 @@ export default function Navigation() {
 
                     {/* Nav Links */}
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
-                        <Link href="/my-bar" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300">My Bar</Link>
-                        <Link href="/menu" className="text-gray-300 xl:text-lg hover:text-[var(--primary)] transition-all duration-300">Recipes</Link>
-                        <Link href="/menus" className="text-gray-300 xl:text-lg hover:text-[var(--primary)] transition-all duration-300">Parties</Link>
-                        <Link href="/discover" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Discover 🌍</Link>
-                        <Link href="/journal" className="text-gray-300 xl:text-lg hover:text-[var(--secondary)] transition-all duration-300 flex items-center gap-1">Journal 📓</Link>
-                        <Link href="/chat" className="text-gray-300 xl:text-lg hover:text-[var(--accent)] transition-all duration-300 flex items-center gap-1">Chat 🍸</Link>
-                        <Link href="/create" className="text-[var(--primary)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1">Create ✨</Link>
-                        <Link href="/party" className="text-[var(--secondary)] font-bold xl:text-lg hover:text-white hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1">Party 🎉</Link>
+                        <Link href="/my-bar" className="text-[var(--accent)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--accent)] transition-all duration-300 flex items-center gap-1.5">My Bar 🍾</Link>
+                        <Link href="/make" className="text-[var(--primary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1.5">Make 🍸</Link>
+                        <Link href="/journal" className="text-[var(--secondary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--secondary)] transition-all duration-300 flex items-center gap-1.5">Journal 📓</Link>
+                        <Link href="/create" className="font-bold xl:text-lg hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1.5">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Create</span> ✨
+                        </Link>
                     </nav>
 
                     {/* Auth Section & Theme (Desktop) */}
@@ -94,58 +92,30 @@ export default function Navigation() {
                         <Link
                             href="/my-bar"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-blue)] rounded-lg transition-colors border-b border-gray-800/50"
+                            className="block px-3 py-4 text-xl text-[var(--accent)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
                         >
-                            My Bar
+                            <span>My Bar</span> <span>🍾</span>
                         </Link>
                         <Link
-                            href="/menu"
+                            href="/make"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-purple)] rounded-lg transition-colors border-b border-gray-800/50"
+                            className="block px-3 py-4 text-xl text-[var(--primary)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
                         >
-                            Recipes
-                        </Link>
-                        <Link
-                            href="/menus"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-purple)] rounded-lg transition-colors border-b border-gray-800/50"
-                        >
-                            Parties
-                        </Link>
-                        <Link
-                            href="/discover"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-blue)] rounded-lg transition-colors border-b border-gray-800/50"
-                        >
-                            Discover 🌍
+                            <span>Make</span> <span>🍸</span>
                         </Link>
                         <Link
                             href="/journal"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-pink)] rounded-lg transition-colors border-b border-gray-800/50"
+                            className="block px-3 py-4 text-xl text-[var(--secondary)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
                         >
-                            Journal 📓
-                        </Link>
-                        <Link
-                            href="/chat"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-gray-300 font-semibold hover:bg-gray-900 hover:text-[var(--color-neon-green)] rounded-lg transition-colors border-b border-gray-800/50"
-                        >
-                            Chat 🍸
+                            <span>Journal</span> <span>📓</span>
                         </Link>
                         <Link
                             href="/create"
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-[var(--color-neon-purple)] font-bold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50"
+                            className="block px-3 py-4 text-xl font-bold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
                         >
-                            Create Drink ✨
-                        </Link>
-                        <Link
-                            href="/party"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl font-bold bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-transparent bg-clip-text hover:bg-gray-900 rounded-lg transition-colors border-b border-gray-800/50"
-                        >
-                            Party Planner 🎉
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Create Drink</span> <span>✨</span>
                         </Link>
 
                         {/* Mobile Auth */}

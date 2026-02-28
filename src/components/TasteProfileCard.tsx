@@ -135,11 +135,11 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] pointer-events-none" />
 
             <span className="text-5xl mb-4">🧠</span>
-            <h3 className="text-2xl font-bold text-white mb-2">AI Taste Profile</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">How do you sip?</h3>
             <p className="text-gray-400 max-w-lg mb-8">
                 {canAnalyze
-                    ? "Sipster has enough data to analyze your palate! Let AI determine your mixology alter-ego based on your saved drinks."
-                    : `Sipster needs a bit more data to analyze your palate. Try saving or rating at least ${3 - validDrinksCount} more drinks!`
+                    ? "Sipster has enough data to discover your bartender personality! Let AI determine your mixology alter-ego based on your saved drinks."
+                    : `Sipster needs a bit more data to discover your bartender personality. Try saving or rating at least ${3 - validDrinksCount} more drinks!`
                 }
             </p>
 
@@ -147,8 +147,8 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
                 onClick={runAnalysis}
                 disabled={isAnalyzing || !canAnalyze}
                 className={`flex items-center gap-2 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 ${canAnalyze
-                        ? 'bg-[var(--secondary)] text-white hover:scale-105 shadow-[0_0_20px_var(--primary-glow)] hover:shadow-[0_0_30px_var(--primary-glow)]'
-                        : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                    ? 'bg-[var(--secondary)] text-white hover:scale-105 shadow-[0_0_20px_var(--primary-glow)] hover:shadow-[0_0_30px_var(--primary-glow)]'
+                    : 'bg-gray-800 text-gray-600 cursor-not-allowed'
                     }`}
             >
                 {isAnalyzing ? (

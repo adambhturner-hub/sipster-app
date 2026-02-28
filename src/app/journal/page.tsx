@@ -29,7 +29,7 @@ interface InteractionRecord {
 }
 
 export default function JournalPage() {
-    const { user, loading: authLoading, signInWithGoogle } = useAuth();
+    const { user, loading: authLoading, signInWithGoogle, badges } = useAuth();
     const [interactions, setInteractions] = useState<InteractionRecord[]>([]);
     const [myBar, setMyBar] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +70,14 @@ export default function JournalPage() {
 
                 fetched.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
                 setInteractions(fetched);
+
+                // Run Gamification Background Check
+                fetch('/api/evaluate-badges', {
+                    method: 'POST',
+                    body: JSON.stringify({ uid: user.uid }),
+                    headers: { 'Content-Type': 'application/json' }
+                }).catch(err => console.error("Badge eval failed:", err));
+
             } catch (e) {
                 console.error("Error fetching interactions:", e);
             } finally {
@@ -141,6 +149,17 @@ export default function JournalPage() {
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
                     Tasting <span className="text-glow-secondary text-[var(--secondary)]">Journal</span>
                 </h1>
+
+                {badges && badges.length > 0 && (
+                    <div className="flex gap-2 flex-wrap justify-center mb-6">
+                        {badges.map((badge, i) => (
+                            <span key={i} className="px-3 py-1 bg-black/50 border border-yellow-500/30 text-yellow-500 text-xs font-bold rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(234,179,8,0.2)] hover:scale-105 transition-transform cursor-default">
+                                🎖️ {badge}
+                            </span>
+                        ))}
+                    </div>
+                )}
+
                 <p className="text-gray-400 font-light max-w-2xl mx-auto">
                     Track your mixology journey, save your favorites, and log what you've tried.
                 </p>

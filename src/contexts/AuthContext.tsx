@@ -20,6 +20,7 @@ interface AuthContextType {
     myBar: string[];
     shoppingList: string[];
     tasteProfile: TasteProfile | null;
+    badges: string[];
     addToBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
 }
@@ -32,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
     myBar: [],
     shoppingList: [],
     tasteProfile: null,
+    badges: [],
     addToBar: async () => { },
     addToShoppingList: async () => { },
 });
@@ -44,6 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
+    const [badges, setBadges] = useState<string[]>([]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -108,6 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     setMyBar(docSnap.data().myBar || []);
                     setShoppingList(docSnap.data().shoppingList || []);
                     setTasteProfile(docSnap.data().tasteProfile || null);
+                    setBadges(docSnap.data().badges || []);
                 }
             });
             return () => unsubscribe();
@@ -162,6 +166,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             myBar,
             shoppingList,
             tasteProfile,
+            badges,
             addToBar,
             addToShoppingList
         }}>

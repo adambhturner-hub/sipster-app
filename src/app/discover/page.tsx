@@ -6,12 +6,14 @@ import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import CocktailCard from '@/components/CocktailCard';
 import { Cocktail } from '@/data/cocktails';
+import Link from 'next/link';
 
 interface PublicRecipe {
     id: string; // The cocktailId (either a classic name or a custom ID)
     cocktailData: Cocktail;
     createdAt: string;
     uid: string;
+    authorName?: string;
     averageRating?: number;
     ratingCount?: number;
 }
@@ -55,7 +57,8 @@ export default function DiscoverPage() {
                             id: data.cocktailId || docSnap.id, // Prefer the actual cocktailId if present
                             cocktailData: data.cocktailData,
                             createdAt: data.createdAt,
-                            uid: data.uid
+                            uid: data.uid,
+                            authorName: data.authorName || 'Anonymous Mixologist'
                         });
                     }
                 });
@@ -177,6 +180,16 @@ export default function DiscoverPage() {
                         const makeable = drink.cocktailData.ingredients.every(ing => hasIngredient(ing.item));
                         return (
                             <div key={drink.id} className="relative group">
+                                <div className="absolute top-4 right-4 z-30" onClick={(e) => e.stopPropagation()}>
+                                    <Link href={`/creator/${drink.uid}`} className="bg-black/80 backdrop-blur-md border border-[var(--primary)]/50 rounded-full px-3 py-1 flex items-center gap-2 hover:bg-[var(--primary)]/20 hover:scale-105 transition-all shadow-[0_0_10px_rgba(176,38,255,0.2)]">
+                                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-[10px] font-bold text-white shadow-inner">
+                                            {drink.authorName?.charAt(0).toUpperCase() || '?'}
+                                        </div>
+                                        <span className="text-white text-xs font-medium tracking-wide">
+                                            {drink.authorName || 'Creator'}
+                                        </span>
+                                    </Link>
+                                </div>
                                 <CocktailCard
                                     cocktail={drink.cocktailData}
                                     makeable={makeable}

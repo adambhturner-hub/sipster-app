@@ -26,6 +26,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
 
     const [isSaving, setIsSaving] = useState(false);
     const [docId, setDocId] = useState<string | null>(null);
+    const [isPublic, setIsPublic] = useState(false);
 
     useEffect(() => {
         if (!user || loading) return;
@@ -44,6 +45,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                         isWantToTry: !!data.isWantToTry,
                         isTried: !!data.isTried
                     });
+                    setIsPublic(!!data.isPublic);
                 }
                 return;
             }
@@ -148,6 +150,41 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
         }
     };
 
+    const togglePublish = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!user || !docId) {
+            toast.error("You must save the drink first to publish it!");
+            return;
+        }
+
+        setIsSaving(true);
+        try {
+            const newIsPublic = !isPublic;
+            const favRef = doc(db, 'favorites', docId);
+            const { setDoc } = await import('firebase/firestore');
+
+            const publishPayload: any = { isPublic: newIsPublic };
+            if (newIsPublic) {
+                publishPayload.authorName = user.displayName || 'Anonymous Mixologist';
+            }
+
+            await setDoc(favRef, publishPayload, { merge: true });
+            setIsPublic(newIsPublic);
+            if (newIsPublic) {
+                toast.success(`Published ${cocktailName} to the Community! 🌍`);
+            } else {
+                toast("Removed from the Community.", { icon: '🔒' });
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update publish settings.");
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     return (
         <div className="flex bg-gray-900/50 rounded-full border border-gray-800 p-1 gap-1 shadow-inner backdrop-blur-sm">
             {/* Favorite */}
@@ -195,6 +232,23 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                     {interactions.isTried ? '✔️' : '✔️'}
                 </span>
             </button>
+
+            {/* Publish (Custom Drinks Only) */}
+            {type === 'custom_full' && (
+                <button
+                    onClick={togglePublish}
+                    disabled={isSaving || loading || !docId}
+                    title="Publish to Community"
+                    className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm h-8 px-3 ${isPublic
+                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]'
+                        : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
+                        }`}
+                >
+                    <span className="flex items-center gap-1.5">
+                        {isPublic ? '🌍' : '🔒'}
+                    </span>
+                </button>
+            )}
         </div>
     );
 }

@@ -326,6 +326,7 @@ export default function CreateCocktailPage() {
 
             const favoriteData = {
                 uid: user.uid,
+                authorName: user.displayName || 'Anonymous Mixologist',
                 type: 'custom_full',
                 cocktailData,
                 isPublic,
@@ -334,8 +335,9 @@ export default function CreateCocktailPage() {
 
             await setDoc(doc(db, 'favorites', favoriteId), favoriteData);
             toast.success("Cocktail Perfectly Modeled & Saved! 🍸");
-            router.push('/favorites');
-        } catch (error) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            router.push('/journal');
+        } catch (error: any) {
             console.error("Error saving custom cocktail:", error);
             toast.error("Failed to save cocktail.");
             setIsSubmitting(false);
