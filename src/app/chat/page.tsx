@@ -1,28 +1,56 @@
 'use client';
 
-import { useChat } from '@ai-sdk/react';
-import { useRef, useEffect, useState, ChangeEvent } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { useAuth } from '@/contexts/AuthContext';
-import { doc, onSnapshot, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import toast from 'react-hot-toast';
-import VoiceInputButton from '@/components/VoiceInputButton';
+import remarkGfm from 'remark-gfm';
 import CocktailCard from '@/components/CocktailCard';
-import Link from 'next/link';
+import VoiceInputButton from '@/components/VoiceInputButton';
+import { useGlobalChat } from '@/contexts/ChatContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export default function Chat() {
-    const { user, loading: authLoading } = useAuth();
-    const [myBar, setMyBar] = useState<string[]>([]);
-    const [messagesLoaded, setMessagesLoaded] = useState(false);
-    const [generatedImages, setGeneratedImages] = useState<Record<string, string>>({});
-    const [isGeneratingImg, setIsGeneratingImg] = useState<string | null>(null);
+    const {
+        messages,
+        input,
+        handleInputChange,
+        handleSubmit,
+        isLoading,
+        clearChat,
+        handleFavorite,
+        handleGenerateImage,
+        handleTranscription,
+        generatedImages,
+        isGeneratingImg,
+        setIsChatOpen
+    } = useGlobalChat();
 
-    const { messages, setMessages, sendMessage, status } = useChat();
-    const [input, setInput] = useState('');
+    const { user } = useAuth();
+    const [myBar, setMyBar] = useState<string[]>([]);
+
+    // The global chat handles intercepting deep-links and auto-opening itself.
+    // If a user navigates to the *dedicated* /chat page, we want to ensure the 
+    // floating widget gets out of the way so they aren't double-rendering the UI.
+    useEffect(() => {
+        setIsChatOpen(false);
+    }, [setIsChatOpen]);
+
+    // We still need local myBar state strictly for the CocktailCard 'makeable' calculation 
+    // within this local instance of the chat renderer
+    useEffect(() => {
+        if (user) {
+            getDoc(doc(db, 'users', user.uid)).then(d => setMyBar(d.data()?.myBar || []));
+        } else {
+            const saved = localStorage.getItem('sipster-my-bar');
+            if (saved) {
+                try { setMyBar(JSON.parse(saved)); } catch (e) { }
+            }
+        }
+    }, [user]);
+
     const [placeholderIndex, setPlaceholderIndex] = useState(0);
     const messagesEndRef = useRef<HTMLDivElement>(null);
-    const isLoading = status === 'submitted' || status === 'streaming';
 
     const placeholders = [
         "Say 'I have rum, lime, and ginger...'",
@@ -39,241 +67,7 @@ export default function Chat() {
         return () => clearInterval(interval);
     }, []);
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!input.trim() || isLoading) return;
-        sendMessage({ text: input, data: { myBar } } as any);
-        setInput('');
-    };
-
-    // Fetch My Bar and Chat History
-    useEffect(() => {
-        if (authLoading) return;
-
-        if (user) {
-            // Firestore myBar real-time updates
-            const userRef = doc(db, 'users', user.uid);
-            const unsubUser = onSnapshot(userRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    setMyBar(docSnap.data().myBar || []);
-                }
-            });
-
-            // Firestore chat history
-            const threadRef = doc(db, 'chat_threads', user.uid);
-            getDoc(threadRef).then((docSnap) => {
-                try {
-                    if (docSnap.exists() && Array.isArray(docSnap.data().messages)) {
-                        const safeMessages = docSnap.data().messages.map((msg: any) => {
-                            const newMsg: any = {
-                                id: msg.id || Math.random().toString(36).slice(2),
-                                role: msg.role || 'user',
-                                content: typeof msg.content === 'string' ? msg.content : '',
-                            };
-                            if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
-                            if (msg.createdAt) newMsg.createdAt = msg.createdAt;
-                            return newMsg;
-                        });
-                        setMessages(safeMessages);
-
-                        if (docSnap.data().generatedImages) {
-                            setGeneratedImages(docSnap.data().generatedImages);
-                        }
-                    } else {
-                        // Check localStorage to migrate existing chat
-                        const localChat = localStorage.getItem('sipster-chat-history');
-                        if (localChat) {
-                            try {
-                                const parsed = JSON.parse(localChat);
-                                if (Array.isArray(parsed)) {
-                                    const safeMessages = parsed.map((msg: any) => {
-                                        const newMsg: any = {
-                                            id: msg.id || Math.random().toString(36).slice(2),
-                                            role: msg.role || 'user',
-                                            content: typeof msg.content === 'string' ? msg.content : '',
-                                        };
-                                        if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
-                                        if (msg.createdAt) newMsg.createdAt = msg.createdAt;
-                                        return newMsg;
-                                    });
-                                    setMessages(safeMessages);
-
-                                    // Strip undefined before sending to Firebase
-                                    const cleanedMessages = safeMessages.map(msg => Object.fromEntries(Object.entries(msg).filter(([_, v]) => v !== undefined)));
-                                    setDoc(threadRef, { messages: cleanedMessages, updatedAt: new Date().toISOString() }, { merge: true });
-                                    localStorage.removeItem('sipster-chat-history');
-                                }
-                            } catch (e) { console.error('Error parsing local chat', e); }
-                        }
-                    }
-                } catch (err) {
-                    console.error('Error importing firestore chat', err);
-                }
-                setMessagesLoaded(true);
-            });
-
-            return () => unsubUser();
-        } else {
-            // LocalStorage myBar
-            const savedBar = localStorage.getItem('sipster-my-bar');
-            if (savedBar) {
-                try { setMyBar(JSON.parse(savedBar)); } catch (e) { }
-            }
-
-            // LocalStorage chat history
-            const savedChat = localStorage.getItem('sipster-chat-history');
-            if (savedChat) {
-                try {
-                    const parsed = JSON.parse(savedChat);
-                    if (Array.isArray(parsed)) {
-                        setMessages(parsed.map((msg: any) => {
-                            const newMsg: any = {
-                                id: msg.id || Math.random().toString(36).slice(2),
-                                role: msg.role || 'user',
-                                content: typeof msg.content === 'string' ? msg.content : '',
-                            };
-                            if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
-                            if (msg.createdAt) newMsg.createdAt = msg.createdAt;
-                            return newMsg;
-                        }));
-                    }
-                } catch (e) { }
-            }
-            setMessagesLoaded(true);
-        }
-    }, [user, authLoading, setMessages]);
-
-    // Save chat history automatically on new messages
-    useEffect(() => {
-        if (!messagesLoaded || messages.length === 0) return;
-
-        if (user) {
-            const threadRef = doc(db, 'chat_threads', user.uid);
-            // Firebase STRICTLY throws synchronous errors if any nested keys evaluate to explicit 'undefined'
-            const cleanedMessages = messages.map(msg => Object.fromEntries(Object.entries(msg).filter(([_, v]) => v !== undefined)));
-            try {
-                setDoc(threadRef, { messages: cleanedMessages, generatedImages, updatedAt: new Date().toISOString() }, { merge: true });
-            } catch (err) {
-                console.error("Failed to sync chat history to firebase:", err);
-            }
-        } else {
-            localStorage.setItem('sipster-chat-history', JSON.stringify(messages));
-            // For not-logged-in users, we could sync images to localStorage too, but let's encourage them to login
-            localStorage.setItem('sipster-generated-images', JSON.stringify(generatedImages));
-        }
-    }, [messages, generatedImages, user, messagesLoaded]);
-
-    const handleGenerateImage = async (messageId: string, promptText: string) => {
-        setIsGeneratingImg(messageId);
-        try {
-            const res = await fetch('/api/generate-image', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: promptText })
-            });
-            if (res.ok) {
-                const data = await res.json();
-                setGeneratedImages(prev => ({ ...prev, [messageId]: data.imageUrl }));
-            }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setIsGeneratingImg(null);
-        }
-    };
-
-    const handleFavorite = async (messageId: string, content: string) => {
-        if (!user) {
-            toast.error("You must be logged in to save favorites!");
-            return;
-        }
-
-        const userLocation = window.prompt("Where are you inventing this drink? (Optional)", "My Home Bar");
-
-        const toastId = toast.loading("Synthesizing recipe...");
-        try {
-            // First, call our omni-importer to parse the markdown into a perfect Cocktail object
-            const parseRes = await fetch('/api/import-recipe', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type: 'text',
-                    payload: content,
-                    sourceOverride: 'Sipster',
-                    locationOverride: userLocation ? userLocation : undefined
-                })
-            });
-
-            if (!parseRes.ok) {
-                throw new Error("Recipe parsing failed");
-            }
-            const customCocktailData = await parseRes.json();
-
-            // Add ID for the Cocktail schema
-            customCocktailData.id = Math.random().toString(36).slice(2);
-
-            // If the user generated an image during chat, use that instead of relying solely on the AI emoji
-            if (generatedImages[messageId]) {
-                customCocktailData.imageUrl = generatedImages[messageId];
-            }
-
-            // Strip any explicit 'undefined' keys hallucinated by the LLM to prevent Firebase Sync Exception
-            const safeCocktailData = JSON.parse(JSON.stringify(customCocktailData));
-
-            const isPublic = window.confirm("Would you like to publish this creation to the public Community Feed?");
-
-            const favRef = collection(db, 'favorites');
-            const payload: any = {
-                uid: user.uid,
-                type: 'custom_full',
-                messageId: messageId,
-                cocktailData: safeCocktailData,
-                isPublic: isPublic,
-                createdAt: new Date().toISOString()
-            };
-
-            if (isPublic) {
-                payload.authorName = user.displayName || 'Anonymous Mixologist';
-            }
-
-            const docRef = await addDoc(favRef, payload);
-            toast.success(
-                (t) => (
-                    <span className="flex items-center gap-1">
-                        Recipe transformed! <Link href={`/recipe/${docRef.id}`} onClick={() => toast.dismiss(t.id)} className="underline font-bold text-white hover:text-[var(--primary)] ml-1">View Info ❤️</Link>
-                    </span>
-                ),
-                { id: toastId, duration: 8000 }
-            );
-        } catch (e) {
-            console.error(e);
-            toast.error("Failed to save full recipe.", { id: toastId });
-        }
-    };
-
-    const clearChat = async () => {
-        if (!confirm('Are you sure you want to clear your chat history?')) return;
-        setMessages([]);
-        setGeneratedImages({});
-        if (user) {
-            const threadRef = doc(db, 'chat_threads', user.uid);
-            await setDoc(threadRef, { messages: [], generatedImages: {}, updatedAt: new Date().toISOString() }, { merge: true });
-        } else {
-            localStorage.removeItem('sipster-chat-history');
-            localStorage.removeItem('sipster-generated-images');
-        }
-    };
-
-    const handleTranscription = (transcript: string) => {
-        // Append transcribed text to the current input, adding a space if needed
-        const currentInput = input.trim();
-        const separator = currentInput.length > 0 ? ' ' : '';
-        handleInputChange({ target: { value: currentInput + separator + transcript } } as any);
-    };
-
-    // Auto-scroll to the bottom of the chat when new messages appear
+    // Auto-scroll to the bottom of the chat
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
@@ -322,18 +116,17 @@ export default function Chat() {
                                     {m.role === 'user' ? 'You' : 'Sipster'}
                                 </div>
                                 <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
-                                    <ReactMarkdown>
-                                        {Array.isArray(m.parts) ? m.parts.map((p) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ')}
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                        {Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ')}
                                     </ReactMarkdown>
                                 </div>
                                 {m.role === 'assistant' && (
                                     <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
 
-                                        {Array.isArray(m.parts) && m.parts.map((part: any, i) => {
+                                        {Array.isArray(m.parts) && m.parts.map((part: any, i: number) => {
                                             const isTool = part.type === 'tool-invocation' || part.type?.startsWith('tool-') || part.type === 'dynamic-tool';
                                             if (!isTool) return null;
 
-                                            // Fallbacks for standardizing Vercel AI SDK cross-version shape differences
                                             const typeName = part.type?.startsWith('tool-') && part.type !== 'tool-invocation' ? part.type.replace('tool-', '') : undefined;
                                             const toolName = part.toolName || part.toolInvocation?.toolName || typeName || part.toolInvocationId;
                                             const result = part.result !== undefined ? part.result : part.output;
@@ -365,18 +158,17 @@ export default function Chat() {
                                                     );
                                                     break;
                                                 case 'offerRecipeChoices':
-                                                    // Ensure the button states don't re-appear on scroll if already handled, though we'll just keep them alive for simplicity for now
                                                     content = result ? (
                                                         <div key={i} className="mt-4 flex flex-col gap-4 max-w-sm w-full bg-black/40 border border-[var(--primary)]/30 p-4 rounded-xl shadow-[0_0_15px_var(--primary-glow)]">
                                                             <p className="text-sm font-medium text-white italic">{result.reason}</p>
                                                             <div className="flex flex-col gap-2 pointer-events-auto">
                                                                 <button
                                                                     onClick={() => {
-                                                                        if (result.inSipsterDatabase) {
-                                                                            sendMessage({ text: `Give me the classic ${result.closestClassicName}`, data: { myBar } } as any);
-                                                                        } else {
-                                                                            sendMessage({ text: `Generate a dynamic interactive CocktailCard for the classic ${result.closestClassicName}`, data: { myBar } } as any);
-                                                                        }
+                                                                        // The global handleSubmit will take standard events, but we can't easily fake one.
+                                                                        // The Global context DOES NOT export 'sendMessage' directly for custom injection.
+                                                                        // To fix this without re-writing Context, we'll manually set input and submit.
+                                                                        handleInputChange({ target: { value: `Give me the classic ${result.closestClassicName}` } } as any);
+                                                                        setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
                                                                     }}
                                                                     className="w-full py-3 px-4 rounded-lg font-bold text-white bg-gradient-to-r from-[var(--primary)]/40 to-[var(--secondary)]/40 hover:from-[var(--primary)]/60 hover:to-[var(--secondary)]/60 border border-[var(--primary)]/50 transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
                                                                 >
@@ -384,7 +176,10 @@ export default function Chat() {
                                                                     <span className="text-xl">➔</span>
                                                                 </button>
                                                                 <button
-                                                                    onClick={() => sendMessage({ text: `Nah, I want a brand new custom build using those ingredients.`, data: { myBar } } as any)}
+                                                                    onClick={() => {
+                                                                        handleInputChange({ target: { value: `Nah, I want a brand new custom build using those ingredients.` } } as any);
+                                                                        setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                                                    }}
                                                                     className="w-full py-3 px-4 rounded-lg font-bold text-[var(--accent)] bg-black/60 hover:bg-black/80 border border-[var(--accent)]/30 hover:border-[var(--accent)] transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
                                                                 >
                                                                     <span>✨ Custom Build</span>
@@ -457,7 +252,7 @@ export default function Chat() {
                                         {!m.parts?.some((p: any) => p.toolName === 'suggestClassicCocktail' || p.toolInvocation?.toolName === 'suggestClassicCocktail' || p.toolInvocationId === 'suggestClassicCocktail') && (
                                             <button
                                                 onClick={() => {
-                                                    const textContent = Array.isArray(m.parts) ? m.parts.map((p, i) => (p.type === 'text' ? p.text : '')).join('') : (typeof (m as any).content === 'string' ? (m as any).content : ' ');
+                                                    const textContent = Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ');
                                                     handleFavorite(m.id, textContent);
                                                 }}
                                                 className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
@@ -493,8 +288,9 @@ export default function Chat() {
                         className="w-full bg-black/50 border border-gray-700 text-white rounded-full py-4 pl-6 pr-14 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-inner disabled:opacity-50"
                     />
                     <button
+                        id="chat-submit-btn"
                         type="submit"
-                        disabled={isLoading || !input.trim()}
+                        disabled={isLoading || !input?.trim()}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-[var(--accent)] text-black font-bold hover:scale-110 transition-transform disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_10px_var(--primary-glow)]"
                         title="Send Message"
                     >

@@ -128,9 +128,9 @@ export default function MenuPage() {
                 </p>
 
                 {/* Actions Row: Search & Sort */}
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 z-30 relative px-4 text-left w-full max-w-4xl mx-auto">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 z-30 relative text-left w-full max-w-xl mx-auto">
                     {/* Text Search Bar */}
-                    <div className="relative w-full group flex-grow max-w-sm">
+                    <div className="relative w-full group flex-grow">
                         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-gray-500 group-focus-within:text-[var(--primary)] transition-colors">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />

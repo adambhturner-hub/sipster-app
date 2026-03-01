@@ -7,12 +7,15 @@ import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/AuthContext';
 import CocktailCard from '@/components/CocktailCard';
 import { Cocktail } from '@/data/cocktails';
+import { BOOZIVERSITY_LESSONS } from '@/data/booziversity';
 
 interface CreatorProfile {
     uid: string;
     displayName: string;
     badges: string[];
     createdAt: string;
+    booziversityCredits: Record<string, number>;
+    tierTitle: string | null;
 }
 
 interface PublicRecipe {
@@ -40,20 +43,66 @@ export default function CreatorProfilePage() {
             try {
                 // 1. Fetch User Profile
                 const userDoc = await getDoc(doc(db, 'users', creatorUid));
+                let progressMap: Record<string, boolean> = {};
+                const progressDoc = await getDoc(doc(db, 'booziversity_progress', creatorUid));
+                if (progressDoc.exists()) {
+                    progressMap = progressDoc.data() as Record<string, boolean>;
+                }
+
+                const credits: Record<string, number> = {
+                    'Foundations': 0,
+                    'Spirit Journeys': 0,
+                    'Era & Culture': 0,
+                    'Technique School': 0
+                };
+                const totalLessons: Record<string, number> = {
+                    'Foundations': 0,
+                    'Spirit Journeys': 0,
+                    'Era & Culture': 0,
+                    'Technique School': 0
+                };
+
+                BOOZIVERSITY_LESSONS.forEach(l => {
+                    totalLessons[l.pillar] = (totalLessons[l.pillar] || 0) + 1;
+                    if (progressMap[l.id]) credits[l.pillar] = (credits[l.pillar] || 0) + 1;
+                });
+
+                const totalCredits = Object.values(credits).reduce((sum, c) => sum + c, 0);
+                const totalPossible = Object.values(totalLessons).reduce((sum, c) => sum + c, 0);
+
+                let tierTitle: string | null = null;
+                if (totalCredits === totalPossible && totalPossible > 0) {
+                    tierTitle = "Booziversity Elite";
+                } else if (credits['Foundations'] === totalLessons['Foundations'] && totalLessons['Foundations'] > 0) {
+                    tierTitle = "Foundations Graduate";
+                } else if (credits['Spirit Journeys'] === totalLessons['Spirit Journeys'] && totalLessons['Spirit Journeys'] > 0) {
+                    tierTitle = "Spirits Graduate";
+                } else if (credits['Technique School'] === totalLessons['Technique School'] && totalLessons['Technique School'] > 0) {
+                    tierTitle = "Technique Graduate";
+                } else if (credits['Foundations'] >= 5) {
+                    tierTitle = "Structure Student";
+                } else if (totalCredits >= 1) {
+                    tierTitle = "Academy Enrollee";
+                }
+
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
                     setCreator({
                         uid: creatorUid,
                         displayName: userData.displayName || 'Anonymous Mixologist',
                         badges: userData.badges || [],
-                        createdAt: userData.createdAt?.toDate?.()?.toISOString() || new Date().toISOString()
+                        createdAt: userData.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+                        booziversityCredits: credits,
+                        tierTitle
                     });
                 } else {
                     setCreator({
                         uid: creatorUid,
                         displayName: 'Anonymous Mixologist',
                         badges: [],
-                        createdAt: new Date().toISOString()
+                        createdAt: new Date().toISOString(),
+                        booziversityCredits: credits,
+                        tierTitle
                     });
                 }
 
@@ -152,9 +201,32 @@ export default function CreatorProfilePage() {
                         {creator?.displayName || 'Anonymous Mixologist'}
                     </h1>
 
+                    {creator?.tierTitle && (
+                        <div className="mb-4">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-[var(--primary)]/10 border border-[var(--primary)]/30 text-[var(--primary)] text-sm font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]">
+                                {creator.tierTitle}
+                            </span>
+                        </div>
+                    )}
+
                     <p className="text-gray-400 font-mono text-xs uppercase tracking-widest mb-6">
                         {publicDrinks.length} Published Recipes
                     </p>
+
+                    {/* XP Credits Summary */}
+                    {creator && Object.values(creator.booziversityCredits).some(v => v > 0) && (
+                        <div className="flex flex-col items-center gap-1.5 mt-2 mb-6 bg-black/40 border border-white/5 px-6 py-4 rounded-2xl w-full max-w-sm mx-auto">
+                            <span className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-1">Academy Credits</span>
+                            {Object.entries(creator.booziversityCredits)
+                                .filter(([_, count]) => count > 0)
+                                .map(([pillar, count]) => (
+                                    <div key={pillar} className="w-full flex justify-between items-center text-sm">
+                                        <span className="text-gray-300 font-medium">{pillar}</span>
+                                        <span className="text-emerald-400 font-mono font-bold">{count} {count === 1 ? 'Credit' : 'Credits'}</span>
+                                    </div>
+                                ))}
+                        </div>
+                    )}
 
                     {/* Badges Display (Ready for Phase 47) */}
                     {creator?.badges && creator.badges.length > 0 && (

@@ -25,6 +25,7 @@ export default function Navigation() {
 
                     {/* Nav Links */}
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
+                        <Link href="/booziversity" className="text-[var(--accent)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--accent)] transition-all duration-300 flex items-center gap-1.5">Academy 🎓</Link>
                         <Link href="/my-bar" className="text-[var(--accent)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--accent)] transition-all duration-300 flex items-center gap-1.5">My Bar 🍾</Link>
                         <Link href="/make" className="text-[var(--primary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1.5">Make 🍸</Link>
                         <Link href="/journal" className="text-[var(--secondary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--secondary)] transition-all duration-300 flex items-center gap-1.5">Journal 📓</Link>
@@ -47,13 +48,15 @@ export default function Navigation() {
                         )}
                         {!loading && user && (
                             <div className="flex items-center space-x-3 bg-black/40 border border-white/10 rounded-full pl-1 pr-3 py-1">
-                                {user.photoURL ? (
-                                    <Image src={user.photoURL} alt="User avatar" width={32} height={32} className="rounded-full shadow-[0_0_10px_var(--primary-glow)]" />
-                                ) : (
-                                    <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-xs">
-                                        {user.displayName?.charAt(0) || 'U'}
-                                    </div>
-                                )}
+                                <Link href={`/creator/${user.uid}`}>
+                                    {user.photoURL ? (
+                                        <Image src={user.photoURL} alt="User avatar" width={32} height={32} className="rounded-full shadow-[0_0_10px_var(--primary-glow)] hover:scale-110 transition-transform" />
+                                    ) : (
+                                        <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-xs hover:scale-110 transition-transform">
+                                            {user.displayName?.charAt(0) || 'U'}
+                                        </div>
+                                    )}
+                                </Link>
                                 <button
                                     onClick={logout}
                                     className="text-xs text-gray-400 hover:text-white transition-colors duration-200"
@@ -89,6 +92,13 @@ export default function Navigation() {
             {isMobileMenuOpen && (
                 <div className="md:hidden absolute top-16 left-0 w-full bg-gray-950 border-b border-gray-800 shadow-2xl z-40">
                     <div className="px-4 pt-2 pb-6 flex flex-col space-y-4">
+                        <Link
+                            href="/booziversity"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block px-3 py-4 text-xl text-[var(--accent)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
+                        >
+                            <span>Academy</span> <span>🎓</span>
+                        </Link>
                         <Link
                             href="/my-bar"
                             onClick={() => setIsMobileMenuOpen(false)}
