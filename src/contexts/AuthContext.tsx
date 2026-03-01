@@ -24,6 +24,8 @@ interface AuthContextType {
     shoppingList: string[];
     tasteProfile: TasteProfile | null;
     badges: string[];
+    hasCompletedOnboarding: boolean;
+    completeOnboarding: () => Promise<void>;
     addToBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
 }
@@ -39,6 +41,8 @@ const AuthContext = createContext<AuthContextType>({
     shoppingList: [],
     tasteProfile: null,
     badges: [],
+    hasCompletedOnboarding: true, // Default true to prevent flickering before load
+    completeOnboarding: async () => { },
     addToBar: async () => { },
     addToShoppingList: async () => { },
 });
@@ -52,6 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
     const [badges, setBadges] = useState<string[]>([]);
+    const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(true);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     useEffect(() => {
@@ -74,8 +79,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             displayName: currentUser.displayName,
                             createdAt: serverTimestamp(),
                             myBar: localBar,
-                            shoppingList: []
+                            shoppingList: [],
+                            hasCompletedOnboarding: false
                         });
+
+                        setHasCompletedOnboarding(false);
 
                         if (localBar.length > 0) {
                             localStorage.removeItem('sipster-my-bar'); // Clear local storage after successful migration
@@ -118,6 +126,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     setShoppingList(docSnap.data().shoppingList || []);
                     setTasteProfile(docSnap.data().tasteProfile || null);
                     setBadges(docSnap.data().badges || []);
+                    // Assume true if the field doesn't exist to not annoy old users, unless explicitly false
+                    setHasCompletedOnboarding(docSnap.data().hasCompletedOnboarding !== false);
                 }
             });
             return () => unsubscribe();
@@ -143,6 +153,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const newList = [...shoppingList, item];
         setShoppingList(newList);
         await setDoc(doc(db, 'users', user.uid), { shoppingList: newList }, { merge: true });
+    };
+
+    const completeOnboarding = async () => {
+        if (!user) return;
+        setHasCompletedOnboarding(true);
+        await setDoc(doc(db, 'users', user.uid), { hasCompletedOnboarding: true }, { merge: true });
     };
 
     const signInWithGoogle = async () => {
@@ -193,6 +209,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             shoppingList,
             tasteProfile,
             badges,
+            hasCompletedOnboarding,
+            completeOnboarding,
             addToBar,
             addToShoppingList
         }}>

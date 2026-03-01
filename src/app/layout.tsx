@@ -6,6 +6,7 @@ import { MeasurementProvider } from '@/contexts/MeasurementContext';
 import { ChatProvider } from '@/contexts/ChatContext';
 import Navigation from '@/components/Navigation';
 import FloatingChat from '@/components/FloatingChat';
+import OnboardingWizard from '@/components/OnboardingWizard';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
@@ -70,6 +71,7 @@ export default function RootLayout({
                 </footer>
 
                 <FloatingChat />
+                <OnboardingWizard />
 
                 <Toaster
                   position="bottom-center"

@@ -4,7 +4,40 @@ import { z } from 'zod';
 
 export async function POST(req: Request) {
     try {
-        const { partialCocktail } = await req.json();
+        const body = await req.json();
+
+        // -------------------------------------------------------------
+        // NEW BRANCH: TASTE PROFILE GENERATION (ONBOARDING)
+        // -------------------------------------------------------------
+        if (body.type === 'taste_profile') {
+            const { q1, q2, q3 } = body;
+
+            const { object } = await generateObject({
+                model: openai('gpt-4o-mini'),
+                schema: z.object({
+                    nickname: z.string().describe("A fun, creative 2-4 word mixology alter-ego (e.g., 'The Smoky Botanist', 'Captain Tiki', 'The Bitter Minimalist')"),
+                    description: z.string().describe("A 2 sentence engaging description of their palate and what kinds of drinks they probably love based on their quiz answers."),
+                    topFlavors: z.array(z.string()).length(3).describe("Exactly 3 defining flavor notes (e.g., ['Sweet', 'Fruity', 'Tropical'] or ['Bitter', 'Herbaceous', 'Agave'])"),
+                }),
+                prompt: `
+                You are Sipster, a master AI mixologist. A new user just completed their onboarding palate quiz.
+                Generate their personalized Mixology Alter-Ego and Taste Profile based on these three abstract answers:
+                
+                1. How do you take your coffee?: "${q1}"
+                2. What's your ideal vacation vibe?: "${q2}"
+                3. What flavor ruins a drink for you?: "${q3}"
+
+                Analyze these vibes and deduce what kind of craft cocktails they would appreciate!
+                `
+            });
+
+            return Response.json(object);
+        }
+
+        // -------------------------------------------------------------
+        // EXISTING BRANCH: COCKTAIL METADATA (CREATOR STUDIO)
+        // -------------------------------------------------------------
+        const partialCocktail = body.partialCocktail;
 
         if (!partialCocktail || (!partialCocktail.name && !partialCocktail.ingredients)) {
             return new Response('Cocktail name or ingredients are required', { status: 400 });
