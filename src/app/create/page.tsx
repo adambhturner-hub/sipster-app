@@ -13,7 +13,7 @@ import {
 } from '@/data/cocktails';
 
 export default function CreateCocktailPage() {
-    const { user, loading: authLoading, signInWithGoogle } = useAuth();
+    const { user, loading: authLoading, openLoginModal } = useAuth();
     const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -355,7 +355,7 @@ export default function CreateCocktailPage() {
             <span className="text-6xl mb-6">🔒</span>
             <h2 className="text-3xl font-bold mb-4">Login Required</h2>
             <button
-                onClick={signInWithGoogle}
+                onClick={openLoginModal}
                 className="bg-[var(--primary)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_rgba(176,38,255,0.4)]"
             >
                 Log In with Google

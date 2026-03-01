@@ -29,7 +29,7 @@ interface InteractionRecord {
 }
 
 export default function JournalPage() {
-    const { user, loading: authLoading, signInWithGoogle, badges } = useAuth();
+    const { user, loading: authLoading, openLoginModal, badges } = useAuth();
     const [interactions, setInteractions] = useState<InteractionRecord[]>([]);
     const [myBar, setMyBar] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -123,7 +123,7 @@ export default function JournalPage() {
                 <h2 className="text-3xl font-bold mb-4">Login Required</h2>
                 <p className="text-gray-400 max-w-md mb-8">You need to log in to access your personal Tasting Journal.</p>
                 <button
-                    onClick={signInWithGoogle}
+                    onClick={openLoginModal}
                     className="bg-[var(--secondary)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_var(--primary-glow)]"
                 >
                     Log In with Google

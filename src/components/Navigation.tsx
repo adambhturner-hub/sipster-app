@@ -8,7 +8,7 @@ import Image from 'next/image';
 import ThemeSelector from '@/components/ThemeSelector';
 
 export default function Navigation() {
-    const { user, loading, signInWithGoogle, logout } = useAuth();
+    const { user, loading, openLoginModal, logout } = useAuth();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
@@ -40,7 +40,7 @@ export default function Navigation() {
 
                         {!loading && !user && (
                             <button
-                                onClick={signInWithGoogle}
+                                onClick={openLoginModal}
                                 className="text-sm font-semibold bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-full transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                             >
                                 Log In
@@ -134,11 +134,11 @@ export default function Navigation() {
                                 <button
                                     onClick={() => {
                                         setIsMobileMenuOpen(false);
-                                        signInWithGoogle();
+                                        openLoginModal();
                                     }}
                                     className="w-full text-center text-lg font-bold bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border border-[var(--color-neon-pink)] px-6 py-4 rounded-xl shadow-[0_0_15px_rgba(255,0,127,0.2)]"
                                 >
-                                    Log In with Google
+                                    Log In / Sign Up
                                 </button>
                             )}
                             {!loading && user && (

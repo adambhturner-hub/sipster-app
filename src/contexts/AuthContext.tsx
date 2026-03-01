@@ -1,9 +1,10 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { User, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendSignInLinkToEmail } from 'firebase/auth';
 import { auth, db } from '../lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import LoginModal from '@/components/LoginModal';
 
 export interface TasteProfile {
     nickname: string;
@@ -16,6 +17,8 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     signInWithGoogle: () => Promise<void>;
+    sendMagicLink: (email: string) => Promise<void>;
+    openLoginModal: () => void;
     logout: () => Promise<void>;
     myBar: string[];
     shoppingList: string[];
@@ -29,6 +32,8 @@ const AuthContext = createContext<AuthContextType>({
     user: null,
     loading: true,
     signInWithGoogle: async () => { },
+    sendMagicLink: async () => { },
+    openLoginModal: () => { },
     logout: async () => { },
     myBar: [],
     shoppingList: [],
@@ -47,6 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
     const [badges, setBadges] = useState<string[]>([]);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -149,6 +155,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
+    const sendMagicLink = async (email: string) => {
+        const actionCodeSettings = {
+            url: `${window.location.origin}/auth/verify`, // The dynamic URL they will land on
+            handleCodeInApp: true, // Necessary because we want to sign them in natively on the site
+        };
+
+        try {
+            await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+            // We must save their email to localStorage so the verification callback knows who it is if they click it on the same device
+            window.localStorage.setItem('emailForSignIn', email);
+        } catch (error) {
+            console.error("Error sending magic link", error);
+            throw error;
+        }
+    };
+
+    const openLoginModal = () => setIsLoginModalOpen(true);
+
     const logout = async () => {
         try {
             await signOut(auth);
@@ -162,6 +186,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             user,
             loading,
             signInWithGoogle,
+            sendMagicLink,
+            openLoginModal,
             logout,
             myBar,
             shoppingList,
@@ -171,6 +197,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             addToShoppingList
         }}>
             {children}
+            <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         </AuthContext.Provider>
     );
 };
