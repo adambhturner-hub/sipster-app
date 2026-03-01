@@ -65,20 +65,19 @@ export async function POST(req: NextRequest) {
             if (match) {
                 const embed = {
                     title: `🍸 ${match.name}`,
-                    description: match.description || match.tastingNotes?.join(', ') || "A Sipster classic.",
-                    url: `https://sipster.app/menu/${match.id}`,
+                    description: match.description || "A Sipster classic.",
+                    url: `https://sipster.app`,
                     color: 0x981C3D,
                     fields: [
                         {
                             name: "Ingredients",
-                            value: match.ingredients.map(i => `• ${i.amount} ${i.unit} ${i.item}`).join('\n')
+                            value: match.ingredients.map(i => `• ${i.amount} ${i.item}`).join('\n')
                         },
                         {
                             name: "Instructions",
                             value: match.instructions.map((step, idx) => `${idx + 1}. ${step}`).join('\n')
                         }
                     ],
-                    thumbnail: match.imageUrl ? { url: match.imageUrl } : undefined,
                     footer: { text: "Sipster | Bartender In Your Pocket" }
                 };
 
