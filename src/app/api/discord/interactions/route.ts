@@ -3,6 +3,7 @@ import nacl from 'tweetnacl';
 import { CLASSIC_COCKTAILS } from '@/data/cocktails';
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
+import { waitUntil } from '@vercel/functions';
 
 export const dynamic = 'force-dynamic';
 
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
                 const embed = {
                     title: `🍸 ${match.name}`,
                     description: match.description || "A Sipster classic.",
-                    url: `https://sipster.app`,
+                    url: `https://sipster-app.vercel.app/menu/${match.name.toLowerCase().replace(/\s+/g, '-')}`,
                     color: 0x981C3D,
                     fields: [
                         {
@@ -109,8 +110,8 @@ export async function POST(req: NextRequest) {
             const interactionToken = interaction.token;
 
             if (appId && interactionToken) {
-                // Background task to process AI response
-                processAIRequest(queryArg, appId, interactionToken).catch(console.error);
+                // Background task to process AI response without blocking the ACK
+                waitUntil(processAIRequest(queryArg, appId, interactionToken));
             }
 
             // Immediately ACK with "Thinking..." type 5 (DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE)
