@@ -64,6 +64,11 @@ export async function POST(req: NextRequest) {
             const match = CLASSIC_COCKTAILS.find(c => c.name.toLowerCase().includes(query));
 
             if (match) {
+                const ogUrl = new URL('https://sipster-app.vercel.app/api/og');
+                ogUrl.searchParams.set('title', match.name);
+                ogUrl.searchParams.set('subtitle', `${match.primarySpirit} • ${match.style}`);
+                ogUrl.searchParams.set('emoji', match.emoji || '🍸');
+
                 const embed = {
                     title: `🍸 ${match.name}`,
                     description: match.description || "A Sipster classic.",
@@ -79,6 +84,7 @@ export async function POST(req: NextRequest) {
                             value: match.instructions.map((step, idx) => `${idx + 1}. ${step}`).join('\n')
                         }
                     ],
+                    image: { url: ogUrl.toString() },
                     footer: { text: "Sipster | Bartender In Your Pocket" }
                 };
 

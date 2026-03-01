@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
+import CocktailCard from '@/components/CocktailCard';
 
 export default function FloatingChat() {
     const {
@@ -112,6 +113,26 @@ export default function FloatingChat() {
                                                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                                                     {Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ')}
                                                 </ReactMarkdown>
+
+                                                {/* Tool Invocations for Cocktail Cards */}
+                                                {Array.isArray(m.parts) && m.parts.map((part: any, i: number) => {
+                                                    const isTool = part.type === 'tool-invocation' || part.type?.startsWith('tool-') || part.type === 'dynamic-tool';
+                                                    if (!isTool) return null;
+
+                                                    const typeName = part.type?.startsWith('tool-') && part.type !== 'tool-invocation' ? part.type.replace('tool-', '') : undefined;
+                                                    const toolName = part.toolName || part.toolInvocation?.toolName || typeName || part.toolInvocationId;
+                                                    const result = part.result !== undefined ? part.result : part.output;
+
+                                                    if (toolName === 'suggestClassicCocktail' && result?.found) {
+                                                        return (
+                                                            <div key={i} className="mt-4 pointer-events-auto w-full max-w-sm">
+                                                                <CocktailCard cocktail={result.cocktail} makeable={false} hasIngredient={() => false} />
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return null;
+                                                })}
+
                                                 {generatedImages && generatedImages[m.id] && (
                                                     <div className="mt-2 text-center">
                                                         <img src={generatedImages[m.id]} alt="Generated Cocktail" className="w-full max-w-[200px] h-auto rounded-lg outline outline-1 outline-white/20 shadow-lg mx-auto" />
