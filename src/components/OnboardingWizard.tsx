@@ -3,23 +3,56 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { generateText } from 'ai';
-import { openai } from '@ai-sdk/openai';
-import { db } from '@/lib/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import Image from 'next/image';
+
+const AVATAR_OPTIONS = [
+    { id: 'martini-pink', icon: '🍸', bg: 'bg-pink-500/20', border: 'border-pink-500', shadow: 'shadow-[0_0_15px_rgba(236,72,153,0.5)]' },
+    { id: 'rocks-blue', icon: '🥃', bg: 'bg-blue-500/20', border: 'border-blue-500', shadow: 'shadow-[0_0_15px_rgba(59,130,246,0.5)]' },
+    { id: 'tiki-green', icon: '🗿', bg: 'bg-green-500/20', border: 'border-green-500', shadow: 'shadow-[0_0_15px_rgba(34,197,94,0.5)]' },
+    { id: 'wine-red', icon: '🍷', bg: 'bg-red-500/20', border: 'border-red-500', shadow: 'shadow-[0_0_15px_rgba(239,68,68,0.5)]' },
+    { id: 'champagne-gold', icon: '🥂', bg: 'bg-yellow-500/20', border: 'border-yellow-500', shadow: 'shadow-[0_0_15px_rgba(234,179,8,0.5)]' },
+    { id: 'beer-orange', icon: '🍺', bg: 'bg-orange-500/20', border: 'border-orange-500', shadow: 'shadow-[0_0_15px_rgba(249,115,22,0.5)]' },
+];
+
+const TUTORIAL_SLIDES = [
+    {
+        title: "The Smart Bar",
+        emoji: "🍾",
+        description: "Tell Sipster what bottles you own. We'll automatically unlock every cocktail you can build right now."
+    },
+    {
+        title: "Tasting Journal",
+        emoji: "📓",
+        description: "Rate drinks and leave notes. Over time, Sipster's AI will learn your palate and suggest the perfect drink."
+    },
+    {
+        title: "Creator Studio",
+        emoji: "✨",
+        description: "Invent your own signature cocktails, or paste a URL from any recipe site to instantly import it."
+    },
+    {
+        title: "Booziversity",
+        emoji: "🎓",
+        description: "Pass interactive mixology exams to earn Elite Badges that show up on your public profile."
+    }
+];
 
 export default function OnboardingWizard() {
-    const { user, loading, hasCompletedOnboarding, completeOnboarding, addToBar } = useAuth();
+    const { user, loading, hasCompletedOnboarding, updateUserProfile, completeOnboarding, addToBar } = useAuth();
+
+    // Core State
     const [step, setStep] = useState(1);
+    const [isSaving, setIsSaving] = useState(false);
 
-    // Step 2 State
+    // Step 1 State (Identity)
+    const [displayName, setDisplayName] = useState('');
+    const [selectedAvatar, setSelectedAvatar] = useState(AVATAR_OPTIONS[0]);
+
+    // Step 2 State (Tutorial)
+    const [tutorialIndex, setTutorialIndex] = useState(0);
+
+    // Step 3 State (Inventory)
     const [selectedSpirits, setSelectedSpirits] = useState<string[]>([]);
-
-    // Step 3 State
-    const [q1, setQ1] = useState('');
-    const [q2, setQ2] = useState('');
-    const [q3, setQ3] = useState('');
-    const [isGeneratingProfile, setIsGeneratingProfile] = useState(false);
 
     // Initial check to avoid rendering if not needed
     if (loading || !user || hasCompletedOnboarding) return null;
@@ -37,85 +70,163 @@ export default function OnboardingWizard() {
     };
 
     const handleFinishOnboarding = async () => {
-        setIsGeneratingProfile(true);
-
+        setIsSaving(true);
         try {
-            // 1. Save selected spirits to Bar
+            // 1. Save Identity
+            const finalName = displayName.trim() || 'Anonymous Mixologist';
+            await updateUserProfile(finalName, selectedAvatar.icon); // Saving the emoji as the photoURL for now
+
+            // 2. Save selected spirits to Bar
             for (const spirit of selectedSpirits) {
                 await addToBar(spirit);
-            }
-
-            // 2. Generate Taste Profile
-            const response = await fetch('/api/generate-metadata', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type: 'taste_profile',
-                    q1, q2, q3
-                })
-            });
-
-            if (response.ok) {
-                const tasteProfile = await response.json();
-                await setDoc(doc(db, 'users', user.uid), {
-                    tasteProfile: {
-                        ...tasteProfile,
-                        updatedAt: new Date().toISOString()
-                    }
-                }, { merge: true });
             }
 
             // 3. Mark Complete
             await completeOnboarding();
         } catch (error) {
             console.error("Failed onboarding completion:", error);
-            // Even if AI fails, let them in so they aren't stuck
-            await completeOnboarding();
+            await completeOnboarding(); // Let them through even if it fails
         } finally {
-            setIsGeneratingProfile(false);
+            setIsSaving(false);
         }
     };
 
     return (
         <div className="fixed inset-0 z-[999] bg-black/95 flex items-center justify-center p-4 sm:p-8 backdrop-blur-xl">
             <AnimatePresence mode="wait">
-                {/* STEP 1: WELCOME */}
+
+                {/* STEP 1: IDENTITY */}
                 {step === 1 && (
                     <motion.div
                         key="step1"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        className="max-w-xl text-center space-y-8"
+                        exit={{ opacity: 0, x: -50 }}
+                        className="w-full max-w-xl text-center"
                     >
-                        <div className="text-6xl drop-shadow-[0_0_15px_var(--primary-glow)]">🍸</div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold px-4">
+                        <h1 className="text-4xl md:text-5xl font-extrabold mb-8 px-4">
                             Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Sipster</span>
                         </h1>
-                        <p className="text-xl text-gray-400 font-light max-w-lg mx-auto leading-relaxed">
-                            Your personal AI bartender is ready. Let's build your bar and discover your taste profile.
-                        </p>
-                        <button
-                            onClick={() => setStep(2)}
-                            className="bg-white text-black font-bold text-lg px-12 py-4 rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] mt-8"
-                        >
-                            Let's Get Started
-                        </button>
+
+                        <div className="bg-white/5 border border-white/10 p-8 rounded-3xl space-y-8">
+                            <div className="space-y-3 text-left">
+                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">What should we call you?</label>
+                                <input
+                                    type="text"
+                                    value={displayName}
+                                    onChange={(e) => setDisplayName(e.target.value)}
+                                    placeholder="e.g. The Midnight Mixologist"
+                                    className="w-full bg-black/50 border border-white/20 rounded-xl px-5 py-4 text-xl text-white focus:outline-none focus:border-[var(--primary)] transition-colors placeholder:text-gray-600"
+                                />
+                            </div>
+
+                            <div className="space-y-4 text-left">
+                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wider">Choose your avatar</label>
+                                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                                    {AVATAR_OPTIONS.map((avatar) => (
+                                        <button
+                                            key={avatar.id}
+                                            onClick={() => setSelectedAvatar(avatar)}
+                                            className={`
+                                                aspect-square rounded-full flex items-center justify-center text-3xl transition-all border-2
+                                                ${selectedAvatar.id === avatar.id
+                                                    ? `${avatar.bg} ${avatar.border} ${avatar.shadow} scale-110`
+                                                    : 'bg-white/5 border-transparent opacity-50 hover:opacity-100 hover:scale-105'
+                                                }
+                                            `}
+                                        >
+                                            {avatar.icon}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8">
+                            <button
+                                onClick={() => setStep(2)}
+                                className="bg-[var(--primary)] text-white font-bold text-lg px-12 py-4 rounded-full hover:shadow-[0_0_30px_var(--primary-glow)] transition-all w-full sm:w-auto"
+                            >
+                                Continue →
+                            </button>
+                        </div>
                     </motion.div>
                 )}
 
-                {/* STEP 2: BUILD THE BAR */}
+                {/* STEP 2: EDUCATION TUTORIAL */}
                 {step === 2 && (
                     <motion.div
                         key="step2"
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -50 }}
-                        className="w-full max-w-4xl"
+                        className="w-full max-w-2xl text-center"
+                    >
+                        <h2 className="text-3xl font-bold mb-8">How it works</h2>
+
+                        <div className="bg-black/40 border border-white/10 rounded-3xl p-8 min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+                            {/* Ambient Glow */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[var(--accent)]/10 rounded-full blur-[80px]"></div>
+
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={tutorialIndex}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    className="relative z-10"
+                                >
+                                    <div className="text-6xl mb-6">{TUTORIAL_SLIDES[tutorialIndex].emoji}</div>
+                                    <h3 className="text-2xl font-bold text-[var(--accent)] mb-4">{TUTORIAL_SLIDES[tutorialIndex].title}</h3>
+                                    <p className="text-gray-300 text-lg leading-relaxed max-w-md mx-auto">
+                                        {TUTORIAL_SLIDES[tutorialIndex].description}
+                                    </p>
+                                </motion.div>
+                            </AnimatePresence>
+
+                            {/* Carousel Indicators */}
+                            <div className="absolute bottom-6 flex gap-2">
+                                {TUTORIAL_SLIDES.map((_, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={`h-2 rounded-full transition-all duration-500 ${idx === tutorialIndex ? 'w-8 bg-[var(--accent)]' : 'w-2 bg-white/20'}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mt-8 flex gap-4 justify-center">
+                            {tutorialIndex < TUTORIAL_SLIDES.length - 1 ? (
+                                <button
+                                    onClick={() => setTutorialIndex(prev => prev + 1)}
+                                    className="bg-white/10 text-white font-bold text-lg px-12 py-4 rounded-full hover:bg-white/20 transition-all w-full sm:w-auto"
+                                >
+                                    Next Feature
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => setStep(3)}
+                                    className="bg-[var(--accent)] text-white font-bold text-lg px-12 py-4 rounded-full hover:shadow-[0_0_30px_rgba(0,255,204,0.4)] transition-all w-full sm:w-auto"
+                                >
+                                    Let's Stock the Bar →
+                                </button>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* STEP 3: BUILD THE BAR */}
+                {step === 3 && (
+                    <motion.div
+                        key="step3"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        className="w-full max-w-4xl pt-10"
                     >
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-bold mb-3 text-[var(--accent)]">What's in your cabinet?</h2>
-                            <p className="text-gray-400">Select the bottles you already own. We'll use this to recommend drinks.</p>
+                            <h2 className="text-3xl font-bold mb-3 text-[var(--secondary)]">What's in your cabinet?</h2>
+                            <p className="text-gray-400">Select the bottles you already own. We'll instantly unlock drinks you can make.</p>
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -126,7 +237,7 @@ export default function OnboardingWizard() {
                                     className={`
                                         aspect-square rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-3 transition-all border
                                         ${selectedSpirits.includes(spirit)
-                                            ? 'bg-[var(--accent)]/20 border-[var(--accent)] shadow-[0_0_20px_var(--accent)] text-white scale-105'
+                                            ? 'bg-[var(--secondary)]/20 border-[var(--secondary)] shadow-[0_0_20px_rgba(255,165,0,0.3)] text-white scale-105'
                                             : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:border-white/30'}
                                     `}
                                 >
@@ -136,87 +247,13 @@ export default function OnboardingWizard() {
                             ))}
                         </div>
 
-                        <div className="mt-12 flex justify-between items-center">
-                            <span className="text-sm font-bold text-[var(--secondary)]">Step 1 of 2</span>
-                            <button
-                                onClick={() => setStep(3)}
-                                className="bg-[var(--accent)] text-white font-bold px-10 py-3 rounded-full hover:shadow-[0_0_20px_var(--accent)] transition-all"
-                            >
-                                Next Step →
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-
-                {/* STEP 3: TASTE PROFILE */}
-                {step === 3 && (
-                    <motion.div
-                        key="step3"
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, y: -50 }}
-                        className="w-full max-w-2xl"
-                    >
-                        <div className="text-center mb-10">
-                            <h2 className="text-3xl font-bold mb-3 text-[var(--primary)]">Find your flavor.</h2>
-                            <p className="text-gray-400">Answer 3 quick questions so we can calibrate your palate profile.</p>
-                        </div>
-
-                        <div className="space-y-8 bg-black/40 border border-white/10 p-6 md:p-8 rounded-3xl">
-                            {/* Q1 */}
-                            <div>
-                                <h3 className="text-lg font-bold mb-3">1. How do you take your coffee?</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {['Black & Bitter', 'Sweet & Creamy', 'Iced & Refreshing', 'I don\'t drink coffee'].map(opt => (
-                                        <button
-                                            key={opt} onClick={() => setQ1(opt)}
-                                            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${q1 === opt ? 'bg-[var(--primary)] text-white border-[var(--primary)]' : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'}`}
-                                        >
-                                            {opt}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Q2 */}
-                            <div>
-                                <h3 className="text-lg font-bold mb-3">2. What's your ideal vacation vibe?</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {['Tropical Beach', 'Cozy Winter Cabin', 'High-Energy City', 'Historic European Town'].map(opt => (
-                                        <button
-                                            key={opt} onClick={() => setQ2(opt)}
-                                            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${q2 === opt ? 'bg-[var(--primary)] text-white border-[var(--primary)]' : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'}`}
-                                        >
-                                            {opt}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Q3 */}
-                            <div>
-                                <h3 className="text-lg font-bold mb-3">3. What flavor ruins a drink for you?</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {['Too Sweet/Syrupy', 'Too Sour/Tart', 'Heavy Smoke/Peat', 'Licorice/Anise', 'Nothing, I drink it all'].map(opt => (
-                                        <button
-                                            key={opt} onClick={() => setQ3(opt)}
-                                            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all border ${q3 === opt ? 'bg-[var(--primary)] text-white border-[var(--primary)]' : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'}`}
-                                        >
-                                            {opt}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-12 flex justify-between items-center">
-                            <span className="text-sm font-bold text-[var(--secondary)]">Step 2 of 2</span>
+                        <div className="mt-12 flex justify-center">
                             <button
                                 onClick={handleFinishOnboarding}
-                                disabled={!q1 || !q2 || !q3 || isGeneratingProfile}
-                                className="bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white font-bold px-10 py-3 rounded-full hover:shadow-[0_0_20px_var(--primary-glow)] transition-all disabled:opacity-50 disabled:grayscale"
+                                disabled={isSaving}
+                                className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-bold text-xl px-16 py-5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_var(--primary-glow)] disabled:opacity-50 disabled:scale-100"
                             >
-                                {isGeneratingProfile ? 'Analyzing Palate...' : 'Enter Sipster ✨'}
+                                {isSaving ? 'Saving Profile...' : 'Enter Sipster ✨'}
                             </button>
                         </div>
                     </motion.div>

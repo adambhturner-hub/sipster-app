@@ -16,6 +16,7 @@ interface CreatorProfile {
     createdAt: string;
     booziversityCredits: Record<string, number>;
     tierTitle: string | null;
+    photoURL?: string;
 }
 
 interface PublicRecipe {
@@ -93,7 +94,8 @@ export default function CreatorProfilePage() {
                         badges: userData.badges || [],
                         createdAt: userData.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
                         booziversityCredits: credits,
-                        tierTitle
+                        tierTitle,
+                        photoURL: userData.photoURL
                     });
                 } else {
                     setCreator({
@@ -193,9 +195,17 @@ export default function CreatorProfilePage() {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary)]/10 rounded-full blur-3xl -mr-20 -mt-20 group-hover:bg-[var(--primary)]/20 transition-all duration-700"></div>
 
                 <div className="flex flex-col items-center justify-center relative z-10">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-4xl font-bold text-white shadow-[0_0_30px_rgba(176,38,255,0.4)] mb-4 border-4 border-black">
-                        {creator?.displayName?.charAt(0).toUpperCase() || '?'}
-                    </div>
+                    {creator?.photoURL && creator.photoURL.length <= 2 ? (
+                        <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(255,255,255,0.2)] mb-4 border-4 border-white/20">
+                            {creator.photoURL}
+                        </div>
+                    ) : creator?.photoURL ? (
+                        <img src={creator.photoURL} alt="Creator avatar" className="w-24 h-24 rounded-full shadow-[0_0_30px_var(--primary-glow)] mb-4 border-4 border-black object-cover" />
+                    ) : (
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-4xl font-bold text-white shadow-[0_0_30px_rgba(176,38,255,0.4)] mb-4 border-4 border-black">
+                            {creator?.displayName?.charAt(0).toUpperCase() || '?'}
+                        </div>
+                    )}
 
                     <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-white">
                         {creator?.displayName || 'Anonymous Mixologist'}

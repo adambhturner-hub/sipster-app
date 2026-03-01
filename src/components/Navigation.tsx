@@ -49,7 +49,11 @@ export default function Navigation() {
                         {!loading && user && (
                             <div className="flex items-center space-x-3 bg-black/40 border border-white/10 rounded-full pl-1 pr-3 py-1">
                                 <Link href={`/creator/${user.uid}`}>
-                                    {user.photoURL ? (
+                                    {user.photoURL && user.photoURL.length <= 2 ? (
+                                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg shadow-[0_0_10px_var(--primary-glow)] hover:scale-110 transition-transform">
+                                            {user.photoURL}
+                                        </div>
+                                    ) : user.photoURL ? (
                                         <Image src={user.photoURL} alt="User avatar" width={32} height={32} className="rounded-full shadow-[0_0_10px_var(--primary-glow)] hover:scale-110 transition-transform" />
                                     ) : (
                                         <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-xs hover:scale-110 transition-transform">
@@ -144,7 +148,11 @@ export default function Navigation() {
                             {!loading && user && (
                                 <div className="flex flex-col gap-4 bg-black/40 border border-white/10 rounded-xl p-4">
                                     <div className="flex items-center gap-3">
-                                        {user.photoURL ? (
+                                        {user.photoURL && user.photoURL.length <= 2 ? (
+                                            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-2xl shadow-[0_0_10px_rgba(255,0,255,0.3)]">
+                                                {user.photoURL}
+                                            </div>
+                                        ) : user.photoURL ? (
                                             <Image src={user.photoURL} alt="User avatar" width={40} height={40} className="rounded-full shadow-[0_0_10px_rgba(255,0,255,0.3)]" />
                                         ) : (
                                             <div className="w-10 h-10 rounded-full bg-[var(--color-neon-pink)] flex items-center justify-center text-black font-bold text-lg">

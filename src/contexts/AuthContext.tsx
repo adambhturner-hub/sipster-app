@@ -25,6 +25,7 @@ interface AuthContextType {
     tasteProfile: TasteProfile | null;
     badges: string[];
     hasCompletedOnboarding: boolean;
+    updateUserProfile: (displayName: string, photoURL: string) => Promise<void>;
     completeOnboarding: () => Promise<void>;
     addToBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
@@ -42,6 +43,7 @@ const AuthContext = createContext<AuthContextType>({
     tasteProfile: null,
     badges: [],
     hasCompletedOnboarding: true, // Default true to prevent flickering before load
+    updateUserProfile: async () => { },
     completeOnboarding: async () => { },
     addToBar: async () => { },
     addToShoppingList: async () => { },
@@ -155,6 +157,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await setDoc(doc(db, 'users', user.uid), { shoppingList: newList }, { merge: true });
     };
 
+    const updateUserProfile = async (displayName: string, photoURL: string) => {
+        if (!user) return;
+        await setDoc(doc(db, 'users', user.uid), {
+            displayName,
+            photoURL
+        }, { merge: true });
+    };
+
     const completeOnboarding = async () => {
         if (!user) return;
         setHasCompletedOnboarding(true);
@@ -210,6 +220,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             tasteProfile,
             badges,
             hasCompletedOnboarding,
+            updateUserProfile,
             completeOnboarding,
             addToBar,
             addToShoppingList
