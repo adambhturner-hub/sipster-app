@@ -47,7 +47,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     const [generatedImages, setGeneratedImages] = useState<Record<string, string>>({});
     const [isGeneratingImg, setIsGeneratingImg] = useState<string | null>(null);
 
-    const { messages, setMessages, sendMessage, input, setInput, handleInputChange: aiHandleInputChange, handleSubmit: aiHandleSubmit, status, stop, error, reload } = useChat();
+    const [input, setInput] = useState('');
+    const { messages, setMessages, sendMessage, status, stop, error, regenerate: reload } = useChat();
     const isLoading = status === 'submitted' || status === 'streaming';
 
     const queryConsumed = useRef(false);
