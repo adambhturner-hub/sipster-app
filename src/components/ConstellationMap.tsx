@@ -171,7 +171,7 @@ function ConstellationMapInner({ cocktails }: ConstellationMapProps) {
                 <Controls className="bg-gray-900/80 backdrop-blur-md border-gray-800 fill-white rounded-xl overflow-hidden" showInteractive={false} />
 
                 {selectedCocktail && (
-                    <Panel position="top-right" className="m-4 w-full max-w-sm pointer-events-none z-50">
+                    <Panel position="top-right" className="m-4 w-full max-w-md pointer-events-none z-50">
                         <div className="pointer-events-auto h-[70vh] overflow-y-auto no-scrollbar rounded-3xl shadow-2xl animate-fade-in-up">
                             {/* Makeable logic requires either bypassing it or wrapping in Context. 
                                 For simplicity in this view, we'll pass generic props, or users can always click into it. */}
