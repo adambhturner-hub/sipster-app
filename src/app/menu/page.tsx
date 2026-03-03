@@ -17,6 +17,7 @@ import {
 } from '@/data/cocktails';
 import CocktailCard from '@/components/CocktailCard';
 import ConstellationMap from '@/components/ConstellationMap';
+import VibeCheckButton from '@/components/VibeCheckButton';
 
 export interface PublicRecipe {
     id: string;
@@ -34,6 +35,20 @@ export default function MenuPage() {
     const [sortBy, setSortBy] = useState<string>('popular');
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
+
+    useEffect(() => {
+        // Handle post-Spotify auth toast and remove from URL
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('spotify_connected')) {
+                toast.success('Successfully connected to Spotify! Run a Vibe Check now.');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (params.get('spotify_error')) {
+                toast.error('Failed to connect to Spotify.');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+    }, []);
 
     // Unified Catalog State
     const [feedMode, setFeedMode] = useState<'classics' | 'global' | 'following'>('classics');
@@ -392,6 +407,9 @@ export default function MenuPage() {
                     {/* Glowing background effect for input */}
                     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--primary)]/20 to-[var(--secondary)]/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 rounded-full pointer-events-none"></div>
                 </div>
+
+                {/* Vibe Check Button */}
+                <VibeCheckButton />
 
                 {/* Explore by Path / Curated Journeys */}
                 <div className="w-full mb-8 relative z-20 overflow-hidden hidden sm:block">
