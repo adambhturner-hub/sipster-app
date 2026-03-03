@@ -83,6 +83,48 @@ export default function CocktailCard({
     // Bartender Mode State
     const [isMixing, setIsMixing] = useState(false);
 
+    // Share State
+    const [isShareOpen, setIsShareOpen] = useState(false);
+    const shareMenuRef = useRef<HTMLDivElement>(null);
+
+    // Close share menu on outside click
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (shareMenuRef.current && !shareMenuRef.current.contains(event.target as Node)) {
+                setIsShareOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleShareClick = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: cocktail?.name || 'Sipster Cocktail',
+                    text: `Check out the ${cocktail?.name || 'cocktail'} recipe on Sipster!`,
+                    url: `${window.location.origin}/recipe/${(cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-')}`
+                });
+            } catch (err) {
+                console.error("Share failed", err);
+            }
+        } else {
+            setIsShareOpen(!isShareOpen);
+        }
+    };
+
+    const copyLink = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsShareOpen(false);
+        const url = `${window.location.origin}/recipe/${(cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-')}`;
+        navigator.clipboard.writeText(url);
+        toast.success("Link copied to clipboard! 🔗");
+    };
+
     // Export State
     const cardRef = useRef<HTMLDivElement>(null);
     const [isExporting, setIsExporting] = useState(false);
@@ -182,20 +224,6 @@ export default function CocktailCard({
                 <div className="text-5xl bg-gray-950 p-4 rounded-2xl border border-gray-800 shadow-inner">{cocktail.emoji}</div>
                 <div className={`flex flex-col items-end gap-2 relative z-20 ${isExporting ? 'opacity-0' : 'opacity-100'}`}>
                     <div className="flex items-center gap-2">
-                        <button
-                            onClick={exportToImage}
-                            title="Download Instagram Graphic"
-                            className="flex items-center justify-center bg-gray-950 hover:bg-emerald-500 text-emerald-500 hover:text-black transition-all min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl border border-gray-800 hover:border-emerald-500 shadow-sm text-lg"
-                        >
-                            📸
-                        </button>
-                        <button
-                            onClick={(e) => { e.preventDefault(); setIsMixing(true); }}
-                            title="Enter Bartender Mode"
-                            className="flex items-center justify-center bg-gray-950 hover:bg-[var(--primary)] text-[var(--primary)] hover:text-black transition-all min-h-[44px] min-w-[44px] px-3 py-2 rounded-xl border border-gray-800 hover:border-[var(--primary)] shadow-sm text-lg"
-                        >
-                            🍸
-                        </button>
                         <FavoriteButton
                             cocktailId={(cocktail?.name || 'custom').toLowerCase().replace(/ /g, '-')}
                             cocktailName={cocktail?.name || 'Custom Drink'}
@@ -206,13 +234,6 @@ export default function CocktailCard({
                             communityAuthorUid={communityAuthorUid}
                             onChange={onFavoriteChange}
                         />
-                        <Link
-                            href={`/evolution?start=${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`}
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 min-h-[44px] bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 text-[var(--primary)] hover:text-white rounded-full text-xs font-bold border border-[var(--primary)]/20 transition-all font-sans tracking-wide uppercase shadow-[0_0_10px_rgba(var(--primary-rgb),0.1)] hover:shadow-[0_0_15px_rgba(var(--primary-rgb),0.3)]"
-                            title="Explore the Evolution Tree"
-                        >
-                            Evolve 🧬
-                        </Link>
                     </div>
                     {(() => {
                         if (!makeable && missingCount === 0) {
@@ -318,6 +339,48 @@ export default function CocktailCard({
             </div>
 
             <p className="text-gray-400 text-sm mb-6 flex-grow">{cocktail.description}</p>
+
+            {/* Action Bar */}
+            <div className={`flex items-center gap-2 mb-6 relative z-30 ${isExporting ? 'hidden' : 'flex'}`}>
+                <Link
+                    href={`/evolution?start=${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`}
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[var(--primary)]/20 hover:bg-[var(--primary)] text-[var(--primary)] hover:text-black rounded-xl font-bold uppercase tracking-wide border border-[var(--primary)]/40 transition-colors shadow-[0_0_15px_rgba(var(--primary-rgb),0.1)]"
+                >
+                    Evolve 🧬
+                </Link>
+                <button
+                    onClick={(e) => { e.preventDefault(); setIsMixing(true); }}
+                    title="Enter Bartender Mode"
+                    className="flex items-center justify-center bg-gray-950 hover:bg-[var(--primary)] text-[var(--primary)] hover:text-black border border-gray-800 hover:border-[var(--primary)] rounded-xl min-w-[48px] min-h-[44px] text-xl transition-all shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                >
+                    🍸
+                </button>
+                <div className="relative" ref={shareMenuRef}>
+                    <button
+                        onClick={handleShareClick}
+                        title="Share Cocktail"
+                        className="flex items-center justify-center bg-gray-950 hover:bg-white text-gray-400 hover:text-black border border-gray-800 hover:border-white rounded-xl min-w-[48px] min-h-[44px] text-lg transition-all shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                    >
+                        🔗
+                    </button>
+                    {isShareOpen && (
+                        <div className="absolute bottom-full right-0 mb-2 w-48 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden py-1 z-50 animate-fade-in-up origin-bottom-right">
+                            <button
+                                onClick={copyLink}
+                                className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white flex items-center gap-3 transition-colors"
+                            >
+                                <span>🔗</span> Copy Link
+                            </button>
+                            <button
+                                onClick={(e) => { setIsShareOpen(false); exportToImage(e); }}
+                                className="w-full text-left px-4 py-3 text-sm text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300 flex items-center gap-3 transition-colors border-t border-gray-800/50"
+                            >
+                                <span>📸</span> Save Image
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
 
             <div className="space-y-4 pt-6 border-t border-gray-800 relative z-20">
                 <div className="flex justify-between items-center bg-gray-950 px-3 py-1.5 rounded-lg border border-gray-800/50 mb-3">

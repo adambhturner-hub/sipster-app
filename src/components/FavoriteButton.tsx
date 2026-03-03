@@ -218,70 +218,98 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
         }
     };
 
+    const [isOpen, setIsOpen] = useState(false);
+
+    let mainIcon = '🤍';
+    let mainColor = 'text-gray-500 hover:text-gray-300';
+    if (interactions.isFavorite) {
+        mainIcon = '❤️';
+        mainColor = 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border border-[var(--color-neon-pink)]/50 shadow-[0_0_10px_rgba(255,0,127,0.3)]';
+    } else if (interactions.isTried) {
+        mainIcon = '✔️';
+        mainColor = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]';
+    } else if (interactions.isWantToTry) {
+        mainIcon = '🔖';
+        mainColor = 'bg-blue-500/20 text-blue-400 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]';
+    } else if (isPublic && type === 'custom_full') {
+        mainIcon = '🌍';
+        mainColor = 'bg-purple-500/20 text-purple-400 border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]';
+    }
+
+    // Determine the width based on whether it is open
+    const isExpanded = isOpen || isSaving;
+
     return (
-        <div className="flex bg-gray-900/50 rounded-full border border-gray-800 p-1 gap-1 shadow-inner backdrop-blur-sm">
-            {/* Favorite */}
-            <button
-                onClick={(e) => toggleInteraction('isFavorite', e)}
-                disabled={isSaving || loading}
-                title="Favorite"
-                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${interactions.isFavorite
-                    ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border border-[var(--color-neon-pink)]/50 shadow-[0_0_10px_rgba(255,0,127,0.3)]'
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
-                    }`}
-            >
-                <span className={`flex items-center gap-1.5 ${interactions.isFavorite ? 'animate-pulse' : ''}`}>
-                    {interactions.isFavorite ? '❤️' : '🤍'}
-                    {!compact && (interactions.isFavorite ? '' : '')}
-                </span>
-            </button>
+        <div
+            className="relative flex items-center"
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
+        >
+            <div className={`flex items-center gap-1 transition-all duration-300 bg-gray-900/50 rounded-full border border-gray-800 p-1 shadow-inner backdrop-blur-sm overflow-hidden ${isExpanded ? 'max-w-[300px]' : 'max-w-[50px]'}`}>
 
-            {/* Want to Try -> On Deck */}
-            <button
-                onClick={(e) => toggleInteraction('isWantToTry', e)}
-                disabled={isSaving || loading}
-                title="On Deck"
-                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${interactions.isWantToTry
-                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]'
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
-                    }`}
-            >
-                <span className="flex items-center gap-1.5">
-                    {interactions.isWantToTry ? '🔖' : '🔖'}
-                </span>
-            </button>
+                {/* Main Toggle / collapsed state */}
+                {!isExpanded && (
+                    <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(true); }}
+                        className={`flex flex-col items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${mainColor}`}
+                    >
+                        <span>{mainIcon}</span>
+                    </button>
+                )}
 
-            {/* Tried It -> On My Tab */}
-            <button
-                onClick={(e) => toggleInteraction('isTried', e)}
-                disabled={isSaving || loading}
-                title="On My Tab"
-                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${interactions.isTried
-                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
-                    }`}
-            >
-                <span className="flex items-center gap-1.5">
-                    {interactions.isTried ? '✔️' : '✔️'}
-                </span>
-            </button>
+                {/* Expanded Menu Options */}
+                <div className={`flex items-center gap-1 transition-all duration-300 ${isExpanded ? 'opacity-100 px-1' : 'opacity-0 w-0 pointer-events-none'}`}>
+                    <button
+                        onClick={(e) => toggleInteraction('isFavorite', e)}
+                        disabled={isSaving || loading}
+                        title="Favorite"
+                        className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${interactions.isFavorite
+                            ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border border-[var(--color-neon-pink)]/50 shadow-[0_0_10px_rgba(255,0,127,0.3)]'
+                            : 'text-gray-500 hover:text-white hover:bg-gray-800/50'
+                            }`}
+                    >
+                        <span className={`flex items-center ${interactions.isFavorite ? 'animate-pulse' : ''}`}>{interactions.isFavorite ? '❤️' : '🤍'}</span>
+                    </button>
 
-            {/* Publish (Custom Drinks Only) */}
-            {type === 'custom_full' && (
-                <button
-                    onClick={togglePublish}
-                    disabled={isSaving || loading || !docId}
-                    title="Publish to Community"
-                    className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${isPublic
-                        ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]'
-                        : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
-                        }`}
-                >
-                    <span className="flex items-center gap-1.5">
-                        {isPublic ? '🌍' : '🔒'}
-                    </span>
-                </button>
-            )}
+                    <button
+                        onClick={(e) => toggleInteraction('isWantToTry', e)}
+                        disabled={isSaving || loading}
+                        title="On Deck"
+                        className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${interactions.isWantToTry
+                            ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]'
+                            : 'text-gray-500 hover:text-white hover:bg-gray-800/50'
+                            }`}
+                    >
+                        <span className="flex items-center">🔖</span>
+                    </button>
+
+                    <button
+                        onClick={(e) => toggleInteraction('isTried', e)}
+                        disabled={isSaving || loading}
+                        title="On My Tab"
+                        className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${interactions.isTried
+                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
+                            : 'text-gray-500 hover:text-white hover:bg-gray-800/50'
+                            }`}
+                    >
+                        <span className="flex items-center">✔️</span>
+                    </button>
+
+                    {type === 'custom_full' && (
+                        <button
+                            onClick={togglePublish}
+                            disabled={isSaving || loading || !docId}
+                            title="Publish to Community"
+                            className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${isPublic
+                                ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]'
+                                : 'text-gray-500 hover:text-white hover:bg-gray-800/50'
+                                }`}
+                        >
+                            <span className="flex items-center">{isPublic ? '🌍' : '🔒'}</span>
+                        </button>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
