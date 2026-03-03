@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 const AVATAR_OPTIONS = [
@@ -39,6 +40,7 @@ const TUTORIAL_SLIDES = [
 
 export default function OnboardingWizard() {
     const { user, loading, hasCompletedOnboarding, updateUserProfile, completeOnboarding, addToBar } = useAuth();
+    const router = useRouter();
 
     // Core State
     const [step, setStep] = useState(1);
@@ -58,14 +60,19 @@ export default function OnboardingWizard() {
     if (loading || !user || hasCompletedOnboarding) return null;
 
     const baseSpirits = [
-        "Vodka", "Bourbon", "Tequila Blanco", "Gin",
-        "Light Rum", "Aperol", "Campari", "Sweet Vermouth",
-        "Angostura Bitters", "Triple Sec"
+        { id: "Vodka", name: "Vodka", icon: "🍸" },
+        { id: "Gin", name: "Gin", icon: "🌲" },
+        { id: "Light Rum", name: "Rum", icon: "🍹" },
+        { id: "Tequila Blanco", name: "Tequila", icon: "🌵" },
+        { id: "Bourbon", name: "Bourbon", icon: "🥃" },
+        { id: "Sweet Vermouth", name: "Vermouth", icon: "🍷" },
+        { id: "Campari", name: "Campari", icon: "❤️" },
+        { id: "Angostura Bitters", name: "Bitters", icon: "💧" }
     ];
 
-    const toggleSpirit = (spirit: string) => {
+    const toggleSpirit = (spiritId: string) => {
         setSelectedSpirits(prev =>
-            prev.includes(spirit) ? prev.filter(s => s !== spirit) : [...prev, spirit]
+            prev.includes(spiritId) ? prev.filter(s => s !== spiritId) : [...prev, spiritId]
         );
     };
 
@@ -81,11 +88,13 @@ export default function OnboardingWizard() {
                 await addToBar(spirit);
             }
 
-            // 3. Mark Complete
+            // 3. Mark Complete & Redirect
             await completeOnboarding();
+            router.push('/my-bar');
         } catch (error) {
             console.error("Failed onboarding completion:", error);
             await completeOnboarding(); // Let them through even if it fails
+            router.push('/my-bar');
         } finally {
             setIsSaving(false);
         }
@@ -229,20 +238,20 @@ export default function OnboardingWizard() {
                             <p className="text-gray-400">Select the bottles you already own. We'll instantly unlock drinks you can make.</p>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                             {baseSpirits.map(spirit => (
                                 <button
-                                    key={spirit}
-                                    onClick={() => toggleSpirit(spirit)}
+                                    key={spirit.id}
+                                    onClick={() => toggleSpirit(spirit.id)}
                                     className={`
                                         aspect-square rounded-2xl p-4 flex flex-col items-center justify-center text-center gap-3 transition-all border
-                                        ${selectedSpirits.includes(spirit)
+                                        ${selectedSpirits.includes(spirit.id)
                                             ? 'bg-[var(--secondary)]/20 border-[var(--secondary)] shadow-[0_0_20px_rgba(255,165,0,0.3)] text-white scale-105'
                                             : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:border-white/30'}
                                     `}
                                 >
-                                    <span className="text-3xl sm:text-4xl">🍾</span>
-                                    <span className="font-semibold text-sm sm:text-base leading-tight">{spirit}</span>
+                                    <span className="text-3xl sm:text-4xl">{spirit.icon}</span>
+                                    <span className="font-semibold text-sm sm:text-base leading-tight">{spirit.name}</span>
                                 </button>
                             ))}
                         </div>
@@ -253,7 +262,7 @@ export default function OnboardingWizard() {
                                 disabled={isSaving}
                                 className="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-bold text-xl px-16 py-5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_var(--primary-glow)] disabled:opacity-50 disabled:scale-100"
                             >
-                                {isSaving ? 'Saving Profile...' : 'Enter Sipster ✨'}
+                                {isSaving ? 'Saving Profile...' : 'Go to My Bar to add more →'}
                             </button>
                         </div>
                     </motion.div>

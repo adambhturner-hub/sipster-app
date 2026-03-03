@@ -9,6 +9,7 @@ import { useGlobalChat } from '@/contexts/ChatContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function Chat() {
     const {
@@ -73,239 +74,241 @@ export default function Chat() {
     }, [messages]);
 
     return (
-        <div className="flex flex-col h-[80vh] w-full max-w-4xl mx-auto px-4 z-10 relative">
+        <ProtectedRoute featureName="Sipster AI" description="Chat with your personal AI bartender to discover the perfect cocktail based on what you have.">
+            <div className="flex flex-col h-[80vh] w-full max-w-4xl mx-auto px-4 z-10 relative">
 
-            {/* Header */}
-            <div className="mb-6 text-center">
-                <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-                    <span className="font-bold text-[var(--accent)]">Sipster:</span> Don't know what to make? Let's talk about what you're craving...
-                </h1>
-                <div className="flex items-center justify-center gap-4">
-                    <p className="text-gray-400 font-light">
-                        Tell me your ingredients, mood, or flavor cravings. I'll shake up something special.
-                    </p>
-                    {messages.length > 0 && (
-                        <button
-                            onClick={clearChat}
-                            className="text-gray-500 hover:text-[var(--secondary)] hover:scale-110 transition-all text-xl"
-                            title="Clear Chat History"
-                        >
-                            🗑️
-                        </button>
-                    )}
-                </div>
-            </div>
-
-            {/* Chat Messages Container */}
-            <div className="flex-grow overflow-y-auto mb-6 glass-panel p-6 flex flex-col gap-6 custom-scrollbar">
-                {messages.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-center text-gray-400 opacity-60">
-                        <span className="text-6xl mb-4">🍸</span>
-                        <p className="text-xl">The bar is open. What can I get you?</p>
-                    </div>
-                ) : (
-                    messages.map(m => (
-                        <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div
-                                className={`max-w-[80%] rounded-2xl px-6 py-4 shadow-lg ${m.role === 'user'
-                                    ? 'bg-white/10 text-white border border-white/20 rounded-tr-none'
-                                    : 'bg-black/40 text-gray-200 border border-[var(--primary)]/30 rounded-tl-none drop-shadow-[0_0_15px_var(--primary-glow)]'
-                                    }`}
+                {/* Header */}
+                <div className="mb-6 text-center">
+                    <h1 className="text-4xl font-extrabold tracking-tight mb-2">
+                        <span className="font-bold text-[var(--accent)]">Sipster:</span> Don't know what to make? Let's talk about what you're craving...
+                    </h1>
+                    <div className="flex items-center justify-center gap-4">
+                        <p className="text-gray-400 font-light">
+                            Tell me your ingredients, mood, or flavor cravings. I'll shake up something special.
+                        </p>
+                        {messages.length > 0 && (
+                            <button
+                                onClick={clearChat}
+                                className="text-gray-500 hover:text-[var(--secondary)] hover:scale-110 transition-all text-xl"
+                                title="Clear Chat History"
                             >
-                                <div className="font-bold text-sm mb-1 opacity-50">
-                                    {m.role === 'user' ? 'You' : 'Sipster'}
-                                </div>
-                                <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
-                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                                        {Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ')}
-                                    </ReactMarkdown>
-                                </div>
-                                {m.role === 'assistant' && (
-                                    <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
+                                🗑️
+                            </button>
+                        )}
+                    </div>
+                </div>
 
-                                        {Array.isArray(m.parts) && m.parts.map((part: any, i: number) => {
-                                            const isTool = part.type === 'tool-invocation' || part.type?.startsWith('tool-') || part.type === 'dynamic-tool';
-                                            if (!isTool) return null;
+                {/* Chat Messages Container */}
+                <div className="flex-grow overflow-y-auto mb-6 glass-panel p-6 flex flex-col gap-6 custom-scrollbar">
+                    {messages.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center h-full text-center text-gray-400 opacity-60">
+                            <span className="text-6xl mb-4">🍸</span>
+                            <p className="text-xl">The bar is open. What can I get you?</p>
+                        </div>
+                    ) : (
+                        messages.map(m => (
+                            <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div
+                                    className={`max-w-[80%] rounded-2xl px-6 py-4 shadow-lg ${m.role === 'user'
+                                        ? 'bg-white/10 text-white border border-white/20 rounded-tr-none'
+                                        : 'bg-black/40 text-gray-200 border border-[var(--primary)]/30 rounded-tl-none drop-shadow-[0_0_15px_var(--primary-glow)]'
+                                        }`}
+                                >
+                                    <div className="font-bold text-sm mb-1 opacity-50">
+                                        {m.role === 'user' ? 'You' : 'Sipster'}
+                                    </div>
+                                    <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed whitespace-pre-wrap font-light">
+                                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                            {Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ')}
+                                        </ReactMarkdown>
+                                    </div>
+                                    {m.role === 'assistant' && (
+                                        <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
 
-                                            const typeName = part.type?.startsWith('tool-') && part.type !== 'tool-invocation' ? part.type.replace('tool-', '') : undefined;
-                                            const toolName = part.toolName || part.toolInvocation?.toolName || typeName || part.toolInvocationId;
-                                            const result = part.result !== undefined ? part.result : part.output;
+                                            {Array.isArray(m.parts) && m.parts.map((part: any, i: number) => {
+                                                const isTool = part.type === 'tool-invocation' || part.type?.startsWith('tool-') || part.type === 'dynamic-tool';
+                                                if (!isTool) return null;
 
-                                            let content;
-                                            switch (toolName) {
-                                                case 'suggestClassicCocktail':
-                                                    content = result ? (
-                                                        <div key={i} className="mt-4 max-w-sm w-full block">
-                                                            {result.found ? (
+                                                const typeName = part.type?.startsWith('tool-') && part.type !== 'tool-invocation' ? part.type.replace('tool-', '') : undefined;
+                                                const toolName = part.toolName || part.toolInvocation?.toolName || typeName || part.toolInvocationId;
+                                                const result = part.result !== undefined ? part.result : part.output;
+
+                                                let content;
+                                                switch (toolName) {
+                                                    case 'suggestClassicCocktail':
+                                                        content = result ? (
+                                                            <div key={i} className="mt-4 max-w-sm w-full block">
+                                                                {result.found ? (
+                                                                    <div className="flex flex-col gap-3">
+                                                                        <p className="text-sm font-medium text-[var(--accent)] italic">{result.message}</p>
+                                                                        <div className="pointer-events-auto w-full mt-2">
+                                                                            <CocktailCard
+                                                                                cocktail={result.cocktail}
+                                                                                makeable={true}
+                                                                                hasIngredient={(ing) => myBar.map(item => item.toLowerCase()).includes(ing.toLowerCase())}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <p className="text-sm italic text-gray-400">{result.message}</p>
+                                                                )}
+                                                            </div>
+                                                        ) : (
+                                                            <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse flex items-center gap-2">
+                                                                <span className="text-xl">📚</span> Checking the classic recipe book...
+                                                            </div>
+                                                        );
+                                                        break;
+                                                    case 'offerRecipeChoices':
+                                                        content = result ? (
+                                                            <div key={i} className="mt-4 flex flex-col gap-4 max-w-sm w-full bg-black/40 border border-[var(--primary)]/30 p-4 rounded-xl shadow-[0_0_15px_var(--primary-glow)]">
+                                                                <p className="text-sm font-medium text-white italic">{result.reason}</p>
+                                                                <div className="flex flex-col gap-2 pointer-events-auto">
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            // The global handleSubmit will take standard events, but we can't easily fake one.
+                                                                            // The Global context DOES NOT export 'sendMessage' directly for custom injection.
+                                                                            // To fix this without re-writing Context, we'll manually set input and submit.
+                                                                            handleInputChange({ target: { value: `Give me the classic ${result.closestClassicName}` } } as any);
+                                                                            setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                                                        }}
+                                                                        className="w-full py-3 px-4 rounded-lg font-bold text-white bg-gradient-to-r from-[var(--primary)]/40 to-[var(--secondary)]/40 hover:from-[var(--primary)]/60 hover:to-[var(--secondary)]/60 border border-[var(--primary)]/50 transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
+                                                                    >
+                                                                        <span>🍹 Classic {result.closestClassicName}</span>
+                                                                        <span className="text-xl">➔</span>
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            handleInputChange({ target: { value: `Nah, I want a brand new custom build using those ingredients.` } } as any);
+                                                                            setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                                                        }}
+                                                                        className="w-full py-3 px-4 rounded-lg font-bold text-[var(--accent)] bg-black/60 hover:bg-black/80 border border-[var(--accent)]/30 hover:border-[var(--accent)] transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
+                                                                    >
+                                                                        <span>✨ Custom Build</span>
+                                                                        <span className="text-[var(--accent)]">➔</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse">
+                                                                Thinking...
+                                                            </div>
+                                                        );
+                                                        break;
+                                                    case 'generateDynamicCocktailCard':
+                                                        content = result ? (
+                                                            <div key={i} className="mt-4 max-w-sm w-full block">
                                                                 <div className="flex flex-col gap-3">
-                                                                    <p className="text-sm font-medium text-[var(--accent)] italic">{result.message}</p>
+                                                                    <p className="text-sm font-medium text-[var(--accent)] italic">Here is your interactive recipe card!</p>
                                                                     <div className="pointer-events-auto w-full mt-2">
                                                                         <CocktailCard
-                                                                            cocktail={result.cocktail}
+                                                                            cocktail={result.cocktailData}
                                                                             makeable={true}
                                                                             hasIngredient={(ing) => myBar.map(item => item.toLowerCase()).includes(ing.toLowerCase())}
                                                                         />
                                                                     </div>
                                                                 </div>
-                                                            ) : (
-                                                                <p className="text-sm italic text-gray-400">{result.message}</p>
-                                                            )}
-                                                        </div>
-                                                    ) : (
-                                                        <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse flex items-center gap-2">
-                                                            <span className="text-xl">📚</span> Checking the classic recipe book...
-                                                        </div>
-                                                    );
-                                                    break;
-                                                case 'offerRecipeChoices':
-                                                    content = result ? (
-                                                        <div key={i} className="mt-4 flex flex-col gap-4 max-w-sm w-full bg-black/40 border border-[var(--primary)]/30 p-4 rounded-xl shadow-[0_0_15px_var(--primary-glow)]">
-                                                            <p className="text-sm font-medium text-white italic">{result.reason}</p>
-                                                            <div className="flex flex-col gap-2 pointer-events-auto">
-                                                                <button
-                                                                    onClick={() => {
-                                                                        // The global handleSubmit will take standard events, but we can't easily fake one.
-                                                                        // The Global context DOES NOT export 'sendMessage' directly for custom injection.
-                                                                        // To fix this without re-writing Context, we'll manually set input and submit.
-                                                                        handleInputChange({ target: { value: `Give me the classic ${result.closestClassicName}` } } as any);
-                                                                        setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
-                                                                    }}
-                                                                    className="w-full py-3 px-4 rounded-lg font-bold text-white bg-gradient-to-r from-[var(--primary)]/40 to-[var(--secondary)]/40 hover:from-[var(--primary)]/60 hover:to-[var(--secondary)]/60 border border-[var(--primary)]/50 transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
-                                                                >
-                                                                    <span>🍹 Classic {result.closestClassicName}</span>
-                                                                    <span className="text-xl">➔</span>
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => {
-                                                                        handleInputChange({ target: { value: `Nah, I want a brand new custom build using those ingredients.` } } as any);
-                                                                        setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
-                                                                    }}
-                                                                    className="w-full py-3 px-4 rounded-lg font-bold text-[var(--accent)] bg-black/60 hover:bg-black/80 border border-[var(--accent)]/30 hover:border-[var(--accent)] transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.5)] flex items-center justify-between"
-                                                                >
-                                                                    <span>✨ Custom Build</span>
-                                                                    <span className="text-[var(--accent)]">➔</span>
-                                                                </button>
                                                             </div>
-                                                        </div>
-                                                    ) : (
-                                                        <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse">
-                                                            Thinking...
-                                                        </div>
-                                                    );
-                                                    break;
-                                                case 'generateDynamicCocktailCard':
-                                                    content = result ? (
-                                                        <div key={i} className="mt-4 max-w-sm w-full block">
-                                                            <div className="flex flex-col gap-3">
-                                                                <p className="text-sm font-medium text-[var(--accent)] italic">Here is your interactive recipe card!</p>
-                                                                <div className="pointer-events-auto w-full mt-2">
-                                                                    <CocktailCard
-                                                                        cocktail={result.cocktailData}
-                                                                        makeable={true}
-                                                                        hasIngredient={(ing) => myBar.map(item => item.toLowerCase()).includes(ing.toLowerCase())}
-                                                                    />
-                                                                </div>
+                                                        ) : (
+                                                            <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse flex items-center gap-2">
+                                                                <span className="text-xl">✨</span> Crafting interactive Cocktail Card...
                                                             </div>
-                                                        </div>
-                                                    ) : (
-                                                        <div key={i} className="text-sm text-[var(--accent)] italic mt-4 animate-pulse flex items-center gap-2">
-                                                            <span className="text-xl">✨</span> Crafting interactive Cocktail Card...
-                                                        </div>
-                                                    );
-                                                    break;
-                                                case 'generate_cocktail_recipe':
-                                                    content = (
-                                                        <div key={i} className="flex flex-col gap-4 mt-4">
-                                                            {generatedImages[m.id] ? (
-                                                                <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_var(--primary-glow)] border border-[var(--secondary)]/30">
-                                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                                    <img src={generatedImages[m.id]} alt="AI Generated Cocktail" className="w-full h-full object-cover" />
-                                                                </div>
-                                                            ) : (
-                                                                <button
-                                                                    onClick={() => handleGenerateImage(m.id, part.props?.name || "A delicious cocktail")}
-                                                                    disabled={isGeneratingImg === m.id || !part.props?.name}
-                                                                    className="text-xs bg-black/40 border border-[var(--secondary)]/30 text-[var(--secondary)] px-4 py-2 rounded-full hover:bg-[var(--secondary)]/20 transition-all duration-300 disabled:opacity-50 self-start"
-                                                                >
-                                                                    {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
-                                                                </button>
-                                                            )}
-                                                            <div className="flex flex-col gap-2 mt-4 ml-2 border-l-2 border-[var(--primary)]/30 pl-4 w-full max-w-sm">
-                                                                {part.props?.steps?.map((step: any, stepIdx: number) => (
-                                                                    <div key={stepIdx} className="flex gap-3 text-sm text-gray-300 bg-gray-900/50 p-2 rounded-lg border border-gray-800/80">
-                                                                        <span className="text-[var(--primary)] font-mono font-bold">{stepIdx + 1}.</span>
-                                                                        <span className="leading-relaxed">{step}</span>
+                                                        );
+                                                        break;
+                                                    case 'generate_cocktail_recipe':
+                                                        content = (
+                                                            <div key={i} className="flex flex-col gap-4 mt-4">
+                                                                {generatedImages[m.id] ? (
+                                                                    <div className="relative w-full aspect-square rounded-xl overflow-hidden shadow-[0_0_20px_var(--primary-glow)] border border-[var(--secondary)]/30">
+                                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                                        <img src={generatedImages[m.id]} alt="AI Generated Cocktail" className="w-full h-full object-cover" />
                                                                     </div>
-                                                                ))}
+                                                                ) : (
+                                                                    <button
+                                                                        onClick={() => handleGenerateImage(m.id, part.props?.name || "A delicious cocktail")}
+                                                                        disabled={isGeneratingImg === m.id || !part.props?.name}
+                                                                        className="text-xs bg-black/40 border border-[var(--secondary)]/30 text-[var(--secondary)] px-4 py-2 rounded-full hover:bg-[var(--secondary)]/20 transition-all duration-300 disabled:opacity-50 self-start"
+                                                                    >
+                                                                        {isGeneratingImg === m.id ? '📸 Visualizing...' : '📸 Show me what it looks like'}
+                                                                    </button>
+                                                                )}
+                                                                <div className="flex flex-col gap-2 mt-4 ml-2 border-l-2 border-[var(--primary)]/30 pl-4 w-full max-w-sm">
+                                                                    {part.props?.steps?.map((step: any, stepIdx: number) => (
+                                                                        <div key={stepIdx} className="flex gap-3 text-sm text-gray-300 bg-gray-900/50 p-2 rounded-lg border border-gray-800/80">
+                                                                            <span className="text-[var(--primary)] font-mono font-bold">{stepIdx + 1}.</span>
+                                                                            <span className="leading-relaxed">{step}</span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                                <div className="mt-8 text-center text-gray-500 italic text-sm">
+                                                                    &quot;Enjoy your {part.props?.name || "cocktail"}&quot;
+                                                                </div>
                                                             </div>
-                                                            <div className="mt-8 text-center text-gray-500 italic text-sm">
-                                                                &quot;Enjoy your {part.props?.name || "cocktail"}&quot;
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                    break;
-                                                default:
-                                                    content = <div key={i} className="text-gray-500 italic">Unsupported tool: {toolName}</div>;
-                                            }
-                                            return content;
-                                        })}
-                                        {!m.parts?.some((p: any) => p.toolName === 'suggestClassicCocktail' || p.toolInvocation?.toolName === 'suggestClassicCocktail' || p.toolInvocationId === 'suggestClassicCocktail') && (
-                                            <button
-                                                onClick={() => {
-                                                    const textContent = Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ');
-                                                    handleFavorite(m.id, textContent);
-                                                }}
-                                                className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
-                                            >
-                                                <span>❤️</span> Save Recipe
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
+                                                        );
+                                                        break;
+                                                    default:
+                                                        content = <div key={i} className="text-gray-500 italic">Unsupported tool: {toolName}</div>;
+                                                }
+                                                return content;
+                                            })}
+                                            {!m.parts?.some((p: any) => p.toolName === 'suggestClassicCocktail' || p.toolInvocation?.toolName === 'suggestClassicCocktail' || p.toolInvocationId === 'suggestClassicCocktail') && (
+                                                <button
+                                                    onClick={() => {
+                                                        const textContent = Array.isArray(m.parts) ? m.parts.map((p: any) => (p.type === 'text' ? p.text : '')).join('') : (typeof m.content === 'string' ? m.content : ' ');
+                                                        handleFavorite(m.id, textContent);
+                                                    }}
+                                                    className="text-xs bg-black/40 border border-red-500/30 text-red-400 px-4 py-2 rounded-full hover:bg-red-500/20 transition-all duration-300 self-start flex items-center gap-2"
+                                                >
+                                                    <span>❤️</span> Save Recipe
+                                                </button>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))
+                    )}
+                    {isLoading && (
+                        <div className="flex justify-start">
+                            <div className="bg-black/40 border border-[var(--primary)]/30 rounded-2xl rounded-tl-none px-6 py-4 text-[var(--primary)] flex items-center gap-3 drop-shadow-[0_0_15px_var(--primary-glow)]">
+                                <span className="text-2xl animate-bounce">🍸</span>
+                                <span className="animate-pulse tracking-widest font-semibold">Shaking...</span>
                             </div>
                         </div>
-                    ))
-                )}
-                {isLoading && (
-                    <div className="flex justify-start">
-                        <div className="bg-black/40 border border-[var(--primary)]/30 rounded-2xl rounded-tl-none px-6 py-4 text-[var(--primary)] flex items-center gap-3 drop-shadow-[0_0_15px_var(--primary-glow)]">
-                            <span className="text-2xl animate-bounce">🍸</span>
-                            <span className="animate-pulse tracking-widest font-semibold">Shaking...</span>
-                        </div>
-                    </div>
-                )}
-                <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input Area */}
-            <form onSubmit={handleSubmit} className="relative w-full group flex items-end gap-3">
-                <div className="relative flex-grow">
-                    <input
-                        value={input}
-                        onChange={handleInputChange}
-                        placeholder={placeholders[placeholderIndex]}
-                        disabled={isLoading}
-                        className="w-full bg-black/50 border border-gray-700 text-white rounded-full py-4 pl-6 pr-14 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-inner disabled:opacity-50"
-                    />
-                    <button
-                        id="chat-submit-btn"
-                        type="submit"
-                        disabled={isLoading || !input?.trim()}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-[var(--accent)] text-black font-bold hover:scale-110 transition-transform disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_10px_var(--primary-glow)]"
-                        title="Send Message"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                            <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                        </svg>
-                    </button>
+                    )}
+                    <div ref={messagesEndRef} />
                 </div>
 
-                {/* Voice Input Button */}
-                <VoiceInputButton
-                    onTranscription={handleTranscription}
-                    isProcessing={isLoading}
-                />
-            </form>
-        </div>
+                {/* Input Area */}
+                <form onSubmit={handleSubmit} className="relative w-full group flex items-end gap-3">
+                    <div className="relative flex-grow">
+                        <input
+                            value={input}
+                            onChange={handleInputChange}
+                            placeholder={placeholders[placeholderIndex]}
+                            disabled={isLoading}
+                            className="w-full bg-black/50 border border-gray-700 text-white rounded-full py-4 pl-6 pr-14 focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-inner disabled:opacity-50"
+                        />
+                        <button
+                            id="chat-submit-btn"
+                            type="submit"
+                            disabled={isLoading || !input?.trim()}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-[var(--accent)] text-black font-bold hover:scale-110 transition-transform disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_10px_var(--primary-glow)]"
+                            title="Send Message"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                                <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {/* Voice Input Button */}
+                    <VoiceInputButton
+                        onTranscription={handleTranscription}
+                        isProcessing={isLoading}
+                    />
+                </form>
+            </div>
+        </ProtectedRoute>
     );
 }

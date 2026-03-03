@@ -2,24 +2,46 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 import {
-    CLASSIC_COCKTAILS,
     PrimarySpirit,
     CocktailEra,
     CocktailStyle,
-    GlassType
+    GlassType,
+    Cocktail
 } from '@/data/cocktails';
 import CocktailCard from '@/components/CocktailCard';
 
+export interface PublicRecipe {
+    id: string;
+    cocktailData: Cocktail;
+    createdAt: string;
+    uid: string;
+    authorName?: string;
+    averageRating?: number;
+    ratingCount?: number;
+}
+
 export default function MenuPage() {
-    const { user, loading: authLoading, myBar, shoppingList } = useAuth();
+    const { user, loading: authLoading, myBar, shoppingList, follows } = useAuth();
     const [showMakeableOnly, setShowMakeableOnly] = useState(false);
     const [sortBy, setSortBy] = useState<string>('popular');
     const [searchQuery, setSearchQuery] = useState('');
+
+    // Unified Catalog State
+    const [feedMode, setFeedMode] = useState<'classics' | 'global' | 'following'>('classics');
+    const [publicDrinks, setPublicDrinks] = useState<PublicRecipe[]>([]);
+    const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
+    const [loadingCommunity, setLoadingCommunity] = useState(false);
+
+    useEffect(() => {
+        getClassicCocktails().then(setClassicCocktails);
+    }, []);
 
     // New Advanced Filters
     const [selectedSpirit, setSelectedSpirit] = useState<PrimarySpirit | 'All'>('All');
@@ -33,6 +55,7 @@ export default function MenuPage() {
     const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
     const hasIngredient = (ingredientItem: string) => {
+        if (!ingredientItem) return false;
         return myBar.some(barItem => barItem.toLowerCase() === ingredientItem.toLowerCase());
     };
 
@@ -70,34 +93,140 @@ export default function MenuPage() {
         }
     };
 
-    const cocktailsToShow = CLASSIC_COCKTAILS.filter(cocktail => {
-        // Text Search Filter
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            const matchesName = cocktail.name.toLowerCase().includes(query);
-            const matchesIngredient = cocktail.ingredients.some(ing => ing.item.toLowerCase().includes(query));
-            if (!matchesName && !matchesIngredient) return false;
-        }
+    // Fetch Community Drinks once on mount if user toggles to them (or eagerly)
+    useEffect(() => {
+        const fetchPublicFeedAndRatings = async () => {
+            setLoadingCommunity(true);
+            try {
+                const q = query(collection(db, 'favorites'), where('isPublic', '==', true));
+                const querySnapshot = await getDocs(q);
+                const recipesResult: PublicRecipe[] = [];
 
-        // Base Filters
-        if (selectedSpirit !== 'All' && cocktail.primarySpirit !== selectedSpirit) return false;
-        if (selectedEra !== 'All' && cocktail.era !== selectedEra) return false;
-        if (selectedStyle !== 'All' && cocktail.style !== selectedStyle) return false;
-        if (selectedGlass !== 'All' && cocktail.glass !== selectedGlass) return false;
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    if (data.type === 'custom_full' && data.cocktailData) {
+                        recipesResult.push({
+                            id: docSnap.id,
+                            cocktailData: data.cocktailData,
+                            createdAt: data.createdAt,
+                            uid: data.uid,
+                            authorName: data.authorName || 'Anonymous Mixologist'
+                        });
+                    }
+                });
 
-        // Advanced Filters
-        if (selectedDifficulty !== 'All' && cocktail.difficultyLevel.split(' • ')[0] !== selectedDifficulty) return false;
-        if (selectedSeason !== 'All' && cocktail.season !== selectedSeason) return false;
-        if (selectedFlavor !== 'All' && !cocktail.flavorProfile.includes(selectedFlavor)) return false;
+                let notesSnapshot;
+                try {
+                    notesSnapshot = await getDocs(collection(db, 'user_notes'));
+                } catch (noteError) {
+                    console.error("Notes unavailable", noteError);
+                }
 
-        // Makeable Only Filter (100% Match)
-        if (showMakeableOnly) {
-            const missingCount = cocktail.ingredients.filter(ing => !hasIngredient(ing.item)).length;
-            if (missingCount > 0) return false;
-        }
+                const ratingsByCocktail: Record<string, { totalScore: number; count: number }> = {};
+                if (notesSnapshot) {
+                    notesSnapshot.forEach((docSnap) => {
+                        const noteData = docSnap.data();
+                        if (noteData.cocktailId && typeof noteData.rating === 'number' && noteData.rating > 0) {
+                            const cId = noteData.cocktailId;
+                            if (!ratingsByCocktail[cId]) { ratingsByCocktail[cId] = { totalScore: 0, count: 0 }; }
+                            ratingsByCocktail[cId].totalScore += noteData.rating;
+                            ratingsByCocktail[cId].count += 1;
+                        }
+                    });
+                }
 
-        return true;
-    });
+                const mergedResults = recipesResult.map((recipe) => {
+                    const ratingData = ratingsByCocktail[recipe.id];
+                    if (ratingData) {
+                        return { ...recipe, averageRating: Number((ratingData.totalScore / ratingData.count).toFixed(1)), ratingCount: ratingData.count };
+                    }
+                    return recipe;
+                });
+                setPublicDrinks(mergedResults);
+            } catch (error) {
+                console.error("Error fetching community:", error);
+            } finally {
+                setLoadingCommunity(false);
+            }
+        };
+        fetchPublicFeedAndRatings();
+    }, []);
+
+    type UnifiedRecipe = {
+        id: string;
+        type: 'classic' | 'community';
+        cocktailData: Cocktail;
+        popularity: number;
+        totalMixes: number;
+        score: number;
+        communityAuthorUid?: string;
+        authorName?: string;
+        averageRating?: number;
+        ratingCount?: number;
+        createdAt?: string;
+    };
+
+    const sourceData: UnifiedRecipe[] = feedMode === 'classics'
+        ? classicCocktails.map(c => ({
+            id: c.name,
+            type: 'classic',
+            cocktailData: c,
+            popularity: c.popularity || 0,
+            totalMixes: c.totalMixes || 0,
+            score: c.popularity || 0
+        }))
+        : publicDrinks
+            .filter(d => feedMode === 'global' || (follows && follows.includes(d.uid)))
+            .map(c => ({
+                id: c.id,
+                type: 'community',
+                cocktailData: c.cocktailData,
+                popularity: c.ratingCount || 0,
+                totalMixes: 0,
+                score: c.averageRating || 0,
+                communityAuthorUid: c.uid,
+                authorName: c.authorName,
+                averageRating: c.averageRating,
+                ratingCount: c.ratingCount,
+                createdAt: c.createdAt
+            }));
+
+    const cocktailsToShow = useMemo(() => {
+        return sourceData.filter(item => {
+            const cocktail = item.cocktailData;
+            // Text Search Filter
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase();
+                const nameSafeguard = cocktail.name || '';
+                const matchesName = nameSafeguard.toLowerCase().includes(query);
+                const matchesIngredient = cocktail.ingredients ? cocktail.ingredients.some(ing => ing.item && ing.item.toLowerCase().includes(query)) : false;
+                if (!matchesName && !matchesIngredient) return false;
+            }
+
+            // Base Filters
+            if (selectedSpirit !== 'All' && cocktail.primarySpirit !== selectedSpirit) return false;
+            if (selectedEra !== 'All' && cocktail.era !== selectedEra) return false;
+            if (selectedStyle !== 'All' && cocktail.style !== selectedStyle) return false;
+            if (selectedGlass !== 'All' && cocktail.glass !== selectedGlass) return false;
+
+            // Advanced Filters
+            const diffLevel = cocktail.difficultyLevel || '';
+            if (selectedDifficulty !== 'All' && diffLevel.split(' • ')[0] !== selectedDifficulty) return false;
+
+            if (selectedSeason !== 'All' && cocktail.season !== selectedSeason) return false;
+
+            const flavors = cocktail.flavorProfile || [];
+            if (selectedFlavor !== 'All' && !flavors.includes(selectedFlavor)) return false;
+
+            // Makeable Only Filter (100% Match)
+            if (showMakeableOnly) {
+                const missingCount = cocktail.ingredients.filter(ing => !hasIngredient(ing.item)).length;
+                if (missingCount > 0) return false;
+            }
+
+            return true;
+        });
+    }, [sourceData, searchQuery, selectedSpirit, selectedEra, selectedStyle, selectedGlass, selectedDifficulty, selectedSeason, selectedFlavor, showMakeableOnly, hasIngredient]);
 
     const activeFilterCount = [
         selectedSpirit, selectedEra, selectedStyle, selectedGlass,
@@ -119,13 +248,48 @@ export default function MenuPage() {
 
     return (
         <div className="flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4">
-            <div className="mb-8 text-center">
+            <div className="mb-4 text-center">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-                    Featured <span className="text-glow-primary text-[var(--primary)]">Menu</span>
+                    Discover <span className="text-glow-primary text-[var(--primary)]">Catalog</span>
                 </h1>
-                <p className="text-gray-400 font-light max-w-2xl mx-auto mb-8">
-                    A curated selection of timeless classics. Perfect when you know exactly what you want, or just need a little inspiration.
+                <p className="text-gray-400 font-light max-w-2xl mx-auto mb-6">
+                    A curated selection of timeless classics, plus incredible custom recipes crafted by the Sipster community.
                 </p>
+
+                {/* Catalog Source Toggle */}
+                <div className="flex justify-center mb-8 relative z-30">
+                    <div className="flex bg-black/40 border border-gray-700 rounded-full p-1 overflow-x-auto no-scrollbar max-w-full">
+                        <button
+                            onClick={() => setFeedMode('classics')}
+                            className={`px-5 py-2 whitespace-nowrap rounded-full text-sm font-bold transition-all duration-300 ${feedMode === 'classics'
+                                ? 'bg-[var(--primary)] text-black shadow-[0_0_15px_rgba(0,255,255,0.4)]'
+                                : 'text-gray-400 hover:text-white'
+                                }`}
+                        >
+                            📚 Classics
+                        </button>
+                        <button
+                            onClick={() => setFeedMode('global')}
+                            className={`px-5 py-2 whitespace-nowrap rounded-full text-sm font-bold transition-all duration-300 ${feedMode === 'global'
+                                ? 'bg-[var(--secondary)] text-white shadow-[0_0_15px_rgba(255,165,0,0.4)]'
+                                : 'text-gray-400 hover:text-white'
+                                }`}
+                        >
+                            🌍 Global
+                        </button>
+                        {user && (
+                            <button
+                                onClick={() => setFeedMode('following')}
+                                className={`px-5 py-2 whitespace-nowrap rounded-full text-sm font-bold transition-all duration-300 ${feedMode === 'following'
+                                    ? 'bg-[var(--accent)] text-white shadow-[0_0_15px_rgba(255,0,255,0.4)]'
+                                    : 'text-gray-400 hover:text-white'
+                                    }`}
+                            >
+                                👥 Following
+                            </button>
+                        )}
+                    </div>
+                </div>
 
                 {/* Actions Row: Search & Sort */}
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 z-30 relative text-left w-full max-w-xl mx-auto">
@@ -151,7 +315,7 @@ export default function MenuPage() {
                         <select
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className="bg-black/90 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
+                            className="bg-black/90 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 min-h-[44px] text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
                         >
                             <option value="popular">🔥 Most Popular</option>
                             <option value="makeable-first">✅ Makeable First</option>
@@ -168,7 +332,7 @@ export default function MenuPage() {
                 {/* Master Switch & AI Search Bar */}
                 <div className="max-w-xl mx-auto mb-6 relative z-30">
                     <div className="flex justify-end mb-3">
-                        <div className="flex items-center gap-3 bg-black/40 border border-white/10 px-4 py-2 rounded-2xl cursor-pointer group/switch hover:border-[var(--primary)]/50 transition-colors" onClick={() => setShowMakeableOnly(!showMakeableOnly)}>
+                        <div className="flex items-center gap-3 bg-black/40 border border-white/10 px-4 py-2 min-h-[44px] rounded-2xl cursor-pointer group/switch hover:border-[var(--primary)]/50 transition-colors" onClick={() => setShowMakeableOnly(!showMakeableOnly)}>
                             <div className={`w-10 h-5 rounded-full transition-colors relative flex items-center ${showMakeableOnly ? 'bg-[var(--primary)]' : 'bg-gray-700'}`}>
                                 <span className={`w-3.5 h-3.5 rounded-full bg-white absolute transition-transform ${showMakeableOnly ? 'translate-x-6' : 'translate-x-1'}`}></span>
                             </div>
@@ -193,7 +357,7 @@ export default function MenuPage() {
                         <button
                             type="submit"
                             disabled={isSearching || !aiSearchQuery.trim()}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-[var(--accent)] transition-colors disabled:opacity-50"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-gray-400 hover:text-[var(--accent)] transition-colors disabled:opacity-50"
                         >
                             {isSearching ? (
                                 <div className="w-5 h-5 border-2 border-t-[var(--accent)] border-r-transparent border-b-[var(--accent)] border-l-transparent rounded-full animate-spin"></div>
@@ -274,7 +438,7 @@ export default function MenuPage() {
 
                     <button
                         onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                        className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-widest font-bold font-sans"
+                        className="flex items-center justify-center min-h-[44px] gap-2 text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-widest font-bold font-sans"
                     >
                         {showAdvancedFilters ? 'Hide Filters ⬆️' : 'Advanced Filters ⬇️'}
                         {activeFilterCount > 0 && <span className="bg-[var(--secondary)] text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">{activeFilterCount}</span>}
@@ -403,72 +567,126 @@ export default function MenuPage() {
                 </div>
             </div>
 
-            {cocktailsToShow.length === 0 ? (
+            {feedMode !== 'classics' && loadingCommunity ? (
+                <div className="flex justify-center flex-col items-center min-h-[40vh] z-10 relative">
+                    <div className="animate-bounce text-6xl mb-4">🌍</div>
+                    <div className="text-[var(--primary)] animate-pulse font-serif italic text-xl">Loading community creations...</div>
+                </div>
+            ) : cocktailsToShow.length === 0 ? (
                 <div className="text-center py-20 bg-black/40 border border-white/10 rounded-3xl mt-8">
                     <span className="text-6xl opacity-50 block mb-4">🧊</span>
-                    <h3 className="text-2xl font-bold mb-2">Nothing to make... yet!</h3>
-                    <p className="text-gray-400 max-w-md mx-auto mb-6">You don&apos;t have all the ingredients for these classics right now.</p>
+                    <h3 className="text-2xl font-bold mb-2">Nothing found...</h3>
+                    <p className="text-gray-400 max-w-md mx-auto mb-6">We couldn't find any drinks matching these rigid filters.</p>
                     <button
-                        onClick={() => setShowMakeableOnly(false)}
+                        onClick={clearFilters}
                         className="text-[var(--accent)] border border-[var(--accent)]/50 px-6 py-2 rounded-full hover:bg-[var(--accent)]/10 transition-colors"
                     >
-                        View Full Menu
+                        Clear Filters
                     </button>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                     {[...cocktailsToShow].sort((a, b) => {
-                        // Pre-calculate Match Percentage for 'makeable-first' sorting
-                        const getMatchPercentage = (cocktail: any) => {
-                            const rawIngredients = Array.isArray(cocktail?.ingredients) ? cocktail.ingredients : [];
+                        const getMatchPercentage = (item: any) => {
+                            const rawIngredients = Array.isArray(item.cocktailData?.ingredients) ? item.cocktailData.ingredients : [];
                             const missingCount = rawIngredients.filter((ing: any) => !hasIngredient(ing.item)).length;
-
                             const trackedIngredients = rawIngredients.filter((ing: any) => {
                                 const isGarnishOrBasic = ing?.item === 'Simple Syrup' || ing?.item === 'Club Soda' || ing?.item === 'Egg White' || ing?.amount === 'Garnish';
                                 return ing?.item && !isGarnishOrBasic;
                             });
-
                             const totalTracked = trackedIngredients.length;
-                            return totalTracked > 0
-                                ? Math.round(((totalTracked - missingCount) / totalTracked) * 100)
-                                : 100;
+                            return totalTracked > 0 ? Math.round(((totalTracked - missingCount) / totalTracked) * 100) : 100;
                         };
 
                         switch (sortBy) {
                             case 'makeable-first':
                                 const matchA = getMatchPercentage(a);
                                 const matchB = getMatchPercentage(b);
-                                if (matchA !== matchB) return matchB - matchA; // Descending Match %
-                                return (b.popularity || 0) - (a.popularity || 0); // fallback to popularity
+                                if (matchA !== matchB) return matchB - matchA;
+                                return (b.popularity || 0) - (a.popularity || 0);
                             case 'popular':
                                 return (b.popularity || 0) - (a.popularity || 0);
                             case 'drank':
                                 return (b.totalMixes || 0) - (a.totalMixes || 0);
                             case 'cost-asc':
-                                return (a.estimatedCost || 0) - (b.estimatedCost || 0);
+                                return (a.cocktailData.estimatedCost || 0) - (b.cocktailData.estimatedCost || 0);
                             case 'cost-desc':
-                                return (b.estimatedCost || 0) - (a.estimatedCost || 0);
+                                return (b.cocktailData.estimatedCost || 0) - (a.cocktailData.estimatedCost || 0);
                             case 'strength-asc':
-                                return (a.strength || 0) - (b.strength || 0);
+                                return (a.cocktailData.strength || 0) - (b.cocktailData.strength || 0);
                             case 'strength-desc':
-                                return (b.strength || 0) - (a.strength || 0);
+                                return (b.cocktailData.strength || 0) - (a.cocktailData.strength || 0);
                             case 'name-asc':
+                                const nameA = a.cocktailData.name || '';
+                                const nameB = b.cocktailData.name || '';
+                                return nameA.localeCompare(nameB);
                             default:
-                                return a.name.localeCompare(b.name);
+                                if (feedMode !== 'classics') {
+                                    return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+                                }
+                                const defNameA = a.cocktailData.name || '';
+                                const defNameB = b.cocktailData.name || '';
+                                return defNameA.localeCompare(defNameB);
                         }
-                    }).map((cocktail) => {
-                        const missingCount = cocktail.ingredients.filter(ing => !hasIngredient(ing.item)).length;
+                    }).map((item, idx) => {
+                        const rawIngredients = Array.isArray(item.cocktailData?.ingredients) ? item.cocktailData.ingredients : [];
+                        const missingCount = rawIngredients.filter((ing: any) => !hasIngredient(ing.item)).length;
                         const makeable = missingCount === 0;
 
-                        return (
-                            <CocktailCard
-                                key={cocktail.name}
-                                cocktail={cocktail}
-                                makeable={makeable}
-                                missingCount={missingCount}
-                                hasIngredient={hasIngredient}
-                            />
-                        );
+                        const delayTime = (idx % 12) * 0.05;
+
+                        if (item.type === 'community') {
+                            return (
+                                <motion.div
+                                    key={item.id}
+                                    className="relative group h-full"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-20px" }}
+                                    transition={{ duration: 0.4, ease: "easeOut", delay: delayTime }}
+                                >
+                                    <CocktailCard
+                                        cocktail={item.cocktailData}
+                                        makeable={makeable}
+                                        missingCount={missingCount}
+                                        hasIngredient={hasIngredient}
+                                        customHref={`/recipe/${item.id}`}
+                                        favoriteType="community_like"
+                                        favoriteId={item.id}
+                                        communityOriginalId={item.id}
+                                        communityAuthorUid={item.communityAuthorUid}
+                                        authorName={item.authorName}
+                                        authorUid={item.communityAuthorUid}
+                                    />
+                                    {item.averageRating && item.ratingCount ? (
+                                        <div className="absolute top-4 left-4 z-30 flex pl-4 pt-4 pointer-events-none">
+                                            <div className="bg-black/80 backdrop-blur-md border border-[var(--accent)]/50 rounded-full px-3 py-1 flex items-center gap-1.5 shadow-[0_0_10px_rgba(255,0,255,0.2)]">
+                                                <span className="text-[var(--accent)] text-xs font-bold leading-none">★ {item.averageRating}</span>
+                                                <span className="text-gray-400 text-[10px] leading-none">({item.ratingCount})</span>
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </motion.div>
+                            );
+                        } else {
+                            return (
+                                <motion.div
+                                    key={item.id}
+                                    className="h-full"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-20px" }}
+                                    transition={{ duration: 0.4, ease: "easeOut", delay: delayTime }}
+                                >
+                                    <CocktailCard
+                                        cocktail={item.cocktailData}
+                                        makeable={makeable}
+                                        missingCount={missingCount}
+                                        hasIngredient={hasIngredient}
+                                    />
+                                </motion.div>
+                            );
+                        }
                     })}
                 </div>
             )}

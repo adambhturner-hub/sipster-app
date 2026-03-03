@@ -22,6 +22,11 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
     const [docId, setDocId] = useState<string | null>(null);
     const [previousRating, setPreviousRating] = useState<number>(0);
 
+    // Photo Upload State
+    const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+    const [existingPhotoUrl, setExistingPhotoUrl] = useState<string | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+
     useEffect(() => {
         const fetchNotes = async () => {
             if (!user) return;
@@ -52,6 +57,7 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                         setRating(data.rating || 0);
                         setPreviousRating(data.rating || 0);
                         setNotes(data.notes || '');
+                        setExistingPhotoUrl(data.personalPhotoUrl || null);
                         setDocId(currentDocId);
                     }
                 }
@@ -75,6 +81,19 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
         try {
             const { runTransaction, collection, addDoc } = await import('firebase/firestore');
 
+            let finalPhotoUrl = existingPhotoUrl;
+
+            // If there's a new generated Base64 string in photoPreview, that becomes our final bound URL!
+            if (photoPreview && photoPreview !== existingPhotoUrl) {
+                finalPhotoUrl = photoPreview;
+            } else if (photoPreview === null && existingPhotoUrl !== null) {
+                // If photoPreview is null but there was an existing photo, it means the user removed it.
+                finalPhotoUrl = null;
+            }
+
+
+            const savingToastId = toast.loading("Saving journal entry...");
+
             // 1. Prepare interaction record data
             const interactionData = {
                 uid: user.uid,
@@ -82,7 +101,9 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                 type,
                 rating,
                 notes,
+                personalPhotoUrl: finalPhotoUrl,
                 isTried: true, // Automatically mark as tried if they are leaving notes/ratings!
+                isWantToTry: false, // Automatically remove from On Deck if they've left a review
                 updatedAt: new Date().toISOString()
             };
 
@@ -101,9 +122,6 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
             }
 
             // 3. Attempt to update Global Cocktail Stats in a separate transaction
-            // We wrap this in a separate try/catch so that if the user doesn't have 
-            // Firestore Security Rule permissions for the new `cocktail_stats` collection, 
-            // it won't crash their personal note saving!
             try {
                 await runTransaction(db, async (transaction) => {
                     const statsRef = doc(db, 'cocktail_stats', cocktailId);
@@ -142,13 +160,102 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
             }
 
             setPreviousRating(rating);
-            toast.success("Notes saved successfully! 📝");
+            toast.success("Notes saved successfully! 📝", { id: savingToastId });
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error saving notes:", error);
-            toast.error("Failed to save notes.");
+            toast.error(`Failed to save notes: ${error.message}`);
         } finally {
             setIsSaving(false);
+            setIsUploading(false);
+        }
+    };
+
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+
+            if (!file.type.startsWith('image/')) {
+                toast.error("Please upload a valid image file.");
+                return;
+            }
+
+            setIsUploading(true);
+            const loadingToast = toast.loading("Optimizing image...");
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        // Extremely aggressive downscaling to circumvent Firestore 1MB limits
+                        const MAX_WIDTH = 400; // 400px is plenty for a 128x128 thumbnail
+                        const MAX_HEIGHT = 400;
+
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx?.drawImage(img, 0, 0, width, height);
+
+                        // Start with 0.6 quality
+                        let quality = 0.6;
+                        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+
+                        // Roughly calculate string size in bytes (base64 string length * 0.75)
+                        // Firestore limit is 1MB total document size. We want the image under 200KB ideally.
+                        while (dataUrl.length * 0.75 > 200000 && quality > 0.1) {
+                            quality -= 0.1;
+                            dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        }
+
+                        if (dataUrl.length * 0.75 > 800000) {
+                            toast.error("Image is too complex even after compression.", { id: loadingToast });
+                            setIsUploading(false);
+                            return;
+                        }
+
+                        setPhotoPreview(dataUrl);
+                        setIsUploading(false);
+                        toast.success("Image added!", { id: loadingToast });
+                    } catch (err) {
+                        console.error("Canvas Compression Error:", err);
+                        toast.error("Failed to process image.", { id: loadingToast });
+                        setIsUploading(false);
+                    }
+                };
+                img.onerror = () => {
+                    toast.error("Unsupported or corrupted image file.", { id: loadingToast });
+                    setIsUploading(false);
+                };
+                img.src = event.target?.result as string;
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const removePhoto = async () => {
+        setPhotoPreview(null);
+
+        // If they click remove on an existing photo, we queue it for removal on save
+        if (existingPhotoUrl) {
+            setExistingPhotoUrl(null);
+            // We intentionally do not delete from Storage immediately here. It only deletes references in Firestore upon Save.
         }
     };
 
@@ -192,7 +299,7 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                                     setHoverRating(isLeftSide ? star - 0.5 : star);
                                 }}
                                 onClick={() => {
-                                    setRating(hoverRating);
+                                    setRating(hoverRating || star);
                                 }}
                             >
                                 {/* Base empty star */}
@@ -221,13 +328,47 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
                     className="w-full bg-black/60 border border-gray-800 rounded-2xl p-5 text-gray-300 focus:outline-none focus:border-yellow-500/50 focus:bg-black transition-all resize-none shadow-inner"
                 />
 
+                {/* Photo Upload Area */}
+                <div className="mt-4 border border-dashed border-gray-700 rounded-2xl p-4 bg-black/40 hover:bg-black/60 transition-colors group/upload relative">
+                    <label className="block text-xs font-bold tracking-widest text-gray-500 uppercase mb-3">Tasting Photo</label>
+
+                    {photoPreview || existingPhotoUrl ? (
+                        <div className="relative w-32 h-32 rounded-xl overflow-hidden border border-gray-600 shadow-lg">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={photoPreview || existingPhotoUrl || ''} alt="Cocktail Photo" className="w-full h-full object-cover" />
+                            <button
+                                onClick={removePhoto}
+                                className="absolute top-1 right-1 bg-black/80 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-500 transition-colors text-xs"
+                                aria-label="Remove photo"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-24 text-center cursor-pointer relative">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handlePhotoChange}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            <span className="text-2xl text-gray-500 group-hover/upload:text-yellow-500 transition-colors mb-2">📸</span>
+                            <span className="text-gray-400 text-sm font-medium">Capture or upload a photo</span>
+                            <span className="text-gray-600 text-xs">Max size: 5MB</span>
+                        </div>
+                    )}
+                </div>
+
                 <div className="flex justify-end pt-2">
                     <button
                         onClick={handleSave}
-                        disabled={isSaving}
-                        className="bg-gray-800 hover:bg-yellow-500 text-gray-300 hover:text-black font-bold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg disabled:opacity-50"
+                        disabled={isSaving || isUploading}
+                        className="bg-gray-800 hover:bg-yellow-500 text-gray-300 hover:text-black font-bold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg disabled:opacity-50 flex items-center gap-2"
                     >
-                        {isSaving ? 'Saving...' : 'Save Log'}
+                        {(isSaving || isUploading) && (
+                            <div className="w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin" />
+                        )}
+                        {isSaving ? 'Saving...' : isUploading ? 'Uploading...' : 'Save Log'}
                     </button>
                 </div>
             </div>

@@ -2,17 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import BigNeonLogo from '@/components/BigNeonLogo';
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
+import { Cocktail } from '@/data/cocktails';
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
   const [myBar, setMyBar] = useState<string[]>([]);
   const [makeableCount, setMakeableCount] = useState(0);
+
+  const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
+
+  useEffect(() => {
+    getClassicCocktails().then(setClassicCocktails);
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -23,7 +29,7 @@ export default function Home() {
         setMyBar(bar);
 
         let count = 0;
-        CLASSIC_COCKTAILS.forEach(cocktail => {
+        classicCocktails.forEach(cocktail => {
           const makeable = (cocktail.ingredients || []).filter(i =>
             i.item !== 'Garnish' && i.item !== 'Simple Syrup' && i.item !== 'Club Soda'
           ).length > 0 ? (cocktail.ingredients.filter(ing =>
@@ -37,7 +43,7 @@ export default function Home() {
       }
     });
     return () => unsub();
-  }, [user]);
+  }, [user, classicCocktails]);
 
   // If loading Auth state, just show a subtle pulse
   if (authLoading) {
@@ -51,8 +57,12 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="mb-12 flex items-center gap-4">
-            {user.photoURL ? (
-              <Image src={user.photoURL} alt="User avatar" width={64} height={64} className="rounded-full shadow-[0_0_20px_var(--primary-glow)] border-2 border-[var(--primary)]" />
+            {user.photoURL && user.photoURL.length > 2 ? (
+              <img src={user.photoURL} alt="User avatar" className="w-16 h-16 object-cover rounded-full shadow-[0_0_20px_var(--primary-glow)] border-2 border-[var(--primary)]" onError={(e) => { (e.target as any).style.display = 'none'; }} />
+            ) : user.photoURL ? (
+              <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-4xl shadow-[0_0_20px_var(--primary-glow)] border-2 border-[var(--primary)]">
+                {user.photoURL}
+              </div>
             ) : (
               <div className="w-16 h-16 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-2xl shadow-[0_0_20px_var(--primary-glow)]">
                 {user.displayName?.charAt(0) || 'U'}

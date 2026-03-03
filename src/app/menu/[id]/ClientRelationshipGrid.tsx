@@ -1,6 +1,8 @@
 'use client';
 
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { useEffect, useState } from 'react';
+import { Cocktail } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 import CocktailCard from '@/components/CocktailCard';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -10,6 +12,11 @@ interface ClientRelationshipGridProps {
 
 export default function ClientRelationshipGrid({ relationships }: ClientRelationshipGridProps) {
     const { myBar } = useAuth();
+    const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
+
+    useEffect(() => {
+        getClassicCocktails().then(setClassicCocktails);
+    }, []);
 
     const hasIngredient = (ingredientItem: string) => {
         return myBar.some(barItem => barItem.toLowerCase() === ingredientItem.toLowerCase());
@@ -17,7 +24,7 @@ export default function ClientRelationshipGrid({ relationships }: ClientRelation
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 font-sans">
             {relationships.map(rel => {
-                const linkedCocktail = CLASSIC_COCKTAILS.find(c => c.name === rel);
+                const linkedCocktail = classicCocktails.find(c => c.name === rel);
 
                 if (linkedCocktail) {
                     return (

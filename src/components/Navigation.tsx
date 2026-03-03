@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import Image from 'next/image';
 import ThemeSelector from '@/components/ThemeSelector';
+import NotificationsDropdown from '@/components/NotificationsDropdown';
 
 export default function Navigation() {
     const { user, loading, openLoginModal, logout } = useAuth();
@@ -47,14 +47,15 @@ export default function Navigation() {
                             </button>
                         )}
                         {!loading && user && (
-                            <div className="flex items-center space-x-3 bg-black/40 border border-white/10 rounded-full pl-1 pr-3 py-1">
+                            <div className="flex items-center space-x-3 bg-black/40 border border-white/10 rounded-full pl-3 pr-3 py-1">
+                                <NotificationsDropdown />
                                 <Link href={`/creator/${user.uid}`}>
                                     {user.photoURL && user.photoURL.length <= 2 ? (
                                         <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-lg shadow-[0_0_10px_var(--primary-glow)] hover:scale-110 transition-transform">
                                             {user.photoURL}
                                         </div>
                                     ) : user.photoURL ? (
-                                        <Image src={user.photoURL} alt="User avatar" width={32} height={32} className="rounded-full shadow-[0_0_10px_var(--primary-glow)] hover:scale-110 transition-transform" />
+                                        <img src={user.photoURL} alt="User avatar" className="w-8 h-8 rounded-full object-cover shadow-[0_0_10px_var(--primary-glow)] hover:scale-110 transition-transform" onError={(e) => { (e.target as any).style.display = 'none'; }} />
                                     ) : (
                                         <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white font-bold text-xs hover:scale-110 transition-transform">
                                             {user.displayName?.charAt(0) || 'U'}
@@ -75,7 +76,7 @@ export default function Navigation() {
                     <div className="md:hidden flex items-center">
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="text-gray-300 hover:text-white focus:outline-none p-2"
+                            className="text-gray-300 hover:text-white focus:outline-none p-3 flex justify-center items-center min-h-[44px] min-w-[44px]"
                         >
                             {isMobileMenuOpen ? (
                                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -153,7 +154,7 @@ export default function Navigation() {
                                                 {user.photoURL}
                                             </div>
                                         ) : user.photoURL ? (
-                                            <Image src={user.photoURL} alt="User avatar" width={40} height={40} className="rounded-full shadow-[0_0_10px_rgba(255,0,255,0.3)]" />
+                                            <img src={user.photoURL} alt="User avatar" className="w-10 h-10 rounded-full object-cover shadow-[0_0_10px_rgba(255,0,255,0.3)]" onError={(e) => { (e.target as any).style.display = 'none'; }} />
                                         ) : (
                                             <div className="w-10 h-10 rounded-full bg-[var(--color-neon-pink)] flex items-center justify-center text-black font-bold text-lg">
                                                 {user.displayName?.charAt(0) || 'U'}
@@ -169,7 +170,7 @@ export default function Navigation() {
                                             setIsMobileMenuOpen(false);
                                             logout();
                                         }}
-                                        className="w-full text-sm font-bold tracking-widest uppercase text-red-400 bg-red-400/10 border border-red-400/20 hover:bg-red-400 hover:text-white py-3 rounded-lg transition-colors"
+                                        className="w-full text-sm font-bold tracking-widest uppercase text-red-400 bg-red-400/10 border border-red-400/20 hover:bg-red-400 hover:text-white py-4 min-h-[44px] flex items-center justify-center rounded-lg transition-colors"
                                     >
                                         Log Out
                                     </button>

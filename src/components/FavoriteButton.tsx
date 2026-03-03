@@ -5,17 +5,20 @@ import { db } from '@/lib/firebase';
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { createNotification } from '@/lib/notifications';
 
 interface FavoriteButtonProps {
     cocktailId: string;
     cocktailName: string;
     compact?: boolean;
     favoriteId?: string;
-    type?: 'classic' | 'custom_full' | 'custom';
-    onChange?: (isFavorited: boolean) => void;
+    type?: 'classic' | 'custom_full' | 'custom' | 'community_like';
+    communityOriginalId?: string; // ID of the original recipe being liked
+    communityAuthorUid?: string;  // UID of the original author
+    onChange?: (interactions: { isFavorite: boolean, isWantToTry: boolean, isTried: boolean }) => void;
 }
 
-export default function FavoriteButton({ cocktailId, cocktailName, compact = false, favoriteId, type = 'classic', onChange }: FavoriteButtonProps) {
+export default function FavoriteButton({ cocktailId, cocktailName, compact = false, favoriteId, type = 'classic', communityOriginalId, communityAuthorUid, onChange }: FavoriteButtonProps) {
     const { user, loading } = useAuth();
 
     const [interactions, setInteractions] = useState({
@@ -40,8 +43,9 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 const docSnap = await getDocs(query(collection(db, 'favorites'), where('__name__', '==', favoriteId)));
                 if (!docSnap.empty) {
                     const data = docSnap.docs[0].data();
+                    const isLegacyFavorite = data.isFavorite === undefined && data.isWantToTry === undefined && data.isTried === undefined;
                     setInteractions({
-                        isFavorite: !!data.isFavorite || !!data.uid, // legacy support
+                        isFavorite: data.isFavorite || (isLegacyFavorite && !!data.uid), // Legacy support for old favorites
                         isWantToTry: !!data.isWantToTry,
                         isTried: !!data.isTried
                     });
@@ -50,20 +54,24 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 return;
             }
 
+            // For community likes, we query against the original recipe's ID
             const q = query(
                 collection(db, 'favorites'),
                 where('uid', '==', user.uid),
-                where('type', '==', 'classic'),
-                where('cocktailId', '==', cocktailId)
+                where('type', '==', type),
+                where(type === 'community_like' ? 'communityOriginalId' : 'cocktailId', '==', type === 'community_like' ? (communityOriginalId || cocktailId) : cocktailId)
             );
 
             const snapshot = await getDocs(q);
             if (!snapshot.empty) {
                 const docSnap = snapshot.docs[0];
                 const data = docSnap.data();
+
+                const isLegacyFavorite = data.isFavorite === undefined && data.isWantToTry === undefined && data.isTried === undefined;
+
                 setDocId(docSnap.id);
                 setInteractions({
-                    isFavorite: !!data.isFavorite || true, // legacy docs are favorites implicitly
+                    isFavorite: !!data.isFavorite || isLegacyFavorite, // legacy docs are favorites implicitly
                     isWantToTry: !!data.isWantToTry,
                     isTried: !!data.isTried
                 });
@@ -93,14 +101,20 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
 
             // Strictly exclusive states
             if (interactionType === 'isTried' && newInteractions.isTried) {
-                newInteractions.isWantToTry = false;
+                newInteractions.isWantToTry = false; // Cannot be On Deck if you've Tried It
             }
             if (interactionType === 'isWantToTry' && newInteractions.isWantToTry) {
-                newInteractions.isTried = false;
+                newInteractions.isTried = false; // Cannot be Tried if you're putting it On Deck
+                newInteractions.isFavorite = false; // Cannot be a Favorite if you are just putting it On Deck for the first time
+            }
+            if (interactionType === 'isFavorite' && newInteractions.isFavorite) {
+                // Favoriting a drink implies you have tried it, and means it should no longer be on deck
+                newInteractions.isTried = true;
+                newInteractions.isWantToTry = false;
             }
 
             let currentDocId = docId;
-            const docData = {
+            let docData: any = {
                 uid: user.uid,
                 type: type,
                 cocktailId: cocktailId,
@@ -109,6 +123,13 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 isWantToTry: newInteractions.isWantToTry,
                 isTried: newInteractions.isTried
             };
+
+            if (type === 'community_like') {
+                docData.communityOriginalId = communityOriginalId || cocktailId;
+                docData.communityAuthorUid = communityAuthorUid;
+                // Important: we don't want community likes to be public themselves
+                docData.isPublic = false;
+            }
 
             if (currentDocId) {
                 // Update existing doc
@@ -134,13 +155,25 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
             if (interactionType === 'isFavorite') {
                 toast.success(newInteractions.isFavorite ? `Saved ${cocktailName} to Favorites! ❤️` : `Removed ${cocktailName} from Favorites`);
             } else if (interactionType === 'isWantToTry') {
-                if (newInteractions.isWantToTry) toast.success(`Added ${cocktailName} to Want To Try! 🔖`);
+                if (newInteractions.isWantToTry) toast.success(`Added ${cocktailName} to On Deck! 🔖`);
             } else if (interactionType === 'isTried') {
-                if (newInteractions.isTried) toast.success(`Marked ${cocktailName} as Tried! ✔️`);
+                if (newInteractions.isTried) toast.success(`Added ${cocktailName} to My Tab! ✔️`);
             }
 
-            // Fire generic onChange for things watching 'isFavorite' backwards compatibility
-            if (onChange) onChange(newInteractions.isFavorite);
+            // Fire generic onChange
+            if (onChange) onChange(newInteractions);
+
+            // Trigger notification if liking a community recipe
+            if (type === 'community_like' && interactionType === 'isFavorite' && newInteractions.isFavorite && communityAuthorUid) {
+                await createNotification(
+                    communityAuthorUid,
+                    user.uid,
+                    user.displayName || 'A Mixologist',
+                    'like',
+                    communityOriginalId || cocktailId,
+                    cocktailName
+                );
+            }
 
         } catch (e) {
             console.error(e);
@@ -192,7 +225,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 onClick={(e) => toggleInteraction('isFavorite', e)}
                 disabled={isSaving || loading}
                 title="Favorite"
-                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm h-8 px-3 ${interactions.isFavorite
+                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${interactions.isFavorite
                     ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border border-[var(--color-neon-pink)]/50 shadow-[0_0_10px_rgba(255,0,127,0.3)]'
                     : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
                     }`}
@@ -203,12 +236,12 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 </span>
             </button>
 
-            {/* Want to Try */}
+            {/* Want to Try -> On Deck */}
             <button
                 onClick={(e) => toggleInteraction('isWantToTry', e)}
                 disabled={isSaving || loading}
-                title="Want to Try"
-                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm h-8 px-3 ${interactions.isWantToTry
+                title="On Deck"
+                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${interactions.isWantToTry
                     ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]'
                     : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
                     }`}
@@ -218,12 +251,12 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 </span>
             </button>
 
-            {/* Tried It */}
+            {/* Tried It -> On My Tab */}
             <button
                 onClick={(e) => toggleInteraction('isTried', e)}
                 disabled={isSaving || loading}
-                title="Tried It"
-                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm h-8 px-3 ${interactions.isTried
+                title="On My Tab"
+                className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${interactions.isTried
                     ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
                     : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
                     }`}
@@ -239,7 +272,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                     onClick={togglePublish}
                     disabled={isSaving || loading || !docId}
                     title="Publish to Community"
-                    className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm h-8 px-3 ${isPublic
+                    className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[44px] min-w-[44px] px-3 ${isPublic
                         ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50 shadow-[0_0_10px_rgba(168,85,247,0.3)]'
                         : 'text-gray-500 hover:text-gray-300 hover:bg-gray-800/50'
                         }`}

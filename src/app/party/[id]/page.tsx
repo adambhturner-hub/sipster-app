@@ -3,7 +3,8 @@
 import { use, useEffect, useState } from 'react';
 import { doc, getDoc, updateDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Cocktail, CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { Cocktail } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
@@ -33,6 +34,11 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
     const [menu, setMenu] = useState<GeneratedMenu | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
+
+    useEffect(() => {
+        getClassicCocktails().then(setClassicCocktails);
+    }, []);
 
     // Editing State (Cocktails)
     const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -291,10 +297,10 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
         }
     };
 
-    const swapCategories = ['All', 'My Drinks', ...Array.from(new Set(CLASSIC_COCKTAILS.map(c => c.primarySpirit)))];
+    const swapCategories = ['All', 'My Drinks', ...Array.from(new Set(classicCocktails.map(c => c.primarySpirit)))];
 
     // Combine standard drinks and custom AI drinks for the Swap view
-    const allAvailableDrinks = [...CLASSIC_COCKTAILS, ...userDrinks];
+    const allAvailableDrinks = [...classicCocktails, ...userDrinks];
 
     const filteredSwapCocktails = allAvailableDrinks.filter(c => {
         const matchesCategory = activeSwapCategory === 'All'

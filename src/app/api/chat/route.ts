@@ -1,13 +1,14 @@
 import { openai } from '@ai-sdk/openai';
 import { streamText, convertToModelMessages, tool } from 'ai';
 import { z } from 'zod';
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
     const { messages, data } = await req.json();
+    const classicCocktails = await getClassicCocktails();
 
     let systemPrompt = `You are Sipster, a 'bartender in your pocket'. You are a playful, vibrant, and highly knowledgeable mixologist. 
 Your goal is to help users discover and craft the perfect cocktail based on their available ingredients, mood, or flavor preferences. 
@@ -23,9 +24,9 @@ When providing a recipe:
 7. CRITICAL NEW RULE: If a user lists ingredients that very closely match ANY known global classic cocktail (e.g. "I have vodka and kahlua"), you MUST use the \`offerRecipeChoices\` tool to ask the user if they want the classic recipe or a brand new custom drink. It does NOT matter if it's in the Sipster database or not.
 
 ### SIPSTER CLASSIC COCKTAILS DATABASE ###
-You have exactly ${CLASSIC_COCKTAILS.length} classic cocktails in your permanent database. You must NEVER hallucinate a classic that isn't on this list.
+You have exactly ${classicCocktails.length} classic cocktails in your permanent database. You must NEVER hallucinate a classic that isn't on this list.
 Here are their exact names and core ingredients:
-${CLASSIC_COCKTAILS.map(c => `- ${c.name}: ${c.ingredients.map(i => i.item).join(', ')}`).join('\n')}
+${classicCocktails.map(c => `- ${c.name}: ${c.ingredients.map(i => i.item).join(', ')}`).join('\n')}
 `;
 
     const lastMessage = messages[messages.length - 1];
@@ -123,7 +124,7 @@ When they ask for a recommendation, you must heavily prioritize suggesting recip
                 // @ts-ignore
                 execute: async ({ cocktailName }: { cocktailName: string }) => {
                     const normalizedQuery = cocktailName.toLowerCase().replace(/[^a-z0-9]/g, '');
-                    const matchedCocktail = CLASSIC_COCKTAILS.find(c =>
+                    const matchedCocktail = classicCocktails.find(c =>
                         c.name.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedQuery) ||
                         normalizedQuery.includes(c.name.toLowerCase().replace(/[^a-z0-9]/g, ''))
                     );

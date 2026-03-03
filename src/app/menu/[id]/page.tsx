@@ -1,4 +1,5 @@
-import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
+import { Cocktail } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 import Link from 'next/link';
 import ClientRelationshipGrid from './ClientRelationshipGrid';
 import FavoriteButton from '@/components/FavoriteButton';
@@ -10,7 +11,8 @@ import GlobalStarRating from '@/components/GlobalStarRating';
 import CocktailCard from '@/components/CocktailCard';
 
 export async function generateStaticParams() {
-    return CLASSIC_COCKTAILS.map((cocktail) => ({
+    const classicCocktails = await getClassicCocktails();
+    return classicCocktails.map((cocktail) => ({
         id: encodeURIComponent(cocktail.name.toLowerCase().replace(/ /g, '-')),
     }));
 }
@@ -18,7 +20,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = await params;
     const decodedId = decodeURIComponent(resolvedParams.id).replace(/-/g, ' ');
-    const cocktail = CLASSIC_COCKTAILS.find((c) => c.name.toLowerCase() === decodedId);
+    const classicCocktails = await getClassicCocktails();
+    const cocktail = classicCocktails.find((c) => c.name.toLowerCase() === decodedId);
 
     if (!cocktail) return { title: 'Cocktail Not Found' };
 
@@ -54,8 +57,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function CocktailProfilePage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = await params;
     const decodedId = decodeURIComponent(resolvedParams.id).replace(/-/g, ' ');
+    const classicCocktails = await getClassicCocktails();
 
-    const cocktail = CLASSIC_COCKTAILS.find(
+    const cocktail = classicCocktails.find(
         (c) => c.name.toLowerCase() === decodedId
     );
 

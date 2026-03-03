@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import CocktailCard from '@/components/CocktailCard';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function FloatingChat() {
     const {
@@ -21,6 +22,8 @@ export default function FloatingChat() {
         generatedImages
     } = useGlobalChat();
 
+    const { user, loading } = useAuth();
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll to bottom of chat
@@ -34,7 +37,7 @@ export default function FloatingChat() {
         <>
             {/* The Floating Action Button (FAB) */}
             <AnimatePresence>
-                {!isChatOpen && (
+                {!isChatOpen && !loading && user && (
                     <motion.button
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}

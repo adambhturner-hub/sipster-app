@@ -5,7 +5,8 @@ import { useAuth, TasteProfile } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
-import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
+import { Cocktail } from '@/data/cocktails';
 
 interface InteractionRecord {
     cocktailId?: string;
@@ -34,12 +35,14 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
         const loadingToast = toast.loading("Sipster is analyzing your palate...");
 
         try {
+            const classicCocktails = await getClassicCocktails();
+
             // Gather the core data about their saved/tried drinks to send to the API
             const drinksToAnalyze = interactions
                 .filter(i => i.isFavorite || i.isTried)
                 .map(interaction => {
                     if (interaction.type === 'classic' && interaction.cocktailId) {
-                        const classic = CLASSIC_COCKTAILS.find(c => c.name.toLowerCase().replace(/ /g, '-') === interaction.cocktailId);
+                        const classic = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === interaction.cocktailId);
                         return classic ? {
                             name: classic.name,
                             ingredients: classic.ingredients,

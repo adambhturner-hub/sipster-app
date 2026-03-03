@@ -1,5 +1,6 @@
 import { OpenAI } from 'openai';
-import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
+import { Cocktail } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 import { NextRequest } from 'next/server';
 import { adminStorage } from '@/lib/firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,17 +12,18 @@ const openaiClient = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const simplifiedCocktailDB = CLASSIC_COCKTAILS.map((c: Cocktail) => ({
-    name: c.name,
-    ingredients: c.ingredients.map(i => i.item).join(', '),
-    style: c.style,
-    primarySpirit: c.primarySpirit,
-    flavorProfile: c.flavorProfile.join(', '),
-}));
-
 export async function POST(req: NextRequest) {
     try {
         const { vibe, spiritsAvailable, guestCount, userId } = await req.json();
+
+        const classicCocktails = await getClassicCocktails();
+        const simplifiedCocktailDB = classicCocktails.map((c: Cocktail) => ({
+            name: c.name,
+            ingredients: c.ingredients.map(i => i.item).join(', '),
+            style: c.style,
+            primarySpirit: c.primarySpirit,
+            flavorProfile: c.flavorProfile.join(', '),
+        }));
 
         if (!vibe) {
             return new Response('Vibe is required', { status: 400 });
@@ -65,12 +67,12 @@ ${JSON.stringify(simplifiedCocktailDB)}`;
         if (!menuData.cocktailNames || menuData.cocktailNames.length !== 3) {
             console.error("[PARTY_GEN] AI failed to return exactly 3 cocktails:", menuData.cocktailNames);
             // Fallback to ensuring exactly 3
-            menuData.cocktailNames = CLASSIC_COCKTAILS.slice(0, 3).map(c => c.name);
+            menuData.cocktailNames = classicCocktails.slice(0, 3).map(c => c.name);
         }
 
         // --- STEP 2: Fetch full objects ---
         const selectedCocktails = menuData.cocktailNames
-            .map((name: string) => CLASSIC_COCKTAILS.find(c => c.name === name))
+            .map((name: string) => classicCocktails.find(c => c.name === name))
             .filter((c: Cocktail | undefined): c is Cocktail => c !== undefined);
 
 

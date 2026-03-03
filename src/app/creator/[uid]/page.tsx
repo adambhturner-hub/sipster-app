@@ -8,6 +8,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import CocktailCard from '@/components/CocktailCard';
 import { Cocktail } from '@/data/cocktails';
 import { BOOZIVERSITY_LESSONS } from '@/data/booziversity';
+import ProfileSettingsModal from '@/components/ProfileSettingsModal';
+import StatsDashboard from '@/components/StatsDashboard';
 
 interface CreatorProfile {
     uid: string;
@@ -31,24 +33,44 @@ export default function CreatorProfilePage() {
     const params = useParams();
     const creatorUid = params.uid as string;
 
-    const { user, myBar } = useAuth();
+    const { user, myBar, follows, followCreator, unfollowCreator } = useAuth();
 
     const [creator, setCreator] = useState<CreatorProfile | null>(null);
     const [publicDrinks, setPublicDrinks] = useState<PublicRecipe[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+    // Stats Dashboard Data
+    const [stats, setStats] = useState({
+        totalTried: 0,
+        totalFavorites: 0,
+        averageRating: 0,
+        totalCreated: 0
+    });
 
     useEffect(() => {
         if (!creatorUid) return;
 
         const fetchCreatorData = async () => {
             try {
-                // 1. Fetch User Profile
-                const userDoc = await getDoc(doc(db, 'users', creatorUid));
-                let progressMap: Record<string, boolean> = {};
-                const progressDoc = await getDoc(doc(db, 'booziversity_progress', creatorUid));
-                if (progressDoc.exists()) {
-                    progressMap = progressDoc.data() as Record<string, boolean>;
+                // 1. Fetch User Profile (Wrapped in its own try/catch because Firestore rules might block reading other users' documents)
+                let userDataObj: any = null;
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', creatorUid));
+                    if (userDoc.exists()) {
+                        userDataObj = userDoc.data();
+                    }
+                } catch (userErr) {
+                    console.warn("Could not fetch user document (likely blocked by Firestore rules), falling back to defaults.", userErr);
                 }
+
+                let progressMap: Record<string, boolean> = {};
+                try {
+                    const progressDoc = await getDoc(doc(db, 'booziversity_progress', creatorUid));
+                    if (progressDoc.exists()) {
+                        progressMap = progressDoc.data() as Record<string, boolean>;
+                    }
+                } catch (progErr) { }
 
                 const credits: Record<string, number> = {
                     'Foundations': 0,
@@ -86,49 +108,86 @@ export default function CreatorProfilePage() {
                     tierTitle = "Academy Enrollee";
                 }
 
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
+                const isOwnProfile = user?.uid === creatorUid;
+
+                if (userDataObj) {
                     setCreator({
                         uid: creatorUid,
-                        displayName: userData.displayName || 'Anonymous Mixologist',
-                        badges: userData.badges || [],
-                        createdAt: userData.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+                        displayName: (isOwnProfile ? user?.displayName : userDataObj.displayName) || 'Anonymous Mixologist',
+                        badges: userDataObj.badges || [],
+                        createdAt: userDataObj.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
                         booziversityCredits: credits,
                         tierTitle,
-                        photoURL: userData.photoURL
+                        photoURL: (isOwnProfile ? user?.photoURL : userDataObj.photoURL) || undefined
                     });
                 } else {
                     setCreator({
                         uid: creatorUid,
-                        displayName: 'Anonymous Mixologist',
+                        displayName: isOwnProfile ? (user?.displayName || 'Anonymous Mixologist') : 'Anonymous Mixologist',
                         badges: [],
                         createdAt: new Date().toISOString(),
                         booziversityCredits: credits,
-                        tierTitle
+                        tierTitle,
+                        photoURL: isOwnProfile ? (user?.photoURL || undefined) : undefined
                     });
                 }
 
-                // 2. Fetch Public Recipes by this User
-                const q = query(
-                    collection(db, 'favorites'),
-                    where('uid', '==', creatorUid),
-                    where('isPublic', '==', true),
-                    orderBy('createdAt', 'desc')
-                );
+                // 2. Fetch Backbar Recipes by this User
+                // We drop the isPublic and orderBy conditions from the query to avoid composite index requirements
+                let recipesResult: PublicRecipe[] = [];
+                try {
+                    const q = query(
+                        collection(db, 'favorites'),
+                        where('uid', '==', creatorUid)
+                    );
 
-                const querySnapshot = await getDocs(q);
-                const recipesResult: PublicRecipe[] = [];
+                    const querySnapshot = await getDocs(q);
 
-                querySnapshot.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    if (data.type === 'custom_full' && data.cocktailData) {
-                        recipesResult.push({
-                            id: data.cocktailId || docSnap.id,
-                            cocktailData: data.cocktailData,
-                            createdAt: data.createdAt
-                        });
-                    }
-                });
+                    let tTried = 0;
+                    let tFavs = 0;
+                    let rSum = 0;
+                    let rCount = 0;
+                    let tCreated = 0;
+
+                    querySnapshot.forEach((docSnap) => {
+                        const data = docSnap.data();
+
+                        // Stats Dashboard Aggregation
+                        if (data.isTried || (data.rating && data.rating > 0)) tTried++;
+                        if (data.isFavorite) tFavs++;
+                        if (data.rating && data.rating > 0) {
+                            rSum += data.rating;
+                            rCount++;
+                        }
+                        if (data.type === 'custom_full' || data.type === 'custom') {
+                            tCreated++;
+                        }
+
+                        // The profile owner sees ALL their created recipes (even private AI ones)
+                        // Everyone else ONLY sees public recipes
+                        const canView = isOwnProfile || data.isPublic === true;
+
+                        if (canView && data.type === 'custom_full' && data.cocktailData) {
+                            recipesResult.push({
+                                id: docSnap.id, // Always use the actual Firestore document ID to ensure routing works
+                                cocktailData: data.cocktailData,
+                                createdAt: data.createdAt
+                            });
+                        }
+                    });
+
+                    setStats({
+                        totalTried: tTried,
+                        totalFavorites: tFavs,
+                        averageRating: rCount > 0 ? Number((rSum / rCount).toFixed(1)) : 0,
+                        totalCreated: tCreated
+                    });
+                } catch (favErr) {
+                    console.error("Error fetching favorites:", favErr);
+                }
+
+                // Sort descending locally to avoid the composite index requirement
+                recipesResult.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
                 // 3. Fetch all user ratings from the entire user_notes collection to match
                 // (Optimized later: ideally we only fetch ratings for this user's drinks, but this works for now)
@@ -169,7 +228,7 @@ export default function CreatorProfilePage() {
         };
 
         fetchCreatorData();
-    }, [creatorUid]);
+    }, [creatorUid, user]);
 
     const hasIngredient = (ingredientName: string) => {
         return (myBar || []).some(item =>
@@ -223,6 +282,46 @@ export default function CreatorProfilePage() {
                         {publicDrinks.length} Published Recipes
                     </p>
 
+                    {/* Follow Button */}
+                    {user && user.uid !== creatorUid && (
+                        <div className="mb-6">
+                            <button
+                                onClick={async () => {
+                                    if (follows.includes(creatorUid)) {
+                                        await unfollowCreator(creatorUid);
+                                    } else {
+                                        await followCreator(creatorUid);
+                                    }
+                                }}
+                                className={`
+                                    px-8 py-2.5 rounded-full font-bold text-sm transition-all flex items-center gap-2
+                                    ${follows.includes(creatorUid)
+                                        ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30'
+                                        : 'bg-[var(--accent)] text-white shadow-[0_0_20px_rgba(0,255,204,0.3)] hover:scale-105 active:scale-95'
+                                    }
+                                `}
+                            >
+                                {follows.includes(creatorUid) ? (
+                                    <><span>✓</span> Following</>
+                                ) : (
+                                    <><span>+</span> Follow</>
+                                )}
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Edit Profile Button */}
+                    {user && user.uid === creatorUid && (
+                        <div className="mb-6">
+                            <button
+                                onClick={() => setIsSettingsOpen(true)}
+                                className="px-6 py-2 rounded-full font-bold text-sm bg-black/40 border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 hover:border-white/40 transition-all flex items-center gap-2"
+                            >
+                                <span>✎</span> Edit Profile
+                            </button>
+                        </div>
+                    )}
+
                     {/* XP Credits Summary */}
                     {creator && Object.values(creator.booziversityCredits).some(v => v > 0) && (
                         <div className="flex flex-col items-center gap-1.5 mt-2 mb-6 bg-black/40 border border-white/5 px-6 py-4 rounded-2xl w-full max-w-sm mx-auto">
@@ -251,6 +350,9 @@ export default function CreatorProfilePage() {
                 </div>
             </div>
 
+            {/* Sipster Stats Dashboard */}
+            <StatsDashboard stats={stats} />
+
             {/* Public Backbar Recipes */}
             <h2 className="text-2xl font-bold mb-6 font-serif border-b border-gray-800 pb-4">
                 The <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-neon-purple">Backbar</span>
@@ -272,6 +374,8 @@ export default function CreatorProfilePage() {
                                     makeable={makeable}
                                     hasIngredient={hasIngredient}
                                     customHref={`/recipe/${drink.id}`}
+                                    favoriteId={drink.id}
+                                    favoriteType="custom_full"
                                 />
                                 {/* Rating Badge Overlay (Visual ONLY, not interactive here) */}
                                 {drink.averageRating && drink.ratingCount && (
@@ -287,6 +391,15 @@ export default function CreatorProfilePage() {
                     })}
                 </div>
             )}
+
+            <ProfileSettingsModal
+                isOpen={isSettingsOpen}
+                onClose={() => {
+                    setIsSettingsOpen(false);
+                    // Simply reloading the page to fetch the fresh user details into context for now
+                    window.location.reload();
+                }}
+            />
         </div>
     );
 }

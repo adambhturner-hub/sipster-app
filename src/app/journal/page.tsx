@@ -10,7 +10,8 @@ import Link from 'next/link';
 import CocktailCard from '@/components/CocktailCard';
 import FavoriteButton from '@/components/FavoriteButton';
 import TasteProfileCard from '@/components/TasteProfileCard';
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
+import { Cocktail } from '@/data/cocktails';
 
 interface InteractionRecord {
     id: string;
@@ -26,6 +27,7 @@ interface InteractionRecord {
     isTried?: boolean;
     rating?: number;
     notes?: string;
+    personalPhotoUrl?: string;
 }
 
 export default function JournalPage() {
@@ -33,6 +35,7 @@ export default function JournalPage() {
     const [interactions, setInteractions] = useState<InteractionRecord[]>([]);
     const [myBar, setMyBar] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
 
     // Tab state
     const [activeTab, setActiveTab] = useState<'favorites' | 'wantToTry' | 'triedIt'>('favorites');
@@ -45,6 +48,9 @@ export default function JournalPage() {
             }
 
             try {
+                const classics = await getClassicCocktails();
+                setClassicCocktails(classics);
+
                 const q = query(
                     collection(db, 'favorites'), // We reused the favorites collection
                     where('uid', '==', user.uid)
@@ -64,7 +70,8 @@ export default function JournalPage() {
                         isWantToTry: !!data.isWantToTry,
                         isTried: !!data.isTried,
                         rating: data.rating,
-                        notes: data.notes
+                        notes: data.notes,
+                        personalPhotoUrl: data.personalPhotoUrl
                     } as InteractionRecord);
                 });
 
@@ -178,22 +185,28 @@ export default function JournalPage() {
                         onClick={() => setActiveTab('wantToTry')}
                         className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${activeTab === 'wantToTry' ? 'bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)] border border-blue-500/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
                     >
-                        🔖 Want to Try
+                        🔖 On Deck
                     </button>
                     <button
                         onClick={() => setActiveTab('triedIt')}
                         className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${activeTab === 'triedIt' ? 'bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] border border-emerald-500/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
                     >
-                        ✔️ Tried It
+                        ✔️ On My Tab
                     </button>
                 </div>
             </div>
 
             {filteredList.length === 0 ? (
                 <div className="flex flex-col items-center justify-center glass-panel p-12 text-center opacity-80">
-                    <span className="text-6xl mb-6">🥃</span>
-                    <h3 className="text-2xl font-bold mb-2">Nothing here yet!</h3>
-                    <p className="text-gray-400 mb-8 max-w-md">Start exploring recipes and use the interaction buttons to build your Tasting Journal.</p>
+                    <span className="text-6xl mb-6">
+                        {activeTab === 'wantToTry' ? '🔖' : activeTab === 'triedIt' ? '✔️' : '🥃'}
+                    </span>
+                    <h3 className="text-2xl font-bold mb-2">
+                        {activeTab === 'wantToTry' ? 'Your On Deck list is empty!' : activeTab === 'triedIt' ? "Nothing on your Tab yet!" : 'No Favorites yet!'}
+                    </h3>
+                    <p className="text-gray-400 mb-8 max-w-md">
+                        {activeTab === 'wantToTry' ? 'Browse the community or ask the bartender for suggestions to add drinks to your deck.' : activeTab === 'triedIt' ? "When you make a drink, mark it as 'On My Tab' so you can review it later." : 'Heart your absolute favorite cocktails to easily find them here.'}
+                    </p>
                     <Link href="/discover" className="bg-[var(--secondary)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_var(--primary-glow)]">
                         Discover Recipes
                     </Link>
@@ -202,7 +215,7 @@ export default function JournalPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredList.map((fav) => {
                         if (fav.type === 'classic' && fav.cocktailId) {
-                            const classicCocktail = CLASSIC_COCKTAILS.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
+                            const classicCocktail = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
                             if (!classicCocktail) return null;
                             const makeable = (classicCocktail.ingredients || []).filter(i =>
                                 i.item !== 'Garnish' && i.item !== 'Simple Syrup' && i.item !== 'Club Soda'
@@ -220,14 +233,13 @@ export default function JournalPage() {
                                     favoriteId={fav.id}
                                     favoriteType="classic"
                                     onFavoriteChange={(isFavorited) => {
-                                        // When toggled via card, we might need a better refresh mechanism 
-                                        // or a local state update, but for now we'll do this:
                                         if (activeTab === 'favorites' && !isFavorited) {
                                             setInteractions(prev => prev.filter(f => f.id !== fav.id));
                                         }
                                     }}
                                     userRating={fav.rating}
                                     userNotes={fav.notes}
+                                    userPhotoUrl={fav.personalPhotoUrl}
                                     showReviewPrompt={activeTab === 'triedIt'}
                                 />
                             );
@@ -254,6 +266,7 @@ export default function JournalPage() {
                                     }}
                                     userRating={fav.rating}
                                     userNotes={fav.notes}
+                                    userPhotoUrl={fav.personalPhotoUrl}
                                     showReviewPrompt={activeTab === 'triedIt'}
                                 />
                             );

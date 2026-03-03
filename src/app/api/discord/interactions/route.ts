@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nacl from 'tweetnacl';
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { waitUntil } from '@vercel/functions';
@@ -60,8 +60,9 @@ export async function POST(req: NextRequest) {
                 });
             }
 
+            const classicCocktails = await getClassicCocktails();
             const query = drinkArg.toLowerCase();
-            const match = CLASSIC_COCKTAILS.find(c => c.name.toLowerCase().includes(query));
+            const match = classicCocktails.find(c => c.name.toLowerCase().includes(query));
 
             if (match) {
                 const ogUrl = new URL('https://sipster-app.vercel.app/api/og');

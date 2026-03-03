@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,8 +12,19 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase only once
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const app = process.env.NODE_ENV === "development" && getApps().length > 0 ? getApp() : (!getApps().length ? initializeApp(firebaseConfig) : getApp());
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+let db: ReturnType<typeof getFirestore>;
+
+try {
+    // Attempt aggressive persistent cache initialization
+    db = initializeFirestore(app, {
+        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+    });
+} catch (e) {
+    // Fallback if already initialized (common in Next.js dev server hot reloads)
+    db = getFirestore(app);
+}
 
 export { app, auth, db };

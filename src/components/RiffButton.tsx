@@ -20,7 +20,7 @@ export default function RiffButton({ cocktail, className, newTab }: RiffButtonPr
                     window.location.href = '/create?mode=riff';
                 }
             }}
-            className={`flex items-center justify-center gap-1.5 px-3 py-1 bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 rounded-full text-xs font-bold border border-purple-500/20 transition-all font-sans tracking-wide uppercase ${className || ''}`}
+            className={`flex items-center justify-center gap-1.5 px-3 py-2 min-h-[44px] bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 rounded-full text-xs font-bold border border-purple-500/20 transition-all font-sans tracking-wide uppercase ${className || ''}`}
             title="Duplicate this recipe into the Creator Studio"
         >
             Riff ✨

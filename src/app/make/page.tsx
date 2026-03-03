@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import SurpriseMeButton from '@/components/SurpriseMeButton';
 
 export default function MakePage() {
     return (
@@ -27,20 +28,12 @@ export default function MakePage() {
                         <p className="text-gray-400 leading-relaxed">Tell Sipster what you're craving, what's in your glass, or how your day went. It curates a bespoke response.</p>
                     </Link>
 
-                    {/* Classic Database */}
-                    <Link href="/menu" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-[var(--primary)]/50 hover:shadow-[0_0_30px_rgba(176,38,255,0.15)] transition-all duration-300 relative overflow-hidden">
+                    {/* Discover Catalog */}
+                    <Link href="/menu" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-[var(--primary)]/50 hover:shadow-[0_0_30px_rgba(176,38,255,0.15)] transition-all duration-300 relative overflow-hidden md:col-span-2 lg:col-span-1">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">📚</div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Classic Database</h2>
-                        <p className="text-gray-400 leading-relaxed">Browse the master catalog. Filter by spirit, flavor profile, and exactly what you have in your Bar.</p>
-                    </Link>
-
-                    {/* Discover Feed */}
-                    <Link href="/discover" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all duration-300 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-400 opacity-50 group-hover:opacity-100 transition-opacity"></div>
                         <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🌍</div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Community Feed</h2>
-                        <p className="text-gray-400 leading-relaxed">See what other Sipsters are mixing up tonight. Save their inventions to your Journal.</p>
+                        <h2 className="text-2xl font-bold text-white mb-2">Discover Catalog</h2>
+                        <p className="text-gray-400 leading-relaxed">Browse the master catalog of timeless classics and incredible custom creations. Filter exactly to what you have in your Bar.</p>
                     </Link>
 
                     {/* Party Builder */}
@@ -55,6 +48,9 @@ export default function MakePage() {
                             VIEW PAST PARTIES &rarr;
                         </Link>
                     </Link>
+
+                    {/* Surprise Me */}
+                    <SurpriseMeButton className="md:col-span-2 lg:col-span-1" />
 
                 </div>
             </div>

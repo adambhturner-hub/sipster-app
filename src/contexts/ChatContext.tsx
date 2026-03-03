@@ -97,11 +97,16 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         if (user) {
             // Firestore myBar real-time updates
             const userRef = doc(db, 'users', user.uid);
-            const unsubUser = onSnapshot(userRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    setMyBar(docSnap.data().myBar || []);
+            const unsubUser = onSnapshot(userRef,
+                (docSnap) => {
+                    if (docSnap.exists()) {
+                        setMyBar(docSnap.data().myBar || []);
+                    }
+                },
+                (error) => {
+                    console.warn("Silent failure on user chat sync", error.message);
                 }
-            });
+            );
 
             // Firestore chat history
             const threadRef = doc(db, 'chat_threads', user.uid);

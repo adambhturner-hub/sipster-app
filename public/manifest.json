@@ -1,0 +1,17 @@
+{
+    "name": "Sipster - AI Mixologist",
+    "short_name": "Sipster",
+    "description": "Your intelligent cocktail companion. Explore recipes, manage your bar, and invent new drinks.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#09090b",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "192x192 512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

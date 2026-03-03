@@ -1,10 +1,11 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendSignInLinkToEmail } from 'firebase/auth';
+import { User, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendSignInLinkToEmail, updateProfile } from 'firebase/auth';
 import { auth, db } from '../lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import LoginModal from '@/components/LoginModal';
+import { createNotification } from '@/lib/notifications';
 
 export interface TasteProfile {
     nickname: string;
@@ -29,6 +30,11 @@ interface AuthContextType {
     completeOnboarding: () => Promise<void>;
     addToBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
+    follows: string[];
+    followCreator: (creatorUid: string) => Promise<void>;
+    unfollowCreator: (creatorUid: string) => Promise<void>;
+    isAdmin: boolean | null;
+    docLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -47,6 +53,11 @@ const AuthContext = createContext<AuthContextType>({
     completeOnboarding: async () => { },
     addToBar: async () => { },
     addToShoppingList: async () => { },
+    follows: [],
+    followCreator: async () => { },
+    unfollowCreator: async () => { },
+    isAdmin: null,
+    docLoading: true,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -58,8 +69,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
     const [badges, setBadges] = useState<string[]>([]);
+    const [follows, setFollows] = useState<string[]>([]);
     const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(true);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+    const [docLoading, setDocLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -82,6 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                             createdAt: serverTimestamp(),
                             myBar: localBar,
                             shoppingList: [],
+                            follows: [],
                             hasCompletedOnboarding: false
                         });
 
@@ -106,6 +121,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             } else {
                 setUser(null);
                 setLoading(false);
+                setDocLoading(false);
             }
         });
 
@@ -117,21 +133,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (!user) {
             setMyBar([]);
             setShoppingList([]);
+            setIsAdmin(false); // Make sure this falsifies for unauthenticated users!
+            // Do NOT touch setDocLoading(false) here, onAuthStateChanged already handles it truthfully!
             return;
         }
 
+        setDocLoading(true);
+
         import('firebase/firestore').then(({ onSnapshot }) => {
             const userRef = doc(db, 'users', user.uid);
-            const unsubscribe = onSnapshot(userRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    setMyBar(docSnap.data().myBar || []);
-                    setShoppingList(docSnap.data().shoppingList || []);
-                    setTasteProfile(docSnap.data().tasteProfile || null);
-                    setBadges(docSnap.data().badges || []);
-                    // Assume true if the field doesn't exist to not annoy old users, unless explicitly false
-                    setHasCompletedOnboarding(docSnap.data().hasCompletedOnboarding !== false);
+            const unsubscribe = onSnapshot(userRef,
+                (docSnap) => {
+                    if (docSnap.exists()) {
+                        setMyBar(docSnap.data().myBar || []);
+                        setShoppingList(docSnap.data().shoppingList || []);
+                        setTasteProfile(docSnap.data().tasteProfile || null);
+                        setBadges(docSnap.data().badges || []);
+                        setFollows(docSnap.data().follows || []);
+                        setIsAdmin(!!docSnap.data().isAdmin);
+                        setHasCompletedOnboarding(docSnap.data().hasCompletedOnboarding !== false);
+                        setDocLoading(false);
+                    } else {
+                        setIsAdmin(false);
+                        setDocLoading(false);
+                    }
+                },
+                (error) => {
+                    console.warn("Silent failure on user auth sync", error.message);
+                    setDocLoading(false);
                 }
-            });
+            );
             return () => unsubscribe();
         });
     }, [user]);
@@ -144,6 +175,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const newBar = [...myBar, item];
         setMyBar(newBar);
         await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
+    };
+
+    const followCreator = async (creatorUid: string) => {
+        if (!user) return;
+        if (follows.includes(creatorUid)) return;
+        const newFollows = [...follows, creatorUid];
+        setFollows(newFollows);
+        await setDoc(doc(db, 'users', user.uid), { follows: newFollows }, { merge: true });
+
+        await createNotification(
+            creatorUid,
+            user.uid,
+            user.displayName || 'A Mixologist',
+            'follow'
+        );
+    };
+
+    const unfollowCreator = async (creatorUid: string) => {
+        if (!user) return;
+        const newFollows = follows.filter(uid => uid !== creatorUid);
+        setFollows(newFollows);
+        await setDoc(doc(db, 'users', user.uid), { follows: newFollows }, { merge: true });
     };
 
     const addToShoppingList = async (item: string) => {
@@ -159,6 +212,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const updateUserProfile = async (displayName: string, photoURL: string) => {
         if (!user) return;
+
+        // 1. Update Firebase Auth (for immediate UI reflections where currentUser is derived)
+        await updateProfile(user, { displayName, photoURL });
+
+        // 2. We explicitly trigger a state update for `user` to force re-render components depending on immediate profile auth info.
+        setUser({ ...user } as User);
+
+        // 3. Update Firestore (for persistence and public viewing)
         await setDoc(doc(db, 'users', user.uid), {
             displayName,
             photoURL
@@ -223,7 +284,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             updateUserProfile,
             completeOnboarding,
             addToBar,
-            addToShoppingList
+            addToShoppingList,
+            follows,
+            followCreator,
+            unfollowCreator,
+            isAdmin,
+            docLoading
         }}>
             {children}
             <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />

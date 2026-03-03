@@ -7,7 +7,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { BOOZIVERSITY_LESSONS } from '@/data/booziversity';
-import { CLASSIC_COCKTAILS } from '@/data/cocktails';
+import { getClassicCocktails } from '@/lib/dataFetchers';
+import { Cocktail } from '@/data/cocktails';
 import CocktailCard from '@/components/CocktailCard';
 import Quiz from '@/components/Quiz';
 
@@ -45,11 +46,17 @@ export default function BooziversityLesson() {
         );
     }
 
-    const featuredCocktail = CLASSIC_COCKTAILS.find(c => c.name === lesson.featuredCocktailId);
     const { user } = useAuth();
+    const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
     const [progressMap, setProgressMap] = useState<Record<string, boolean>>({});
     const [isCompleted, setIsCompleted] = useState(false);
     const [isCompletionLoading, setIsCompletionLoading] = useState(true);
+
+    useEffect(() => {
+        getClassicCocktails().then(setClassicCocktails);
+    }, []);
+
+    const featuredCocktail = classicCocktails.find(c => c.name === lesson.featuredCocktailId);
 
     useEffect(() => {
         const checkCompletion = async () => {

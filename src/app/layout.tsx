@@ -12,6 +12,7 @@ import { Toaster } from 'react-hot-toast';
 export const metadata: Metadata = {
   title: 'Sipster - Bartender in Your Pocket',
   description: 'Explore cocktail recipes, manage your back bar, and invent new drinks with your AI mixologist.',
+  manifest: '/manifest.json',
   openGraph: {
     title: 'Sipster - Bartender in Your Pocket',
     description: 'Explore cocktail recipes, manage your back bar, and invent new drinks with your AI mixologist.',

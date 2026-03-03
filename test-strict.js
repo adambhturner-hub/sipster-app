@@ -1,0 +1,10 @@
+const { readFileSync } = require('fs');
+const ts = require('typescript');
+const code = readFileSync('./src/data/cocktails.ts', 'utf-8');
+const jsCode = ts.transpile(code);
+eval(jsCode);
+const names = CLASSIC_COCKTAILS.map(c => c.name);
+const counts = {};
+names.forEach(n => counts[n] = (counts[n] || 0) + 1);
+const dupes = Object.keys(counts).filter(k => counts[k] > 1);
+console.log("Duplicate names in memory:", dupes);
