@@ -45,7 +45,8 @@ export default function CreatorProfilePage() {
         totalTried: 0,
         totalFavorites: 0,
         averageRating: 0,
-        totalCreated: 0
+        totalCreated: 0,
+        favoriteFlavors: [] as string[][]
     });
 
     useEffect(() => {
@@ -148,13 +149,19 @@ export default function CreatorProfilePage() {
                     let rSum = 0;
                     let rCount = 0;
                     let tCreated = 0;
+                    const favFlavors: string[][] = [];
 
                     querySnapshot.forEach((docSnap) => {
                         const data = docSnap.data();
 
                         // Stats Dashboard Aggregation
                         if (data.isTried || (data.rating && data.rating > 0)) tTried++;
-                        if (data.isFavorite) tFavs++;
+                        if (data.isFavorite) {
+                            tFavs++;
+                            if (data.cocktailData?.flavorProfile) {
+                                favFlavors.push(data.cocktailData.flavorProfile);
+                            }
+                        }
                         if (data.rating && data.rating > 0) {
                             rSum += data.rating;
                             rCount++;
@@ -180,7 +187,8 @@ export default function CreatorProfilePage() {
                         totalTried: tTried,
                         totalFavorites: tFavs,
                         averageRating: rCount > 0 ? Number((rSum / rCount).toFixed(1)) : 0,
-                        totalCreated: tCreated
+                        totalCreated: tCreated,
+                        favoriteFlavors: favFlavors
                     });
                 } catch (favErr) {
                     console.error("Error fetching favorites:", favErr);
