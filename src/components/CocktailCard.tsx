@@ -49,7 +49,7 @@ export default function CocktailCard({
     authorName,
     authorUid
 }: CocktailCardProps) {
-    const { addToBar, addToShoppingList, shoppingList = [], myBar = [] } = useAuth();
+    const { addToBar, removeFromBar, addToShoppingList, shoppingList = [], myBar = [] } = useAuth();
     const { system, setSystem, convertMeasurement } = useMeasurement();
     const href = customHref || `/menu/${(cocktail?.name || 'custom-drink').toLowerCase().replace(/ /g, '-')}`;
 
@@ -407,7 +407,7 @@ export default function CocktailCard({
                                         {ing?.item || 'Mystery Ingredient'}
                                     </span>
 
-                                    {(!officiallyHasIt && !isExporting) && (
+                                    {(!isExporting && !isGarnishOrBasic) && (
                                         <div className="flex flex-wrap gap-1.5 pointer-events-auto z-50 mt-1">
                                             <button
                                                 onClick={(e) => {
@@ -422,11 +422,17 @@ export default function CocktailCard({
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    if (ing?.item) addToBar(ing.item);
+                                                    if (ing?.item) {
+                                                        if (hasIt) {
+                                                            removeFromBar(ing.item);
+                                                        } else {
+                                                            addToBar(ing.item);
+                                                        }
+                                                    }
                                                 }}
-                                                className="text-[10px] bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded transition-colors uppercase tracking-widest"
+                                                className={`text-[10px] border px-3 py-1.5 rounded transition-colors uppercase tracking-widest ${hasIt ? 'bg-gray-800/50 hover:bg-red-500/20 text-gray-500 hover:text-red-400 border-gray-700 hover:border-red-500/30' : 'bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border-blue-500/30'}`}
                                             >
-                                                + Bar
+                                                {hasIt ? '- Bar' : '+ Bar'}
                                             </button>
                                             <button
                                                 onClick={(e) => {

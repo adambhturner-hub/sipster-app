@@ -29,6 +29,7 @@ interface AuthContextType {
     updateUserProfile: (displayName: string, photoURL: string) => Promise<void>;
     completeOnboarding: () => Promise<void>;
     addToBar: (item: string) => Promise<void>;
+    removeFromBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
     follows: string[];
     followCreator: (creatorUid: string) => Promise<void>;
@@ -52,6 +53,7 @@ const AuthContext = createContext<AuthContextType>({
     updateUserProfile: async () => { },
     completeOnboarding: async () => { },
     addToBar: async () => { },
+    removeFromBar: async () => { },
     addToShoppingList: async () => { },
     follows: [],
     followCreator: async () => { },
@@ -177,6 +179,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
     };
 
+    const removeFromBar = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+        const newBar = myBar.filter(i => i.toLowerCase() !== normalized);
+        setMyBar(newBar);
+        await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
+    };
+
     const followCreator = async (creatorUid: string) => {
         if (!user) return;
         if (follows.includes(creatorUid)) return;
@@ -284,6 +294,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             updateUserProfile,
             completeOnboarding,
             addToBar,
+            removeFromBar,
             addToShoppingList,
             follows,
             followCreator,
