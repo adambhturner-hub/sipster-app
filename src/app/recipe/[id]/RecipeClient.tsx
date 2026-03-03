@@ -9,7 +9,6 @@ import { Cocktail } from '@/data/cocktails';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
-import RiffButton from '@/components/RiffButton';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
 
@@ -107,7 +106,6 @@ export default function RecipeClient({ id }: { id: string }) {
                                             }
                                         }}
                                     />
-                                    <RiffButton cocktail={cocktail} />
                                     <ShareButton
                                         title={cocktail.name}
                                         text={`Check out this custom creation: ${cocktail.name} on Sipster!`}

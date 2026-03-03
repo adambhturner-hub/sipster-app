@@ -161,7 +161,7 @@ export default function CatalogCMS() {
                                                 <div className="flex justify-end gap-2 text-sm">
                                                     {/* @ts-ignore */}
                                                     <Link
-                                                        href={`/admin/catalog/${encodeURIComponent(cocktail._id || cocktail.name)}`}
+                                                        href={`/admin/catalog/${encodeURIComponent((cocktail as any)._id || cocktail.name)}`}
                                                         className="px-3 py-1.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white rounded border border-blue-500/20 transition-colors"
                                                     >
                                                         Edit

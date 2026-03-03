@@ -8,7 +8,6 @@ import { getClassicCocktails } from '@/lib/dataFetchers';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
-import RiffButton from '@/components/RiffButton';
 import dynamic from 'next/dynamic';
 
 const DragDropContext = dynamic(() => import('@hello-pangea/dnd').then(mod => mod.DragDropContext), { ssr: false });
@@ -475,9 +474,6 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                                                                         >
                                                                             Swap ↻
                                                                         </button>
-                                                                        <div className="flex-shrink-0">
-                                                                            <RiffButton cocktail={cocktail} className="py-1 px-3 text-xs" />
-                                                                        </div>
                                                                     </div>
                                                                 )}
                                                             </div>

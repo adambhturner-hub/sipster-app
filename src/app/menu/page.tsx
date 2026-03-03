@@ -16,6 +16,7 @@ import {
     Cocktail
 } from '@/data/cocktails';
 import CocktailCard from '@/components/CocktailCard';
+import ConstellationMap from '@/components/ConstellationMap';
 
 export interface PublicRecipe {
     id: string;
@@ -32,6 +33,7 @@ export default function MenuPage() {
     const [showMakeableOnly, setShowMakeableOnly] = useState(false);
     const [sortBy, setSortBy] = useState<string>('popular');
     const [searchQuery, setSearchQuery] = useState('');
+    const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
 
     // Unified Catalog State
     const [feedMode, setFeedMode] = useState<'classics' | 'global' | 'following'>('classics');
@@ -288,6 +290,24 @@ export default function MenuPage() {
                                 👥 Following
                             </button>
                         )}
+                    </div>
+                </div>
+
+                {/* View Mode Toggle */}
+                <div className="flex justify-center mb-8 relative z-30">
+                    <div className="flex bg-black/40 border border-gray-700 rounded-full p-1 overflow-hidden">
+                        <button
+                            onClick={() => setViewMode('grid')}
+                            className={`px-6 py-1.5 rounded-full text-sm font-bold transition-all duration-300 ${viewMode === 'grid' ? 'bg-white text-black shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            📱 Grid
+                        </button>
+                        <button
+                            onClick={() => setViewMode('map')}
+                            className={`px-6 py-1.5 rounded-full text-sm font-bold transition-all duration-300 ${viewMode === 'map' ? 'bg-[#c084fc] text-white shadow-[0_0_15px_rgba(192,132,252,0.8)]' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            🌌 Constellation
+                        </button>
                     </div>
                 </div>
 
@@ -583,6 +603,10 @@ export default function MenuPage() {
                     >
                         Clear Filters
                     </button>
+                </div>
+            ) : viewMode === 'map' ? (
+                <div className="w-full relative z-10 mt-8 mb-16 animate-fade-in">
+                    <ConstellationMap cocktails={cocktailsToShow.map(c => c.cocktailData)} />
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
