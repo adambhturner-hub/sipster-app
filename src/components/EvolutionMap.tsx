@@ -210,6 +210,35 @@ function EvolutionMapInner({ initialCocktailId }: EvolutionMapInnerProps) {
                             </div>
                         </div>
 
+                        {/* Recipe Build Preview */}
+                        <div className="mb-4 bg-black/40 rounded-xl p-3 md:p-4 border border-gray-800/50 max-h-[150px] overflow-y-auto custom-scrollbar">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h4 className="text-[10px] text-[var(--primary)]/70 uppercase tracking-widest font-bold mb-1.5 flex items-center gap-1">
+                                        <span>🧬</span> DNA (Ingredients)
+                                    </h4>
+                                    <ul className="text-xs text-gray-300 space-y-1 font-mono">
+                                        {(selectedNode.data.cocktail as Cocktail)?.ingredients.map((ing, i) => (
+                                            <li key={i} className="flex gap-2">
+                                                <span className="text-gray-500 min-w-[35px]">{ing.amount}</span>
+                                                <span className="text-white">{ing.item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="text-[10px] text-[var(--primary)]/70 uppercase tracking-widest font-bold mb-1.5">
+                                        Methodology
+                                    </h4>
+                                    <div className="text-xs text-gray-400 space-y-1 font-sans leading-relaxed">
+                                        {(selectedNode.data.cocktail as Cocktail)?.instructions.map((step, i) => (
+                                            <p key={i}><span className="text-gray-600 font-mono">{i + 1}.</span> {step}</p>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <form onSubmit={handleGenerate} className="flex gap-2">
                             <input
                                 type="text"
