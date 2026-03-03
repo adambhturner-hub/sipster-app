@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
@@ -14,8 +13,8 @@ export async function GET(request: Request) {
         const decodedState = JSON.parse(Buffer.from(state, 'base64').toString('utf8'));
         const uid = decodedState.uid;
 
-        if (!uid || !adminDb) {
-            throw new Error('Invalid state payload or Firebase Admin not initialized');
+        if (!uid) {
+            throw new Error('Invalid state payload');
         }
 
         const clientId = process.env.SPOTIFY_CLIENT_ID;
@@ -46,17 +45,8 @@ export async function GET(request: Request) {
 
         const { access_token, refresh_token, expires_in } = data;
 
-        // Store tokens securely in Firebase Admin
-        await adminDb.collection('users').doc(uid).set({
-            spotify: {
-                accessToken: access_token,
-                refreshToken: refresh_token,
-                expiresAt: Date.now() + expires_in * 1000
-            }
-        }, { merge: true });
-
-        // Redirect back to menu or original page
-        return NextResponse.redirect(`${protocol}://${host}/menu?spotify_connected=true`);
+        // Redirect back to menu and let the authenticated client SDK save the tokens
+        return NextResponse.redirect(`${protocol}://${host}/menu?spotify_connected=true&access_token=${access_token}&refresh_token=${refresh_token}&expires_in=${expires_in}`);
 
     } catch (error: any) {
         console.error('Spotify callback error:', error);

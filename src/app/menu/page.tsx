@@ -38,9 +38,25 @@ export default function MenuPage() {
 
     useEffect(() => {
         // Handle post-Spotify auth toast and remove from URL
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && user) {
             const params = new URLSearchParams(window.location.search);
             if (params.get('spotify_connected')) {
+                const accessToken = params.get('access_token');
+                const refreshToken = params.get('refresh_token');
+                const expiresIn = params.get('expires_in');
+
+                if (accessToken && refreshToken) {
+                    import('firebase/firestore').then(({ doc, setDoc }) => {
+                        setDoc(doc(db, 'users', user.uid), {
+                            spotify: {
+                                accessToken: accessToken,
+                                refreshToken: refreshToken,
+                                expiresAt: Date.now() + Number(expiresIn || 3600) * 1000
+                            }
+                        }, { merge: true });
+                    });
+                }
+
                 toast.success('Successfully connected to Spotify! Run a Vibe Check now.');
                 window.history.replaceState({}, document.title, window.location.pathname);
             } else if (params.get('spotify_error')) {
@@ -48,7 +64,7 @@ export default function MenuPage() {
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
-    }, []);
+    }, [user]);
 
     // Unified Catalog State
     const [feedMode, setFeedMode] = useState<'classics' | 'global' | 'following'>('classics');

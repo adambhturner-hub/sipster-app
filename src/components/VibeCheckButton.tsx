@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -31,15 +33,32 @@ export default function VibeCheckButton() {
         setError('');
 
         try {
+            // Fetch spotifyData directly using authenticated client SDK
+            const userDoc = await getDoc(doc(db, 'users', user.uid));
+            const spotifyData = userDoc.data()?.spotify;
+            const myBar = userDoc.data()?.myBar || [];
+
+            if (!spotifyData || !spotifyData.refreshToken) {
+                window.location.href = `/api/spotify/auth?uid=${user.uid}`;
+                return;
+            }
+
             const res = await fetch('/api/vibe-check', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ uid: user.uid })
+                body: JSON.stringify({ uid: user.uid, spotifyData, myBar })
             });
 
             const data = await res.json();
 
-            if (res.status === 401 && data.error === 'not_connected') {
+            if (data.refreshedSpotifyData) {
+                // update firestore without awaiting unnecessarily 
+                import('firebase/firestore').then(({ setDoc }) => {
+                    setDoc(doc(db, 'users', user.uid), { spotify: data.refreshedSpotifyData }, { merge: true });
+                });
+            }
+
+            if (res.status === 401 && data.error === 'auth_revoked') {
                 // Redirect to Spotify Auth
                 window.location.href = `/api/spotify/auth?uid=${user.uid}`;
                 return;

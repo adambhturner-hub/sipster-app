@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
 import OpenAI from 'openai';
 
@@ -9,23 +10,10 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
     try {
-        const { uid } = await request.json();
+        const { uid, spotifyData, myBar } = await request.json();
 
-        if (!uid) {
-            return NextResponse.json({ error: 'Missing user ID' }, { status: 400 });
-        }
-
-        const userDoc = await adminDb!.collection('users').doc(uid).get();
-        if (!userDoc.exists) {
-            return NextResponse.json({ error: 'User not found' }, { status: 404 });
-        }
-
-        const userData = userDoc.data();
-        const spotifyData = userData?.spotify;
-        const myBar = userData?.myBar || [];
-
-        if (!spotifyData || !spotifyData.refreshToken) {
-            return NextResponse.json({ error: 'not_connected' }, { status: 401 });
+        if (!uid || !spotifyData) {
+            return NextResponse.json({ error: 'Missing required fields or not connected' }, { status: 400 });
         }
 
         let accessToken = spotifyData.accessToken;
@@ -55,13 +43,10 @@ export async function POST(request: Request) {
             accessToken = data.access_token;
             const newRefreshToken = data.refresh_token || spotifyData.refreshToken;
 
-            await adminDb!.collection('users').doc(uid).set({
-                spotify: {
-                    accessToken: accessToken,
-                    refreshToken: newRefreshToken,
-                    expiresAt: Date.now() + data.expires_in * 1000
-                }
-            }, { merge: true });
+            // Inform the client that token was refreshed
+            spotifyData.accessToken = accessToken;
+            spotifyData.refreshToken = newRefreshToken;
+            spotifyData.expiresAt = Date.now() + data.expires_in * 1000;
         }
 
         // Fetch currently playing
@@ -152,6 +137,7 @@ Respond ONLY with a valid JSON object in this exact format:
 
         return NextResponse.json({
             success: true,
+            refreshedSpotifyData: accessToken !== spotifyData.accessToken ? spotifyData : null,
             track: {
                 name: trackName,
                 artist: artistName,
