@@ -5,7 +5,6 @@ import ClientRelationshipGrid from './ClientRelationshipGrid';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
-import RiffButton from '@/components/RiffButton';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
 import CocktailCard from '@/components/CocktailCard';
@@ -98,7 +97,6 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                 </h1>
                                 <GlobalStarRating cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')} />
                                 <div className="flex items-center gap-3 mt-4">
-                                    <RiffButton cocktail={cocktail} />
                                     <ShareButton
                                         title={cocktail.name}
                                         text={`Check out the ${cocktail.name} on Sipster! ${cocktail.tagline}`}

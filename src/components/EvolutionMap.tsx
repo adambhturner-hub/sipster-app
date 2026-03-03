@@ -256,6 +256,21 @@ function EvolutionMapInner({ initialCocktailId }: EvolutionMapInnerProps) {
                                 Evolve 🧬
                             </button>
                         </form>
+
+                        {/* Bridge to Creator Studio */}
+                        {selectedNode.id !== 'node-1' && (
+                            <div className="mt-4 pt-4 border-t border-gray-800/50 flex justify-end">
+                                <button
+                                    onClick={() => {
+                                        localStorage.setItem('sipster-riff-cocktail', JSON.stringify(selectedNode.data.cocktail));
+                                        window.location.href = '/create?mode=riff';
+                                    }}
+                                    className="text-xs font-mono text-gray-400 hover:text-[var(--primary)] transition-all uppercase tracking-widest flex items-center gap-1.5"
+                                >
+                                    Take to Creator Studio 🛠️
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
