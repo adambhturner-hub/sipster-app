@@ -5,6 +5,7 @@ import ClientRelationshipGrid from './ClientRelationshipGrid';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
+import DynamicGlass from '@/components/DynamicGlass';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
 import CocktailCard from '@/components/CocktailCard';
@@ -86,17 +87,22 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                     <Link href="/menu" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
                         &larr; Back to Menu
                     </Link>
-                    <div className="flex items-center gap-6 mt-4">
-                        <div className="text-7xl bg-gray-900 h-32 w-32 rounded-3xl flex items-center justify-center shadow-lg border border-gray-800">
-                            {cocktail.emoji}
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mt-4">
+                        <div className="relative flex-shrink-0 w-64 h-64 bg-gray-900/50 rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(176,38,255,0.15)] border border-[var(--primary)]/20 overflow-visible">
+                            <DynamicGlass
+                                glassType={cocktail.glass}
+                                primarySpirit={cocktail.primarySpirit}
+                                isShaken={cocktail.style?.includes('Shaken')}
+                                className="scale-[0.85] origin-bottom absolute bottom-2"
+                            />
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 text-center md:text-left mt-2 md:mt-0">
                             <div className="flex items-center justify-between mb-2 gap-4">
                                 <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
                                 <GlobalStarRating cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')} />
-                                <div className="flex items-center gap-3 mt-4">
+                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
                                     <ShareButton
                                         title={cocktail.name}
                                         text={`Check out the ${cocktail.name} on Sipster! ${cocktail.tagline}`}
@@ -218,6 +224,14 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                             </div>
                         </div>
 
+                        {/* Make Flow Trigger */}
+                        <Link
+                            href={`/make/flow/catalog/${resolvedParams.id}`}
+                            className="flex items-center justify-center gap-3 w-full py-5 rounded-2xl bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] font-bold text-center text-white text-lg hover:scale-[1.02] hover:shadow-[0_0_25px_var(--primary-glow)] transition-all"
+                        >
+                            <span className="text-2xl">⏱️</span> Enter Preparation Mode
+                        </Link>
+
                         {/* Instructions */}
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
                             <h3 className="text-white text-xl font-serif font-bold mb-6 flex items-center gap-3">
@@ -291,7 +305,9 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                 </div>
 
                 {/* Personal Notes & Ratings */}
-                <NotesAndRating cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')} />
+                <div id="review">
+                    <NotesAndRating cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')} />
+                </div>
 
             </div>
         </div>

@@ -240,7 +240,7 @@ export default function JournalPage() {
                                     userRating={fav.rating}
                                     userNotes={fav.notes}
                                     userPhotoUrl={fav.personalPhotoUrl}
-                                    showReviewPrompt={activeTab === 'triedIt'}
+                                    showReviewPrompt={activeTab === 'triedIt' || activeTab === 'favorites'}
                                 />
                             );
                         }
@@ -267,7 +267,7 @@ export default function JournalPage() {
                                     userRating={fav.rating}
                                     userNotes={fav.notes}
                                     userPhotoUrl={fav.personalPhotoUrl}
-                                    showReviewPrompt={activeTab === 'triedIt'}
+                                    showReviewPrompt={activeTab === 'triedIt' || activeTab === 'favorites'}
                                 />
                             );
                         }

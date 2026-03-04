@@ -489,11 +489,11 @@ export default function CocktailCard({
                             </div>
                         </div>
                     ) : (
-                        <div className="w-full flex items-center justify-center gap-2 py-3 min-h-[44px] rounded-xl bg-gray-800 text-gray-300 text-sm font-bold tracking-wider border border-gray-700 shadow-lg group-hover/card:bg-[var(--primary)] group-hover/card:text-white group-hover/card:border-[var(--primary)] transition-all pointer-events-none">
+                        <Link href={`${href}#review`} className="w-full flex items-center justify-center gap-2 py-3 min-h-[44px] rounded-xl bg-gray-800 text-gray-300 text-sm font-bold tracking-wider border border-gray-700 shadow-lg group-hover/card:bg-[var(--primary)] group-hover/card:text-white group-hover/card:border-[var(--primary)] transition-all pointer-events-auto cursor-pointer relative z-20">
                             <span>⭐</span>
                             Leave a Review
                             <span className="group-hover/card:translate-x-1 transition-transform">&rarr;</span>
-                        </div>
+                        </Link>
                     )}
                 </div>
             )}

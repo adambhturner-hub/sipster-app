@@ -23,6 +23,7 @@ interface AuthContextType {
     logout: () => Promise<void>;
     myBar: string[];
     shoppingList: string[];
+    graveyard: string[];
     tasteProfile: TasteProfile | null;
     badges: string[];
     hasCompletedOnboarding: boolean;
@@ -31,6 +32,9 @@ interface AuthContextType {
     addToBar: (item: string) => Promise<void>;
     removeFromBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
+    moveToGraveyard: (item: string) => Promise<void>;
+    removeFromGraveyard: (item: string) => Promise<void>;
+    reviveFromGraveyard: (item: string) => Promise<void>;
     follows: string[];
     followCreator: (creatorUid: string) => Promise<void>;
     unfollowCreator: (creatorUid: string) => Promise<void>;
@@ -47,6 +51,7 @@ const AuthContext = createContext<AuthContextType>({
     logout: async () => { },
     myBar: [],
     shoppingList: [],
+    graveyard: [],
     tasteProfile: null,
     badges: [],
     hasCompletedOnboarding: true, // Default true to prevent flickering before load
@@ -55,6 +60,9 @@ const AuthContext = createContext<AuthContextType>({
     addToBar: async () => { },
     removeFromBar: async () => { },
     addToShoppingList: async () => { },
+    moveToGraveyard: async () => { },
+    removeFromGraveyard: async () => { },
+    reviveFromGraveyard: async () => { },
     follows: [],
     followCreator: async () => { },
     unfollowCreator: async () => { },
@@ -69,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [loading, setLoading] = useState(true);
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
+    const [graveyard, setGraveyard] = useState<string[]>([]);
     const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
     const [badges, setBadges] = useState<string[]>([]);
     const [follows, setFollows] = useState<string[]>([]);
@@ -135,6 +144,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (!user) {
             setMyBar([]);
             setShoppingList([]);
+            setGraveyard([]);
             setIsAdmin(false); // Make sure this falsifies for unauthenticated users!
             // Do NOT touch setDocLoading(false) here, onAuthStateChanged already handles it truthfully!
             return;
@@ -149,6 +159,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     if (docSnap.exists()) {
                         setMyBar(docSnap.data().myBar || []);
                         setShoppingList(docSnap.data().shoppingList || []);
+                        setGraveyard(docSnap.data().graveyard || []);
                         setTasteProfile(docSnap.data().tasteProfile || null);
                         setBadges(docSnap.data().badges || []);
                         setFollows(docSnap.data().follows || []);
@@ -207,6 +218,47 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const newFollows = follows.filter(uid => uid !== creatorUid);
         setFollows(newFollows);
         await setDoc(doc(db, 'users', user.uid), { follows: newFollows }, { merge: true });
+    };
+
+    const moveToGraveyard = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+
+        const newBar = myBar.filter(i => i.toLowerCase() !== normalized);
+        setMyBar(newBar);
+
+        if (graveyard.some(i => i.toLowerCase() === normalized)) {
+            await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
+            return;
+        }
+
+        const newGraveyard = [...graveyard, item];
+        setGraveyard(newGraveyard);
+        await setDoc(doc(db, 'users', user.uid), { myBar: newBar, graveyard: newGraveyard }, { merge: true });
+    };
+
+    const removeFromGraveyard = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+        const newGraveyard = graveyard.filter(i => i.toLowerCase() !== normalized);
+        setGraveyard(newGraveyard);
+        await setDoc(doc(db, 'users', user.uid), { graveyard: newGraveyard }, { merge: true });
+    };
+
+    const reviveFromGraveyard = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+
+        const newGraveyard = graveyard.filter(i => i.toLowerCase() !== normalized);
+        setGraveyard(newGraveyard);
+
+        if (myBar.some(i => i.toLowerCase() === normalized)) {
+            await setDoc(doc(db, 'users', user.uid), { graveyard: newGraveyard }, { merge: true });
+            return;
+        }
+        const newBar = [...myBar, item];
+        setMyBar(newBar);
+        await setDoc(doc(db, 'users', user.uid), { myBar: newBar, graveyard: newGraveyard }, { merge: true });
     };
 
     const addToShoppingList = async (item: string) => {
@@ -288,6 +340,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             logout,
             myBar,
             shoppingList,
+            graveyard,
             tasteProfile,
             badges,
             hasCompletedOnboarding,
@@ -296,6 +349,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             addToBar,
             removeFromBar,
             addToShoppingList,
+            moveToGraveyard,
+            removeFromGraveyard,
+            reviveFromGraveyard,
             follows,
             followCreator,
             unfollowCreator,

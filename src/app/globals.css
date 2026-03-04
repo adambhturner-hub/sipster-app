@@ -54,13 +54,13 @@
     /* Crimson */
     --accent: #d97706;
     /* Gold */
-
     --bg: #171717;
     /* Neutral Dark Gray */
     --surface: rgba(245, 158, 11, 0.05);
-    /* Faint amber surface */
     --border: rgba(245, 158, 11, 0.3);
   }
+
+
 
   /* --- THEME 3: MIAMI VICE --- */
   .theme-miami {

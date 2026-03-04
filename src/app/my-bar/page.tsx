@@ -12,16 +12,21 @@ import { Cocktail } from '@/data/cocktails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function MyBarPage() {
-    const { user, loading: authLoading } = useAuth();
+    const { user, loading: authLoading, tasteProfile } = useAuth();
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
-    const [activeTab, setActiveTab] = useState<'my-bar' | 'shopping-list'>('my-bar');
+    const [graveyard, setGraveyard] = useState<string[]>([]);
+    const [activeTab, setActiveTab] = useState<'my-bar' | 'shopping-list' | 'graveyard'>('my-bar');
     const [isLoaded, setIsLoaded] = useState(false);
     const [isScanning, setIsScanning] = useState(false);
     const [customIngredient, setCustomIngredient] = useState('');
     const [customShoppingItem, setCustomShoppingItem] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [classicCocktails, setClassicCocktails] = useState<Cocktail[]>([]);
+
+    // Graveyard Restock Plan State
+    const [isPlanningRestock, setIsPlanningRestock] = useState(false);
+    const [restockPlan, setRestockPlan] = useState<any[] | null>(null);
 
     useEffect(() => {
         getClassicCocktails().then(setClassicCocktails);
@@ -95,6 +100,7 @@ export default function MyBarPage() {
                 if (docSnap.exists()) {
                     setMyBar(docSnap.data().myBar || []);
                     setShoppingList(docSnap.data().shoppingList || []);
+                    setGraveyard(docSnap.data().graveyard || []);
                 }
                 setIsLoaded(true);
             });
@@ -109,6 +115,10 @@ export default function MyBarPage() {
             if (savedList) {
                 try { setShoppingList(JSON.parse(savedList)); } catch (e) { }
             }
+            const savedGraveyard = localStorage.getItem('sipster-graveyard');
+            if (savedGraveyard) {
+                try { setGraveyard(JSON.parse(savedGraveyard)); } catch (e) { }
+            }
             setIsLoaded(true);
         }
     }, [user, authLoading]);
@@ -117,8 +127,9 @@ export default function MyBarPage() {
         if (isLoaded && !user && !authLoading) {
             localStorage.setItem('sipster-my-bar', JSON.stringify(myBar));
             localStorage.setItem('sipster-shopping-list', JSON.stringify(shoppingList));
+            localStorage.setItem('sipster-graveyard', JSON.stringify(graveyard));
         }
-    }, [myBar, shoppingList, isLoaded, user, authLoading]);
+    }, [myBar, shoppingList, graveyard, isLoaded, user, authLoading]);
 
     const handleAddIngredient = async (ingredient: string) => {
         const newBar = myBar.includes(ingredient)
@@ -140,6 +151,76 @@ export default function MyBarPage() {
             );
         } else {
             toast(`Removed ${ingredient}`, { id: 'bar-update', icon: '🗑️' });
+        }
+    };
+
+    const handleKillBottle = async (ingredient: string) => {
+        const newBar = myBar.filter(i => i !== ingredient);
+        const newGraveyard = [...graveyard, ingredient];
+        setMyBar(newBar);
+        setGraveyard(newGraveyard);
+
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            await setDoc(userRef, { myBar: newBar, graveyard: newGraveyard }, { merge: true });
+        }
+
+        toast.success(`Sent outline ${ingredient} to the Graveyard! 🪦`);
+    };
+
+    const handleReviveBottle = async (ingredient: string) => {
+        const newGraveyard = graveyard.filter(i => i !== ingredient);
+        const newBar = [...myBar, ingredient];
+
+        setGraveyard(newGraveyard);
+        setMyBar(newBar);
+
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            await setDoc(userRef, { myBar: newBar, graveyard: newGraveyard }, { merge: true });
+        }
+
+        toast.success(`Revived ${ingredient}! ✨`);
+    };
+
+    const removeGraveyardItem = async (ingredient: string) => {
+        const newGraveyard = graveyard.filter(i => i !== ingredient);
+        setGraveyard(newGraveyard);
+
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            await setDoc(userRef, { graveyard: newGraveyard }, { merge: true });
+        }
+        toast(`Removed ${ingredient} from Graveyard`, { icon: '🗑️' });
+    };
+
+    const handlePlanRestock = async () => {
+        if (!user || graveyard.length === 0) return;
+        setIsPlanningRestock(true);
+        setRestockPlan(null);
+        try {
+            const response = await fetch('/api/smart-restock', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    graveyard,
+                    myBar,
+                    shoppingList,
+                    tasteProfile
+                })
+            });
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Failed to generate restock plan');
+            }
+            const data = await response.json();
+            setRestockPlan(data.recommendations);
+            toast.success("AI Restock Plan Ready! 🧠");
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || 'Error generating plan');
+        } finally {
+            setIsPlanningRestock(false);
         }
     };
 
@@ -344,6 +425,12 @@ export default function MyBarPage() {
                         >
                             Shopping List {shoppingList.length > 0 && <span className="bg-black text-[var(--accent)] text-xs px-2 py-1 rounded-full">{shoppingList.length}</span>}
                         </button>
+                        <button
+                            onClick={() => setActiveTab('graveyard')}
+                            className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'graveyard' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.5)]' : 'glass-panel text-gray-400 hover:text-white'}`}
+                        >
+                            Graveyard 🪦 {graveyard.length > 0 && <span className="bg-black text-purple-400 text-xs px-2 py-1 rounded-full">{graveyard.length}</span>}
+                        </button>
                     </div>
 
                     {/* Fridge Scanner Button - Only in My Bar */}
@@ -376,16 +463,26 @@ export default function MyBarPage() {
                                         {category.items.map((item) => {
                                             const isSelected = myBar.includes(item);
                                             return (
-                                                <button
-                                                    key={item}
-                                                    onClick={() => handleAddIngredient(item)}
-                                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${isSelected
-                                                        ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
-                                                        : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
-                                                        }`}
-                                                >
-                                                    {item}
-                                                </button>
+                                                <div key={item} className="relative group inline-block">
+                                                    <button
+                                                        onClick={() => handleAddIngredient(item)}
+                                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${isSelected
+                                                            ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
+                                                            : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
+                                                            }`}
+                                                    >
+                                                        {item}
+                                                    </button>
+                                                    {isSelected && (
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); handleKillBottle(item); }}
+                                                            className="absolute -top-2 -right-2 bg-gray-900 border border-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-900 hover:text-white shadow-lg"
+                                                            title="Kill Bottle (Move to Graveyard)"
+                                                        >
+                                                            🪦
+                                                        </button>
+                                                    )}
+                                                </div>
                                             );
                                         })}
                                     </div>
@@ -422,18 +519,25 @@ export default function MyBarPage() {
                                     <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Your Custom Ingredients:</h3>
                                     <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                                         {myBar.filter(item => !INGREDIENT_CATEGORIES.some(cat => cat.items.includes(item))).map(customItem => (
-                                            <button
-                                                key={customItem}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handleAddIngredient(customItem);
-                                                }}
-                                                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 group flex items-center gap-2"
-                                                title="Click to remove"
-                                            >
-                                                {customItem}
-                                                <span className="hidden group-hover:inline">✕</span>
-                                            </button>
+                                            <div key={customItem} className="relative group inline-block">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleAddIngredient(customItem);
+                                                    }}
+                                                    className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 flex items-center gap-2"
+                                                    title="Click to remove"
+                                                >
+                                                    {customItem}
+                                                </button>
+                                                <button
+                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleKillBottle(customItem); }}
+                                                    className="absolute -top-2 -right-2 bg-gray-900 border border-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-900 hover:text-white shadow-lg"
+                                                    title="Kill Bottle (Move to Graveyard)"
+                                                >
+                                                    🪦
+                                                </button>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
@@ -458,6 +562,105 @@ export default function MyBarPage() {
                             </div>
                         )}
                     </>
+                ) : activeTab === 'graveyard' ? (
+                    <div className="glass-panel p-8 w-full max-w-2xl mx-auto border border-purple-500/30 shadow-[0_0_30px_rgba(147,51,234,0.1)]">
+                        <h2 className="text-3xl font-bold mb-2 text-center text-white">Bottle Graveyard 🪦</h2>
+                        <p className="text-gray-400 mb-8 text-sm text-center">
+                            Bottles you've killed. When you're ready to restock, our AI can suggest strategic replacements to unlock new cocktails!
+                        </p>
+
+                        <div className="flex justify-center mb-10">
+                            <button
+                                onClick={handlePlanRestock}
+                                disabled={graveyard.length === 0 || isPlanningRestock}
+                                className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-8 py-3 rounded-full hover:scale-105 transition-all shadow-[0_0_20px_rgba(147,51,234,0.5)] flex items-center gap-2 disabled:opacity-50 disabled:hover:scale-100"
+                            >
+                                <span>🤖</span> Plan Smart Restock
+                            </button>
+                        </div>
+
+                        {isPlanningRestock ? (
+                            <div className="text-center py-12">
+                                <span className="text-5xl inline-block animate-spin mb-4">🧠</span>
+                                <h3 className="text-xl font-bold text-white mb-2">Analyzing your empty bottles...</h3>
+                                <p className="text-gray-400">Consulting Sipster's AI Sommelier for the perfect upgrades.</p>
+                            </div>
+                        ) : restockPlan ? (
+                            <div className="flex flex-col gap-6 mb-12">
+                                <h3 className="text-2xl font-bold text-white border-b border-white/10 pb-2">Smart Restock Recommendations</h3>
+                                {restockPlan.map((rec, idx) => (
+                                    <div key={idx} className="bg-[var(--bg)] border border-purple-500/50 p-6 rounded-2xl relative overflow-hidden group">
+                                        {/* Background glow */}
+                                        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                                        <div className="relative z-10 flex flex-col md:flex-row gap-6 md:items-start">
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <span className="text-gray-500 line-through decoration-red-500/50 text-sm">{rec.originalItem}</span>
+                                                    <span className="text-gray-500">→</span>
+                                                    <span className="text-xl font-bold text-[var(--color-neon-purple)]">{rec.suggestedItem}</span>
+                                                </div>
+                                                <p className="text-gray-300 italic mb-3">"{rec.reasoning}"</p>
+                                                <div className="inline-flex items-center flex-wrap gap-2 bg-purple-900/30 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-500/20">
+                                                    <span className="font-bold shrink-0">🔓 Unlocks:</span> {rec.unlocks}
+                                                </div>
+                                            </div>
+                                            <div className="md:w-auto shrink-0 flex flex-col items-center">
+                                                <button
+                                                    onClick={() => addItemToShoppingList(rec.suggestedItem)}
+                                                    className="w-full whitespace-nowrap bg-white text-black font-bold px-6 py-3 rounded-full hover:bg-[var(--color-neon-green)] hover:shadow-[0_0_15px_rgba(57,255,20,0.5)] transition-all flex items-center justify-center gap-2"
+                                                >
+                                                    <span>🛒</span> Add to List
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        removeGraveyardItem(rec.originalItem);
+                                                        setRestockPlan(prev => prev ? prev.filter(p => p.originalItem !== rec.originalItem) : null);
+                                                    }}
+                                                    className="text-xs text-gray-500 mt-3 hover:text-white transition-colors"
+                                                >
+                                                    Dismiss & Delete History
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                <div className="text-center mt-4 border-t border-white/10 pt-6">
+                                    <button onClick={() => setRestockPlan(null)} className="text-gray-500 hover:text-white underline text-sm inline-flex items-center gap-2"><span>🔙</span> Back to Graveyard</button>
+                                </div>
+                            </div>
+                        ) : graveyard.length === 0 ? (
+                            <div className="text-center py-12 text-gray-500 border border-white/5 rounded-xl bg-black/20">
+                                <div className="text-4xl mb-4 opacity-50">👻</div>
+                                <p>Your graveyard is empty.</p>
+                                <p className="text-sm mt-2">Finish some bottles to add them here!</p>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col gap-3">
+                                {[...graveyard].sort((a, b) => a.localeCompare(b)).map((item, index) => (
+                                    <div key={`${item}-${index}`} className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-xl group hover:border-purple-500/30 hover:bg-purple-900/10 transition-all">
+                                        <span className="font-medium text-lg text-white opacity-70 line-through decoration-red-500/50">{item}</span>
+                                        <div className="flex gap-2 shrink-0">
+                                            <button
+                                                onClick={() => removeGraveyardItem(item)}
+                                                className="w-10 h-10 rounded-full flex items-center justify-center border border-white/20 text-gray-400 hover:text-red-400 hover:border-red-400 transition-colors"
+                                                title="Delete completely"
+                                            >
+                                                ✕
+                                            </button>
+                                            <button
+                                                onClick={() => handleReviveBottle(item)}
+                                                className="w-10 h-10 rounded-full flex items-center justify-center border border-[var(--color-neon-green)] text-[var(--color-neon-green)] bg-[var(--color-neon-green)]/10 hover:bg-[var(--color-neon-green)] hover:text-black hover:shadow-[0_0_15px_rgba(57,255,20,0.5)] transition-all"
+                                                title="Revive (Moved back to Bar)"
+                                            >
+                                                🧟
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 ) : (
                     /* Shopping List View */
                     <div className="glass-panel p-8 w-full max-w-2xl mx-auto border border-[var(--color-neon-green)]/30 shadow-[0_0_30px_rgba(57,255,20,0.1)]">

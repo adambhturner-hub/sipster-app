@@ -49,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen font-sans antialiased overflow-x-hidden transition-colors duration-500">
+      <body className="flex flex-col min-h-screen font-sans antialiased overflow-x-hidden transition-colors duration-500" suppressHydrationWarning>
         <ThemeProvider>
           <MeasurementProvider>
             <AuthProvider>

@@ -11,6 +11,7 @@ import ShareButton from '@/components/ShareButton';
 import NotesAndRating from '@/components/NotesAndRating';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
+import DynamicGlass from '@/components/DynamicGlass';
 
 interface CustomFullRecipe {
     id: string;
@@ -83,17 +84,22 @@ export default function RecipeClient({ id }: { id: string }) {
                     <Link href="/journal" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
                         &larr; Back to Journal
                     </Link>
-                    <div className="flex items-center gap-6 mt-4">
-                        <div className="text-7xl bg-gray-900 h-32 w-32 rounded-3xl flex items-center justify-center shadow-[0_0_30px_rgba(176,38,255,0.2)] border border-[var(--primary)]/30">
-                            {cocktail.emoji}
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mt-4">
+                        <div className="relative flex-shrink-0 w-64 h-64 bg-gray-900/50 rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(176,38,255,0.15)] border border-[var(--primary)]/20 overflow-visible">
+                            <DynamicGlass
+                                glassType={cocktail.glass}
+                                primarySpirit={cocktail.primarySpirit}
+                                isShaken={cocktail.style?.includes('Shaken')}
+                                className="scale-[0.85] origin-bottom absolute bottom-2"
+                            />
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 text-center md:text-left mt-2 md:mt-0">
                             <div className="flex items-center justify-between mb-2 gap-4">
                                 <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
                                     {cocktail.name}
                                 </h1>
                                 <GlobalStarRating cocktailId={recipeData.id} />
-                                <div className="flex items-center gap-3 mt-4">
+                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
                                     <FavoriteButton
                                         cocktailId={(cocktail.name || 'custom').toLowerCase().replace(/ /g, '-')}
                                         cocktailName={cocktail.name}
@@ -115,7 +121,7 @@ export default function RecipeClient({ id }: { id: string }) {
                             </div>
                             <p className="text-xl text-[var(--primary)] italic">&quot;{cocktail.tagline}&quot;</p>
 
-                            <div className="flex items-center gap-2 mt-3">
+                            <div className="flex items-center justify-center md:justify-start gap-2 mt-3">
                                 <span className="px-3 py-1 bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold uppercase tracking-wider rounded-full border border-[var(--primary)]/30">
                                     AI Original
                                 </span>
@@ -179,7 +185,7 @@ export default function RecipeClient({ id }: { id: string }) {
                             </ol>
                         </div>
 
-                        <div className="pt-8 border-t border-gray-800/50">
+                        <div id="review" className="pt-8 border-t border-gray-800/50">
                             <h2 className="text-gray-500 text-sm font-bold tracking-wider uppercase mb-6 flex items-center gap-3">
                                 <span className="w-8 h-[1px] bg-gray-700"></span>
                                 Log & Rate
@@ -188,7 +194,6 @@ export default function RecipeClient({ id }: { id: string }) {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );

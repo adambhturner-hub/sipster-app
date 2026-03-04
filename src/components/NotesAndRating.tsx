@@ -95,17 +95,21 @@ export default function NotesAndRating({ cocktailId, type = 'classic', favoriteI
             const savingToastId = toast.loading("Saving journal entry...");
 
             // 1. Prepare interaction record data
-            const interactionData = {
+            const interactionData: any = {
                 uid: user.uid,
                 cocktailId,
                 type,
                 rating,
                 notes,
-                personalPhotoUrl: finalPhotoUrl,
                 isTried: true, // Automatically mark as tried if they are leaving notes/ratings!
                 isWantToTry: false, // Automatically remove from On Deck if they've left a review
                 updatedAt: new Date().toISOString()
             };
+
+            // Firestore crashes with ID: b815 if we pass 'undefined' to setDoc/addDoc.
+            if (finalPhotoUrl !== undefined) {
+                interactionData.personalPhotoUrl = finalPhotoUrl;
+            }
 
             // 2. Save the personal record
             // The `setDoc` import is already at the top, no need to re-import here.

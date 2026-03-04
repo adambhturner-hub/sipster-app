@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -35,6 +37,18 @@ export default function MenuPage() {
     const [sortBy, setSortBy] = useState<string>('popular');
     const [searchQuery, setSearchQuery] = useState('');
     const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
+    const [isSpeakeasyTriggered, setIsSpeakeasyTriggered] = useState(false);
+    const router = useRouter();
+
+    useEffect(() => {
+        const query = searchQuery.toLowerCase().trim();
+        if (query === 'speakeasy' || query === 'blind tiger' || query === '18th amendment') {
+            setIsSpeakeasyTriggered(true);
+            setTimeout(() => {
+                router.push('/speakeasy');
+            }, 1500); // 1.5s delay for dramatic effect
+        }
+    }, [searchQuery, router]);
 
     useEffect(() => {
         // Handle post-Spotify auth toast and remove from URL
@@ -279,8 +293,16 @@ export default function MenuPage() {
 
     if (authLoading) return null; // Prevent hydration mismatch
 
+    if (isSpeakeasyTriggered) {
+        return (
+            <div className="fixed inset-0 z-[9999] bg-black animate-pulse flex items-center justify-center">
+                {/* Dramatic blackout screen before routing */}
+            </div>
+        );
+    }
+
     return (
-        <div className="flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4">
+        <div className={`flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4 transition-all duration-1000 ${isSpeakeasyTriggered ? 'blur-xl scale-110 brightness-0' : ''}`}>
             <div className="mb-4 text-center">
                 <h1 className="text-4xl font-extrabold tracking-tight mb-2">
                     Discover <span className="text-glow-primary text-[var(--primary)]">Catalog</span>
