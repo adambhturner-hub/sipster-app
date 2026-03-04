@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useGlobalChat } from '@/contexts/ChatContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
@@ -48,7 +49,13 @@ export default function FloatingChat() {
                         className="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full shadow-[0_0_20px_rgba(255,0,255,0.4)] flex items-center justify-center border-2 border-white/20"
                         aria-label="Open Sipster AI"
                     >
-                        <span className="text-2xl drop-shadow-md">🍸</span>
+                        <Image
+                            src="/mustache_isolated.png"
+                            alt="Chat with Sipster"
+                            width={32}
+                            height={32}
+                            className="drop-shadow-[0_0_8px_var(--primary-glow)]"
+                        />
                     </motion.button>
                 )}
             </AnimatePresence>

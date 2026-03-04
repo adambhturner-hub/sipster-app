@@ -151,10 +151,10 @@ export default function BigNeonLogo() {
             }}
             onClick={playSpark}
         >
-            <div className="relative w-[300px] h-[300px] md:w-[600px] md:h-[600px] flex items-center justify-center -mt-12 -mb-24 md:-mt-24 md:-mb-36">
+            <div className="relative w-[340px] h-[120px] md:w-[900px] md:h-[315px] lg:w-[1200px] lg:h-[420px] flex items-center justify-center -mt-8 -mb-16 md:-mt-16 md:-mb-24 lg:-mt-20 lg:-mb-32">
                 <Image
                     id="neon-mustache-svg"
-                    src="/logo.png"
+                    src="/sipster-long.png"
                     alt="Sipster Logo"
                     fill
                     priority
