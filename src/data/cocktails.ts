@@ -622,7 +622,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'Tequila (Blanco)' },
             { amount: '0.5 oz', item: 'Limes' },
-            { amount: '4 oz', item: 'Grapefruit Juice' },
+            { amount: '4 oz', item: 'Grapefruit' },
             { amount: 'Top with', item: 'Club Soda' }
         ],
         description: 'Mexico\'s favorite cocktail. A bright, crushable blend of agave and grapefruit.',
@@ -1999,10 +1999,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Mug', // Usually a Tiki Mug or Hurricane
         ingredients: [
-            { amount: '2 oz', item: 'Dark Rum' }, // Pusser's
+            { amount: '2 oz', item: 'Dark/Aged Rum' }, // Pusser's
             { amount: '4 oz', item: 'Pineapple Juice' },
-            { amount: '1 oz', item: 'Orange Juice' },
-            { amount: '1 oz', item: 'Cream of Coconut' }
+            { amount: '1 oz', item: 'Oranges' },
+            { amount: '1 oz', item: 'Coconut Cream' }
         ],
         description: 'A richer, more complex cousin to the Piña Colada. Heavy navy rum cuts through a luxurious blend of pineapple, orange, and thick coconut cream.',
         garnish: 'Fresh Grated Nutmeg',
@@ -2047,8 +2047,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Gin' },
-            { amount: '0.5 oz', item: 'Lemon Juice' },
-            { amount: '0.5 oz', item: 'Raspberry Syrup' }, // Or muddled raspberries
+            { amount: '0.5 oz', item: 'Lemons' },
+            { amount: '0.5 oz', item: 'Raspberry Liqueur (Chambord)' }, // Or muddled raspberries
             { amount: '1', item: 'Egg White' }
         ],
         description: 'A pre-prohibition triumph of texture and flavor. Bright gin and tart lemon are smoothed into a luxurious, creamy, raspberry-hued foam.',
@@ -2096,7 +2096,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
             { amount: '0.75 oz', item: 'Simple Syrup' },
-            { amount: '½ Lemon', item: 'Cut into wedges' },
+            { amount: '½ Lemon', item: 'Lemons' },
             { amount: '4-6 leaves', item: 'Mint' }
         ],
         description: 'A chaotic, citrusy, and deeply refreshing collision of bourbon, muddled lemon wedges, and fresh spearmint.',
@@ -2144,8 +2144,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Cointreau' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '1', item: 'Egg White' }
         ],
         description: 'A ghostly pale, elegant classic. The botanical zing of gin and sharp orange liqueur are softened by a thick, velvety egg-white cloud.',
@@ -2191,7 +2191,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Martini',
         ingredients: [
-            { amount: '2 oz', item: 'Scotch Whisky' }, // Blended
+            { amount: '2 oz', item: 'Scotch (Blended)' }, // Blended
             { amount: '1 oz', item: 'Sweet Vermouth' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
@@ -2237,9 +2237,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'Light Rum' },
-            { amount: '0.75 oz', item: 'Grapefruit Juice' }, // Fresh ruby red or white
-            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'White Rum' },
+            { amount: '0.75 oz', item: 'Grapefruit' }, // Fresh ruby red or white
+            { amount: '0.5 oz', item: 'Limes' },
             { amount: '0.5 oz', item: 'Maraschino Liqueur' }
         ],
         description: 'A sharp, complex, and notoriously dry variation on the basic Daiquiri. Bright grapefruit and bitter cherry replace the traditional sugar.',
@@ -2284,7 +2284,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Scotch Whisky' }, // Blended
+            { amount: '2 oz', item: 'Scotch (Blended)' }, // Blended
             { amount: '0.75 oz', item: 'Drambuie' }
         ],
         description: 'A two-ingredient powerhouse from the Rat Pack era. The smoky warmth of Scotch is perfectly sweetened by the honeyed, herbal depth of Drambuie.',
@@ -2376,7 +2376,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'White Rum' },
             { amount: '4 oz', item: 'Cola' },
-            { amount: '0.5 oz', item: 'Lime Juice' }
+            { amount: '0.5 oz', item: 'Limes' }
         ],
         description: 'More than just a Rum & Coke. Fresh lime juice transforms this into a crisp, refreshing highball.',
         garnish: 'Lime wedge',
@@ -2420,8 +2420,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Fizzy',
         glass: 'Coupe', // Technically Flute, but Coupe works
         ingredients: [
-            { amount: '3 oz', item: 'Champagne' },
-            { amount: '3 oz', item: 'Orange Juice' },
+            { amount: '3 oz', item: 'White Wine' },
+            { amount: '3 oz', item: 'Oranges' },
             { amount: '0.25 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' }
         ],
         description: 'The undisputed champion of brunch. Bubbles and bright citrus.',
@@ -2467,7 +2467,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '2 oz', item: 'Tequila (Blanco)' },
-            { amount: '4 oz', item: 'Orange Juice' },
+            { amount: '4 oz', item: 'Oranges' },
             { amount: '0.5 oz', item: 'Grenadine' }
         ],
         description: 'A visual masterpiece from the 70s. Sweet, fruity, and deceptive.',
@@ -2556,11 +2556,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball', // Technically Hurricane glass
         ingredients: [
-            { amount: '2 oz', item: 'Light Rum' },
-            { amount: '2 oz', item: 'Dark Rum' },
-            { amount: '2 oz', item: 'Passion Fruit Syrup' },
-            { amount: '1 oz', item: 'Orange Juice' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'White Rum' },
+            { amount: '2 oz', item: 'Dark/Aged Rum' },
+            { amount: '2 oz', item: 'Passionfruit Syrup' },
+            { amount: '1 oz', item: 'Oranges' },
+            { amount: '0.5 oz', item: 'Limes' },
             { amount: '0.5 oz', item: 'Grenadine' }
         ],
         description: 'The iconic party drink of New Orleans. Intensely fruity and notoriously strong.',
@@ -2605,8 +2605,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Fizzy',
         glass: 'Coupe', // Flute
         ingredients: [
-            { amount: '2 oz', item: 'Peach Purée' },
-            { amount: '4 oz', item: 'Prosecco' }
+            { amount: '2 oz', item: 'Peach Liqueur' },
+            { amount: '4 oz', item: 'White Wine' }
         ],
         description: 'A luxurious Italian staple. Pure, ripe white peach mixed with dry Prosecco.',
         garnish: 'Peach slice',
@@ -2649,8 +2649,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Mug',
         ingredients: [
-            { amount: '12 oz', item: 'Mexican Lager' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '12 oz', item: 'Beer' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '3 dashes', item: 'Hot Sauce' },
             { amount: '2 dashes', item: 'Worcestershire Sauce' },
             { amount: '1 pinch', item: 'Tajin' }
@@ -2699,8 +2699,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
-            { amount: '0.75 oz', item: 'Honey Syrup' }
+            { amount: '0.75 oz', item: 'Lemons' },
+            { amount: '0.75 oz', item: 'Honey' }
         ],
         description: 'A Prohibition-era classic that originally used honey to mask the harshness of bathtub gin, resulting in a beautifully floral and bright libation.',
         garnish: 'Lemon twist',
@@ -2746,8 +2746,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Rocks',
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
-            { amount: '0.75 oz', item: 'Honey Syrup' }
+            { amount: '0.75 oz', item: 'Lemons' },
+            { amount: '0.75 oz', item: 'Honey' }
         ],
         description: 'A brilliant modern classic created at Milk & Honey. It swaps the gin in a Bee\'s Knees for the rich depth of Bourbon, creating an effortless Whiskey Sour riff.',
         garnish: 'None',
@@ -2793,8 +2793,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '0.75 oz', item: 'Mezcal' },
             { amount: '0.75 oz', item: 'Aperol' },
-            { amount: '0.75 oz', item: 'Yellow Chartreuse' },
-            { amount: '0.75 oz', item: 'Lime Juice' }
+            { amount: '0.75 oz', item: 'Chartreuse (Yellow)' },
+            { amount: '0.75 oz', item: 'Limes' }
         ],
         description: 'A masterful equal-parts cocktail balancing earthy Mezcal smoke, bittersweet Aperol citrus, and the honeyed herbaceous notes of Yellow Chartreuse.',
         garnish: 'Lime wheel (optional)',
@@ -2838,9 +2838,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Dark Rum' },
+            { amount: '2 oz', item: 'Dark/Aged Rum' },
             { amount: '3 oz', item: 'Ginger Beer' },
-            { amount: '0.5 oz', item: 'Lime Juice' }
+            { amount: '0.5 oz', item: 'Limes' }
         ],
         description: 'A stormy highball combining the rich molasses notes of dark rum with the sharp, spicy bite of a high-quality ginger beer.',
         garnish: 'Lime wedge',
@@ -2982,8 +2982,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '2 oz', item: 'Gin' },
-            { amount: '0.5 oz', item: 'Lemon Juice' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '0.5 oz', item: 'Lemons' },
+            { amount: '0.5 oz', item: 'Limes' },
             { amount: '0.75 oz', item: 'Simple Syrup' },
             { amount: '1 oz', item: 'Heavy Cream' },
             { amount: '1', item: 'Egg White' },
@@ -3035,8 +3035,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Highball',
         ingredients: [
-            { amount: '3 oz', item: 'Dark Jamaican Rum' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '3 oz', item: 'Dark/Aged Rum' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '0.75 oz', item: 'Simple Syrup' },
             { amount: '0.25 oz', item: 'Grenadine' },
             { amount: '3 dashes', item: 'Angostura Bitters' }
@@ -3084,12 +3084,12 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Rocks',
         ingredients: [
-            { amount: '1 oz', item: 'Light Rum' },
-            { amount: '1 oz', item: 'Dark Rum' },
+            { amount: '1 oz', item: 'White Rum' },
+            { amount: '1 oz', item: 'Dark/Aged Rum' },
             { amount: '1 oz', item: 'Overproof Rum' },
-            { amount: '0.5 oz', item: 'Honey Syrup' },
-            { amount: '0.75 oz', item: 'Lime Juice' },
-            { amount: '0.75 oz', item: 'Grapefruit Juice' },
+            { amount: '0.5 oz', item: 'Honey' },
+            { amount: '0.75 oz', item: 'Limes' },
+            { amount: '0.75 oz', item: 'Grapefruit' },
             { amount: '0.5 oz', item: 'Club Soda' }
         ],
         description: 'A Don the Beachcomber masterpiece balancing a dangerously strong split overproof rum base with tart tropical citrus and rich honey.',
@@ -3136,7 +3136,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '1.5 oz', item: 'Reposado Tequila' },
+            { amount: '1.5 oz', item: 'Tequila (Reposado)' },
             { amount: '0.5 oz', item: 'Mezcal' },
             { amount: '1 tsp', item: 'Agave Nectar' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
@@ -3184,9 +3184,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'Light Rum' },
+            { amount: '1.5 oz', item: 'White Rum' },
             { amount: '0.75 oz', item: 'Dry Vermouth' },
-            { amount: '0.5 oz', item: 'Orange Curaçao' },
+            { amount: '0.5 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
             { amount: '1 tsp', item: 'Grenadine' }
         ],
         description: 'A sophisticated Cuban classic born during American Prohibition, favored by wealthy tourists escaping to Havana for high-class cocktails.',
@@ -3232,9 +3232,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '1.5 oz', item: 'Green Chartreuse' },
+            { amount: '1.5 oz', item: 'Chartreuse (Green)' },
             { amount: '1 oz', item: 'Pineapple Juice' },
-            { amount: '0.75 oz', item: 'Lime Juice' },
+            { amount: '0.75 oz', item: 'Limes' },
             { amount: '0.5 oz', item: 'Falernum' }
         ],
         description: 'A stunning modern Tiki masterpiece that elevates the intense, herbaceous power of Green Chartreuse by burying it in tropical pineapple and clove-spiced Velvet Falernum.',
@@ -3282,9 +3282,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '2 oz', item: 'Demerara Rum' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '0.75 oz', item: 'Simple Syrup' },
-            { amount: '8-10', item: 'Mint Leaves' },
+            { amount: '8-10', item: 'Mint' },
             { amount: '4-6 dashes', item: 'Angostura Bitters' }
         ],
         description: 'Often described as the Mojito\'s richer, deeper, and infinitely more complex cousin. It layers heavy Trinidadian bitters over mint, lime, and dark Demerara rum.',
@@ -3333,7 +3333,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '0.75 oz', item: 'Orgeat' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
@@ -3430,7 +3430,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
             { amount: '2 oz', item: 'Rye Whiskey' },
             { amount: '1 oz', item: 'Dry Vermouth' },
             { amount: '0.25 oz', item: 'Maraschino Liqueur' },
-            { amount: '0.25 oz', item: 'Amer Picon (or Angostura)' }
+            { amount: '0.25 oz', item: 'Amaro Nonino' }
         ],
         description: 'The Manhattan\'s moodier, drier counterpart. It utilizes Dry Vermouth and is sharply accented by the cherry-almond bite of Maraschino liqueur.',
         garnish: 'Luxardo cherry',
@@ -3525,7 +3525,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1.5 oz', item: 'Cognac' },
-            { amount: '0.75 oz', item: 'Calvados' },
+            { amount: '0.75 oz', item: 'Apple Brandy' },
             { amount: '0.75 oz', item: 'Sweet Vermouth' }
         ],
         description: 'The lesser-known heavier sibling to the citrusy No. 2. A rich, heavy-hitting combination of grape brandy, baked apple notes, and sweet vermouth designed to jumpstart the heart.',
@@ -3619,7 +3619,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1 oz', item: 'Gin' },
             { amount: '1 oz', item: 'Sweet Vermouth' },
-            { amount: '1 oz', item: 'Green Chartreuse' },
+            { amount: '1 oz', item: 'Chartreuse (Green)' },
             { amount: '1 dash', item: 'Orange Bitters' }
         ],
         description: 'An intensely herbaceous, complex, and deeply sweet equal-parts cocktail that shines like a jewel. It is a heavier, more challenging precursor to the Negroni.',
@@ -3666,7 +3666,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Rye Whiskey' },
-            { amount: '1 oz', item: 'Averna' },
+            { amount: '1 oz', item: 'Amaro Nonino' },
             { amount: '1 dash', item: 'Angostura Bitters' },
             { amount: '1 dash', item: 'Orange Bitters' }
         ],
@@ -3713,7 +3713,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'Rye Whiskey (Canadian)' },
+            { amount: '2 oz', item: 'Rye Whiskey' },
             { amount: '0.25 oz', item: 'Fernet-Branca' },
             { amount: '0.25 oz', item: 'Simple Syrup' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
@@ -3762,8 +3762,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1.5 oz', item: 'Gin' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
-            { amount: '0.5 oz', item: 'St-Germain (Elderflower)' },
+            { amount: '0.75 oz', item: 'Lemons' },
+            { amount: '0.5 oz', item: 'Elderflower Liqueur' },
             { amount: '0.25 oz', item: 'Simple Syrup' }
         ],
         description: 'A brilliantly floral, elegant modern gin sour that perfectly rides the line between bright, tart lemon and the rich, honeyed lychee notes of elderflower liqueur.',
@@ -3859,7 +3859,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1.5 oz', item: 'Irish Whiskey' },
             { amount: '1 oz', item: 'Sweet Vermouth' },
-            { amount: '0.5 oz', item: 'Green Chartreuse' }
+            { amount: '0.5 oz', item: 'Chartreuse (Green)' }
         ],
         description: 'A robust, herbaceous Irish whiskey variation of the Bijou. It seamlessly marries the light, grassy notes of Irish whiskey with the heavy sweetness of vermouth and Chartreuse.',
         garnish: 'Orange twist',
@@ -3904,7 +3904,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'Blended Scotch Whisky' },
+            { amount: '2 oz', item: 'Scotch (Blended)' },
             { amount: '0.75 oz', item: 'Sweet Vermouth' },
             { amount: '0.5 oz', item: 'Bénédictine' }
         ],
@@ -4002,10 +4002,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'London Dry Gin' },
+            { amount: '1.5 oz', item: 'Gin (London Dry)' },
             { amount: '0.75 oz', item: 'Lillet Blanc' },
-            { amount: '0.75 oz', item: 'White Crème de Cacao' },
-            { amount: '0.75 oz', item: 'Lemon Juice' }
+            { amount: '0.75 oz', item: 'Coffee Liqueur' },
+            { amount: '0.75 oz', item: 'Lemons' }
         ],
         description: 'A masterpiece of unexpected harmonies. The bright, sharp lemon and gin are dramatically softened by the floral wine notes of Lillet and the creamy, luxurious finish of white chocolate.',
         garnish: 'Lemon twist',
@@ -4050,8 +4050,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'Calvados (Apple Brandy)' },
-            { amount: '0.75 oz', item: 'Yellow Chartreuse' },
+            { amount: '1.5 oz', item: 'Apple Brandy' },
+            { amount: '0.75 oz', item: 'Chartreuse (Yellow)' },
             { amount: '0.75 oz', item: 'Bénédictine' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
@@ -4098,8 +4098,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'London Dry Gin' },
-            { amount: '1.5 oz', item: 'Orange Juice' },
+            { amount: '1.5 oz', item: 'Gin (London Dry)' },
+            { amount: '1.5 oz', item: 'Oranges' },
             { amount: '1 tsp', item: 'Grenadine' },
             { amount: 'Rinse', item: 'Absinthe' }
         ],
@@ -4193,7 +4193,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'Light Rum' },
+            { amount: '1.5 oz', item: 'White Rum' },
             { amount: '1.5 oz', item: 'Pineapple Juice' },
             { amount: '1 tsp', item: 'Maraschino Liqueur' },
             { amount: '1 tsp', item: 'Grenadine' }
@@ -4241,10 +4241,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'Light Rum' },
+            { amount: '1.5 oz', item: 'White Rum' },
             { amount: '1 oz', item: 'Pineapple Juice' },
             { amount: '0.5 oz', item: 'Apricot Liqueur' },
-            { amount: '0.5 oz', item: 'Lime Juice' }
+            { amount: '0.5 oz', item: 'Limes' }
         ],
         description: 'The Mary Pickford\'s more sophisticated, tart sibling. It replaces the overwhelming cherry sweetness with the bright stone-fruit zip of apricot liqueur and fresh lime.',
         garnish: 'Lime wheel',
@@ -4290,9 +4290,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1 oz', item: 'Cognac' },
-            { amount: '1 oz', item: 'Light Rum' },
-            { amount: '1 oz', item: 'Orange Curaçao' },
-            { amount: '0.75 oz', item: 'Lemon Juice' }
+            { amount: '1 oz', item: 'White Rum' },
+            { amount: '1 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
+            { amount: '0.75 oz', item: 'Lemons' }
         ],
         description: 'A shockingly potent, naughty sibling to the classic Sidecar. It splits the base between rich French Cognac and crisp light rum, heavily smoothed by orange liqueur.',
         garnish: 'Flamed orange peel',
@@ -4339,7 +4339,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1.5 oz', item: 'Rye Whiskey' },
             { amount: '1 oz', item: 'Dry Vermouth' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Grenadine' },
             { amount: '2 dashes', item: 'Orange Bitters' }
         ],
@@ -4387,8 +4387,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1.5 oz', item: 'Cognac' },
-            { amount: '0.5 oz', item: 'Green Chartreuse' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Chartreuse (Green)' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '0.25 oz', item: 'Simple Syrup' },
             { amount: '1 dash', item: 'Angostura Bitters' }
         ],
@@ -4437,7 +4437,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'Old Tom Gin' },
             { amount: '0.25 oz', item: 'Maraschino Liqueur' },
-            { amount: '0.25 oz', item: 'Lemon Juice' },
+            { amount: '0.25 oz', item: 'Lemons' },
             { amount: '2 dashes', item: 'Orange Bitters' }
         ],
         description: 'An exceedingly elegant, nearly skeletal gin sour. It relies exclusively on the malty sweetness of Old Tom gin and the cherry notes of Maraschino rather than typical syrup.',
@@ -4483,11 +4483,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '1.5 oz', item: 'Aged Agricole Rhum' },
+            { amount: '1.5 oz', item: 'Cachaça' },
             { amount: '0.5 oz', item: 'Demerara Rum' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Orange Juice' },
-            { amount: '0.5 oz', item: 'Honey Syrup' },
+            { amount: '0.5 oz', item: 'Limes' },
+            { amount: '0.5 oz', item: 'Oranges' },
+            { amount: '0.5 oz', item: 'Honey' },
             { amount: '0.25 oz', item: 'Falernum' },
             { amount: '0.25 oz', item: 'Allspice Dram' },
             { amount: '1 dash', item: 'Angostura Bitters' }
@@ -4535,10 +4535,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'Light Rum' },
+            { amount: '2 oz', item: 'White Rum' },
             { amount: '1 oz', item: 'Cognac' },
-            { amount: '2 oz', item: 'Orange Juice' },
-            { amount: '1.5 oz', item: 'Lemon Juice' },
+            { amount: '2 oz', item: 'Oranges' },
+            { amount: '1.5 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Orgeat' }
         ],
         description: 'A fiercely potent, heavily fruited Tiki classic that softens a massive split-base of rum and cognac with sweet almond syrup and fresh citrus.',
@@ -4584,13 +4584,13 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Light Rum' },
+            { amount: '2 oz', item: 'White Rum' },
             { amount: '1 oz', item: 'Cognac' },
             { amount: '0.5 oz', item: 'Gin' },
-            { amount: '1 oz', item: 'Orange Juice' },
-            { amount: '2 oz', item: 'Lemon Juice' },
+            { amount: '1 oz', item: 'Oranges' },
+            { amount: '2 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Orgeat' },
-            { amount: '0.5 oz', item: 'Sherry (Oloroso)' }
+            { amount: '0.5 oz', item: 'Dry Vermouth' }
         ],
         description: 'An audacious, kitchen-sink Tiki cocktail that mercilessly blends rum, cognac, and gin. The intense citrus and almond are finally capped with a striking float of dry Spanish sherry.',
         garnish: 'Mint sprig',
@@ -4636,9 +4636,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.25 oz', item: 'London Dry Gin' },
-            { amount: '0.5 oz', item: 'Lemon Juice' },
-            { amount: '0.5 oz', item: 'Passion Fruit Syrup' },
+            { amount: '1.25 oz', item: 'Gin (London Dry)' },
+            { amount: '0.5 oz', item: 'Lemons' },
+            { amount: '0.5 oz', item: 'Passionfruit Syrup' },
             { amount: '0.25 oz', item: 'Orgeat' },
             { amount: '0.25 oz', item: 'Falernum' }
         ],
@@ -4685,12 +4685,12 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1 oz', item: 'Light Rum' },
+            { amount: '1 oz', item: 'White Rum' },
             { amount: '0.5 oz', item: 'Peach Liqueur' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Honey Syrup' },
+            { amount: '0.5 oz', item: 'Limes' },
+            { amount: '0.5 oz', item: 'Honey' },
             { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '12-15', item: 'Mint Leaves' }
+            { amount: '12-15', item: 'Mint' }
         ],
         description: 'An intricately blended, heavily herbal Tiki classic. It is essentially an aggressively minty, peach-laced pineapple daiquiri served as a frosty frozen slushie.',
         garnish: 'Mint sprig',
@@ -4735,10 +4735,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball', // Traditionally served in a customized ribbed Pearl Diver glass
         ingredients: [
-            { amount: '1.5 oz', item: 'Gold Rum' },
+            { amount: '1.5 oz', item: 'Dark/Aged Rum' },
             { amount: '0.5 oz', item: 'Demerara Rum' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Orange Juice' },
+            { amount: '0.5 oz', item: 'Limes' },
+            { amount: '0.5 oz', item: 'Oranges' },
             { amount: '0.5 oz', item: 'Don\'s Gardenia Mix' },
             { amount: '1 dash', item: 'Angostura Bitters' }
         ],
@@ -4785,11 +4785,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '1 oz', item: 'Dark Jamaican Rum' },
-            { amount: '0.75 oz', item: 'Gold Puerto Rican Rum' },
-            { amount: '0.75 oz', item: 'Overproof Demerara Rum (151)' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Grapefruit Juice' },
+            { amount: '1 oz', item: 'Dark/Aged Rum' },
+            { amount: '0.75 oz', item: 'Dark/Aged Rum' },
+            { amount: '0.75 oz', item: 'Overproof Rum' },
+            { amount: '0.5 oz', item: 'Limes' },
+            { amount: '0.5 oz', item: 'Grapefruit' },
             { amount: '0.5 oz', item: 'Cinnamon Syrup' },
             { amount: '0.5 oz', item: 'Falernum' },
             { amount: '1 dash', item: 'Absinthe' },
@@ -4838,7 +4838,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Blackstrap Rum (or aged Bajan Rum)' },
+            { amount: '2 oz', item: 'Dark/Aged Rum' },
             { amount: '0.5 oz', item: 'Falernum' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
@@ -4886,9 +4886,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '2 oz', item: 'Dark Rum (Gosling\'s)' },
-            { amount: '1 oz', item: 'Orange Juice' },
+            { amount: '1 oz', item: 'Oranges' },
             { amount: '1 oz', item: 'Pineapple Juice' },
-            { amount: '0.5 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Falernum' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
@@ -4936,11 +4936,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '0.5 oz', item: 'Light Rum' },
-            { amount: '0.5 oz', item: 'Gold Jamaican Rum' },
-            { amount: '0.5 oz', item: 'Passion Fruit Syrup' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
-            { amount: '0.5 oz', item: 'Honey Syrup' }
+            { amount: '0.5 oz', item: 'White Rum' },
+            { amount: '0.5 oz', item: 'Dark/Aged Rum' },
+            { amount: '0.5 oz', item: 'Passionfruit Syrup' },
+            { amount: '0.5 oz', item: 'Limes' },
+            { amount: '0.5 oz', item: 'Honey' }
         ],
         description: 'A brilliantly tweaked, intricately layered variation of the standard Daiquiri. Don the Beachcomber swapped plain sugar for a robust 50/50 split of dark honey and tropical passion fruit.',
         garnish: 'None',
@@ -4985,10 +4985,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1 oz', item: 'Mezcal (Espadín)' },
+            { amount: '1 oz', item: 'Mezcal' },
             { amount: '0.75 oz', item: 'Aperol' },
             { amount: '0.5 oz', item: 'Maraschino Liqueur' },
-            { amount: '0.75 oz', item: 'Lime Juice' }
+            { amount: '0.75 oz', item: 'Limes' }
         ],
         description: 'A smoky, deeply balanced modern triumph that effectively functions as a Mezcal-based Last Word, substituting bitter-orange Aperol for the traditional Chartreuse.',
         garnish: 'Grapefruit twist',
@@ -5033,9 +5033,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Rocks',
         ingredients: [
-            { amount: '1 oz', item: 'London Dry Gin' },
+            { amount: '1 oz', item: 'Gin (London Dry)' },
             { amount: '1 oz', item: 'Campari' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Simple Syrup' },
             { amount: '5', item: 'Muddled Red Grapes' }
         ],
@@ -5083,11 +5083,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'London Dry Gin' },
-            { amount: '0.75 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Gin (London Dry)' },
+            { amount: '0.75 oz', item: 'Limes' },
             { amount: '0.75 oz', item: 'Simple Syrup' },
             { amount: '3 drops', item: 'Rose Water' },
-            { amount: '3 slices', item: 'Muddled Cucumber' },
+            { amount: '3 slices', item: 'Cucumber' },
             { amount: '1 pinch', item: 'Salt' },
             { amount: '1 sprig', item: 'Mint' }
         ],
@@ -5136,8 +5136,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Rye Whiskey' },
-            { amount: '0.5 oz', item: 'Yellow Chartreuse' },
-            { amount: '0.5 oz', item: 'Sweet Vermouth (Punt e Mes)' },
+            { amount: '0.5 oz', item: 'Chartreuse (Yellow)' },
+            { amount: '0.5 oz', item: 'Sweet Vermouth' },
             { amount: '1 dash', item: 'Angostura Bitters' },
             { amount: '1 dash', item: 'Orange Bitters' }
         ],
@@ -5233,7 +5233,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1.5 oz', item: 'Angostura Bitters' },
             { amount: '1 oz', item: 'Orgeat' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Rye Whiskey' }
         ],
         description: 'An absolutely shocking, paradigm-shifting modern classic. It insanely utilizes an entire ounce-and-a-half of Angostura Bitters as the base spirit, bound together by heavy almond orgeat.',
@@ -5281,10 +5281,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
             { amount: '0.5 oz', item: 'Bourbon' },
             { amount: '0.5 oz', item: 'Rye Whiskey' },
             { amount: '0.5 oz', item: 'Cognac' },
-            { amount: '0.5 oz', item: 'Calvados (Apple Brandy)' },
-            { amount: '0.25 oz', item: 'Demerara Syrup' },
+            { amount: '0.5 oz', item: 'Apple Brandy' },
+            { amount: '0.25 oz', item: 'Simple Syrup' },
             { amount: '2 dashes', item: 'Angostura Bitters' },
-            { amount: '2 dashes', item: 'Mole Bitters' }
+            { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
         description: 'An over-the-top, outrageously luxurious split-base Old Fashioned. It harmonizes four distinct aged spirits (Bourbon, Rye, Cognac, Apple Brandy) into a single, unified mahogany profile.',
         garnish: 'Lemon and Orange twist',
@@ -5329,11 +5329,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'London Dry Gin' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Gin (London Dry)' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '0.75 oz', item: 'Simple Syrup' },
-            { amount: '3 slices', item: 'Muddled Cucumber' },
-            { amount: '6-8', item: 'Mint Leaves' }
+            { amount: '3 slices', item: 'Cucumber' },
+            { amount: '6-8', item: 'Mint' }
         ],
         description: 'The definitive modern "spa water" cocktail. It aggressively brightens a classic pre-prohibition Southside by heavily muddling fresh cucumber directly into the gin and mint.',
         garnish: 'Cucumber ribbon & mint sprig',
@@ -5379,8 +5379,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Blanco Tequila (100% Agave)' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Tequila (Blanco)' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '0.5 oz', item: 'Agave Nectar' },
             { amount: '0.5 oz', item: 'Orange Liqueur (Cointreau)' },
             { amount: '3 slices', item: 'Muddled Jalapeño' }
@@ -5430,7 +5430,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '1 oz', item: 'Mezcal (Espadín)' },
+            { amount: '1 oz', item: 'Mezcal' },
             { amount: '1 oz', item: 'Campari' },
             { amount: '1 oz', item: 'Sweet Vermouth' }
         ],
@@ -5477,9 +5477,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Blanco Tequila' },
-            { amount: '1 oz', item: 'Lime Juice' },
-            { amount: 'Top', item: 'Topo Chico (or robust sparkling water)' }
+            { amount: '2 oz', item: 'Tequila (Blanco)' },
+            { amount: '1 oz', item: 'Limes' },
+            { amount: 'Top', item: 'Club Soda' }
         ],
         description: 'The unofficial cocktail of West Texas. A startlingly refreshing, bone-dry highball that relies entirely on robust mineral water and sharp lime juice to carry the agave flavor.',
         garnish: 'Lime wedge',
@@ -5524,8 +5524,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Vodka or Gin' },
-            { amount: '4 oz', item: 'Grapefruit Juice' }
+            { amount: '2 oz', item: 'Vodka' },
+            { amount: '4 oz', item: 'Grapefruit' }
         ],
         description: 'A brilliantly simple, fiercely tart two-ingredient workhorse. It leverages the sharp, bitter bite of fresh grapefruit juice against a clean spirit canvas.',
         garnish: 'Grapefruit wedge',
@@ -5570,9 +5570,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Vodka or Gin' },
-            { amount: '4 oz', item: 'Grapefruit Juice' },
-            { amount: 'Rim', item: 'Coarse Salt' }
+            { amount: '2 oz', item: 'Vodka' },
+            { amount: '4 oz', item: 'Grapefruit' },
+            { amount: 'Rim', item: 'Salt' }
         ],
         description: 'The savory upgrade to the Greyhound. The addition of a heavily salted rim miraculously suppresses the overpowering bitterness of the grapefruit, allowing sweeter citrus notes to emerge.',
         garnish: 'Salt rim & Grapefruit wedge',
@@ -5617,9 +5617,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Premium Vodka' },
-            { amount: 'Top', item: 'Highly Carbonated Club Soda' },
-            { amount: '1 dash', item: 'Orange or Grapefruit Bitters (Elevated Spec)' }
+            { amount: '2 oz', item: 'Vodka' },
+            { amount: 'Top', item: 'Club Soda' },
+            { amount: '1 dash', item: 'Orange Bitters' }
         ],
         description: 'The ultimate canvas for hydration and low-calorie drinking. While often mocked for its simplicity, an "elevated" version using heavily iced premium soda and a dash of citrus bitters is wildly refreshing.',
         garnish: 'Lemon & Lime wedge',
@@ -5665,7 +5665,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '0.5 oz', item: 'Crème de Cassis' },
-            { amount: '4 oz', item: 'Champagne (Brut)' }
+            { amount: '4 oz', item: 'White Wine' }
         ],
         description: 'A luxurious, visually stunning French aperitif. The deeply jammy, dark berry profile of blackcurrant liqueur flawlessly colors and sweetens bone-dry champagne.',
         garnish: 'Blackberry or Lemon twist',
@@ -5711,7 +5711,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Campari' },
-            { amount: '3 oz', item: 'Prosecco' },
+            { amount: '3 oz', item: 'White Wine' },
             { amount: '1 oz', item: 'Club Soda' }
         ],
         description: 'The bolder, more assertive older brother to the Aperol Spritz. It utilizes the intensely bitter, botanical bite of Campari against crisp Italian Prosecco.',
@@ -5758,9 +5758,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1.5 oz', item: 'Elderflower Liqueur (St-Germain)' },
-            { amount: '3 oz', item: 'Prosecco' },
+            { amount: '3 oz', item: 'White Wine' },
             { amount: '1 oz', item: 'Club Soda' },
-            { amount: '6-8', item: 'Mint Leaves' }
+            { amount: '6-8', item: 'Mint' }
         ],
         description: 'The explosive, floral alternative to the bitter red Italian spritzes. Mint and highly aromatic elderflower liqueur create an incredibly lush, sweet, and highly refreshing patio sipper.',
         garnish: 'Lemon wheel & Mint sprig',
@@ -5806,7 +5806,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Limoncello' },
-            { amount: '3 oz', item: 'Prosecco' },
+            { amount: '3 oz', item: 'White Wine' },
             { amount: '1 oz', item: 'Club Soda' }
         ],
         description: 'An Amalfi Coast vacation in a glass. It leans entirely into the intense, candied lemon zest of southern Italian Limoncello, lengthened by dry bubbling Prosecco.',
@@ -5853,8 +5853,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '1.5 oz', item: 'Vodka' },
-            { amount: '0.5 oz', item: 'Peach Schnapps' },
-            { amount: '1.5 oz', item: 'Orange Juice' },
+            { amount: '0.5 oz', item: 'Peach Liqueur' },
+            { amount: '1.5 oz', item: 'Oranges' },
             { amount: '1.5 oz', item: 'Cranberry Juice' }
         ],
         description: 'The defining fruit-forward behemoth of 1980s drinking culture. A highly sweet, deeply colorful blend of peach, orange, and cranberry that heavily masks the vodka.',
@@ -5902,10 +5902,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '0.5 oz', item: 'Vodka' },
             { amount: '0.5 oz', item: 'White Rum' },
-            { amount: '0.5 oz', item: 'Silver Tequila' },
-            { amount: '0.5 oz', item: 'London Dry Gin' },
-            { amount: '0.5 oz', item: 'Triple Sec (Orange Liqueur)' },
-            { amount: '0.75 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Tequila (Blanco)' },
+            { amount: '0.5 oz', item: 'Gin (London Dry)' },
+            { amount: '0.5 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
+            { amount: '0.75 oz', item: 'Lemons' },
             { amount: '0.5 oz', item: 'Simple Syrup' },
             { amount: 'Top', item: 'Cola' }
         ],
@@ -5954,8 +5954,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Cognac' },
-            { amount: '0.5 oz', item: 'Orange Curaçao' },
-            { amount: '0.5 oz', item: 'Lemon Juice' },
+            { amount: '0.5 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
+            { amount: '0.5 oz', item: 'Lemons' },
             { amount: '0.25 oz', item: 'Maraschino Liqueur' },
             { amount: '2 dashes', item: 'Angostura Bitters' }
         ],
@@ -6003,8 +6003,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'Bourbon (High Rye)' },
-            { amount: '0.5 oz', item: 'Coffee Liqueur (Tia Maria)' },
+            { amount: '2 oz', item: 'Bourbon' },
+            { amount: '0.5 oz', item: 'Coffee Liqueur' },
             { amount: '2 dashes', item: 'Orange Bitters' }
         ],
         description: 'A brilliantly simple, fiercely robust modern Manhattan variation that creatively swaps traditional sweet vermouth for dry coffee liqueur and orange bitters.',
@@ -6050,10 +6050,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '0.75 oz', item: 'Blended Scotch Whisky' },
+            { amount: '0.75 oz', item: 'Scotch (Blended)' },
             { amount: '0.75 oz', item: 'Sweet Vermouth' },
             { amount: '0.75 oz', item: 'Cherry Heering' },
-            { amount: '0.75 oz', item: 'Orange Juice' }
+            { amount: '0.75 oz', item: 'Oranges' }
         ],
         description: 'An historically unusual equal-parts template that boldly shakes smoky Scotch whisky with fresh juice, rich sweet vermouth, and dense cherry liqueur.',
         garnish: 'Orange twist & Cherry',
@@ -6098,7 +6098,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Blended Scotch Whisky' },
+            { amount: '2 oz', item: 'Scotch (Blended)' },
             { amount: '0.5 oz', item: 'Drambuie' },
             { amount: '0.5 oz', item: 'Cherry Heering' }
         ],
@@ -6145,7 +6145,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'Dry Sherry (Fino or Amontillado)' },
+            { amount: '1.5 oz', item: 'Dry Vermouth' },
             { amount: '1.5 oz', item: 'Sweet Vermouth' },
             { amount: '2 dashes', item: 'Angostura Bitters' },
             { amount: '1 dash', item: 'Orange Bitters' }
@@ -6193,7 +6193,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Coupe',
         ingredients: [
-            { amount: '2 oz', item: 'Fino Sherry' },
+            { amount: '2 oz', item: 'Dry Vermouth' },
             { amount: '1 oz', item: 'Sweet Vermouth' },
             { amount: '2 dashes', item: 'Orange Bitters' }
         ],
@@ -6240,7 +6240,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '1 oz', item: 'Mezcal (Espadín)' },
+            { amount: '1 oz', item: 'Mezcal' },
             { amount: '1 oz', item: 'Campari' },
             { amount: '1 oz', item: 'Sweet Vermouth' }
         ],
@@ -6287,10 +6287,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1.5 oz', item: 'Blanco Tequila' },
+            { amount: '1.5 oz', item: 'Tequila (Blanco)' },
             { amount: '0.5 oz', item: 'Campari' },
-            { amount: '0.5 oz', item: 'Grapefruit Juice' },
-            { amount: '0.5 oz', item: 'Lime Juice' },
+            { amount: '0.5 oz', item: 'Grapefruit' },
+            { amount: '0.5 oz', item: 'Limes' },
             { amount: '0.5 oz', item: 'Simple Syrup' }
         ],
         description: 'A brilliantly successful modern mashup of a Paloma and a Hemingway Daiquiri, grounded firmly by the sharp, overriding bitterness of Italian Campari.',
@@ -6336,7 +6336,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '1.5 oz', item: 'Reposado Tequila' },
+            { amount: '1.5 oz', item: 'Tequila (Reposado)' },
             { amount: '0.5 oz', item: 'Sweet Vermouth' },
             { amount: '0.5 oz', item: 'Dry Vermouth' },
             { amount: '0.5 oz', item: 'Campari' },
@@ -6385,11 +6385,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball', // Traditionally served tall or large rocks
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Blanco Tequila' },
-            { amount: '0.75 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Tequila (Blanco)' },
+            { amount: '0.75 oz', item: 'Limes' },
             { amount: '0.75 oz', item: 'Grenadine' },
             { amount: '4 dashes', item: 'Angostura Bitters' },
-            { amount: 'Top', item: 'Club Soda (Optional)' }
+            { amount: 'Top', item: 'Club Soda' }
         ],
         description: 'An exceptionally bright, spice-laced, vividly red tequila sour. Biting fresh lime and raw agave are heavily anchored by a significant dose of dark pomegranate grenadine and aggressive aromatic bitters.',
         garnish: 'Lime wheel & Cherry',
@@ -6437,9 +6437,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1/2 oz', item: 'Vodka' },
             { amount: '1/2 oz', item: 'White Rum' },
-            { amount: '1/2 oz', item: 'Blanco Tequila' },
+            { amount: '1/2 oz', item: 'Tequila (Blanco)' },
             { amount: '1/2 oz', item: 'Gin (London Dry)' },
-            { amount: '1/2 oz', item: 'Blue Curacao' },
+            { amount: '1/2 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
             { amount: '2 oz', item: 'Sweet and Sour Mix' },
             { amount: 'Top', item: 'Lemon-Lime Soda' }
         ],
@@ -6488,10 +6488,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '1 1/2 oz', item: 'Angostura Bitters' },
-            { amount: '1/2 oz', item: 'Overproof Jamaican Rum' },
+            { amount: '1/2 oz', item: 'Overproof Rum' },
             { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '1 1/2 oz', item: 'Cream of Coconut' },
-            { amount: '1 oz', item: 'Lime Juice' }
+            { amount: '1 1/2 oz', item: 'Coconut Cream' },
+            { amount: '1 oz', item: 'Limes' }
         ],
         description: 'A brilliant, modern reimagining of the Pina Colada that uses an incredible 1.5 ounces of Angostura bitters as the base spirit, creating a deeply spiced, shockingly balanced masterpiece.',
         garnish: 'Pineapple fronds and nutmeg',
@@ -6585,10 +6585,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '3/4 oz', item: 'Blended Scotch' },
+            { amount: '3/4 oz', item: 'Scotch (Blended)' },
             { amount: '3/4 oz', item: 'Sweet Vermouth' },
             { amount: '3/4 oz', item: 'Cherry Heering' },
-            { amount: '3/4 oz', item: 'Orange Juice' }
+            { amount: '3/4 oz', item: 'Oranges' }
         ],
         description: 'One of the very few classic and popular cocktails to employ Scotch whisky as a base, famously mixing it in equal parts with sweet vermouth, cherry liqueur, and fresh orange juice.',
         garnish: 'Flamed orange peel',
@@ -6634,10 +6634,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '1 1/2 oz', item: 'White Rum' },
-            { amount: '3/4 oz', item: 'Blue Curacao' },
+            { amount: '3/4 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
             { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '3/4 oz', item: 'Cream of Coconut' },
-            { amount: '1/2 oz', item: 'Lemon Juice' }
+            { amount: '3/4 oz', item: 'Coconut Cream' },
+            { amount: '1/2 oz', item: 'Lemons' }
         ],
         description: 'A vibrant, artificially blue tropical classic that blends rum and coconut with the bright orange notes of Blue Curacao.',
         garnish: 'Pineapple wedge and cherry',
@@ -6685,7 +6685,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
             { amount: '2 oz', item: 'Gin (London Dry)' },
             { amount: '1/2 oz', item: 'Sweet Vermouth' },
             { amount: '1/2 oz', item: 'Dry Vermouth' },
-            { amount: '1 oz', item: 'Orange Juice' }
+            { amount: '1 oz', item: 'Oranges' }
         ],
         description: 'Essentially a Perfect Martini (gin with both sweet and dry vermouth) heavily lengthened with fresh orange juice. It was one of the most famous drinks in the world before Prohibition.',
         garnish: 'Orange twist',
@@ -6731,8 +6731,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
-            { amount: '1 oz', item: 'Grapefruit Juice' },
-            { amount: '1/2 oz', item: 'Honey Syrup' }
+            { amount: '1 oz', item: 'Grapefruit' },
+            { amount: '1/2 oz', item: 'Honey' }
         ],
         description: 'A brilliant, elegant Los Angeles classic that perfectly marries the rich caramel notes of bourbon with the bitter brightness of grapefruit and sweet floral honey.',
         garnish: 'Grapefruit twist',
@@ -6777,10 +6777,10 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Blanco Tequila' },
-            { amount: '1/2 oz', item: 'Orange Juice' },
-            { amount: '1/2 oz', item: 'Grapefruit Juice' },
-            { amount: '1/2 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Tequila (Blanco)' },
+            { amount: '1/2 oz', item: 'Oranges' },
+            { amount: '1/2 oz', item: 'Grapefruit' },
+            { amount: '1/2 oz', item: 'Limes' },
             { amount: 'Top', item: 'Grapefruit Soda' },
             { amount: 'Pinch', item: 'Salt' }
         ],
@@ -6830,7 +6830,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'Vodka' },
             { amount: '4 oz', item: 'Cranberry Juice' },
-            { amount: '1/4 oz', item: 'Lime Juice' }
+            { amount: '1/4 oz', item: 'Limes' }
         ],
         description: 'Universally known simply as a "Vodka Cranberry", this incredibly simple two-ingredient highball relies entirely on the quality of the cranberry juice and a required squeeze of fresh lime.',
         garnish: 'Lime wedge',
@@ -6925,8 +6925,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Rocks',
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
-            { amount: '2 oz', item: 'Orange Juice' },
-            { amount: '3/4 oz', item: 'Lemon Juice' },
+            { amount: '2 oz', item: 'Oranges' },
+            { amount: '3/4 oz', item: 'Lemons' },
             { amount: '1/2 oz', item: 'Orgeat' },
             { amount: '1/4 oz', item: 'Simple Syrup' }
         ],
@@ -6974,7 +6974,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Gin (London Dry)' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '3/4 oz', item: 'Simple Syrup' },
             { amount: '4 slices', item: 'Cucumber' },
             { amount: '8 leaves', item: 'Mint' }
@@ -7023,9 +7023,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '1 1/2 oz', item: 'Blanco Tequila' },
-            { amount: '1/2 oz', item: 'Creme de Cassis' },
-            { amount: '1/2 oz', item: 'Lime Juice' },
+            { amount: '1 1/2 oz', item: 'Tequila (Blanco)' },
+            { amount: '1/2 oz', item: 'Crème de Cassis' },
+            { amount: '1/2 oz', item: 'Limes' },
             { amount: '3 oz', item: 'Ginger Beer' }
         ],
         description: 'A brilliantly refreshing, deep red tequila highball. The sharp bite of ginger beer is perfectly balanced by the rich, dark berry notes of blackcurrant liqueur (Cassis).',
@@ -7072,8 +7072,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Peach Schnapps' },
-            { amount: '4 oz', item: 'Orange Juice' }
+            { amount: '2 oz', item: 'Peach Liqueur' },
+            { amount: '4 oz', item: 'Oranges' }
         ],
         description: 'A monument to 1980s cocktail culture. An incredibly simple, sweet, entirely unpretentious mix of peach schnapps and orange juice that revolutionized the liqueur industry.',
         garnish: 'Orange slice',
@@ -7166,7 +7166,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'Gin (London Dry)' },
             { amount: '4 oz', item: 'Tonic Water' },
-            { amount: '1/4 oz', item: 'Lime Juice' }
+            { amount: '1/4 oz', item: 'Limes' }
         ],
         description: 'Perhaps the most legendary highball in existence. The sharp botanical pine of the gin perfectly balances against the bitter quinine and effervescence of the tonic water.',
         garnish: 'Lime wedge or botanical array',
@@ -7213,7 +7213,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Gin (London Dry)' },
-            { amount: '1 oz', item: 'Lemon Juice' },
+            { amount: '1 oz', item: 'Lemons' },
             { amount: '3/4 oz', item: 'Simple Syrup' }
         ],
         description: 'The purest intersection of gin and citrus. Without the herbaceousness of Chartreuse or the sweetness of honey, it\'s an unadulterated exploration of the gin\'s foundational botanicals.',
@@ -7259,7 +7259,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Blended Scotch' },
+            { amount: '2 oz', item: 'Scotch (Blended)' },
             { amount: '1/2 oz', item: 'Amaretto' }
         ],
         description: 'A robust, dramatically simple two-ingredient nightcap that softens the sharp, smoky edges of Scotch whisky with the rich almond sweetness of Italian Amaretto.',
@@ -7351,7 +7351,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Dessert',
         glass: 'Mug',
         ingredients: [
-            { amount: '2 oz', item: 'Dark Rum' },
+            { amount: '2 oz', item: 'Dark/Aged Rum' },
             { amount: '1 tbsp', item: 'Spiced Butter Batter' },
             { amount: 'Top', item: 'Hot Water' }
         ],
@@ -7400,8 +7400,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Mug',
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
-            { amount: '3/4 oz', item: 'Lemon Juice' },
-            { amount: '1/2 oz', item: 'Honey Syrup' },
+            { amount: '3/4 oz', item: 'Lemons' },
+            { amount: '1/2 oz', item: 'Honey' },
             { amount: 'Top', item: 'Hot Water' }
         ],
         description: 'The ultimate winter cure-all. A brilliant, soothing mix of dark spirits, bright lemon, sweet honey, and steaming water that warms from the inside out.',
@@ -7449,7 +7449,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '2 oz', item: 'Gin (London Dry)' },
-            { amount: '3/4 oz', item: 'Lemon Juice' },
+            { amount: '3/4 oz', item: 'Lemons' },
             { amount: '3/4 oz', item: 'Pineapple Juice' },
             { amount: '1/2 oz', item: 'Orgeat' },
             { amount: '2 dashes', item: 'Peychaud\'s Bitters' }
@@ -7498,8 +7498,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1 1/2 oz', item: 'Vodka' },
-            { amount: '1 oz', item: 'Triple Sec' },
-            { amount: '1 oz', item: 'Lime Juice' }
+            { amount: '1 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
+            { amount: '1 oz', item: 'Limes' }
         ],
         description: 'Essentially a Vodka Margarita without the salt. Originally conceived as a sharply tart, highly potent shot, it drinks beautifully as an equal-parts citrus cocktail when scaled up.',
         garnish: 'Lime wedge',
@@ -7545,7 +7545,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Mug',
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
-            { amount: '3/4 oz', item: 'Lime Juice' },
+            { amount: '3/4 oz', item: 'Limes' },
             { amount: '3 oz', item: 'Ginger Beer' }
         ],
         description: 'A brilliantly simple geographic riff on the Moscow Mule that swaps vodka for Kentucky straight bourbon. The rich oak and caramel notes of the whiskey pair perfectly with spicy ginger.',
@@ -7593,8 +7593,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Martini',
         ingredients: [
             { amount: '2 oz', item: 'Vodka' },
-            { amount: '3/4 oz', item: 'Lemon Juice' },
-            { amount: '1/2 oz', item: 'Triple Sec' },
+            { amount: '3/4 oz', item: 'Lemons' },
+            { amount: '1/2 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
             { amount: '1/4 oz', item: 'Simple Syrup' }
         ],
         description: 'A brightly sweet, intensely citrusy modern classic. Inspired by the hard candy, it heavily relies on a sugared rim to balance out the sharp tartness of the fresh lemon juice.',
@@ -7643,7 +7643,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1 1/2 oz', item: 'Vodka' },
             { amount: '3 oz', item: 'Cranberry Juice' },
-            { amount: '1 oz', item: 'Orange Juice' }
+            { amount: '1 oz', item: 'Oranges' }
         ],
         description: 'An incredibly simple, beautifully pink highball that bridges the gap between a Vodka Cranberry (Cape Codder) and a Screwdriver by mixing the two juices together.',
         garnish: 'Lime wedge',
@@ -7739,8 +7739,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
             { amount: '2 oz', item: 'White Rum' },
             { amount: '2 oz', item: 'Strawberry Puree' },
             { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '1 oz', item: 'Cream of Coconut' },
-            { amount: '1 oz', item: 'Lime Juice' }
+            { amount: '1 oz', item: 'Coconut Cream' },
+            { amount: '1 oz', item: 'Limes' }
         ],
         description: 'The ultimate blended beach drink. It is quite literally half of a frozen Strawberry Daiquiri poured side-by-side into a glass with half of a frozen Pina Colada.',
         garnish: 'Strawberry and pineapple wedge',
@@ -7788,7 +7788,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1 1/2 oz', item: 'Midori' },
             { amount: '1/2 oz', item: 'Vodka' },
-            { amount: '1 oz', item: 'Lemon Juice' },
+            { amount: '1 oz', item: 'Lemons' },
             { amount: 'Top', item: 'Club Soda' }
         ],
         description: 'A neon-green, intensely melon-flavored sour that defined the club scene in the 1980s and 90s. When made with fresh lemon juice instead of sour mix, it is shockingly delicious and bright.',
@@ -7837,7 +7837,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1 oz', item: 'Vodka' },
             { amount: '1 oz', item: 'Coffee Liqueur' },
-            { amount: '1 oz', item: 'Baileys Irish Cream' },
+            { amount: '1 oz', item: 'Baileys' },
             { amount: '1 oz', item: 'Heavy Cream' }
         ],
         description: 'Essentially an adult milkshake. A rich, heavy dessert cocktail that perfectly blends vodka with the roasted notes of coffee liqueur and the creamy chocolate notes of Baileys.',
@@ -7885,9 +7885,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '3/4 oz', item: 'Mezcal' },
-            { amount: '3/4 oz', item: 'Yellow Chartreuse' },
+            { amount: '3/4 oz', item: 'Chartreuse (Yellow)' },
             { amount: '3/4 oz', item: 'Aperol' },
-            { amount: '3/4 oz', item: 'Lime Juice' }
+            { amount: '3/4 oz', item: 'Limes' }
         ],
         description: 'An equal-parts modern masterpiece. It pairs the deep smoke of artisanal mezcal with the sweet botanical honey of Yellow Chartreuse and the bright bitter citrus of Aperol.',
         garnish: 'Lime wedge',
@@ -7934,7 +7934,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1 oz', item: 'Campari' },
             { amount: '1 oz', item: 'Sweet Vermouth' },
-            { amount: 'Top', item: 'Prosecco' }
+            { amount: 'Top', item: 'White Wine' }
         ],
         description: 'A brilliant, bubbly accident. The Sbagliato takes the iconic bitter/sweet base of a Negroni and swaps the heavy gin for crisp Italian sparkling wine.',
         garnish: 'Orange slice',
@@ -7981,9 +7981,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Rocks',
         ingredients: [
             { amount: '2 oz', item: 'Bourbon' },
-            { amount: '1 oz', item: 'Lemon Juice' },
+            { amount: '1 oz', item: 'Lemons' },
             { amount: '3/4 oz', item: 'Simple Syrup' },
-            { amount: '1/2 oz', item: 'Dry Red Wine' }
+            { amount: '1/2 oz', item: 'Red Wine' }
         ],
         description: 'A visually stunning masterpiece. It is entirely a classic Whiskey Sour that has been crowned with a carefully floated layer of fruity, tannic dry red wine.',
         garnish: 'No garnish (the wine is the garnish)',
@@ -8076,8 +8076,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Reposado Tequila' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Tequila (Reposado)' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '3/4 oz', item: 'Agave Nectar' },
             { amount: '1/4 piece', item: 'Jalapeno' },
             { amount: '10 leaves', item: 'Cilantro' }
@@ -8128,8 +8128,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'White Rum' },
             { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '1 1/2 oz', item: 'Cream of Coconut' },
-            { amount: '1/2 oz', item: 'Lime Juice' }
+            { amount: '1 1/2 oz', item: 'Coconut Cream' },
+            { amount: '1/2 oz', item: 'Limes' }
         ],
         description: 'The definitive tropical vacation in a glass. A luxuriously creamy, flawlessly balanced blend of light rum, fresh pineapple, and rich sweet coconut.',
         garnish: 'Pineapple wedge and cherry',
@@ -8176,8 +8176,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '1 1/2 oz', item: 'Gin (London Dry)' },
-            { amount: '1/2 oz', item: 'Applejack' },
-            { amount: '3/4 oz', item: 'Lemon Juice' },
+            { amount: '1/2 oz', item: 'Apple Brandy' },
+            { amount: '3/4 oz', item: 'Lemons' },
             { amount: '1/2 oz', item: 'Grenadine' },
             { amount: '1', item: 'Egg White' }
         ],
@@ -8225,11 +8225,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Coupe',
         ingredients: [
-            { amount: '1 1/2 oz', item: 'Vanilla Vodka' },
-            { amount: '1/2 oz', item: 'Passion Fruit Liqueur' },
-            { amount: '1 oz', item: 'Passion Fruit Puree' },
-            { amount: '1/2 oz', item: 'Lime Juice' },
-            { amount: 'Sidecar', item: 'Prosecco' }
+            { amount: '1 1/2 oz', item: 'Vodka' },
+            { amount: '1/2 oz', item: 'Passionfruit Syrup' },
+            { amount: '1 oz', item: 'Passionfruit Syrup' },
+            { amount: '1/2 oz', item: 'Limes' },
+            { amount: 'Sidecar', item: 'White Wine' }
         ],
         description: 'The UK\'s most wildly popular modern cocktail. A dazzling, fiercely tart and sweet concoction of vanilla and passion fruit, served with a mandatory sidecar shot of sparkling wine.',
         garnish: 'Half a passion fruit',
@@ -8276,7 +8276,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Rye Whiskey' },
-            { amount: '1/2 oz', item: 'Punt e Mes' },
+            { amount: '1/2 oz', item: 'Sweet Vermouth' },
             { amount: '1/2 oz', item: 'Maraschino Liqueur' }
         ],
         description: 'Vincenzo Errico\'s heavy, fiercely bitter Brooklyn riff. It swaps sweet vermouth for intense, bitter Punt e Mes, creating a bold, bracing whiskey drink that launched a hundred neighborhood variations.',
@@ -8324,8 +8324,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'Gin (London Dry)' },
             { amount: '4 oz', item: 'Tomato Juice' },
-            { amount: '1/2 oz', item: 'Lemon Juice' },
-            { amount: '4 dashes', item: 'Hot Sauce (Tabasco)' },
+            { amount: '1/2 oz', item: 'Lemons' },
+            { amount: '4 dashes', item: 'Hot Sauce' },
             { amount: '4 dashes', item: 'Worcestershire Sauce' },
             { amount: 'Pinch', item: 'Celery Salt & Black Pepper' }
         ],
@@ -8374,7 +8374,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '2 oz', item: 'White Rum' },
             { amount: '4 oz', item: 'Tonic Water' },
-            { amount: '1/4 oz', item: 'Lime Juice' }
+            { amount: '1/4 oz', item: 'Limes' }
         ],
         description: 'A brilliantly simple, tropical alternative to the G&T. The subtle vanilla and sugarcane sweetness of a light rum perfectly softens the harsh quinine bitterness of the tonic water.',
         garnish: 'Lime wedge',
@@ -8420,11 +8420,11 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Hurricane',
         ingredients: [
-            { amount: '1 oz', item: 'Light Rum' },
-            { amount: '1 oz', item: 'Dark Rum' },
+            { amount: '1 oz', item: 'White Rum' },
+            { amount: '1 oz', item: 'Dark/Aged Rum' },
             { amount: '2 oz', item: 'Pineapple Juice' },
-            { amount: '1 oz', item: 'Orange Juice' },
-            { amount: '1/2 oz', item: 'Lime Juice' },
+            { amount: '1 oz', item: 'Oranges' },
+            { amount: '1/2 oz', item: 'Limes' },
             { amount: '1/2 oz', item: 'Grenadine' }
         ],
         description: 'The catch-all term for the brilliant, violently fruity Caribbean resort staple. A robust mixture of light and dark rums shaken heavily with tropical fruit juices and tart grenadine.',
@@ -8470,7 +8470,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Highball',
         glass: 'Highball',
         ingredients: [
-            { amount: '2 oz', item: 'Blended Scotch' },
+            { amount: '2 oz', item: 'Scotch (Blended)' },
             { amount: '4 oz', item: 'Club Soda' }
         ],
         description: 'The purest highball. It is designed singularly to lengthen and open up the complex smoky, malty notes of Scotch whisky without masking them behind sugar or citrus.',
@@ -8519,7 +8519,7 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         ingredients: [
             { amount: '1 1/2 oz', item: 'Vodka' },
             { amount: '3 oz', item: 'Cranberry Juice' },
-            { amount: '1 1/2 oz', item: 'Grapefruit Juice' }
+            { amount: '1 1/2 oz', item: 'Grapefruit' }
         ],
         description: 'A deeply refreshing, incredibly tart 1980s beach drink that bridges the sweet gap between a Cape Codder and a Greyhound by mixing cranberry and sharp grapefruit juice.',
         garnish: 'Lime wedge or grapefruit slice',
@@ -8565,12 +8565,12 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Double Rocks',
         ingredients: [
-            { amount: '1 1/2 oz', item: 'Dark Jamaican Rum' },
-            { amount: '3/4 oz', item: 'Light Rum' },
+            { amount: '1 1/2 oz', item: 'Dark/Aged Rum' },
+            { amount: '3/4 oz', item: 'White Rum' },
             { amount: '1/2 oz', item: 'Orange Liqueur (Cointreau)' },
-            { amount: '1/2 oz', item: 'Lime Juice' },
+            { amount: '1/2 oz', item: 'Limes' },
             { amount: '1/2 oz', item: 'Falernum' },
-            { amount: '6 drops', item: 'Pernod (or Absinthe)' },
+            { amount: '6 drops', item: 'Absinthe' },
             { amount: '1 dash', item: 'Angostura Bitters' }
         ],
         description: 'An absolute Don the Beachcomber tiki triumph. It is a wildly complex matrix of split-base rums, clove-heavy falernum, orange liqueur, and a lethal whisper of anise.',
@@ -8618,9 +8618,9 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Spirit-Forward',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Rhum Agricole' },
-            { amount: '1/4 oz', item: 'Cane Syrup' },
-            { amount: '1 quarter', item: 'Lime Coin' }
+            { amount: '2 oz', item: 'Cachaça' },
+            { amount: '1/4 oz', item: 'Simple Syrup' },
+            { amount: '1 quarter', item: 'Limes' }
         ],
         description: 'The shockingly potent national drink of Martinique. A pure, unadulterated showcase of grassy, funky Rhum Agricole (distilled from raw sugarcane, not molasses), tempered only by sugar and a splash of lime oil.',
         garnish: 'Lime coin',
@@ -8667,13 +8667,13 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Highball',
         ingredients: [
             { amount: '1/2 oz', item: 'Vodka' },
-            { amount: '1/2 oz', item: 'Rum (White)' },
+            { amount: '1/2 oz', item: 'White Rum' },
             { amount: '1/2 oz', item: 'Gin' },
             { amount: '1/2 oz', item: 'Tequila (Blanco)' },
             { amount: '1/2 oz', item: 'Midori' },
-            { amount: '1/2 oz', item: 'Triple Sec' },
+            { amount: '1/2 oz', item: 'Orange Liqueur (Cointreau/Triple Sec)' },
             { amount: '1 oz', item: 'Sweet and Sour Mix' },
-            { amount: 'Top', item: 'Lemon Lime Soda' }
+            { amount: 'Top', item: 'Lemon-Lime Soda' }
         ],
         description: 'A neon-green, dangerously potent variation of the Long Island Iced Tea. It swaps the cola for lemon-lime soda and the triple sec requirement is bolstered by incredibly sweet, melon-flavored Midori.',
         garnish: 'Lemon wedge and cherry',
@@ -8719,8 +8719,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         style: 'Sour',
         glass: 'Rocks',
         ingredients: [
-            { amount: '2 oz', item: 'Reposado Tequila' },
-            { amount: '1 oz', item: 'Lime Juice' },
+            { amount: '2 oz', item: 'Tequila (Reposado)' },
+            { amount: '1 oz', item: 'Limes' },
             { amount: '1/2 oz', item: 'Agave Nectar' }
         ],
         description: 'An absolute masterpiece of modern minimalism that revolutionized how the world drinks tequila. It entirely removes the traditional orange liqueur (Triple Sec) and replaces it with pure agave nectar.',
@@ -8768,8 +8768,8 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         glass: 'Coupe',
         ingredients: [
             { amount: '2 oz', item: 'Rye Whiskey' },
-            { amount: '1/2 oz', item: 'Lemon Juice' },
-            { amount: '1/2 oz', item: 'Orange Juice' },
+            { amount: '1/2 oz', item: 'Lemons' },
+            { amount: '1/2 oz', item: 'Oranges' },
             { amount: '1/2 oz', item: 'Grenadine' }
         ],
         description: 'A brilliantly fruity, historic variation of the Whiskey Sour from Boston. The sharp rye spice is heavily mellowed by a vibrant combination of fresh citrus and sweet pomegranate syrup (Grenadine).',

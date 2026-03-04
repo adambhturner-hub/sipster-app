@@ -19,6 +19,7 @@ export default function MyBarPage() {
     const [activeTab, setActiveTab] = useState<'my-bar' | 'shopping-list' | 'graveyard'>('my-bar');
     const [isLoaded, setIsLoaded] = useState(false);
     const [isScanning, setIsScanning] = useState(false);
+    const [isAdvancedExpanded, setIsAdvancedExpanded] = useState(false);
     const [customIngredient, setCustomIngredient] = useState('');
     const [customShoppingItem, setCustomShoppingItem] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -327,6 +328,21 @@ export default function MyBarPage() {
         toast(`Removed ${ingredient}`, { icon: '🗑️' });
     };
 
+    const handleAddToCartFromBar = async (e: React.MouseEvent, ingredient: string) => {
+        e.stopPropagation();
+        if (shoppingList.some(i => i.toLowerCase() === ingredient.toLowerCase())) {
+            toast.error(`${ingredient} is already in your cart!`);
+            return;
+        }
+        const newList = [...shoppingList, ingredient];
+        setShoppingList(newList);
+        toast.success(`Added ${ingredient} to Cart`);
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            await setDoc(userRef, { shoppingList: newList }, { merge: true });
+        }
+    };
+
     const moveToBar = async (ingredient: string) => {
         // Prevent exact duplicates in active bar (case-insensitive)
         if (myBar.some(i => i.toLowerCase() === ingredient.toLowerCase())) {
@@ -454,40 +470,84 @@ export default function MyBarPage() {
                 {activeTab === 'my-bar' ? (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                            {INGREDIENT_CATEGORIES.map((category) => (
-                                <div key={category.name} className="glass-panel p-6">
-                                    <h2 className="text-2xl font-bold mb-6 border-b border-white/10 pb-2 text-[var(--accent)] opacity-90">
-                                        {category.name}
-                                    </h2>
-                                    <div className="flex flex-wrap gap-3">
-                                        {category.items.map((item) => {
-                                            const isSelected = myBar.includes(item);
-                                            return (
-                                                <div key={item} className="relative group inline-block">
-                                                    <button
-                                                        onClick={() => handleAddIngredient(item)}
-                                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${isSelected
-                                                            ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
-                                                            : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
-                                                            }`}
-                                                    >
-                                                        {item}
-                                                    </button>
-                                                    {isSelected && (
+                            {INGREDIENT_CATEGORIES.map((category) => {
+                                // For Advanced Spirits, only render if expanded
+                                if (category.name.includes('Advanced Spirits') && !isAdvancedExpanded) {
+                                    return (
+                                        <div key={category.name} className="md:col-span-2 text-center mt-4">
+                                            <button
+                                                onClick={() => setIsAdvancedExpanded(true)}
+                                                className="text-sm font-bold text-gray-400 hover:text-white transition-colors bg-white/5 px-6 py-2 rounded-full border border-white/10 hover:border-white/30"
+                                            >
+                                                Show Rare / Advanced Spirits 🏺
+                                            </button>
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <div key={category.name} className={`glass-panel p-6 ${category.name.includes('Advanced Spirits') ? 'border-[var(--accent)]/30' : ''}`}>
+                                        <div className="flex justify-between items-end mb-6 border-b border-white/10 pb-2">
+                                            <h2 className={`text-2xl font-bold ${category.name.includes('Advanced Spirits') ? 'text-gray-300' : 'text-[var(--accent)]'} opacity-90`}>
+                                                {category.name}
+                                            </h2>
+                                            {category.name.includes('Advanced Spirits') && (
+                                                <button onClick={() => setIsAdvancedExpanded(false)} className="text-xs text-gray-500 hover:text-white">Hide</button>
+                                            )}
+                                        </div>
+                                        <div className="flex flex-wrap gap-3">
+                                            {category.items.map((item) => {
+                                                const isSelected = myBar.includes(item);
+                                                const inCart = shoppingList.includes(item);
+                                                return (
+                                                    <div key={item} className="relative group inline-block">
                                                         <button
-                                                            onClick={(e) => { e.stopPropagation(); handleKillBottle(item); }}
-                                                            className="absolute -top-2 -right-2 bg-gray-900 border border-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-900 hover:text-white shadow-lg"
-                                                            title="Kill Bottle (Move to Graveyard)"
+                                                            onClick={() => handleAddIngredient(item)}
+                                                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border relative z-10 ${isSelected
+                                                                ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
+                                                                : inCart
+                                                                    ? 'bg-emerald-900/40 text-emerald-200 border-emerald-500/50 hover:bg-emerald-800/50 hover:border-emerald-400'
+                                                                    : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
+                                                                }`}
                                                         >
-                                                            🪦
+                                                            {item}
                                                         </button>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
+
+                                                        {/* Action Buttons group that appears on hover */}
+                                                        <div className="absolute -top-3 -right-3 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none group-hover:pointer-events-auto">
+
+                                                            {/* Add to Cart Button */}
+                                                            {!isSelected && (
+                                                                <button
+                                                                    onClick={(e) => { e.preventDefault(); !inCart && handleAddToCartFromBar(e, item); }}
+                                                                    disabled={inCart}
+                                                                    className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] shadow-lg transition-transform pointer-events-auto border ${inCart
+                                                                        ? 'bg-emerald-900/80 border-emerald-500/50 text-emerald-300 cursor-default scale-100'
+                                                                        : 'bg-gray-900 border-gray-700 hover:bg-green-900 hover:border-green-500 hover:text-white hover:scale-110'}`}
+                                                                    title={inCart ? "Already in Shopping List" : "Add to Shopping List"}
+                                                                >
+                                                                    {inCart ? '✓' : '🛒'}
+                                                                </button>
+                                                            )}
+
+                                                            {/* Kill Bottle Button */}
+                                                            {isSelected && (
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); handleKillBottle(item); }}
+                                                                    className="bg-gray-900 border border-gray-700 w-7 h-7 rounded-full flex items-center justify-center text-[12px] hover:bg-red-900 hover:border-red-500 hover:text-white shadow-lg transition-transform hover:scale-110"
+                                                                    title="Kill Bottle (Move to Graveyard)"
+                                                                >
+                                                                    🪦
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {/* Custom Addition Section */}

@@ -5,19 +5,27 @@ export const INGREDIENT_CATEGORIES = [
     },
     {
         name: 'Agave & Clear Spirits 🌵',
-        items: ['Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Spiced Rum', 'Cachaça', 'Cognac', 'Pisco', 'Old Tom Gin', 'Overproof Rum']
+        items: ['Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Demerara Rum', 'Spiced Rum', 'Overproof Rum', 'Cachaça', 'Cognac', 'Brandy', 'Armagnac', 'Apple Brandy', 'Pisco', 'Old Tom Gin']
     },
     {
         name: 'Liqueurs & Amari 🍾',
-        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'White Wine', 'Orange Liqueur (Cointreau/Triple Sec)', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca', 'Amaro Nonino', 'Crème de Violette', 'Bénédictine', 'Raspberry Liqueur (Chambord)', 'Lillet Blanc', 'Blackberry Liqueur (Crème de Mûre)', 'Pimm\'s No. 1', 'Falernum']
+        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'White Wine', 'Orange Liqueur (Cointreau/Triple Sec)', 'Blue Curacao', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca', 'Amaro Nonino', 'Crème de Violette', 'Bénédictine', 'Raspberry Liqueur (Chambord)', 'Crème de Cassis', 'Midori', 'Peach Liqueur', 'Lillet Blanc', 'Blackberry Liqueur (Crème de Mûre)', 'Pimm\'s No. 1', 'Baileys', 'Cherry Heering', 'Limoncello', 'Drambuie', 'Apricot Liqueur']
+    },
+    {
+        name: 'Syrups & Modifiers 🧪',
+        items: ['Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Cinnamon Syrup', 'Orgeat', 'Grenadine', 'Passionfruit Syrup', 'Falernum', 'Allspice Dram']
     },
     {
         name: 'Mixers & Sodas 🥤',
-        items: ['Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer', 'Cola', 'Lemon-Lime Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice', 'Grapefruit Juice', 'Tomato Juice', 'Coffee (Brewed)']
+        items: ['Club Soda', 'Tonic Water', 'Ginger Ale', 'Ginger Beer', 'Cola', 'Lemon-Lime Soda', 'Grapefruit Soda', 'Cranberry Juice', 'Orange Juice', 'Pineapple Juice', 'Grapefruit Juice', 'Tomato Juice', 'Coffee (Brewed)', 'Sweet and Sour Mix']
     },
     {
-        name: 'Pantry, Syrups & Fresh 🍋',
-        items: ['Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Sugar', 'Mint', 'Basil', 'Rosemary', 'Angostura Bitters', 'Orange Bitters', 'Peychaud\'s Bitters', 'Egg White', 'Heavy Cream', 'Coconut Cream', 'Cinnamon Syrup']
+        name: 'Pantry & Fresh 🍋',
+        items: ['Lemons', 'Limes', 'Oranges', 'Grapefruit', 'Cucumber', 'Jalapeno', 'Sugar', 'Mint', 'Basil', 'Rosemary', 'Angostura Bitters', 'Orange Bitters', 'Peychaud\'s Bitters', 'Celery Salt & Black Pepper', 'Hot Sauce', 'Worcestershire Sauce', 'Egg White', 'Heavy Cream', 'Coconut Cream']
+    },
+    {
+        name: 'Rare / Advanced Spirits 🏺',
+        items: ['Genever', 'Aquavit', 'Baijiu', 'Shochu']
     }
 ];
 
