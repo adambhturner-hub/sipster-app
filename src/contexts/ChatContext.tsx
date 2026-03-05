@@ -13,6 +13,7 @@ interface ChatContextType {
     input: string;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
     handleSubmit: (e: React.FormEvent) => void;
+    submitQuery: (query: string) => void;
     isLoading: boolean;
     stop: () => void;
     setMessages: (messages: any[]) => void;
@@ -88,6 +89,11 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         if (!input.trim() || isLoading) return;
         sendMessage({ text: input, data: { myBar } } as any);
         setInput('');
+    };
+
+    const submitQuery = (query: string) => {
+        if (!query.trim() || isLoading) return;
+        sendMessage({ text: query, data: { myBar } } as any);
     };
 
     // Fetch My Bar and Chat History
@@ -318,6 +324,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
             setInput,
             handleInputChange,
             handleSubmit,
+            submitQuery,
             isLoading,
             stop,
             setMessages,
