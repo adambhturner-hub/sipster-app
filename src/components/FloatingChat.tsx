@@ -79,9 +79,9 @@ export default function FloatingChat() {
                         {/* Header */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/40 backdrop-blur-md pb-4 shrink-0">
                             <div className="flex items-center gap-2">
-                                <span className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] flex items-center justify-center text-sm border border-white/20 shadow-[0_0_10px_var(--primary-glow)]">🍸</span>
+                                <Image src="/mustache_isolated.png" alt="Mr. Sipster" width={32} height={32} className="drop-shadow-[0_0_8px_var(--primary-glow)]" />
                                 <div>
-                                    <h3 className="text-white font-bold text-sm leading-tight">Sipster AI</h3>
+                                    <h3 className="text-white font-bold text-sm leading-tight">Mr. Sipster</h3>
                                     <p className="text-[10px] text-[var(--accent)] uppercase tracking-widest font-bold">Bartender</p>
                                 </div>
                             </div>
@@ -194,6 +194,33 @@ export default function FloatingChat() {
                                     </div>
                                 </div>
                             )}
+
+                            {messages.length > 0 && messages[messages.length - 1].role !== 'user' && !isLoading && (
+                                <div className="mt-4 flex flex-col gap-2 opacity-80 hover:opacity-100 transition-opacity">
+                                    <p className="text-xs text-gray-400 text-center mb-1 uppercase tracking-wider font-bold">Suggested Actions</p>
+                                    <div className="flex flex-wrap gap-2 justify-center">
+                                        <button
+                                            onClick={() => submitQuery("I'd like to stock my bar")}
+                                            className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm"
+                                        >
+                                            Stock My Bar
+                                        </button>
+                                        <button
+                                            onClick={() => submitQuery("I'd like to explore recipes")}
+                                            className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm"
+                                        >
+                                            Explore Recipes
+                                        </button>
+                                        <button
+                                            onClick={() => submitQuery("I'd like to create something new")}
+                                            className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm"
+                                        >
+                                            Create Something New
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
                             <div ref={messagesEndRef} />
                         </div>
 
