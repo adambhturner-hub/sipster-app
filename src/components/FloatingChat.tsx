@@ -39,7 +39,7 @@ export default function FloatingChat() {
         <>
             {/* The Floating Action Button (FAB) */}
             <AnimatePresence>
-                {!isChatOpen && !loading && (
+                {!isChatOpen && !loading && user && (
                     <motion.button
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -68,13 +68,13 @@ export default function FloatingChat() {
 
             {/* The Chat Window */}
             <AnimatePresence>
-                {isChatOpen && (
+                {isChatOpen && user && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.5, rotate: -90 }}
-                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                        exit={{ opacity: 0, scale: 0.5, rotate: 90 }}
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 50, scale: 0.9 }}
                         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                        className="fixed bottom-6 right-6 z-[100] origin-bottom-right w-[calc(100vw-3rem)] md:w-96 h-[600px] max-h-[85vh] flex flex-col glass-panel border border-[var(--primary)]/50 shadow-[0_10px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(255,0,255,0.2)] overflow-hidden"
+                        className="fixed bottom-6 right-6 z-[100] w-[calc(100vw-3rem)] md:w-96 h-[600px] max-h-[85vh] flex flex-col glass-panel border border-[var(--primary)]/50 shadow-[0_10px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(255,0,255,0.2)] overflow-hidden"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/40 backdrop-blur-md pb-4 shrink-0">

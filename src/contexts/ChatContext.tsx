@@ -175,25 +175,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                 try { setMyBar(JSON.parse(savedBar)); } catch (e) { }
             }
 
-            // LocalStorage chat history
-            const savedChat = localStorage.getItem('sipster-chat-history');
-            if (savedChat) {
-                try {
-                    const parsed = JSON.parse(savedChat);
-                    if (Array.isArray(parsed)) {
-                        setMessages(parsed.map((msg: any) => {
-                            const newMsg: any = {
-                                id: msg.id || Math.random().toString(36).slice(2),
-                                role: msg.role || 'user',
-                                content: typeof msg.content === 'string' ? msg.content : '',
-                            };
-                            if (Array.isArray(msg.parts)) newMsg.parts = msg.parts;
-                            if (msg.createdAt) newMsg.createdAt = msg.createdAt;
-                            return newMsg;
-                        }));
-                    }
-                } catch (e) { }
-            }
+            // Immediately clear memory of chat for unauthenticated users
+            setMessages([]);
             setMessagesLoaded(true);
         }
     }, [user, authLoading, setMessages]);
