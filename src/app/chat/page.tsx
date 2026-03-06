@@ -10,6 +10,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { useRouter } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Chat() {
     const {
@@ -28,6 +30,8 @@ export default function Chat() {
     } = useGlobalChat();
 
     const { user } = useAuth();
+    const router = useRouter();
+    const [actionMenu, setActionMenu] = useState<'main' | 'create'>('main');
     const [myBar, setMyBar] = useState<string[]>([]);
 
     // The global chat handles intercepting deep-links and auto-opening itself.
@@ -101,9 +105,80 @@ export default function Chat() {
                 {/* Chat Messages Container */}
                 <div className="flex-grow overflow-y-auto mb-6 glass-panel p-6 flex flex-col gap-6 custom-scrollbar">
                     {messages.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-full text-center text-gray-400 opacity-60">
-                            <span className="text-6xl mb-4">🍸</span>
-                            <p className="text-xl">The bar is open. What can I get you?</p>
+                        <div className="flex flex-col items-center justify-center h-full w-full max-w-lg mx-auto p-4">
+                            <span className="text-6xl mb-6 drop-shadow-[0_0_15px_var(--primary-glow)] opacity-80">🍸</span>
+                            <h3 className="text-3xl font-bold text-white mb-3 text-center">Ready to mix things up?</h3>
+                            <p className="text-lg text-gray-400 mb-10 text-center leading-relaxed">Select a guide to get started, or ask me to invent something highly specific.</p>
+
+                            <div className="w-full flex flex-col gap-4">
+                                <AnimatePresence mode="wait">
+                                    {actionMenu === 'main' ? (
+                                        <motion.div key="main" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="flex flex-col gap-4 w-full">
+                                            <button
+                                                onClick={() => router.push('/my-bar')}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🛒</span> Stock My Bar</span>
+                                                <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => router.push('/discover')}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">📚</span> Explore Recipes</span>
+                                                <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => setActionMenu('create')}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">✨</span> Create Something New</span>
+                                                <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => { submitQuery("Surprise me with a random cocktail recipe!"); }}
+                                                className="bg-[var(--accent)]/10 hover:bg-[var(--accent)]/20 border border-[var(--accent)]/30 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--accent)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3 min-w-0 pr-4">
+                                                    <span className="text-2xl shrink-0">🎲</span>
+                                                    <span className="text-[var(--accent)] truncate">Surprise Me</span>
+                                                </span>
+                                                <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--accent)] transition-all transform group-hover:translate-x-2 text-2xl shrink-0">→</span>
+                                            </button>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.div key="create" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="flex flex-col gap-4 w-full">
+                                            <button
+                                                onClick={() => setActionMenu('main')}
+                                                className="text-sm text-gray-400 hover:text-white transition-colors self-start mb-2 flex items-center gap-2 px-2"
+                                            >
+                                                <span className="text-lg">←</span> Back
+                                            </button>
+                                            <button
+                                                onClick={() => { router.push('/omakase'); setActionMenu('main'); }}
+                                                className="bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 border border-[var(--primary)]/40 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🍶</span> Omakase Tasting Menu</span>
+                                                <span className="opacity-50 group-hover:opacity-100 transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => { router.push('/create'); setActionMenu('main'); }}
+                                                className="bg-[var(--secondary)]/10 hover:bg-[var(--secondary)]/20 border border-[var(--secondary)]/40 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🧪</span> Creator Studio</span>
+                                                <span className="opacity-50 group-hover:opacity-100 transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">💬</span> Make in Chat</span>
+                                                <span className="opacity-50 group-hover:opacity-100 text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                         </div>
                     ) : (
                         messages.map(m => (
@@ -276,6 +351,69 @@ export default function Chat() {
                             </div>
                         </div>
                     )}
+
+                    {messages.length > 0 && messages[messages.length - 1].role !== 'user' && !isLoading && (
+                        <div className="mt-4 flex flex-col gap-2 opacity-80 hover:opacity-100 transition-opacity">
+                            <p className="text-sm text-gray-400 text-center mb-2 uppercase tracking-widest font-bold">Suggested Actions</p>
+                            {actionMenu === 'main' ? (
+                                <div className="flex flex-wrap gap-3 justify-center">
+                                    <button
+                                        onClick={() => router.push('/my-bar')}
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>🛒</span> Stock Bar
+                                    </button>
+                                    <button
+                                        onClick={() => router.push('/discover')}
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>📚</span> Explore
+                                    </button>
+                                    <button
+                                        onClick={() => setActionMenu('create')}
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>✨</span> Create New
+                                    </button>
+                                    <button
+                                        onClick={() => submitQuery("Surprise me with a random cocktail recipe!")}
+                                        className="bg-[var(--accent)]/10 border border-[var(--accent)]/50 hover:border-[var(--accent)] rounded-full px-5 py-2.5 text-sm text-[var(--accent)] font-semibold transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>🎲</span> Surprise Me
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="flex flex-wrap gap-3 justify-center relative">
+                                    <button
+                                        onClick={() => setActionMenu('main')}
+                                        className="absolute -left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 hover:text-white px-3"
+                                        title="Back"
+                                    >
+                                        ← Back
+                                    </button>
+                                    <button
+                                        onClick={() => { router.push('/omakase'); setActionMenu('main'); }}
+                                        className="bg-[var(--primary)]/10 border border-[var(--primary)]/40 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>🍶</span> Omakase
+                                    </button>
+                                    <button
+                                        onClick={() => { router.push('/create'); setActionMenu('main'); }}
+                                        className="bg-[var(--secondary)]/10 border border-[var(--secondary)]/40 hover:border-[var(--secondary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>🧪</span> Studio
+                                    </button>
+                                    <button
+                                        onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>💬</span> Chat
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <div ref={messagesEndRef} />
                 </div>
 

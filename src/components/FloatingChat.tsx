@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useGlobalChat } from '@/contexts/ChatContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import CocktailCard from '@/components/CocktailCard';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -25,8 +26,10 @@ export default function FloatingChat() {
     } = useGlobalChat();
 
     const { user, loading } = useAuth();
+    const router = useRouter();
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [actionMenu, setActionMenu] = useState<'main' | 'create'>('main');
 
     // Auto-scroll to bottom of chat
     useEffect(() => {
@@ -115,27 +118,70 @@ export default function FloatingChat() {
                                     <p className="text-sm text-gray-400 mb-8 text-center leading-relaxed">Select a guide to get started, or ask me to invent something highly specific.</p>
 
                                     <div className="w-full flex flex-col gap-3">
-                                        <button
-                                            onClick={() => submitQuery("I'd like to stock my bar")}
-                                            className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
-                                        >
-                                            <span className="font-semibold">I'd like to stock my bar</span>
-                                            <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
-                                        </button>
-                                        <button
-                                            onClick={() => submitQuery("I'd like to explore recipes")}
-                                            className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
-                                        >
-                                            <span className="font-semibold">I'd like to explore recipes</span>
-                                            <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
-                                        </button>
-                                        <button
-                                            onClick={() => submitQuery("I'd like to create something new")}
-                                            className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
-                                        >
-                                            <span className="font-semibold">I'd like to create something new</span>
-                                            <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
-                                        </button>
+                                        <AnimatePresence mode="wait">
+                                            {actionMenu === 'main' ? (
+                                                <motion.div key="main" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="flex flex-col gap-3 w-full">
+                                                    <button
+                                                        onClick={() => { setIsChatOpen(false); router.push('/my-bar'); }}
+                                                        className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold">🛒 Stock My Bar</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setIsChatOpen(false); router.push('/discover'); }}
+                                                        className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold">📚 Explore Recipes</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setActionMenu('create')}
+                                                        className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold">✨ Create Something New</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => submitQuery("Surprise me with a random cocktail recipe!")}
+                                                        className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold text-[var(--accent)]">🎲 Surprise Me</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                </motion.div>
+                                            ) : (
+                                                <motion.div key="create" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} className="flex flex-col gap-3 w-full">
+                                                    <button
+                                                        onClick={() => setActionMenu('main')}
+                                                        className="text-xs text-gray-400 hover:text-white transition-colors self-start mb-1 flex items-center gap-1"
+                                                    >
+                                                        <span>←</span> Back
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setIsChatOpen(false); router.push('/omakase'); setActionMenu('main'); }}
+                                                        className="bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 border border-[var(--primary)]/30 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold">🍶 Omakase Tasting Menu</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setIsChatOpen(false); router.push('/create'); setActionMenu('main'); }}
+                                                        className="bg-[var(--secondary)]/10 hover:bg-[var(--secondary)]/20 border border-[var(--secondary)]/30 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold">🧪 Creator Studio</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                                        className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-left text-white transition-colors flex items-center justify-between group shadow-sm hover:shadow-[0_0_15px_var(--primary-glow)]"
+                                                    >
+                                                        <span className="font-semibold">💬 Make in Chat</span>
+                                                        <span className="opacity-50 group-hover:opacity-100 text-[var(--primary)] transition-all transform group-hover:translate-x-1">→</span>
+                                                    </button>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </div>
                                 </div>
                             ) : (
@@ -198,26 +244,62 @@ export default function FloatingChat() {
                             {messages.length > 0 && messages[messages.length - 1].role !== 'user' && !isLoading && (
                                 <div className="mt-4 flex flex-col gap-2 opacity-80 hover:opacity-100 transition-opacity">
                                     <p className="text-xs text-gray-400 text-center mb-1 uppercase tracking-wider font-bold">Suggested Actions</p>
-                                    <div className="flex flex-wrap gap-2 justify-center">
-                                        <button
-                                            onClick={() => submitQuery("I'd like to stock my bar")}
-                                            className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm"
-                                        >
-                                            Stock My Bar
-                                        </button>
-                                        <button
-                                            onClick={() => submitQuery("I'd like to explore recipes")}
-                                            className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm"
-                                        >
-                                            Explore Recipes
-                                        </button>
-                                        <button
-                                            onClick={() => submitQuery("I'd like to create something new")}
-                                            className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm"
-                                        >
-                                            Create Something New
-                                        </button>
-                                    </div>
+                                    {actionMenu === 'main' ? (
+                                        <div className="flex flex-wrap gap-2 justify-center">
+                                            <button
+                                                onClick={() => { setIsChatOpen(false); router.push('/my-bar'); }}
+                                                className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm whitespace-nowrap"
+                                            >
+                                                🛒 Stock Bar
+                                            </button>
+                                            <button
+                                                onClick={() => { setIsChatOpen(false); router.push('/discover'); }}
+                                                className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm whitespace-nowrap"
+                                            >
+                                                📚 Explore
+                                            </button>
+                                            <button
+                                                onClick={() => setActionMenu('create')}
+                                                className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm whitespace-nowrap"
+                                            >
+                                                ✨ Create New
+                                            </button>
+                                            <button
+                                                onClick={() => submitQuery("Surprise me with a random cocktail recipe!")}
+                                                className="bg-white/5 border border-[var(--accent)]/50 hover:border-[var(--accent)] rounded-full px-3 py-1.5 text-xs text-[var(--accent)] transition-colors shadow-sm whitespace-nowrap bg-[var(--accent)]/10"
+                                            >
+                                                🎲 Surprise Me
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-wrap gap-2 justify-center relative">
+                                            <button
+                                                onClick={() => setActionMenu('main')}
+                                                className="absolute -left-2 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-white px-2"
+                                                title="Back"
+                                            >
+                                                ←
+                                            </button>
+                                            <button
+                                                onClick={() => { setIsChatOpen(false); router.push('/omakase'); setActionMenu('main'); }}
+                                                className="bg-[var(--primary)]/10 border border-[var(--primary)]/40 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm whitespace-nowrap"
+                                            >
+                                                🍶 Omakase
+                                            </button>
+                                            <button
+                                                onClick={() => { setIsChatOpen(false); router.push('/create'); setActionMenu('main'); }}
+                                                className="bg-[var(--secondary)]/10 border border-[var(--secondary)]/40 hover:border-[var(--secondary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm whitespace-nowrap"
+                                            >
+                                                🧪 Studio
+                                            </button>
+                                            <button
+                                                onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                                className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-3 py-1.5 text-xs text-white transition-colors shadow-sm whitespace-nowrap"
+                                            >
+                                                💬 Chat
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
