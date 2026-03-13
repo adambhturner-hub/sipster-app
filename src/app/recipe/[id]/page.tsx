@@ -1,43 +1,54 @@
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { Cocktail } from '@/data/cocktails';
 import RecipeClient from './RecipeClient';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     try {
         const resolvedParams = await params;
-        const docRef = doc(db, 'favorites', resolvedParams.id);
-        const docSnap = await getDoc(docRef);
+        const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+        const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/favorites/${resolvedParams.id}`, { next: { revalidate: 3600 } });
 
-        if (!docSnap.exists() || !docSnap.data().cocktailData) {
+        if (!res.ok) {
             return { title: 'Unknown Recipe | Sipster' };
         }
 
-        const cocktail = docSnap.data().cocktailData as Cocktail;
+        const docData = await res.json();
+        
+        // Firestore REST API returns a very nested structure: fields.cocktailData.mapValue.fields...
+        // For metadata, we just need basic fields if they exist
+        const cocktailFields = docData.fields?.cocktailData?.mapValue?.fields;
+        
+        if (!cocktailFields) {
+            return { title: 'Recipe | Sipster' };
+        }
+
+        const name = cocktailFields.name?.stringValue || 'Custom AI Recipe';
+        const primarySpirit = cocktailFields.primarySpirit?.stringValue || 'Mystery';
+        const emoji = cocktailFields.emoji?.stringValue || '✨';
+        const tagline = cocktailFields.tagline?.stringValue || 'A unique AI-crafted cocktail.';
+
         const ogUrl = new URL('https://sipster-app.vercel.app/api/og');
-        ogUrl.searchParams.set('title', cocktail.name || 'Custom AI Recipe');
-        ogUrl.searchParams.set('subtitle', `${cocktail.primarySpirit || 'Mystery'} • AI Original`);
-        ogUrl.searchParams.set('emoji', cocktail.emoji || '✨');
+        ogUrl.searchParams.set('title', name);
+        ogUrl.searchParams.set('subtitle', `${primarySpirit} • AI Original`);
+        ogUrl.searchParams.set('emoji', emoji);
 
         return {
-            title: `${cocktail.name || 'Custom Recipe'} | Sipster`,
-            description: cocktail.tagline || 'A unique AI-crafted cocktail.',
+            title: `${name} | Sipster`,
+            description: tagline,
             openGraph: {
-                title: cocktail.name || 'Custom Recipe',
-                description: cocktail.tagline || 'A unique AI-crafted cocktail.',
+                title: name,
+                description: tagline,
                 images: [
                     {
                         url: ogUrl.toString(),
                         width: 1200,
                         height: 630,
-                        alt: cocktail.name || 'Custom Recipe',
+                        alt: name,
                     },
                 ],
             },
             twitter: {
                 card: 'summary_large_image',
-                title: cocktail.name || 'Custom Recipe',
-                description: cocktail.tagline || 'A unique AI-crafted cocktail.',
+                title: name,
+                description: tagline,
                 images: [ogUrl.toString()],
             },
         };

@@ -136,7 +136,10 @@ export default function Chat() {
                                                 <span className="opacity-50 group-hover:opacity-100 group-hover:text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
                                             </button>
                                             <button
-                                                onClick={() => { submitQuery("Surprise me with a random cocktail recipe!"); }}
+                                                onClick={() => {
+                                                    handleInputChange({ target: { value: "Surprise me with a random cocktail recipe!" } } as any);
+                                                    setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                                }}
                                                 className="bg-[var(--accent)]/10 hover:bg-[var(--accent)]/20 border border-[var(--accent)]/30 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--accent)]"
                                             >
                                                 <span className="font-semibold flex items-center gap-3 min-w-0 pr-4">
@@ -155,7 +158,11 @@ export default function Chat() {
                                                 <span className="text-lg">←</span> Back
                                             </button>
                                             <button
-                                                onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                                onClick={() => {
+                                                    handleInputChange({ target: { value: "I'd like to create a new custom cocktail right here in chat." } } as any);
+                                                    setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                                    setActionMenu('main');
+                                                }}
                                                 className="bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 border border-[var(--primary)]/40 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
                                             >
                                                 <span className="font-semibold flex items-center gap-3"><span className="text-2xl">💬</span> Chat with Mr. Sipster</span>
@@ -383,7 +390,10 @@ export default function Chat() {
                                         <span>✨</span> Create New
                                     </button>
                                     <button
-                                        onClick={() => submitQuery("Surprise me with a random cocktail recipe!")}
+                                        onClick={() => {
+                                            handleInputChange({ target: { value: "Surprise me with a random cocktail recipe!" } } as any);
+                                            setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                        }}
                                         className="bg-[var(--accent)]/10 border border-[var(--accent)]/50 hover:border-[var(--accent)] rounded-full px-5 py-2.5 text-sm text-[var(--accent)] font-semibold transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
                                     >
                                         <span>🎲</span> Surprise Me
@@ -399,7 +409,11 @@ export default function Chat() {
                                         ← Back
                                     </button>
                                     <button
-                                        onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                        onClick={() => {
+                                            handleInputChange({ target: { value: "I'd like to create a new custom cocktail right here in chat." } } as any);
+                                            setTimeout(() => document.getElementById('chat-submit-btn')?.click(), 50);
+                                            setActionMenu('main');
+                                        }}
                                         className="bg-[var(--primary)]/10 border border-[var(--primary)]/40 hover:border-[var(--primary)] rounded-full px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
                                     >
                                         <span>💬</span> Chat
