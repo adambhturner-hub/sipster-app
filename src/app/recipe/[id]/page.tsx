@@ -1,29 +1,32 @@
 import RecipeClient from './RecipeClient';
+import { adminDb } from '@/lib/firebase-admin';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     try {
         const resolvedParams = await params;
-        const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-        const res = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/favorites/${resolvedParams.id}`, { next: { revalidate: 3600 } });
-
-        if (!res.ok) {
-            return { title: 'Unknown Recipe | Sipster' };
-        }
-
-        const docData = await res.json();
         
-        // Firestore REST API returns a very nested structure: fields.cocktailData.mapValue.fields...
-        // For metadata, we just need basic fields if they exist
-        const cocktailFields = docData.fields?.cocktailData?.mapValue?.fields;
-        
-        if (!cocktailFields) {
+        if (!adminDb) {
+            console.warn('[OG Meta] adminDb is not initialized');
             return { title: 'Recipe | Sipster' };
         }
 
-        const name = cocktailFields.name?.stringValue || 'Custom AI Recipe';
-        const primarySpirit = cocktailFields.primarySpirit?.stringValue || 'Mystery';
-        const emoji = cocktailFields.emoji?.stringValue || '✨';
-        const tagline = cocktailFields.tagline?.stringValue || 'A unique AI-crafted cocktail.';
+        const docSnap = await adminDb.collection('favorites').doc(resolvedParams.id).get();
+
+        if (!docSnap.exists) {
+            return { title: 'Unknown Recipe | Sipster' };
+        }
+
+        const data = docSnap.data();
+        if (!data || !data.cocktailData) {
+            return { title: 'Unknown Recipe | Sipster' };
+        }
+
+        const cocktail = data.cocktailData;
+
+        const name = cocktail.name || 'Custom AI Recipe';
+        const primarySpirit = cocktail.primarySpirit || 'Mystery';
+        const emoji = cocktail.emoji || '✨';
+        const tagline = cocktail.tagline || 'A unique AI-crafted cocktail.';
 
         const ogUrl = new URL('https://sipster-app.vercel.app/api/og');
         ogUrl.searchParams.set('title', name);
