@@ -428,24 +428,24 @@ export default function MyBarPage() {
                     </p>
 
                     {/* Tabs */}
-                    <div className="flex justify-center mb-8 gap-4">
+                    <div className="flex flex-wrap justify-center mb-8 gap-2 md:gap-4 px-2">
                         <button
                             onClick={() => setActiveTab('my-bar')}
-                            className={`px-8 py-3 rounded-full font-bold transition-all duration-300 ${activeTab === 'my-bar' ? 'bg-[var(--primary)] text-white shadow-[0_0_15px_var(--primary-glow)]' : 'glass-panel text-gray-400 hover:text-white'}`}
+                            className={`px-4 py-2 md:px-8 md:py-3 text-sm md:text-base rounded-full font-bold transition-all duration-300 ${activeTab === 'my-bar' ? 'bg-[var(--primary)] text-white shadow-[0_0_15px_var(--primary-glow)]' : 'glass-panel text-gray-400 hover:text-white'}`}
                         >
                             My Inventory
                         </button>
                         <button
                             onClick={() => setActiveTab('shopping-list')}
-                            className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'shopping-list' ? 'bg-[var(--accent)] text-black shadow-[0_0_15px_var(--primary-glow)]' : 'glass-panel text-gray-400 hover:text-white'}`}
+                            className={`px-4 py-2 md:px-8 md:py-3 text-sm md:text-base rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'shopping-list' ? 'bg-[var(--accent)] text-black shadow-[0_0_15px_var(--primary-glow)]' : 'glass-panel text-gray-400 hover:text-white'}`}
                         >
-                            Shopping List {shoppingList.length > 0 && <span className="bg-black text-[var(--accent)] text-xs px-2 py-1 rounded-full">{shoppingList.length}</span>}
+                            Shopping List {shoppingList.length > 0 && <span className="bg-black text-[var(--accent)] text-xs px-2 py-0.5 rounded-full">{shoppingList.length}</span>}
                         </button>
                         <button
                             onClick={() => setActiveTab('graveyard')}
-                            className={`px-8 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'graveyard' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.5)]' : 'glass-panel text-gray-400 hover:text-white'}`}
+                            className={`px-4 py-2 md:px-8 md:py-3 text-sm md:text-base rounded-full font-bold transition-all duration-300 flex items-center gap-2 ${activeTab === 'graveyard' ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(147,51,234,0.5)]' : 'glass-panel text-gray-400 hover:text-white'}`}
                         >
-                            Graveyard 🪦 {graveyard.length > 0 && <span className="bg-black text-purple-400 text-xs px-2 py-1 rounded-full">{graveyard.length}</span>}
+                            Graveyard 🪦 {graveyard.length > 0 && <span className="bg-black text-purple-400 text-xs px-2 py-0.5 rounded-full">{graveyard.length}</span>}
                         </button>
                     </div>
 

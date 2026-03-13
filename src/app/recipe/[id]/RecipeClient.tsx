@@ -33,7 +33,7 @@ export default function RecipeClient({ id }: { id: string }) {
                 const docRef = doc(db, 'favorites', id);
                 const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists() && docSnap.data().type === 'custom_full') {
+                if (docSnap.exists() && docSnap.data().cocktailData) {
                     setRecipeData({ id: docSnap.id, ...docSnap.data() } as CustomFullRecipe);
                 } else {
                     setError(true);

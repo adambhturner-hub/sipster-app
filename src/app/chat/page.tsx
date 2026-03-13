@@ -155,24 +155,31 @@ export default function Chat() {
                                                 <span className="text-lg">←</span> Back
                                             </button>
                                             <button
-                                                onClick={() => { router.push('/omakase'); setActionMenu('main'); }}
+                                                onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
                                                 className="bg-[var(--primary)]/10 hover:bg-[var(--primary)]/20 border border-[var(--primary)]/40 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
                                             >
-                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🍶</span> Omakase Tasting Menu</span>
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">💬</span> Chat with Mr. Sipster</span>
                                                 <span className="opacity-50 group-hover:opacity-100 transition-all transform group-hover:translate-x-2 text-2xl">→</span>
                                             </button>
                                             <button
-                                                onClick={() => { router.push('/create'); setActionMenu('main'); }}
-                                                className="bg-[var(--secondary)]/10 hover:bg-[var(--secondary)]/20 border border-[var(--secondary)]/40 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
-                                            >
-                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🧪</span> Creator Studio</span>
-                                                <span className="opacity-50 group-hover:opacity-100 transition-all transform group-hover:translate-x-2 text-2xl">→</span>
-                                            </button>
-                                            <button
-                                                onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                                onClick={() => { router.push('/omakase'); setActionMenu('main'); }}
                                                 className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
                                             >
-                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">💬</span> Make in Chat</span>
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🍶</span> Omakase Tasting Menu</span>
+                                                <span className="opacity-50 group-hover:opacity-100 text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => { router.push('/make'); setActionMenu('main'); }}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">🎊</span> Party Builder</span>
+                                                <span className="opacity-50 group-hover:opacity-100 text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
+                                            </button>
+                                            <button
+                                                onClick={() => { router.push('/make/translator'); setActionMenu('main'); }}
+                                                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl px-6 py-5 text-lg text-left text-white transition-colors flex items-center justify-between group shadow-lg hover:shadow-[0_0_20px_var(--primary-glow)]"
+                                            >
+                                                <span className="font-semibold flex items-center gap-3"><span className="text-2xl">📜</span> Menu Translator</span>
                                                 <span className="opacity-50 group-hover:opacity-100 text-[var(--primary)] transition-all transform group-hover:translate-x-2 text-2xl">→</span>
                                             </button>
                                         </motion.div>
@@ -383,31 +390,37 @@ export default function Chat() {
                                     </button>
                                 </div>
                             ) : (
-                                <div className="flex flex-wrap gap-3 justify-center relative">
+                                <div className="flex flex-wrap gap-2 md:gap-3 justify-center relative">
                                     <button
                                         onClick={() => setActionMenu('main')}
-                                        className="absolute -left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 hover:text-white px-3"
+                                        className="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 hover:text-white px-3"
                                         title="Back"
                                     >
                                         ← Back
                                     </button>
                                     <button
+                                        onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
+                                        className="bg-[var(--primary)]/10 border border-[var(--primary)]/40 hover:border-[var(--primary)] rounded-full px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                    >
+                                        <span>💬</span> Chat
+                                    </button>
+                                    <button
                                         onClick={() => { router.push('/omakase'); setActionMenu('main'); }}
-                                        className="bg-[var(--primary)]/10 border border-[var(--primary)]/40 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
                                     >
                                         <span>🍶</span> Omakase
                                     </button>
                                     <button
-                                        onClick={() => { router.push('/create'); setActionMenu('main'); }}
-                                        className="bg-[var(--secondary)]/10 border border-[var(--secondary)]/40 hover:border-[var(--secondary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                        onClick={() => { router.push('/make'); setActionMenu('main'); }}
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
                                     >
-                                        <span>🧪</span> Studio
+                                        <span>🎊</span> Builder
                                     </button>
                                     <button
-                                        onClick={() => { submitQuery("I'd like to create a new custom cocktail right here in chat."); setActionMenu('main'); }}
-                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-5 py-2.5 text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
+                                        onClick={() => { router.push('/make/translator'); setActionMenu('main'); }}
+                                        className="bg-white/5 border border-white/10 hover:border-[var(--primary)] rounded-full px-4 py-2 md:px-5 md:py-2.5 text-xs md:text-sm text-white transition-colors shadow-sm whitespace-nowrap flex items-center gap-2"
                                     >
-                                        <span>💬</span> Chat
+                                        <span>📜</span> Translator
                                     </button>
                                 </div>
                             )}

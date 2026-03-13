@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         const docRef = doc(db, 'favorites', resolvedParams.id);
         const docSnap = await getDoc(docRef);
 
-        if (!docSnap.exists() || docSnap.data().type !== 'custom_full') {
+        if (!docSnap.exists() || !docSnap.data().cocktailData) {
             return { title: 'Unknown Recipe | Sipster' };
         }
 
