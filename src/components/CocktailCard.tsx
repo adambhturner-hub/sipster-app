@@ -103,10 +103,11 @@ export default function CocktailCard({
         e.stopPropagation();
         if (navigator.share) {
             try {
+                const shareUrl = `${window.location.origin}/recipe/${(cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-')}`;
                 await navigator.share({
                     title: cocktail?.name || 'Sipster Cocktail',
-                    text: `Check out the ${cocktail?.name || 'cocktail'} recipe on Sipster!`,
-                    url: `${window.location.origin}/recipe/${(cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-')}`
+                    text: `Check out the ${cocktail?.name || 'cocktail'} recipe on Sipster!\n\n${shareUrl}`,
+                    // Intentionally omitting 'url' to force Instagram/Messages to use the 'text' body which contains both the pitch and the link
                 });
             } catch (err) {
                 console.error("Share failed", err);
@@ -336,9 +337,28 @@ export default function CocktailCard({
                 <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
                     {cocktail.era}
                 </span>
+                {cocktail.season && (
+                    <span className="px-2 py-1 bg-pink-500/10 border border-pink-500/30 text-pink-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
+                        {cocktail.season}
+                    </span>
+                )}
+                {cocktail.difficultyLevel && (
+                    <span className="px-2 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
+                        {cocktail.difficultyLevel.split(' • ')[0]}
+                    </span>
+                )}
             </div>
 
-            <p className="text-gray-400 text-sm mb-6 flex-grow">{cocktail.description}</p>
+            <p className="text-gray-400 text-sm mb-4">{cocktail.description}</p>
+            
+            {cocktail.trivia && (
+                <div className="mb-6 p-3 bg-blue-900/10 border border-blue-500/20 rounded-xl flex items-start gap-2 shadow-inner">
+                    <span className="text-blue-400 text-sm mt-0.5 opacity-80">💡</span>
+                    <p className="text-gray-400 text-[11px] font-sans leading-relaxed italic">{cocktail.trivia}</p>
+                </div>
+            )}
+            
+            <div className="flex-grow pt-2"></div>
 
             {/* Action Bar */}
             <div className={`flex items-center gap-2 mb-6 relative z-30 ${isExporting ? 'hidden' : 'flex'}`}>

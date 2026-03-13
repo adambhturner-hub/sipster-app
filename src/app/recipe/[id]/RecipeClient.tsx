@@ -131,6 +131,13 @@ export default function RecipeClient({ id }: { id: string }) {
                     <p className="mt-8 text-xl text-gray-300 leading-relaxed font-sans font-light">
                         {cocktail.description}
                     </p>
+                    
+                    {cocktail.trivia && (
+                        <div className="mt-6 p-4 bg-blue-900/10 border border-blue-500/20 rounded-2xl flex items-start gap-3 shadow-inner max-w-2xl">
+                            <span className="text-blue-400 text-xl font-sans mt-0.5 opacity-80">💡</span>
+                            <p className="text-gray-300 text-sm font-sans leading-relaxed italic">{cocktail.trivia}</p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Main Content Grid */}
@@ -153,6 +160,24 @@ export default function RecipeClient({ id }: { id: string }) {
                                     <span className="text-gray-500">Glass</span>
                                     <span className="font-medium text-white">{cocktail.glass}</span>
                                 </div>
+                                {cocktail.season && (
+                                    <div className="flex justify-between border-b border-gray-800 pb-2">
+                                        <span className="text-gray-500">Season</span>
+                                        <span className="font-medium text-pink-400">{cocktail.season}</span>
+                                    </div>
+                                )}
+                                {cocktail.difficultyLevel && (
+                                    <div className="flex justify-between border-b border-gray-800 pb-2">
+                                        <span className="text-gray-500">Difficulty</span>
+                                        <span className="font-medium text-emerald-400">{cocktail.difficultyLevel.split(' • ')[0]}</span>
+                                    </div>
+                                )}
+                                {cocktail.estimatedCost !== undefined && (
+                                     <div className="flex justify-between border-b border-gray-800 pb-2">
+                                         <span className="text-gray-500">Cost</span>
+                                         <span className="font-medium text-[var(--accent)] font-mono">{'$'.repeat(cocktail.estimatedCost)}</span>
+                                     </div>
+                                )}
                             </div>
                         </div>
 
