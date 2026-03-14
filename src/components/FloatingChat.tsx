@@ -248,7 +248,7 @@ export default function FloatingChat() {
                                 </div>
                             )}
 
-                            {messages.length > 0 && messages[messages.length - 1].role !== 'user' && !isLoading && (
+                            {messages.length > 0 && !isLoading && (
                                 <div className="mt-4 flex flex-col gap-2 opacity-80 hover:opacity-100 transition-opacity">
                                     <p className="text-xs text-gray-400 text-center mb-1 uppercase tracking-wider font-bold">Suggested Actions</p>
                                     {actionMenu === 'main' ? (

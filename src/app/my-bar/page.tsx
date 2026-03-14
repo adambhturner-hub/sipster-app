@@ -684,7 +684,7 @@ export default function MyBarPage() {
                                 <p className="text-gray-400 mb-4">You have <span className="text-white font-bold">{myBar.length}</span> items in your bar.</p>
                                 <a
                                     href="/chat"
-                                    className="inline-block bg-[var(--color-neon-green)] text-black font-bold px-8 py-4 rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(57,255,20,0.4)]"
+                                    className="inline-block bg-black text-[var(--color-neon-green)] border border-[var(--color-neon-green)] font-bold px-8 py-4 rounded-full hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(57,255,20,0.4)]"
                                 >
                                     Ask Bartender What to Make 🍸
                                 </a>
