@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -28,6 +28,35 @@ export default function MyBarPage() {
     // Graveyard Restock Plan State
     const [isPlanningRestock, setIsPlanningRestock] = useState(false);
     const [restockPlan, setRestockPlan] = useState<any[] | null>(null);
+
+    // Mobile Long-Press Timer
+    const pressTimer = useRef<NodeJS.Timeout | null>(null);
+
+    const handleTouchStart = (e: React.TouchEvent | React.MouseEvent, item: string, isSelected: boolean, inCart: boolean) => {
+        // Prevent default only if we truly want to block scrolling, but passive events are better.
+        // We just start the timer.
+        if (pressTimer.current) clearTimeout(pressTimer.current);
+        
+        pressTimer.current = setTimeout(() => {
+            if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                navigator.vibrate(50); // Haptic feedback
+            }
+            if (isSelected) {
+                handleKillBottle(item);
+            } else if (!inCart) {
+                // Simulate adding to cart without needing the event object
+                const syntheticEvent = { preventDefault: () => {} } as any;
+                handleAddToCartFromBar(syntheticEvent, item);
+            }
+        }, 600); // 600ms long press threshold
+    };
+
+    const handleTouchEnd = () => {
+        if (pressTimer.current) {
+            clearTimeout(pressTimer.current);
+            pressTimer.current = null;
+        }
+    };
 
     useEffect(() => {
         getClassicCocktails().then(setClassicCocktails);
@@ -469,6 +498,10 @@ export default function MyBarPage() {
 
                 {activeTab === 'my-bar' ? (
                     <>
+                        <div className="text-center mb-8 px-4 text-sm text-gray-400">
+                            <p><strong>Mobile Tip:</strong> Tap an ingredient to add/remove it from your bar.</p>
+                            <p><strong>Long-press</strong> an item to instantly send it to your 🛒 Shopping List or 🪦 Graveyard!</p>
+                        </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                             {INGREDIENT_CATEGORIES.map((category) => {
                                 // For Advanced Spirits, only render if expanded
@@ -503,6 +536,11 @@ export default function MyBarPage() {
                                                     <div key={item} className="relative group inline-block">
                                                         <button
                                                             onClick={() => handleAddIngredient(item)}
+                                                            onTouchStart={(e) => handleTouchStart(e, item, isSelected, inCart)}
+                                                            onTouchEnd={handleTouchEnd}
+                                                            onMouseDown={(e) => handleTouchStart(e, item, isSelected, inCart)}
+                                                            onMouseUp={handleTouchEnd}
+                                                            onMouseLeave={handleTouchEnd}
                                                             className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border relative z-10 ${isSelected
                                                                 ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
                                                                 : inCart
@@ -585,6 +623,11 @@ export default function MyBarPage() {
                                                         e.preventDefault();
                                                         handleAddIngredient(customItem);
                                                     }}
+                                                    onTouchStart={(e) => handleTouchStart(e, customItem, true, false)}
+                                                    onTouchEnd={handleTouchEnd}
+                                                    onMouseDown={(e) => handleTouchStart(e, customItem, true, false)}
+                                                    onMouseUp={handleTouchEnd}
+                                                    onMouseLeave={handleTouchEnd}
                                                     className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 flex items-center gap-2"
                                                     title="Click to remove"
                                                 >

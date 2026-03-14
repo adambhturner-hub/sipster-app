@@ -25,7 +25,7 @@ export const INGREDIENT_CATEGORIES = [
     },
     {
         name: 'Rare / Advanced Spirits 🏺',
-        items: ['Genever', 'Aquavit', 'Baijiu', 'Shochu']
+        items: ['Genever', 'Aquavit', 'Baijiu', 'Shochu', 'Soju', 'Arrack', 'Clairin', 'Singani', 'Sotol', 'Bacanora', 'Raicilla', 'Ouzo', 'Rakia', 'Slivovitz']
     }
 ];
 
