@@ -135,7 +135,7 @@ export default function CreatorProfilePage() {
 
                 // 2. Fetch Backbar Recipes by this User
                 // We drop the isPublic and orderBy conditions from the query to avoid composite index requirements
-                let recipesResult: PublicRecipe[] = [];
+                const recipesResult: PublicRecipe[] = [];
                 try {
                     const q = query(
                         collection(db, 'favorites'),

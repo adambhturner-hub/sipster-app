@@ -19,15 +19,19 @@ const MeasurementContext = createContext<MeasurementContextType>({
 export const useMeasurement = () => useContext(MeasurementContext);
 
 export const MeasurementProvider = ({ children }: { children: React.ReactNode }) => {
-    const [system, setSystemState] = useState<MeasurementSystem>('imperial');
+    const [system, setSystemState] = useState<MeasurementSystem>(() => {
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('sipster-measurement-system') as MeasurementSystem;
+            if (stored === 'metric' || stored === 'imperial') {
+                return stored;
+            }
+        }
+        return 'imperial';
+    });
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
-        const stored = localStorage.getItem('sipster-measurement-system') as MeasurementSystem;
-        if (stored === 'metric' || stored === 'imperial') {
-            setSystemState(stored);
-        }
     }, []);
 
     const setSystem = (newSystem: MeasurementSystem) => {

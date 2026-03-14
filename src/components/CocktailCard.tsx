@@ -348,8 +348,7 @@ export default function CocktailCard({
                     </span>
                 )}
             </div>
-
-            <p className="text-gray-400 text-sm mb-4">{cocktail.description}</p>
+            <p className="text-gray-400 text-sm mb-4 line-clamp-3">{cocktail.description}</p>
             
             {cocktail.trivia && (
                 <div className="mb-6 p-3 bg-blue-900/10 border border-blue-500/20 rounded-xl flex items-start gap-2 shadow-inner">

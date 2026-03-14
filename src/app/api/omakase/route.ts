@@ -66,8 +66,11 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ cocktail: result.object });
 
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error in Omakase Mode:', error);
-        return NextResponse.json({ error: error.message || 'Failed to generate Omakase cocktail.' }, { status: 500 });
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Failed to generate Omakase cocktail.' },
+            { status: 500 }
+        );
     }
 }

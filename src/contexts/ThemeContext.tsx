@@ -12,18 +12,21 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setThemeState] = useState<Theme>('neon');
+    // Initialize state lazily to match localStorage during hydration if possible
+    const [theme, setThemeState] = useState<Theme>(() => {
+        if (typeof window !== 'undefined') {
+            const storedTheme = localStorage.getItem('sipster-theme') as Theme;
+            if (storedTheme && ['neon', 'speakeasy', 'miami'].includes(storedTheme)) {
+                return storedTheme;
+            }
+        }
+        return 'neon';
+    });
 
     useEffect(() => {
-        const storedTheme = localStorage.getItem('sipster-theme') as Theme;
-        if (storedTheme && ['neon', 'speakeasy', 'miami'].includes(storedTheme)) {
-            setThemeState(storedTheme);
-            document.documentElement.className = `theme-${storedTheme}`;
-        } else {
-            // Default to neon
-            document.documentElement.className = 'theme-neon';
-        }
-    }, []);
+        // Sync the document class on mount based on the initial state
+        document.documentElement.className = `theme-${theme}`;
+    }, [theme]);
 
     const setTheme = (newTheme: Theme) => {
         setThemeState(newTheme);

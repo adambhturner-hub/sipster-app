@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         }
 
         // Fetch currently playing
-        let trackRes = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+        const trackRes = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
             headers: { 'Authorization': `Bearer ${accessToken}` }
         });
 

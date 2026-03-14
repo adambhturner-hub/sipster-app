@@ -57,8 +57,11 @@ export async function POST(req: Request) {
 
         return NextResponse.json({ recommendations: result.object.recommendations });
 
-    } catch (error: any) {
+    } catch (error) {
         console.error('Error generating smart restock:', error);
-        return NextResponse.json({ error: error.message || 'Failed to generate restock plan.' }, { status: 500 });
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Failed to generate restock plan.' },
+            { status: 500 }
+        );
     }
 }

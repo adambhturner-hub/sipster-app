@@ -113,8 +113,8 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 newInteractions.isWantToTry = false;
             }
 
-            let currentDocId = docId;
-            let docData: any = {
+            const currentDocId = docId;
+            const docData: any = {
                 uid: user.uid,
                 type: type,
                 cocktailId: cocktailId,

@@ -165,8 +165,10 @@ export default function MenuPage() {
                 let notesSnapshot;
                 try {
                     notesSnapshot = await getDocs(collection(db, 'user_notes'));
-                } catch (noteError) {
-                    console.error("Notes unavailable", noteError);
+                } catch (noteError: any) {
+                    if (noteError.code !== 'permission-denied') {
+                        console.error("Notes unavailable", noteError);
+                    }
                 }
 
                 const ratingsByCocktail: Record<string, { totalScore: number; count: number }> = {};
@@ -190,8 +192,10 @@ export default function MenuPage() {
                     return recipe;
                 });
                 setPublicDrinks(mergedResults);
-            } catch (error) {
-                console.error("Error fetching community:", error);
+            } catch (error: any) {
+                if (error.code !== 'permission-denied') {
+                    console.error("Error fetching community:", error);
+                }
             } finally {
                 setLoadingCommunity(false);
             }

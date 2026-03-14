@@ -78,7 +78,7 @@ export default function RecipeClient({ id }: { id: string }) {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
             <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--accent)]/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-            <div className="min-h-screen bg-[var(--bg)] text-white font-serif selection:bg-[var(--primary-glow)] selection:text-white pt-24 pb-32">
+            <div className="min-h-screen bg-[var(--bg)] text-white font-serif selection:bg-[var(--primary-glow)] selection:text-white pt-32 pb-32">
                 <div className="max-w-4xl mx-auto px-4 md:px-8">
 
                     <Link href="/journal" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">

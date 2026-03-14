@@ -136,9 +136,9 @@ export async function POST(req: Request) {
         }
 
         return Response.json(object);
-    } catch (error: any) {
+    } catch (error) {
         console.error('------- AI OMNI IMPORTER ERROR -------');
         console.error(error);
-        return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), { status: 500 });
+        return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Internal Server Error' }), { status: 500 });
     }
 }

@@ -21,7 +21,7 @@ export default function VerifyEmailLink() {
             }
 
             // Get the email if available in local storage
-            let email = window.localStorage.getItem('emailForSignIn');
+            const email = window.localStorage.getItem('emailForSignIn');
 
             if (!email) {
                 // User opened the link on a different device or cleared cache.

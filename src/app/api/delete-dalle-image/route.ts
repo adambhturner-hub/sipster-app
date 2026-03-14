@@ -31,8 +31,12 @@ export async function POST(req: NextRequest) {
         }
 
         return new Response('Image purge handled', { status: 200 });
-    } catch (e: any) {
-        console.warn('[PURGE_IMAGE] Non-critical error purging image:', e.message);
+    } catch (e) {
+        if (e instanceof Error) {
+            console.warn('[PURGE_IMAGE] Non-critical error purging image:', e.message);
+        } else {
+            console.warn('[PURGE_IMAGE] Non-critical unknown error purging image');
+        }
         return new Response('Purge attempt finished', { status: 200 });
     }
 }

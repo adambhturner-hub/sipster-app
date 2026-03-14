@@ -78,7 +78,7 @@ export default function JiggerFlowPage() {
         // Step 2...N: Pouring Ingredients
         recipe.ingredients.forEach((ing: any, i: number) => {
             let unit = ing.unit || '';
-            let rawAmount = ing.amount;
+            const rawAmount = ing.amount;
             let numericAmount = 0;
 
             if (typeof rawAmount === 'string' && !ing.unit) {
