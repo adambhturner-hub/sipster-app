@@ -5,15 +5,15 @@ export const INGREDIENT_CATEGORIES = [
     },
     {
         name: 'Agave & Clear Spirits 🌵',
-        items: ['Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Demerara Rum', 'Spiced Rum', 'Overproof Rum', 'Cachaça', 'Cognac', 'Brandy', 'Armagnac', 'Apple Brandy', 'Pisco', 'Old Tom Gin']
+        items: ['Tequila (Blanco)', 'Tequila (Reposado)', 'Tequila (Añejo)', 'Mezcal', 'Vodka', 'Gin (London Dry)', 'Gin (Botanical)', 'White Rum', 'Dark/Aged Rum', 'Gold Rum', 'Demerara Rum', 'Jamaican Rum', 'Rhum Agricole', 'Spiced Rum', 'Overproof Rum', 'Navy Strength Rum', 'Cachaça', 'Cognac', 'Brandy', 'Armagnac', 'Apple Brandy', 'Pisco', 'Old Tom Gin']
     },
     {
         name: 'Liqueurs & Amari 🍾',
-        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'White Wine', 'Orange Liqueur (Cointreau/Triple Sec)', 'Blue Curacao', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca', 'Amaro Nonino', 'Crème de Violette', 'Bénédictine', 'Raspberry Liqueur (Chambord)', 'Crème de Cassis', 'Midori', 'Peach Liqueur', 'Lillet Blanc', 'Blackberry Liqueur (Crème de Mûre)', 'Pimm\'s No. 1', 'Baileys', 'Cherry Heering', 'Limoncello', 'Drambuie', 'Apricot Liqueur']
+        items: ['Campari', 'Aperol', 'Sweet Vermouth', 'Dry Vermouth', 'White Wine', 'Orange Liqueur (Cointreau/Triple Sec)', 'Blue Curacao', 'Coffee Liqueur', 'Amaretto', 'Elderflower Liqueur', 'Chartreuse (Green)', 'Chartreuse (Yellow)', 'Absinthe', 'Maraschino Liqueur', 'Cynar', 'Fernet-Branca', 'Amaro Nonino', 'Crème de Violette', 'Bénédictine', 'Raspberry Liqueur (Chambord)', 'Crème de Cassis', 'Midori', 'Peach Liqueur', 'Banana Liqueur (Crème de Banane)', 'Macadamia Nut Liqueur', 'Lillet Blanc', 'Blackberry Liqueur (Crème de Mûre)', 'Pimm\'s No. 1', 'Baileys', 'Cherry Heering', 'Limoncello', 'Drambuie', 'Apricot Liqueur']
     },
     {
         name: 'Syrups & Modifiers 🧪',
-        items: ['Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Cinnamon Syrup', 'Orgeat', 'Grenadine', 'Passionfruit Syrup', 'Falernum', 'Allspice Dram']
+        items: ['Simple Syrup', 'Agave Nectar', 'Honey', 'Maple Syrup', 'Cinnamon Syrup', 'Vanilla Syrup', 'Orgeat', 'Grenadine', 'Passionfruit Syrup', 'Fassionola', 'Falernum', 'Allspice Dram']
     },
     {
         name: 'Mixers & Sodas 🥤',
