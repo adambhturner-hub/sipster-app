@@ -541,6 +541,10 @@ export default function MyBarPage() {
                                                             onMouseDown={(e) => handleTouchStart(e, item, isSelected, inCart)}
                                                             onMouseUp={handleTouchEnd}
                                                             onMouseLeave={handleTouchEnd}
+                                                            onContextMenu={(e) => {
+                                                                e.preventDefault();
+                                                                return false;
+                                                            }}
                                                             style={{ WebkitTouchCallout: 'none', userSelect: 'none', WebkitUserSelect: 'none' }}
                                                             className={`select-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border relative z-10 ${isSelected
                                                                 ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
@@ -629,6 +633,10 @@ export default function MyBarPage() {
                                                     onMouseDown={(e) => handleTouchStart(e, customItem, true, false)}
                                                     onMouseUp={handleTouchEnd}
                                                     onMouseLeave={handleTouchEnd}
+                                                    onContextMenu={(e) => {
+                                                        e.preventDefault();
+                                                        return false;
+                                                    }}
                                                     style={{ WebkitTouchCallout: 'none', userSelect: 'none', WebkitUserSelect: 'none' }}
                                                     className="select-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 flex items-center gap-2"
                                                     title="Click to remove"
