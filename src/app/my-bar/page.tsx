@@ -31,13 +31,14 @@ export default function MyBarPage() {
 
     // Mobile Long-Press Timer
     const pressTimer = useRef<NodeJS.Timeout | null>(null);
+    const hasLongPressed = useRef<boolean>(false);
 
     const handleTouchStart = (e: React.TouchEvent | React.MouseEvent, item: string, isSelected: boolean, inCart: boolean) => {
-        // Prevent default only if we truly want to block scrolling, but passive events are better.
-        // We just start the timer.
+        hasLongPressed.current = false;
         if (pressTimer.current) clearTimeout(pressTimer.current);
         
         pressTimer.current = setTimeout(() => {
+            hasLongPressed.current = true;
             if (typeof navigator !== 'undefined' && navigator.vibrate) {
                 navigator.vibrate(50); // Haptic feedback
             }
@@ -56,6 +57,16 @@ export default function MyBarPage() {
             clearTimeout(pressTimer.current);
             pressTimer.current = null;
         }
+    };
+
+    const handleClickWrapper = (e: React.MouseEvent, item: string) => {
+        if (hasLongPressed.current) {
+            e.preventDefault();
+            e.stopPropagation();
+            hasLongPressed.current = false; // Reset for next interaction
+            return;
+        }
+        handleAddIngredient(item);
     };
 
     useEffect(() => {
@@ -535,7 +546,7 @@ export default function MyBarPage() {
                                                 return (
                                                     <div key={item} className="relative group inline-block">
                                                         <button
-                                                            onClick={() => handleAddIngredient(item)}
+                                                            onClick={(e) => handleClickWrapper(e, item)}
                                                             onTouchStart={(e) => handleTouchStart(e, item, isSelected, inCart)}
                                                             onTouchEnd={handleTouchEnd}
                                                             onMouseDown={(e) => handleTouchStart(e, item, isSelected, inCart)}
@@ -626,7 +637,7 @@ export default function MyBarPage() {
                                                 <button
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        handleAddIngredient(customItem);
+                                                        handleClickWrapper(e as unknown as React.MouseEvent, customItem);
                                                     }}
                                                     onTouchStart={(e) => handleTouchStart(e, customItem, true, false)}
                                                     onTouchEnd={handleTouchEnd}
