@@ -11,7 +11,7 @@ interface InteractiveIngredientsProps {
 }
 
 export default function InteractiveIngredients({ ingredients }: InteractiveIngredientsProps) {
-    const { addToBar, addToShoppingList, myBar = [], shoppingList = [] } = useAuth();
+    const { addToBar, addToShoppingList, removeShoppingItem, myBar = [], shoppingList = [] } = useAuth();
     const { system, setSystem, convertMeasurement } = useMeasurement();
 
     // Swap State
@@ -90,12 +90,18 @@ export default function InteractiveIngredients({ ingredients }: InteractiveIngre
                                             <button
                                                 onClick={(e) => {
                                                     e.preventDefault();
-                                                    if (ing?.item && !inCart) addToShoppingList(ing.item);
+                                                    if (ing?.item) {
+                                                        if (inCart && removeShoppingItem) {
+                                                            removeShoppingItem(ing.item);
+                                                        } else {
+                                                            addToShoppingList(ing.item);
+                                                        }
+                                                    }
                                                 }}
-                                                disabled={inCart}
-                                                className={`text-[10px] px-3 py-1.5 rounded transition-colors uppercase tracking-widest border ${inCart ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 cursor-not-allowed' : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/30'}`}
+                                                className={`group text-[10px] px-3 py-1.5 rounded transition-colors uppercase tracking-widest border ${inCart ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 hover:bg-red-900/40 hover:text-red-300 hover:border-red-500/50' : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/30'}`}
                                             >
-                                                {inCart ? '✓ Cart' : '+ Cart'}
+                                                <span className={`${inCart ? 'group-hover:hidden' : ''}`}>{inCart ? '✓ Cart' : '+ Cart'}</span>
+                                                {inCart && <span className="hidden group-hover:inline">Remove</span>}
                                             </button>
                                         </div>
                                     )}

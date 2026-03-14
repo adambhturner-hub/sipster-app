@@ -543,10 +543,13 @@ export default function MyBarPage() {
                                                                     className="flex justify-center mt-2 z-20 md:hidden"
                                                                 >
                                                                     <button
-                                                                        onClick={(e) => { e.preventDefault(); !inCart && handleAddToCartFromBar(e, item); }}
-                                                                        disabled={inCart}
-                                                                        className={`px-3 py-1 rounded-full flex items-center gap-1 text-[12px] shadow-lg border ${inCart
-                                                                            ? 'bg-emerald-900/80 border-emerald-500/50 text-emerald-300 cursor-default'
+                                                                        onClick={(e) => { 
+                                                                            e.preventDefault(); 
+                                                                            if (inCart) { removeShoppingItem(item); } 
+                                                                            else { handleAddToCartFromBar(e, item); }
+                                                                        }}
+                                                                        className={`px-3 py-1 rounded-full flex items-center gap-1 text-[12px] shadow-lg border transition-colors ${inCart
+                                                                            ? 'bg-emerald-900/80 border-emerald-500/50 text-emerald-300 hover:bg-red-900/80 hover:border-red-500/50 hover:text-red-300'
                                                                             : 'bg-gray-900 border-gray-700 text-gray-400 hover:bg-green-900 hover:border-green-500 hover:text-white'}`}
                                                                     >
                                                                         <span>{inCart ? '✓' : '🛒'}</span> Cart
@@ -561,12 +564,16 @@ export default function MyBarPage() {
                                                             {/* Add to Cart Button */}
                                                             {!isSelected && (
                                                                 <button
-                                                                    onClick={(e) => { e.preventDefault(); !inCart && handleAddToCartFromBar(e, item); }}
-                                                                    disabled={inCart}
+                                                                    onClick={(e) => { 
+                                                                        e.preventDefault();
+                                                                        e.stopPropagation();
+                                                                        if (inCart) { removeShoppingItem(item); }
+                                                                        else { handleAddToCartFromBar(e, item); }
+                                                                    }}
                                                                     className={`w-7 h-7 rounded-full flex items-center justify-center text-[12px] shadow-lg transition-transform pointer-events-auto border ${inCart
-                                                                        ? 'bg-emerald-900/80 border-emerald-500/50 text-emerald-300 cursor-default scale-100'
+                                                                        ? 'bg-emerald-900/80 border-emerald-500/50 text-emerald-300 hover:bg-red-900/80 hover:border-red-500/50 hover:text-red-300 hover:scale-110'
                                                                         : 'bg-gray-900 border-gray-700 hover:bg-green-900 hover:border-green-500 hover:text-white hover:scale-110'}`}
-                                                                    title={inCart ? "Already in Shopping List" : "Add to Shopping List"}
+                                                                    title={inCart ? "Remove from Shopping List" : "Add to Shopping List"}
                                                                 >
                                                                     {inCart ? '✓' : '🛒'}
                                                                 </button>

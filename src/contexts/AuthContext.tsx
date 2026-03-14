@@ -32,6 +32,7 @@ interface AuthContextType {
     addToBar: (item: string) => Promise<void>;
     removeFromBar: (item: string) => Promise<void>;
     addToShoppingList: (item: string) => Promise<void>;
+    removeShoppingItem: (item: string) => Promise<void>;
     moveToGraveyard: (item: string) => Promise<void>;
     removeFromGraveyard: (item: string) => Promise<void>;
     reviveFromGraveyard: (item: string) => Promise<void>;
@@ -60,6 +61,7 @@ const AuthContext = createContext<AuthContextType>({
     addToBar: async () => { },
     removeFromBar: async () => { },
     addToShoppingList: async () => { },
+    removeShoppingItem: async () => { },
     moveToGraveyard: async () => { },
     removeFromGraveyard: async () => { },
     reviveFromGraveyard: async () => { },
@@ -272,6 +274,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await setDoc(doc(db, 'users', user.uid), { shoppingList: newList }, { merge: true });
     };
 
+    const removeShoppingItem = async (item: string) => {
+        if (!user) return;
+        const normalized = item.toLowerCase();
+        const newList = shoppingList.filter(i => i.toLowerCase() !== normalized);
+        setShoppingList(newList);
+        await setDoc(doc(db, 'users', user.uid), { shoppingList: newList }, { merge: true });
+    };
+
     const updateUserProfile = async (displayName: string, photoURL: string) => {
         if (!user) return;
 
@@ -349,6 +359,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             addToBar,
             removeFromBar,
             addToShoppingList,
+            removeShoppingItem,
             moveToGraveyard,
             removeFromGraveyard,
             reviveFromGraveyard,
