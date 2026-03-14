@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { INGREDIENT_CATEGORIES, FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
 import { getClassicCocktails } from '@/lib/dataFetchers';
@@ -28,46 +29,6 @@ export default function MyBarPage() {
     // Graveyard Restock Plan State
     const [isPlanningRestock, setIsPlanningRestock] = useState(false);
     const [restockPlan, setRestockPlan] = useState<any[] | null>(null);
-
-    // Mobile Long-Press Timer
-    const pressTimer = useRef<NodeJS.Timeout | null>(null);
-    const hasLongPressed = useRef<boolean>(false);
-
-    const handleTouchStart = (e: React.TouchEvent | React.MouseEvent, item: string, isSelected: boolean, inCart: boolean) => {
-        hasLongPressed.current = false;
-        if (pressTimer.current) clearTimeout(pressTimer.current);
-        
-        pressTimer.current = setTimeout(() => {
-            hasLongPressed.current = true;
-            if (typeof navigator !== 'undefined' && navigator.vibrate) {
-                navigator.vibrate(50); // Haptic feedback
-            }
-            if (isSelected) {
-                handleKillBottle(item);
-            } else if (!inCart) {
-                // Simulate adding to cart without needing the event object
-                const syntheticEvent = { preventDefault: () => {} } as any;
-                handleAddToCartFromBar(syntheticEvent, item);
-            }
-        }, 600); // 600ms long press threshold
-    };
-
-    const handleTouchEnd = () => {
-        if (pressTimer.current) {
-            clearTimeout(pressTimer.current);
-            pressTimer.current = null;
-        }
-    };
-
-    const handleClickWrapper = (e: React.MouseEvent, item: string) => {
-        if (hasLongPressed.current) {
-            e.preventDefault();
-            e.stopPropagation();
-            hasLongPressed.current = false; // Reset for next interaction
-            return;
-        }
-        handleAddIngredient(item);
-    };
 
     useEffect(() => {
         getClassicCocktails().then(setClassicCocktails);
@@ -545,18 +506,9 @@ export default function MyBarPage() {
                                                 const inCart = shoppingList.includes(item);
                                                 return (
                                                     <div key={item} className="relative group inline-block">
-                                                        <button
-                                                            onClick={(e) => handleClickWrapper(e, item)}
-                                                            onTouchStart={(e) => handleTouchStart(e, item, isSelected, inCart)}
-                                                            onTouchEnd={handleTouchEnd}
-                                                            onMouseDown={(e) => handleTouchStart(e, item, isSelected, inCart)}
-                                                            onMouseUp={handleTouchEnd}
-                                                            onMouseLeave={handleTouchEnd}
-                                                            onContextMenu={(e) => {
-                                                                e.preventDefault();
-                                                                return false;
-                                                            }}
-                                                            style={{ WebkitTouchCallout: 'none', userSelect: 'none', WebkitUserSelect: 'none' }}
+                                                        <motion.button
+                                                            onClick={() => handleAddIngredient(item)}
+                                                            whileTap={{ scale: 0.95 }}
                                                             className={`select-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border relative z-10 ${isSelected
                                                                 ? 'bg-[var(--primary)] text-white border-[var(--primary)] shadow-[0_0_15px_var(--primary-glow)] scale-105'
                                                                 : inCart
@@ -565,10 +517,46 @@ export default function MyBarPage() {
                                                                 }`}
                                                         >
                                                             {item}
-                                                        </button>
+                                                        </motion.button>
+                                                        
+                                                        <AnimatePresence>
+                                                            {isSelected && (
+                                                                <motion.div
+                                                                    initial={{ opacity: 0, y: -10 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    exit={{ opacity: 0, scale: 0.9 }}
+                                                                    className="flex justify-center mt-2 z-20 md:hidden"
+                                                                >
+                                                                    <button
+                                                                        onClick={(e) => { e.stopPropagation(); handleKillBottle(item); }}
+                                                                        className="bg-gray-900 border border-red-500/50 px-3 py-1 rounded-full flex items-center gap-1 text-[12px] hover:bg-red-900 hover:text-white shadow-lg text-red-400"
+                                                                    >
+                                                                        <span>🪦</span> Graveyard
+                                                                    </button>
+                                                                </motion.div>
+                                                            )}
+                                                            {!isSelected && (
+                                                                <motion.div
+                                                                    initial={{ opacity: 0, y: -10 }}
+                                                                    animate={{ opacity: 1, y: 0 }}
+                                                                    exit={{ opacity: 0, scale: 0.9 }}
+                                                                    className="flex justify-center mt-2 z-20 md:hidden"
+                                                                >
+                                                                    <button
+                                                                        onClick={(e) => { e.preventDefault(); !inCart && handleAddToCartFromBar(e, item); }}
+                                                                        disabled={inCart}
+                                                                        className={`px-3 py-1 rounded-full flex items-center gap-1 text-[12px] shadow-lg border ${inCart
+                                                                            ? 'bg-emerald-900/80 border-emerald-500/50 text-emerald-300 cursor-default'
+                                                                            : 'bg-gray-900 border-gray-700 text-gray-400 hover:bg-green-900 hover:border-green-500 hover:text-white'}`}
+                                                                    >
+                                                                        <span>{inCart ? '✓' : '🛒'}</span> Cart
+                                                                    </button>
+                                                                </motion.div>
+                                                            )}
+                                                        </AnimatePresence>
 
-                                                        {/* Action Buttons group that appears on hover */}
-                                                        <div className="absolute -top-3 -right-3 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none group-hover:pointer-events-auto">
+                                                        {/* Desktop Action Buttons group that appears on hover */}
+                                                        <div className="hidden md:flex absolute -top-3 -right-3 flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none group-hover:pointer-events-auto">
 
                                                             {/* Add to Cart Button */}
                                                             {!isSelected && (
@@ -634,29 +622,39 @@ export default function MyBarPage() {
                                     <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                                         {myBar.filter(item => !INGREDIENT_CATEGORIES.some(cat => cat.items.includes(item))).map(customItem => (
                                             <div key={customItem} className="relative group inline-block">
-                                                <button
+                                                <motion.button
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        handleClickWrapper(e as unknown as React.MouseEvent, customItem);
+                                                        handleAddIngredient(customItem);
                                                     }}
-                                                    onTouchStart={(e) => handleTouchStart(e, customItem, true, false)}
-                                                    onTouchEnd={handleTouchEnd}
-                                                    onMouseDown={(e) => handleTouchStart(e, customItem, true, false)}
-                                                    onMouseUp={handleTouchEnd}
-                                                    onMouseLeave={handleTouchEnd}
-                                                    onContextMenu={(e) => {
-                                                        e.preventDefault();
-                                                        return false;
-                                                    }}
-                                                    style={{ WebkitTouchCallout: 'none', userSelect: 'none', WebkitUserSelect: 'none' }}
-                                                    className="select-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 flex items-center gap-2"
+                                                    whileTap={{ scale: 0.95 }}
+                                                    className="select-none px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border bg-[var(--color-neon-purple)] text-white border-[var(--color-neon-purple)] shadow-[0_0_15px_rgba(176,38,255,0.4)] hover:bg-red-500 hover:border-red-500 flex items-center gap-2 relative z-10"
                                                     title="Click to remove"
                                                 >
                                                     {customItem}
-                                                </button>
+                                                </motion.button>
+                                                
+                                                {/* Mobile Graveyard action */}
+                                                <AnimatePresence>
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: -10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, scale: 0.9 }}
+                                                        className="flex justify-center mt-2 z-20 md:hidden"
+                                                    >
+                                                        <button
+                                                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleKillBottle(customItem); }}
+                                                            className="bg-gray-900 border border-red-500/50 px-3 py-1 rounded-full flex items-center gap-1 text-[12px] hover:bg-red-900 hover:text-white shadow-lg text-red-400"
+                                                        >
+                                                            <span>🪦</span> Graveyard
+                                                        </button>
+                                                    </motion.div>
+                                                </AnimatePresence>
+
+                                                {/* Desktop Graveyard action */}
                                                 <button
                                                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleKillBottle(customItem); }}
-                                                    className="absolute -top-2 -right-2 bg-gray-900 border border-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-900 hover:text-white shadow-lg"
+                                                    className="hidden md:flex absolute -top-2 -right-2 bg-gray-900 border border-gray-700 w-6 h-6 rounded-full items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-900 hover:text-white shadow-lg pointer-events-none group-hover:pointer-events-auto"
                                                     title="Kill Bottle (Move to Graveyard)"
                                                 >
                                                     🪦
