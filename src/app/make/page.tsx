@@ -20,6 +20,14 @@ export default function MakePage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
 
+                    {/* Discover Catalog */}
+                    <Link href="/menu" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-[var(--primary)]/50 hover:shadow-[0_0_30px_rgba(176,38,255,0.15)] transition-all duration-300 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🌍</div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Discover Catalog</h2>
+                        <p className="text-gray-400 leading-relaxed">Browse the master catalog of timeless classics and incredible custom creations. Filter exactly to what you have in your Bar.</p>
+                    </Link>
+
                     {/* Chat */}
                     <Link href="/chat" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400 opacity-50 group-hover:opacity-100 transition-opacity"></div>
@@ -27,6 +35,9 @@ export default function MakePage() {
                         <h2 className="text-2xl font-bold text-white mb-2">Conversational Mixologist</h2>
                         <p className="text-gray-400 leading-relaxed">Tell Sipster what you're craving, what's in your glass, or how your day went. It curates a bespoke response.</p>
                     </Link>
+
+                    {/* Surprise Me */}
+                    <SurpriseMeButton />
 
                     {/* Omakase Mode */}
                     <Link href="/make/omakase" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(147,51,234,0.15)] transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
@@ -39,12 +50,12 @@ export default function MakePage() {
                         </div>
                     </Link>
 
-                    {/* Discover Catalog */}
-                    <Link href="/menu" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-[var(--primary)]/50 hover:shadow-[0_0_30px_rgba(176,38,255,0.15)] transition-all duration-300 relative overflow-hidden md:col-span-2 lg:col-span-1">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🌍</div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Discover Catalog</h2>
-                        <p className="text-gray-400 leading-relaxed">Browse the master catalog of timeless classics and incredible custom creations. Filter exactly to what you have in your Bar.</p>
+                    {/* Menu Translator */}
+                    <Link href="/make/translator" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">📸</div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Menu Translator</h2>
+                        <p className="text-gray-400 leading-relaxed">Scan a cocktail menu at a bar. Sipster will read it, match drinks to your palate profile, and recommend what to order.</p>
                     </Link>
 
                     {/* Party Builder */}
@@ -61,23 +72,12 @@ export default function MakePage() {
                     </Link>
 
                     {/* Kitchen Sink Lab */}
-                    <Link href="/make/kitchen-sink" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all duration-300 relative overflow-hidden">
+                    <Link href="/make/kitchen-sink" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all duration-300 relative overflow-hidden md:col-span-2">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-[var(--primary)] opacity-50 group-hover:opacity-100 transition-opacity"></div>
                         <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🧪</div>
                         <h2 className="text-2xl font-bold text-white mb-2">Zero-Waste Lab</h2>
-                        <p className="text-gray-400 leading-relaxed">Turn wilting herbs, stale citrus, and random scraps into avant-garde culinary infusions and syrups.</p>
+                        <p className="text-gray-400 leading-relaxed md:max-w-2xl">Turn wilting herbs, stale citrus, and random scraps into avant-garde culinary infusions and syrups.</p>
                     </Link>
-
-                    {/* Menu Translator */}
-                    <Link href="/make/translator" className="group rounded-3xl p-8 bg-black/40 border border-gray-800 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400 opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">📸</div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Menu Translator</h2>
-                        <p className="text-gray-400 leading-relaxed">Scan a cocktail menu at a bar. Sipster will read it, match drinks to your palate profile, and recommend what to order.</p>
-                    </Link>
-
-                    {/* Surprise Me */}
-                    <SurpriseMeButton className="md:col-span-2 lg:col-span-1" />
 
                 </div>
             </div>
