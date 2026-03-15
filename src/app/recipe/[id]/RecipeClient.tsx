@@ -181,6 +181,33 @@ export default function RecipeClient({ id }: { id: string }) {
                             </div>
                         </div>
 
+                        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+                            <h3 className="text-[var(--accent)] text-xs font-bold tracking-wider uppercase mb-4">Vibe & Time</h3>
+
+                            <div className="space-y-4">
+                                <div className="flex justify-between border-b border-gray-800 pb-2">
+                                    <span className="text-gray-500">Season</span>
+                                    <span className="font-medium text-white">{cocktail.season || '--'}</span>
+                                </div>
+                                <div className="flex justify-between border-b border-gray-800 pb-2">
+                                    <span className="text-gray-500">Mood</span>
+                                    <span className="font-medium text-white">{cocktail.mood || '--'}</span>
+                                </div>
+                                <div className="flex justify-between border-b border-gray-800 pb-2">
+                                    <span className="text-gray-500">Occasion</span>
+                                    <span className="font-medium text-white">{cocktail.occasion || '--'}</span>
+                                </div>
+                                <div className="flex justify-between border-b border-gray-800 pb-2">
+                                    <span className="text-gray-500">Time Period</span>
+                                    <span className="font-medium text-white">{cocktail.timePeriod || '--'}</span>
+                                </div>
+                                <div className="flex justify-between pb-2">
+                                    <span className="text-gray-500">Temperature</span>
+                                    <span className="font-medium text-white">{cocktail.temperature || '--'}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 relative overflow-hidden group">
                             <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 to-[var(--accent)]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                             <h3 className="text-gray-400 text-xs font-bold tracking-wider uppercase mb-5 relative z-10">Ingredients needed</h3>
@@ -208,6 +235,39 @@ export default function RecipeClient({ id }: { id: string }) {
                                     </li>
                                 ))}
                             </ol>
+                        </div>
+
+                        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+                            <h3 className="text-gray-500 text-xs font-bold tracking-wider uppercase mb-4">Flavor Profile</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {cocktail.flavorProfile && cocktail.flavorProfile.length > 0 ? (
+                                    cocktail.flavorProfile.map((tag: string) => (
+                                        <span key={tag} className="px-4 py-1.5 rounded-full bg-gray-800 border border-gray-700 text-sm text-gray-300 font-medium">
+                                            {tag}
+                                        </span>
+                                    ))
+                                ) : (
+                                    <span className="text-gray-500 text-sm">--</span>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+                            <h3 className="text-neon-blue text-xs font-bold tracking-wider uppercase mb-6 font-sans text-blue-400">History & Origin</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div>
+                                    <span className="block text-gray-500 text-sm mb-1 font-sans">Source</span>
+                                    <span className="text-xl text-white font-medium">{cocktail.source || '--'}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-gray-500 text-sm mb-1 font-sans">Location</span>
+                                    <span className="text-xl text-white font-medium">{cocktail.city || '--'}, {cocktail.origin || '--'}</span>
+                                </div>
+                                <div>
+                                    <span className="block text-gray-500 text-sm mb-1 font-sans">Popularity</span>
+                                    <span className="text-xl text-white font-medium">{cocktail.countryOfPopularity || '--'}</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div id="review" className="pt-8 border-t border-gray-800/50">
