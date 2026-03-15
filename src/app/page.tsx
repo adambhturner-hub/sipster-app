@@ -124,7 +124,7 @@ export default function Home() {
               <h3 className="font-bold text-white mb-1">Create Drink</h3>
               <p className="text-xs text-gray-400">Save a custom recipe</p>
             </Link>
-            <Link href="/discover" className="group glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300">
+            <Link href="/menu" className="group glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center hover:shadow-[0_0_20px_var(--primary-glow)] hover:border-[var(--primary)]/30 transition-all duration-300">
               <span className="text-4xl mb-3 group-hover:scale-110 transition-transform">🌍</span>
               <h3 className="font-bold text-white mb-1">Community Feed</h3>
               <p className="text-xs text-gray-400">See what's trending</p>
@@ -358,7 +358,7 @@ export default function Home() {
       {/* Trending Tonight Section */}
       <div className="w-full max-w-6xl mx-auto z-10 mb-24 px-4 text-center">
         <h2 className="text-3xl font-extrabold mb-2 font-serif">🔥 Trending <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)]">Tonight</span></h2>
-        <p className="text-gray-400 mb-12">What the community is mixing up right now. <Link href="/discover" className="text-[var(--primary)] hover:underline ml-1">View Community Feed &rarr;</Link></p>
+        <p className="text-gray-400 mb-12">What the community is mixing up right now. <Link href="/menu" className="text-[var(--primary)] hover:underline ml-1">View Community Feed &rarr;</Link></p>
 
         <div className="flex flex-col md:flex-row justify-center gap-6">
           {[

@@ -27,10 +27,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         const primarySpirit = cocktail.primarySpirit || 'Mystery';
         const emoji = cocktail.emoji || '✨';
         const tagline = cocktail.tagline || 'A unique AI-crafted cocktail.';
+        const source = cocktail.source || 'AI Original';
 
         const ogUrl = new URL('https://sipster-app.vercel.app/api/og');
         ogUrl.searchParams.set('title', name);
-        ogUrl.searchParams.set('subtitle', `${primarySpirit} • AI Original`);
+        ogUrl.searchParams.set('subtitle', `${primarySpirit} • ${source}`);
         ogUrl.searchParams.set('emoji', emoji);
 
         return {

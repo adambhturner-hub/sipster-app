@@ -62,10 +62,12 @@ export default function DynamicGlass({
 
     const gradientClass = getLiquidColor();
 
+    // If an explicit color is provided, we use it directly as the background.
+    // We add a hint of transparency so it doesn't look flat.
     const liquidStyle = {
         height: `${animatedFill}%`,
         transition: 'height 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)',
-        backgroundColor: liquidColor || undefined,
+        backgroundColor: liquidColor ? `${liquidColor}cc` : undefined, // cc is ~80% opacity
     };
 
     // Render inner content of liquid (bubbles, ice)
@@ -142,8 +144,11 @@ export default function DynamicGlass({
                             <div className="absolute inset-0 flex items-center justify-center text-orange-200/40 font-serif text-3xl font-bold opacity-30 select-none">MUG</div>
                             {/* "Liquid surface" visible at top */}
                             <div
-                                className="absolute left-0 right-0 top-4 h-4 bg-orange-900/60 rounded-[50%] backdrop-blur-md shadow-inner transition-transform duration-1000"
-                                style={{ transform: `translateY(${(100 - animatedFill)}px)` }}
+                                className="absolute left-0 right-0 top-4 h-4 rounded-[50%] backdrop-blur-md shadow-inner transition-transform duration-1000"
+                                style={{ 
+                                    transform: `translateY(${(100 - animatedFill)}px)`,
+                                    backgroundColor: liquidColor || 'rgba(124, 45, 18, 0.6)' // orange-900/60 fallback
+                                }}
                             >
                                 {needsIce && <div className="absolute inset-x-4 top-1 h-3 bg-white/30 rounded-full blur-sm"></div>}
                             </div>
@@ -192,7 +197,10 @@ export default function DynamicGlass({
             {/* The Stage */}
             <div className="relative">
                 {/* Glow behind the glass based on liquid color */}
-                <div className={`absolute inset-4 -z-10 blur-3xl opacity-20 bg-gradient-to-t ${gradientClass}`}></div>
+                <div 
+                    className={`absolute inset-4 -z-10 blur-3xl opacity-20 ${!liquidColor ? `bg-gradient-to-t ${gradientClass}` : ''}`}
+                    style={liquidColor ? { backgroundColor: liquidColor } : undefined}
+                ></div>
 
                 {renderGlass()}
 

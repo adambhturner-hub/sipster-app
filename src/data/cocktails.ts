@@ -47,6 +47,7 @@ export interface Cocktail {
     estimatedCost?: number; // 1-4 for $, $, $$, $$
     popularity?: number;
     totalMixes?: number;
+    colorHex?: string; // Optional precise hex code for unusual liquid colors
 }
 
 export const CLASSIC_COCKTAILS: Cocktail[] = [

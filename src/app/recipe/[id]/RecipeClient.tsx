@@ -12,6 +12,7 @@ import NotesAndRating from '@/components/NotesAndRating';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
 import DynamicGlass from '@/components/DynamicGlass';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface CustomFullRecipe {
     id: string;
@@ -23,6 +24,7 @@ interface CustomFullRecipe {
 
 export default function RecipeClient({ id }: { id: string }) {
     const router = useRouter();
+    const { user } = useAuth();
     const [recipeData, setRecipeData] = useState<CustomFullRecipe | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -90,16 +92,21 @@ export default function RecipeClient({ id }: { id: string }) {
                                 glassType={cocktail.glass}
                                 primarySpirit={cocktail.primarySpirit}
                                 isShaken={cocktail.style?.includes('Shaken')}
+                                liquidColor={cocktail.colorHex}
                                 className="scale-[0.85] origin-bottom absolute bottom-2"
                             />
                         </div>
                         <div className="flex-1 text-center md:text-left mt-2 md:mt-0">
-                            <div className="flex items-center justify-between mb-2 gap-4">
-                                <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1">
-                                    {cocktail.name}
-                                </h1>
-                                <GlobalStarRating cocktailId={recipeData.id} />
-                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
+                            <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                                <div>
+                                    <h1 className="text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] leading-tight pb-1 break-words">
+                                        {cocktail.name}
+                                    </h1>
+                                    <div className="mt-2">
+                                        <GlobalStarRating cocktailId={recipeData.id} />
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap items-center justify-start md:justify-end gap-3 mt-4 md:mt-0">
                                     <FavoriteButton
                                         cocktailId={(cocktail.name || 'custom').toLowerCase().replace(/ /g, '-')}
                                         cocktailName={cocktail.name}
@@ -117,13 +124,18 @@ export default function RecipeClient({ id }: { id: string }) {
                                         text={`Check out this custom creation: ${cocktail.name} on Sipster!`}
                                         path={`/recipe/${recipeData.id}`}
                                     />
+                                    {user && (user.uid === recipeData.uid || user.uid === cocktail.authorUid) && (
+                                        <Link href={`/create?edit=${recipeData.id}`} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg border border-gray-600 transition-colors flex items-center gap-2">
+                                            <span>✏️</span> Edit Recipe
+                                        </Link>
+                                    )}
                                 </div>
                             </div>
                             <p className="text-xl text-[var(--primary)] italic">&quot;{cocktail.tagline}&quot;</p>
 
                             <div className="flex items-center justify-center md:justify-start gap-2 mt-3">
                                 <span className="px-3 py-1 bg-[var(--primary)]/10 text-[var(--primary)] text-xs font-bold uppercase tracking-wider rounded-full border border-[var(--primary)]/30">
-                                    AI Original
+                                    {cocktail.source || 'AI Original'}
                                 </span>
                             </div>
                         </div>

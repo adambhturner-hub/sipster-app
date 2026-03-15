@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import { FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
 import { useRouter } from 'next/navigation';
@@ -62,6 +62,7 @@ export default function CreateCocktailPage() {
     const [garnish, setGarnish] = useState('');
     const [quantity, setQuantity] = useState<number>(1);
     const [recommendedAmount, setRecommendedAmount] = useState('1 Drink');
+    const [colorHex, setColorHex] = useState('');
 
     // 6. Recipe & Build
     const [ingredients, setIngredients] = useState<{ amount: string, item: string }[]>([{ amount: '', item: '' }]);
@@ -108,6 +109,7 @@ export default function CreateCocktailPage() {
                         if (data.relationship && data.relationship.length > 0) {
                             setRelationship(Array.isArray(data.relationship) ? data.relationship.join(', ') : data.relationship);
                         }
+                        if (data.colorHex) setColorHex(data.colorHex);
                         if (data.ingredients && data.ingredients.length > 0) setIngredients(data.ingredients);
                         if (data.instructions && data.instructions.length > 0) setInstructions(data.instructions);
 
@@ -115,6 +117,59 @@ export default function CreateCocktailPage() {
                         toast.success("Ready to Riff! Recipe loaded.", { icon: "✨" });
                     }
                 } catch (e) { console.error(e) }
+            }
+            
+            // Edit Mode Data Fetching
+            const editId = params.get('edit');
+            if (editId) {
+                const fetchEditData = async () => {
+                    try {
+                        const docRef = doc(db, 'favorites', editId);
+                        const docSnap = await getDoc(docRef);
+                        if (docSnap.exists() && docSnap.data().cocktailData) {
+                            const data = docSnap.data().cocktailData;
+                            if (data.name) setName(data.name);
+                            if (data.tagline) setTagline(data.tagline);
+                            if (data.description) setDescription(data.description);
+                            if (data.emoji) setEmoji(data.emoji);
+                            if (data.primarySpirit) setPrimarySpirit(data.primarySpirit);
+                            if (data.style) setStyle(data.style);
+                            if (data.glass) setGlass(data.glass);
+                            if (data.flavorProfile && data.flavorProfile.length > 0) {
+                                setFlavorProfile(Array.isArray(data.flavorProfile) ? data.flavorProfile.join(', ') : data.flavorProfile);
+                            }
+                            if (data.strength) setStrength(data.strength);
+                            if (data.difficultyLevel) setDifficultyLevel(data.difficultyLevel);
+                            if (data.abvContent) setAbvContent(data.abvContent);
+                            if (data.ratio) setRatio(data.ratio);
+                            if (data.season) setSeason(data.season);
+                            if (data.temperature) setTemperature(data.temperature);
+                            if (data.mood) setMood(data.mood);
+                            if (data.occasion) setOccasion(data.occasion);
+                            if (data.origin) setOrigin(data.origin);
+                            if (data.city) setCity(data.city);
+                            if (data.era) setEra(data.era);
+                            if (data.source) setSource(data.source);
+                            if (data.timePeriod) setTimePeriod(data.timePeriod);
+                            if (data.countryOfPopularity) setCountryOfPopularity(data.countryOfPopularity);
+                            if (data.trivia && data.trivia.length > 0) setTrivia(data.trivia);
+                            if (data.garnish) setGarnish(data.garnish);
+                            if (data.relationship && data.relationship.length > 0) {
+                                setRelationship(Array.isArray(data.relationship) ? data.relationship.join(', ') : data.relationship);
+                            }
+                            if (data.ingredients && data.ingredients.length > 0) setIngredients(data.ingredients);
+                            if (data.instructions && data.instructions.length > 0) setInstructions(data.instructions);
+                            if (data.colorHex) setColorHex(data.colorHex);
+                            
+                            setIsPublic(docSnap.data().isPublic || false);
+                            
+                            toast.success("Ready to Edit! Recipe loaded.", { icon: "✏️" });
+                        }
+                    } catch (e) {
+                        console.error("Error fetching recipe for edit:", e);
+                    }
+                };
+                fetchEditData();
             }
         }
     }, []);
@@ -291,7 +346,9 @@ export default function CreateCocktailPage() {
         setIsSubmitting(true);
 
         try {
-            const favoriteId = crypto.randomUUID();
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('edit');
+            const favoriteId = editId || crypto.randomUUID();
 
             const cocktailData = {
                 name: name.trim(),
@@ -322,7 +379,8 @@ export default function CreateCocktailPage() {
                 trivia: trivia.filter(t => t.trim()).map(t => t.trim()),
                 ratio: ratio.trim() || 'Custom',
                 tagline: tagline.trim() || 'My signature drink.',
-                strength: strength || 5
+                strength: strength || 5,
+                colorHex: colorHex.trim() || undefined
             };
 
             const favoriteData = {
@@ -567,7 +625,34 @@ export default function CreateCocktailPage() {
                                     <button type="button" onClick={() => { if (trivia.length > 1) { setTrivia(trivia.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 ${trivia.length > 1 ? 'hover:text-red-400 hover:border-red-400' : 'opacity-30'}`}>✕</button>
                                 </div>
                             ))}
-                            <button type="button" onClick={() => setTrivia([...trivia, ''])} className="text-[var(--primary)] text-sm font-bold mt-2">+ Add Trivia</button>
+                            <button type="button" onClick={() => setTrivia([...trivia, ''])} className="text-[var(--primary)] text-sm font-bold mt-2 mb-6">+ Add Trivia</button>
+                        </div>
+
+                        {/* Custom Color Block */}
+                        <div className="bg-gray-900 border border-[var(--primary)]/20 rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row items-center justify-between mb-4 mt-8 gap-6 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--primary)]/10 pointer-events-none" />
+                            <div className="relative z-10 w-full md:w-auto text-center md:text-left">
+                                <h3 className="text-xl font-bold text-white mb-2 flex items-center justify-center md:justify-start gap-2">Custom Drink Color 🎨</h3>
+                                <p className="text-gray-400 text-sm max-w-sm">Fine-tune the exact color of the glowing liquid in the glass. Leave empty to auto-guess based on the spirit.</p>
+                            </div>
+                            <div className="flex items-center gap-3 relative z-10 w-full md:w-auto justify-center md:justify-end">
+                                <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-gray-600 shadow-inner group">
+                                    <input 
+                                        type="color" 
+                                        value={colorHex || '#ffffff'} 
+                                        onChange={e => setColorHex(e.target.value)}
+                                        className="absolute -inset-4 w-[200%] h-[200%] cursor-pointer border-none appearance-none"
+                                    />
+                                    <div className="absolute inset-0 pointer-events-none group-hover:bg-black/20 transition-colors" />
+                                </div>
+                                <input 
+                                    type="text" 
+                                    value={colorHex} 
+                                    onChange={e => setColorHex(e.target.value)} 
+                                    placeholder="#00FFFF" 
+                                    className="w-28 bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none font-mono text-sm tracking-wider uppercase focus:border-[var(--primary)] transition-colors" 
+                                />
+                            </div>
                         </div>
                     </section>
 
@@ -638,7 +723,7 @@ export default function CreateCocktailPage() {
 
                     <div className="flex justify-end pt-4">
                         <button type="submit" disabled={isSubmitting} className="bg-[var(--primary)] text-white text-lg px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(176,38,255,0.4)] flex items-center gap-2">
-                            {isSubmitting ? 'Saving Metadata...' : 'Save Full Creation ✨'}
+                            {isSubmitting ? 'Saving Metadata...' : (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('edit') ? 'Update Recipe ✨' : 'Save Full Creation ✨')}
                         </button>
                     </div>
                 </form>

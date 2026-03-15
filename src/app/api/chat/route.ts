@@ -108,7 +108,8 @@ When they ask for a recommendation, you must heavily prioritize suggesting recip
                     ratio: z.string().describe('e.g. "2:1"'),
                     tagline: z.string(),
                     strength: z.number().describe('1-10 scale'),
-                    estimatedCost: z.number().describe('1-4 scale representing $, $$, $$$, $$$$')
+                    estimatedCost: z.number().describe('1-4 scale representing $, $$, $$$, $$$$'),
+                    colorHex: z.string().describe("The visually accurate dominant HEX color code of the final liquid in the glass (e.g. #00FFFF for Blue Curacao drinks, #b31b1b for Negronis, etc).")
                 }),
                 // @ts-ignore
                 execute: async (schemaData) => {
