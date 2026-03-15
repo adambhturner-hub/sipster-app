@@ -74,6 +74,13 @@ export default function RecipeClient({ id }: { id: string }) {
 
     const cocktail = recipeData.cocktailData;
 
+    console.log("DEBUG AUTH MATCH:", {
+        currentUserUid: user?.uid,
+        recipeOwnerUid: recipeData.uid,
+        cocktailAuthorUid: cocktail.authorUid,
+        isMatch: user && (user.uid === recipeData.uid || user.uid === cocktail.authorUid)
+    });
+
     return (
         <div className="min-h-screen bg-gray-950 text-white pb-24 font-serif relative overflow-hidden">
             {/* Background Glow */}

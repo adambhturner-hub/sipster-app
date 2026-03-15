@@ -1,6 +1,8 @@
 import RecipeClient from './RecipeClient';
 import { adminDb } from '@/lib/firebase-admin';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     try {
         const resolvedParams = await params;

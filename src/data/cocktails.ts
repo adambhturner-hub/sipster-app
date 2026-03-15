@@ -48,6 +48,7 @@ export interface Cocktail {
     popularity?: number;
     totalMixes?: number;
     colorHex?: string; // Optional precise hex code for unusual liquid colors
+    authorUid?: string; // Original creator user id
 }
 
 export const CLASSIC_COCKTAILS: Cocktail[] = [
