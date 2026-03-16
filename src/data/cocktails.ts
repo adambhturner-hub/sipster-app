@@ -17777,5 +17777,3141 @@ export const CLASSIC_COCKTAILS: Cocktail[] = [
         "popularity": 3,
         "totalMixes": 1,
         "colorHex": "#B03A2E"
+    },
+
+    // --- BATCH 6: NEWLY GENERATED USER COCKTAILS ---
+
+    {
+        "name": "12 Mile Limit",
+        "emoji": "🌊",
+        "primarySpirit": "Rum",
+        "origin": "USA",
+        "era": "Prohibition",
+        "style": "Sour",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "White Rum"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Brandy"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Grenadine"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lemon Juice"
+            }
+        ],
+        "description": "Created during Prohibition, the 12 Mile Limit is named after the maritime boundary where U.S. law enforcement could not enforce alcohol restrictions. It offers a complex blend of rum, brandy, and rye whiskey balanced by tart lemon and sweet grenadine.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a rocks glass over fresh ice.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Mary Pickford",
+            "Hemingway Daiquiri",
+            "El Presidente"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Daring",
+        "flavorProfile": [
+            "Fruity",
+            "Tart",
+            "Strong"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Evening Cocktail",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Named after the maritime limit beyond which U.S. Prohibition laws no longer applied.",
+            "Combines three different base spirits.",
+            "Popular in speakeasies of the Prohibition era."
+        ],
+        "ratio": "2:1:1",
+        "tagline": "Sail beyond boundaries with bold flavors.",
+        "strength": 8,
+        "estimatedCost": 3,
+        "popularity": 5,
+        "totalMixes": 3,
+        "colorHex": "#FF9999"
+    },
+    {
+        "name": "Adventurer",
+        "emoji": "🗺️",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "USA",
+        "era": "Modern Classic",
+        "style": "Spirit-Forward",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Añejo Tequila"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Aperol"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Sweet Vermouth"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Orange Bitters"
+            }
+        ],
+        "description": "The Adventurer is an ode to travel and exploration, blending aged tequila with the bittersweet and aromatic notes of Aperol and vermouth. Its deep, complex nature makes it ideal for contemplative sipping.",
+        "garnish": "Orange peel",
+        "instructions": [
+            "Stir all ingredients with ice.",
+            "Strain into a chilled martini glass.",
+            "Garnish with an orange peel."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Negroni",
+            "Boulevardier",
+            "Manhattan"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Explorative",
+        "flavorProfile": [
+            "Bitter",
+            "Smooth",
+            "Complex"
+        ],
+        "difficultyLevel": "Advanced",
+        "occasion": "Pre-Dinner",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "2010s",
+        "trivia": [
+            "A variation inspired by the Negroni family.",
+            "Uses Añejo tequila for its rich depth.",
+            "Perfect for those seeking new horizons on the palate."
+        ],
+        "ratio": "3:2:1",
+        "tagline": "Embark on a journey in every sip.",
+        "strength": 9,
+        "estimatedCost": 4,
+        "popularity": 4,
+        "totalMixes": 3,
+        "colorHex": "#D16E6E"
+    },
+    {
+        "name": "Alfonso Special",
+        "emoji": "🍸",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "France",
+        "era": "Golden Age",
+        "style": "Fizzy",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Dry Vermouth"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Dubonnet Rouge"
+            },
+            {
+                "amount": "1 dash",
+                "item": "Angostura Bitters"
+            },
+            {
+                "amount": "Top with",
+                "item": "Champagne"
+            }
+        ],
+        "description": "An elegant aperitif invented at the famous Parisian Ritz Hotel, the Alfonso Special offers a touch of luxury with its vermouth and Dubonnet base topped with champagne for an effervescent finish.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Stir dry vermouth, Dubonnet, and bitters in a mixing glass with ice.",
+            "Strain into a martini glass.",
+            "Top with chilled champagne.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Kir Royale",
+            "French 75",
+            "Bellini"
+        ],
+        "source": "Ritz Hotel",
+        "city": "Paris",
+        "mood": "Elegant",
+        "flavorProfile": [
+            "Dry",
+            "Effervescent",
+            "Herbal"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Celebration",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "France",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Named after a Spanish king.",
+            "Popular in luxury hotels in Europe.",
+            "Features Dubonnet, which was originally developed to combat malaria."
+        ],
+        "ratio": "1:1:Top",
+        "tagline": "Toast like royalty.",
+        "strength": 6,
+        "estimatedCost": 4,
+        "popularity": 5,
+        "totalMixes": 3,
+        "colorHex": "#F5E1DA"
+    },
+    {
+        "name": "Allegheny",
+        "emoji": "🌄",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "USA",
+        "era": "Golden Age",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Dry Vermouth"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Blackberry Brandy"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Lemon Juice"
+            },
+            {
+                "amount": "1 dash",
+                "item": "Angostura Bitters"
+            }
+        ],
+        "description": "Named after the Allegheny River, this cocktail reflects the natural beauty and sturdy spirit of its namesake region. Its strong rye base is beautifully complemented by fruity and herbal flavors.",
+        "garnish": "Lemon slice",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with a lemon slice."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Manhattan",
+            "Brooklyn",
+            "Old Pal"
+        ],
+        "source": "Unknown",
+        "city": "Pittsburgh",
+        "mood": "Reflective",
+        "flavorProfile": [
+            "Fruity",
+            "Strong",
+            "Balanced"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1930s",
+        "trivia": [
+            "Incorporates local flavors with blackberry brandy.",
+            "Features rye, a classic American spirit.",
+            "Shows the influence of Prohibition on American cocktails."
+        ],
+        "ratio": "3:1:1",
+        "tagline": "A taste of rugged elegance.",
+        "strength": 8,
+        "estimatedCost": 3,
+        "popularity": 4,
+        "totalMixes": 3,
+        "colorHex": "#9E7B71"
+    },
+    {
+        "name": "Angel’s Share",
+        "emoji": "😇",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "USA",
+        "era": "Modern Classic",
+        "style": "Spirit-Forward",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Bourbon"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Amaretto"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Maple Syrup"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Angostura Bitters"
+            }
+        ],
+        "description": "The Angel's Share refers to the whiskey lost to evaporation during aging and offers a divine mix of bourbon, amaretto, and maple syrup, presenting a warm and sweet concoction perfect for indulging.",
+        "garnish": "Orange peel",
+        "instructions": [
+            "Stir all ingredients with ice.",
+            "Strain into a rocks glass over a large ice cube.",
+            "Garnish with an orange peel."
+        ],
+        "season": "Winter",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Old Fashioned",
+            "Godfather",
+            "Maple Leaf"
+        ],
+        "source": "Unknown",
+        "city": "Louisville",
+        "mood": "Comforting",
+        "flavorProfile": [
+            "Warm",
+            "Sweet",
+            "Nutty"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "2000s",
+        "trivia": [
+            "The term 'Angel’s Share' is a nod to the distillation process.",
+            "Uses maple syrup as a refined sweetener.",
+            "Perfect for cozy winter evenings."
+        ],
+        "ratio": "4:1:0.5",
+        "tagline": "A divine sip of serenity.",
+        "strength": 8,
+        "estimatedCost": 4,
+        "popularity": 5,
+        "totalMixes": 3,
+        "colorHex": "#C29065"
+    },
+    {
+        "name": "Applejack Rabbit",
+        "emoji": "🍏",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "United States",
+        "era": "Golden Age",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Applejack"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Lemon juice"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Orange juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Maple syrup"
+            }
+        ],
+        "description": "Created during the early 20th century, the Applejack Rabbit combines the robust apple brandy flavor with citrus and a touch of maple. It's a delightful balance of sweet and tart, bringing a crisp essence to each sip.",
+        "garnish": "Orange twist",
+        "instructions": [
+            "Add all ingredients into a shaker with ice.",
+            "Shake vigorously until well chilled.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with an orange twist."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1 Coupe",
+        "quantity": 1,
+        "relationship": [
+            "Jack Rose",
+            "New York Sour",
+            "Old Cuban"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Bright",
+        "flavorProfile": [
+            "Citrusy",
+            "Sweet",
+            "Fruity"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "Early 1900s",
+        "trivia": [
+            "Contains Applejack, one of the oldest American spirits.",
+            "Maple syrup gives it a unique seasonal touch.",
+            "Often associated with autumn flavors."
+        ],
+        "ratio": "3:1:1:1",
+        "tagline": "A crisp celebration of fall flavors.",
+        "strength": 3,
+        "estimatedCost": 3,
+        "popularity": 4,
+        "totalMixes": 500,
+        "colorHex": "#D0A87E"
+    },
+    {
+        "name": "Artillery",
+        "emoji": "🪖",
+        "primarySpirit": "Gin",
+        "origin": "United Kingdom",
+        "era": "Pre-Prohibition",
+        "style": "Spirit-Forward",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Sweet vermouth"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Angostura bitters"
+            }
+        ],
+        "description": "The Artillery is a cocktail dating back to the timeless era of gin appreciation. Its combination of gin and sweet vermouth creates a robust, aromatic experience, reminiscent of early 20th century sophistication.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Combine gin, sweet vermouth, and bitters in a mixing glass with ice.",
+            "Stir until well chilled.",
+            "Strain into a chilled martini glass.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "1 Martini",
+        "quantity": 1,
+        "relationship": [
+            "Martini",
+            "Negroni",
+            "Manhattan"
+        ],
+        "source": "Unknown",
+        "city": "London",
+        "mood": "Sophisticated",
+        "flavorProfile": [
+            "Herbal",
+            "Aromatic",
+            "Strong"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Cocktail Hour",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "United Kingdom",
+        "timePeriod": "1910s",
+        "trivia": [
+            "Shares similarities with the more famous Martini.",
+            "A favorite among gin aficionados during WWI.",
+            "Named for its bold, striking taste."
+        ],
+        "ratio": "2:1",
+        "tagline": "A robust echo from the early 20th century.",
+        "strength": 4,
+        "estimatedCost": 2,
+        "popularity": 3,
+        "totalMixes": 350,
+        "colorHex": "#DAA520"
+    },
+    {
+        "name": "Bacardi Cocktail",
+        "emoji": "🌺",
+        "primarySpirit": "Rum",
+        "origin": "Cuba",
+        "era": "Prohibition",
+        "style": "Sour",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Bacardi Superior rum"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Fresh lime juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Grenadine"
+            }
+        ],
+        "description": "The Bacardi Cocktail, a vibrant icon from the prohibition era, pairs rum with lime and sweet grenadine. Its rosy hue and refreshing blend capture the lively spirit of its Cuban roots.",
+        "garnish": "Lime wheel",
+        "instructions": [
+            "Combine all ingredients in a shaker with ice.",
+            "Shake until well-chilled.",
+            "Strain into a chilled martini glass.",
+            "Garnish with a lime wheel."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 Martini",
+        "quantity": 1,
+        "relationship": [
+            "Daiquiri",
+            "Hemingway Daiquiri",
+            "Rum Sour"
+        ],
+        "source": "Bacardi",
+        "city": "Havana",
+        "mood": "Festive",
+        "flavorProfile": [
+            "Fruity",
+            "Tangy",
+            "Sweet"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Celebration",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Originated from a legal dispute over the use of the Bacardi name.",
+            "Popular during the roaring twenties.",
+            "Sometimes compared to a pink daiquiri."
+        ],
+        "ratio": "3:2:1",
+        "tagline": "A rosy echo of Cuban zest.",
+        "strength": 3,
+        "estimatedCost": 3,
+        "popularity": 5,
+        "totalMixes": 850,
+        "colorHex": "#FF6666"
+    },
+    {
+        "name": "Barbary Coast",
+        "emoji": "🏴‍☠️",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "United States",
+        "era": "Prohibition",
+        "style": "Spirit-Forward",
+        "glass": "Double Rocks",
+        "ingredients": [
+            {
+                "amount": "0.75 oz",
+                "item": "Scotch"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "White crème de cacao"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Cream"
+            }
+        ],
+        "description": "A creamy fusion of Scotch and gin, the Barbary Coast was crafted during Prohibition, reflecting the creativity of bartenders in a time of restrictions. Its bold and creamy profile offers an adventurous blend of flavors.",
+        "garnish": "Grated nutmeg",
+        "instructions": [
+            "Add all ingredients in a shaker with ice.",
+            "Shake vigorously.",
+            "Strain into a chilled double rocks glass.",
+            "Garnish with grated nutmeg."
+        ],
+        "season": "Winter",
+        "recommendedAmount": "1 Double Rocks",
+        "quantity": 1,
+        "relationship": [
+            "Rusty Nail",
+            "Grasshopper",
+            "Alexander"
+        ],
+        "source": "Unknown",
+        "city": "San Francisco",
+        "mood": "Adventurous",
+        "flavorProfile": [
+            "Creamy",
+            "Bold",
+            "Complex"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Inspired by the infamous Barbary Coast district.",
+            "Combines the unexpected pairing of Scotch and cream.",
+            "Allowed bartenders to disguise potent spirits during the 1920s."
+        ],
+        "ratio": "1:1:1:1",
+        "tagline": "A creamy voyage through Prohibition tales.",
+        "strength": 3,
+        "estimatedCost": 4,
+        "popularity": 3,
+        "totalMixes": 400,
+        "colorHex": "#D2B48C"
+    },
+    {
+        "name": "Bee Sting",
+        "emoji": "🐝",
+        "primarySpirit": "Agave",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Tequila"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Fresh lime juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Honey syrup"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Angostura bitters"
+            }
+        ],
+        "description": "A modern take on tequila cocktails, the Bee Sting balances the smooth, earthy flavors of tequila with a touch of honey sweetness, finished with a kick of bitters. It illustrates the growing appreciation for nuanced agave-based drinks.",
+        "garnish": "Lime wedge",
+        "instructions": [
+            "Combine all ingredients in a shaker with ice.",
+            "Shake until well-chilled.",
+            "Strain into a rocks glass over fresh ice.",
+            "Garnish with a lime wedge."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "1 Rocks",
+        "quantity": 1,
+        "relationship": [
+            "Margarita",
+            "Tommy's Margarita",
+            "Paloma"
+        ],
+        "source": "Unknown",
+        "city": "Los Angeles",
+        "mood": "Zesty",
+        "flavorProfile": [
+            "Sweet",
+            "Earthy",
+            "Bitter"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Happy Hour",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Honey syrup brings natural sweetness with fewer calories.",
+            "A contemporary addition to tequila-based drinks.",
+            "Often enjoyed on warm summer evenings."
+        ],
+        "ratio": "4:2:1",
+        "tagline": "A zesty sting of sweet delight.",
+        "strength": 3,
+        "estimatedCost": 3,
+        "popularity": 4,
+        "totalMixes": 300,
+        "colorHex": "#E2C300"
+    },
+    {
+        "name": "Betsy Ross",
+        "emoji": "🇺🇸",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "USA",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Cognac"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Port"
+            },
+            {
+                "amount": "1 dash",
+                "item": "Orange Bitters"
+            }
+        ],
+        "description": "The Betsy Ross is a refined cocktail named after the legendary flag maker, composed of cognac and port for a rich, velvety experience. Its smooth and elegant nature captures a part of American history within each sip.",
+        "garnish": "Freshly grated nutmeg",
+        "instructions": [
+            "Stir all ingredients with ice in a mixing glass.",
+            "Strain into a chilled martini glass.",
+            "Garnish with freshly grated nutmeg."
+        ],
+        "season": "Winter",
+        "recommendedAmount": "2 oz",
+        "quantity": 1,
+        "relationship": [
+            "Sidecar",
+            "Vieux Carré",
+            "Sazerac"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Patriotic",
+        "flavorProfile": [
+            "Rich",
+            "Velvety",
+            "Warm"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Dinner",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1800s",
+        "trivia": [
+            "Named after Betsy Ross, famed for sewing the first American flag.",
+            "Combines the French elegance of Cognac with the bold sweetness of port.",
+            "Ideal for cold winter nights with its warming profile."
+        ],
+        "ratio": "2:1:dash",
+        "tagline": "Sip on elegance born of history.",
+        "strength": 3,
+        "estimatedCost": 4,
+        "popularity": 3,
+        "totalMixes": 200,
+        "colorHex": "#8B4513"
+    },
+    {
+        "name": "Bittered Sling",
+        "emoji": "🍸",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "USA",
+        "era": "Pre-Prohibition",
+        "style": "Spirit-Forward",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Simple Syrup"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Aromatic Bitters"
+            }
+        ],
+        "description": "The Bittered Sling is a forebear of the Old Fashioned, a straightforward yet complex blend of whiskey, sugar, and bitters. Emerging in the 18th century, it balances boldness with nuanced bitterness.",
+        "garnish": "Orange twist",
+        "instructions": [
+            "Muddle simple syrup and bitters in the glass.",
+            "Add ice cubes and rye whiskey.",
+            "Stir gently.",
+            "Garnish with an orange twist."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "2 oz",
+        "quantity": 1,
+        "relationship": [
+            "Old Fashioned",
+            "Manhattan",
+            "Sazerac"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Reflective",
+        "flavorProfile": [
+            "Bitter",
+            "Sweet",
+            "Spicy"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1700s",
+        "trivia": [
+            "Precursor to modern cocktail culture.",
+            "'Bittered Sling' was an early term for cocktails.",
+            "Introduced as a popular saloon drink."
+        ],
+        "ratio": "2:1:2 dashes",
+        "tagline": "Simplicity with a bitter twist.",
+        "strength": 3,
+        "estimatedCost": 3,
+        "popularity": 2,
+        "totalMixes": 150,
+        "colorHex": "#D2691E"
+    },
+    {
+        "name": "Blackthorn",
+        "emoji": "🌿",
+        "primarySpirit": "Gin",
+        "origin": "Ireland",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Irish Whiskey"
+            },
+            {
+                "amount": "1.5 oz",
+                "item": "Dry Vermouth"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Absinthe"
+            }
+        ],
+        "description": "The Blackthorn embodies the spirit of Ireland with whiskey and vermouth, infused with a touch of absinthe. A sophisticated, herbal cocktail for those with a penchant for depth and history.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Stir all ingredients with ice in a mixing glass.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1.5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Rob Roy",
+            "Martini",
+            "Vieux Carré"
+        ],
+        "source": "Unknown",
+        "city": "Dublin",
+        "mood": "Mystical",
+        "flavorProfile": [
+            "Herbal",
+            "Complex",
+            "Rich"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Evening",
+        "abvContent": "Very High",
+        "temperature": "Cold",
+        "countryOfPopularity": "Ireland",
+        "timePeriod": "1800s",
+        "trivia": [
+            "Named after the blackthorn bush, native to Ireland.",
+            "Combines the punch of whiskey with botanical vermouth.",
+            "Absinthe adds an intricate licorice note."
+        ],
+        "ratio": "1:1:dash",
+        "tagline": "An Irish tale in a glass.",
+        "strength": 4,
+        "estimatedCost": 4,
+        "popularity": 2,
+        "totalMixes": 120,
+        "colorHex": "#556B2F"
+    },
+    {
+        "name": "Blinker",
+        "emoji": "🌞",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "USA",
+        "era": "Prohibition",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Grapefruit Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Raspberry Syrup"
+            }
+        ],
+        "description": "The Blinker, a Prohibition-era cocktail, melds rye's robust character with fresh grapefruit and sweet raspberry. It's a refreshing and sunlit escape from the roaring twenties.",
+        "garnish": "None",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a chilled coupe glass."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "2 oz",
+        "quantity": 1,
+        "relationship": [
+            "Whiskey Sour",
+            "Clover Club",
+            "Seabreeze"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Spirited",
+        "flavorProfile": [
+            "Citrusy",
+            "Sweet",
+            "Tart"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Spans the gap of Prohibition with a fruity flair.",
+            "Grapefruit juice lends brightness and balance.",
+            "Comes to life through shaken freshness."
+        ],
+        "ratio": "4:2:1",
+        "tagline": "A sunny escape from the Roaring Twenties.",
+        "strength": 2,
+        "estimatedCost": 3,
+        "popularity": 3,
+        "totalMixes": 160,
+        "colorHex": "#F08080"
+    },
+    {
+        "name": "Bohemian",
+        "emoji": "🎨",
+        "primarySpirit": "Vodka",
+        "origin": "USA",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Vodka"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Elderflower Liqueur"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Grapefruit Juice"
+            }
+        ],
+        "description": "The Bohemian delicately blends vodka with floral elderflower and refreshing grapefruit. A modern classic, it portrays a bohemian romanticism with each floral, aromatic sip.",
+        "garnish": "Grapefruit slice",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a chilled martini glass.",
+            "Garnish with a grapefruit slice."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "1.5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Elderflower Martini",
+            "Cucumber Cooler",
+            "French 75"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Romantic",
+        "flavorProfile": [
+            "Floral",
+            "Citrusy",
+            "Light"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Date Night",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Embraces modern floral trends.",
+            "Balances vodka's neutrality with elderflower and citrus.",
+            "Eloquent and artistic."
+        ],
+        "ratio": "3:1:1",
+        "tagline": "Artistic flair, elixir of romance.",
+        "strength": 2,
+        "estimatedCost": 4,
+        "popularity": 4,
+        "totalMixes": 200,
+        "colorHex": "#FFB6C1"
+    },
+    {
+        "name": "Bourbon Lift",
+        "emoji": "🥃",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "USA",
+        "era": "Modern Classic",
+        "style": "Fizzy",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Bourbon"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Espresso"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Coffee Liqueur"
+            },
+            {
+                "amount": "2 oz",
+                "item": "Cream"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Soda Water"
+            }
+        ],
+        "description": "Created as a creamy, spiked take on a coffee soda, the Bourbon Lift combines the rich flavors of bourbon and espresso. This drink offers a leisurely experience with a frothy texture and a kick of caffeine.",
+        "garnish": "Grated nutmeg",
+        "instructions": [
+            "Combine bourbon, espresso, and coffee liqueur in a shaker with ice.",
+            "Shake well and strain into a highball glass.",
+            "Top with cream and soda water.",
+            "Gently stir and garnish with grated nutmeg."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Irish Coffee",
+            "Black Russian",
+            "Espresso Martini"
+        ],
+        "source": "Unknown",
+        "city": "Louisville",
+        "mood": "Relaxing",
+        "flavorProfile": [
+            "Rich",
+            "Creamy",
+            "Caffeinated"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Inspired by the coffee culture boom.",
+            "The effervescence comes from soda water.",
+            "Perfectly complements sweet desserts."
+        ],
+        "ratio": "2:1:2",
+        "tagline": "A creamy, caffeinated lift with a bourbon touch.",
+        "strength": 3,
+        "estimatedCost": 4,
+        "popularity": 2,
+        "totalMixes": 2500,
+        "colorHex": "#C69A59"
+    },
+    {
+        "name": "Brazilian",
+        "emoji": "🥥",
+        "primarySpirit": "Vodka",
+        "origin": "Brazil",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Vodka"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Cachaça"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lime Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Coconut Cream"
+            }
+        ],
+        "description": "The Brazilian cocktail mixes the nation's iconic spirit, cachaça, with vodka, creating a tropical drink with a tart and creamy finish. Offering a hint of coconut, it evokes the refreshing breeze of Brazilian beaches.",
+        "garnish": "Lime wheel",
+        "instructions": [
+            "Shake all ingredients with ice in a cocktail shaker.",
+            "Strain into a chilled martini glass.",
+            "Garnish with a lime wheel."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Caipirinha",
+            "Pina Colada",
+            "Lime Daiquiri"
+        ],
+        "source": "Unknown",
+        "city": "Rio de Janeiro",
+        "mood": "Tropical",
+        "flavorProfile": [
+            "Tart",
+            "Tropical",
+            "Creamy"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "Brazil",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Marries two beloved spirits: vodka and cachaça.",
+            "Popular in Rio's vibrant cocktail bars.",
+            "Coconut cream adds a tropical flair."
+        ],
+        "ratio": "2:2:1",
+        "tagline": "A tropical escape in a glass.",
+        "strength": 3,
+        "estimatedCost": 3,
+        "popularity": 3,
+        "totalMixes": 1800,
+        "colorHex": "#E2C39B"
+    },
+    {
+        "name": "Bronx Cocktail",
+        "emoji": "🍊",
+        "primarySpirit": "Gin",
+        "origin": "USA",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Sweet Vermouth"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Dry Vermouth"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Orange Juice"
+            }
+        ],
+        "description": "Created in the early 1900s, the Bronx Cocktail offers a symphony of flavors with gin, vermouth, and orange juice. It's celebrated for its complex yet refreshing profile, capturing the opulent lifestyle of its era.",
+        "garnish": "Orange twist",
+        "instructions": [
+            "Shake all ingredients with ice and strain into a chilled martini glass.",
+            "Garnish with an orange twist."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Martini",
+            "Perfect Manhattan",
+            "Negroni"
+        ],
+        "source": "Johnnie Solon",
+        "city": "New York",
+        "mood": "Sophisticated",
+        "flavorProfile": [
+            "Citrusy",
+            "Herbal",
+            "Balanced"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Aperitif",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1900s",
+        "trivia": [
+            "Named after the Bronx Zoo.",
+            "Features in top cocktail rankings.",
+            "Was once called one of the ten best cocktails worldwide."
+        ],
+        "ratio": "3:1:1",
+        "tagline": "A journey back to the roaring 20s.",
+        "strength": 4,
+        "estimatedCost": 4,
+        "popularity": 4,
+        "totalMixes": 3600,
+        "colorHex": "#F5A623"
+    },
+    {
+        "name": "Cable Car",
+        "emoji": "🚋",
+        "primarySpirit": "Rum",
+        "origin": "USA",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Spiced Rum"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Orange Curacao"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Lemon Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Simple Syrup"
+            },
+            {
+                "amount": "1 dash",
+                "item": "Cinnamon"
+            }
+        ],
+        "description": "Crafted by Tony Abou-Ganim in San Francisco, the Cable Car is a modern twist on the classic Sidecar, infusing warm spices with sweet citrus for a sophisticated balance. Its name pays homage to the city’s iconic transport.",
+        "garnish": "Cinnamon-sugared rim",
+        "instructions": [
+            "Rim a martini glass with cinnamon sugar.",
+            "Shake all ingredients with ice and strain into the prepared glass."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Sidecar",
+            "Margarita",
+            "Daiquiri"
+        ],
+        "source": "Tony Abou-Ganim",
+        "city": "San Francisco",
+        "mood": "Celebratory",
+        "flavorProfile": [
+            "Spicy",
+            "Citrusy",
+            "Rich"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Evening",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1990s",
+        "trivia": [
+            "Inspired by San Francisco's iconic transport.",
+            "Uses spiced rum for a unique twist.",
+            "Created by a renowned mixologist."
+        ],
+        "ratio": "3:2:2",
+        "tagline": "Hop aboard for a spiced citrus ride.",
+        "strength": 4,
+        "estimatedCost": 4,
+        "popularity": 3,
+        "totalMixes": 2900,
+        "colorHex": "#E69500"
+    },
+    {
+        "name": "Cameron’s Kick",
+        "emoji": "🥃",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "Scotland",
+        "era": "Prohibition",
+        "style": "Sour",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Scotch"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Irish Whiskey"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lemon Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Orgeat Syrup"
+            }
+        ],
+        "description": "This Prohibition-era cocktail blends Scotch with Irish whiskey, creating a unique harmony melodically balanced with citrus and sweet almond. Born from the creative blendings of scarce resources in hidden bars.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Shake all ingredients with ice and strain into an ice-filled rocks glass.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 drink",
+        "quantity": 1,
+        "relationship": [
+            "Whiskey Sour",
+            "Rusty Nail",
+            "Godfather"
+        ],
+        "source": "Harry Craddock",
+        "city": "Edinburgh",
+        "mood": "Adventurous",
+        "flavorProfile": [
+            "Nutty",
+            "Citrusy",
+            "Smoky"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "Scotland",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Mixes two types of whiskey.",
+            "Appeared in the Savoy Cocktail Book.",
+            "A classic Upper East Side twist."
+        ],
+        "ratio": "2:1:1",
+        "tagline": "A dual whiskey dance with a citrus twist.",
+        "strength": 3,
+        "estimatedCost": 4,
+        "popularity": 2,
+        "totalMixes": 2300,
+        "colorHex": "#DDA15E"
+    },
+    {
+        "name": "Chicago Fizz",
+        "emoji": "🍸",
+        "primarySpirit": "Rum",
+        "origin": "United States",
+        "era": "Golden Age",
+        "style": "Fizzy",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1 1/2 oz",
+                "item": "Rum"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Ruby Port"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Lemon Juice"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Simple Syrup"
+            },
+            {
+                "amount": "1",
+                "item": "Egg White"
+            },
+            {
+                "amount": "Top",
+                "item": "Club Soda"
+            }
+        ],
+        "description": "The Chicago Fizz is a bubbly delight combining rum and port with bright citrus, loved for its creamy texture. It hails from the early 20th century, capturing the vibrancy of its namesake city.",
+        "garnish": "Lemon wheel",
+        "instructions": [
+            "Dry shake all ingredients except club soda.",
+            "Add ice and shake again.",
+            "Strain into a Highball glass over fresh ice.",
+            "Top with club soda."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "1 drink",
+        "quantity": 24,
+        "relationship": [
+            "Pisco Sour",
+            "Ramos Gin Fizz",
+            "Port Flip"
+        ],
+        "source": "Unknown",
+        "city": "Chicago",
+        "mood": "Festive",
+        "flavorProfile": [
+            "Fruity",
+            "Creamy",
+            "Effervescent"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Port adds depth and richness unusual in most fizz drinks.",
+            "It gained popularity in the early 20th century during Chicago's bustling nightlife.",
+            "The inclusion of egg white gives it a signature silky texture."
+        ],
+        "ratio": "3:1:1",
+        "tagline": "A frothy nod to Chicago's spirited nights.",
+        "strength": 6,
+        "estimatedCost": 4,
+        "popularity": 7,
+        "totalMixes": 150,
+        "colorHex": "#E0A96D"
+    },
+    {
+        "name": "Citrus Highball",
+        "emoji": "🍹",
+        "primarySpirit": "Gin",
+        "origin": "Unknown",
+        "era": "Modern Classic",
+        "style": "Highball",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1 1/2 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Citrus Juice Blend (Lemon, Lime, Orange)"
+            },
+            {
+                "amount": "Top",
+                "item": "Soda Water"
+            }
+        ],
+        "description": "The Citrus Highball is a refreshing mix of gin and a medley of citrus juices, perfect for a zesty boost. Its lightness makes it a favorite in modern cocktail culture.",
+        "garnish": "Citrus wheel",
+        "instructions": [
+            "Fill Highball glass with ice.",
+            "Add gin and citrus juice blend.",
+            "Top with soda water and stir gently."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "1 drink",
+        "quantity": 28,
+        "relationship": [
+            "Tom Collins",
+            "Gin & Tonic",
+            "Paloma"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Refreshing",
+        "flavorProfile": [
+            "Citrusy",
+            "Bright",
+            "Crisp"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Afternoon Sip",
+        "abvContent": "Low",
+        "temperature": "Cold",
+        "countryOfPopularity": "Worldwide",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Highballs are known for their simplicity and versatility.",
+            "This drink showcases gin’s compatibility with citrus.",
+            "It offers a lower alcohol content perfect for midday refreshment."
+        ],
+        "ratio": "3:2",
+        "tagline": "A sparkling citrus burst.",
+        "strength": 4,
+        "estimatedCost": 3,
+        "popularity": 8,
+        "totalMixes": 200,
+        "colorHex": "#F4D03F"
+    },
+    {
+        "name": "Colonial Cooler",
+        "emoji": "🥤",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Highball",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Pimm's No. 1"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Pineapple Juice"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Simple Syrup"
+            },
+            {
+                "amount": "Top",
+                "item": "Ginger Ale"
+            }
+        ],
+        "description": "The Colonial Cooler is a playful blend of gin and Pimm's, mingled with tropical pineapple for a laid-back feel. It's a nod to colonial-era refreshments infused with modern flair.",
+        "garnish": "Mint sprig",
+        "instructions": [
+            "Shake all ingredients except ginger ale with ice.",
+            "Strain into a Rocks glass filled with ice.",
+            "Top with ginger ale and garnish."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 drink",
+        "quantity": 22,
+        "relationship": [
+            "Pimm's Cup",
+            "Southside",
+            "Singapore Sling"
+        ],
+        "source": "Unknown",
+        "city": "Unknown",
+        "mood": "Casual",
+        "flavorProfile": [
+            "Tropical",
+            "Light",
+            "Fruity"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Outdoor Gatherings",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United Kingdom",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Combines classic British ingredients with American tastes.",
+            "Perfect for warm weather settings.",
+            "Pimm's provides a distinctive herbal note."
+        ],
+        "ratio": "1:1:1",
+        "tagline": "A colonial twist on tropical leisure.",
+        "strength": 5,
+        "estimatedCost": 3,
+        "popularity": 6,
+        "totalMixes": 120,
+        "colorHex": "#FFCB03"
+    },
+    {
+        "name": "Commodore",
+        "emoji": "🍸",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "United States",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1 1/2 oz",
+                "item": "Bourbon"
+            },
+            {
+                "amount": "3/4 oz",
+                "item": "Lime Juice"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Simple Syrup"
+            },
+            {
+                "amount": "1/4 oz",
+                "item": "Crème de Cacao"
+            }
+        ],
+        "description": "The Commodore is a rich, elegant bourbon cocktail with a touch of lime and chocolate undertones. Its history draws from a nautical heritage embodying sophistication and exploration.",
+        "garnish": "Lime twist",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Double strain into a chilled Coupe glass.",
+            "Garnish with a lime twist."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1 drink",
+        "quantity": 19,
+        "relationship": [
+            "Whiskey Sour",
+            "Old Fashioned",
+            "Manhattan"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Sophisticated",
+        "flavorProfile": [
+            "Rich",
+            "Bold",
+            "Complex"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1930s",
+        "trivia": [
+            "Crème de Cacao adds a unique chocolate note uncommon in whiskey cocktails.",
+            "Named after American naval officers' rank.",
+            "A charming autumn evening cocktail."
+        ],
+        "ratio": "3:2:1",
+        "tagline": "Sailing nightly by chocolate seas.",
+        "strength": 7,
+        "estimatedCost": 4,
+        "popularity": 7,
+        "totalMixes": 140,
+        "colorHex": "#A67C52"
+    },
+    {
+        "name": "Damn the Weather",
+        "emoji": "🌧️",
+        "primarySpirit": "Gin",
+        "origin": "United Kingdom",
+        "era": "Golden Age",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1 1/2 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "3/4 oz",
+                "item": "Sweet Vermouth"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Orange Juice"
+            },
+            {
+                "amount": "1/4 oz",
+                "item": "Orange Liqueur"
+            }
+        ],
+        "description": "Damn the Weather is a classic gin cocktail that combines sweetness with citrus, offering warmth in any situation. Its name implies a spirited defiance to gloomy days.",
+        "garnish": "Cherry",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a chilled Coupe glass.",
+            "Garnish with a cherry."
+        ],
+        "season": "Winter",
+        "recommendedAmount": "1 drink",
+        "quantity": 21,
+        "relationship": [
+            "Martinez",
+            "Negroni",
+            "Bronx Cocktail"
+        ],
+        "source": "Unknown",
+        "city": "London",
+        "mood": "Combative",
+        "flavorProfile": [
+            "Sweet",
+            "Citrusy",
+            "Warm"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Evening Relaxation",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "United Kingdom",
+        "timePeriod": "1920s",
+        "trivia": [
+            "The cocktail’s name reflects resilience against dreary weather.",
+            "Popular during the Prohibition era in speakeasies.",
+            "Sweet vermouth provides a unique sweet and herbal contrast."
+        ],
+        "ratio": "3:2:1",
+        "tagline": "Defy the forecast with a citrus embrace.",
+        "strength": 6,
+        "estimatedCost": 3,
+        "popularity": 7,
+        "totalMixes": 130,
+        "colorHex": "#D35400"
+    },
+    {
+        "name": "Diamondback",
+        "emoji": "💎",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "USA",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Double Rocks",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Apple Brandy"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Yellow Chartreuse"
+            }
+        ],
+        "description": "The Diamondback is a bold blend of rye whiskey, apple brandy, and Yellow Chartreuse, created in the 1950s. Its robust and complex flavors make it a favorite for whiskey enthusiasts.",
+        "garnish": "Cherry",
+        "instructions": [
+            "Combine all ingredients in a mixing glass with ice.",
+            "Stir gently and strain into a double rocks glass over fresh ice.",
+            "Garnish with a cherry."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "3 oz",
+        "quantity": 1,
+        "relationship": [
+            "Manhattan",
+            "Old Fashioned",
+            "Boulevardier"
+        ],
+        "source": "Baltimore's Diamondback Lounge",
+        "city": "Baltimore",
+        "mood": "Bold",
+        "flavorProfile": [
+            "Spicy",
+            "Fruity",
+            "Herbal"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1950s",
+        "trivia": [
+            "Named after a Maryland breed of terrapin.",
+            "Originally served at Baltimore's Diamondback Lounge.",
+            "Becomes mellower as it sits."
+        ],
+        "ratio": "3:1:0.67",
+        "tagline": "A spirited gem, rich and robust.",
+        "strength": 7,
+        "estimatedCost": 3,
+        "popularity": 7,
+        "totalMixes": 2000,
+        "colorHex": "#B8860B"
+    },
+    {
+        "name": "Doctor Cocktail",
+        "emoji": "🧑‍⚕️",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "USA",
+        "era": "Tiki",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "White Rum"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Swedish Punsch"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lime Juice"
+            }
+        ],
+        "description": "The Doctor Cocktail, with its tropical notes, emerged as a pre-Prohibition favorite before being revived during the Tiki era, offering a balance of citrus and smooth rum.",
+        "garnish": "Lime wheel",
+        "instructions": [
+            "Shake ingredients with ice in a cocktail shaker.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with a lime wheel."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "3 oz",
+        "quantity": 1,
+        "relationship": [
+            "Mai Tai",
+            "Daiquiri",
+            "Cable Car"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Refreshing",
+        "flavorProfile": [
+            "Citrusy",
+            "Sweet",
+            "Smooth"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1930s",
+        "trivia": [
+            "Named for its 'medicinal' qualities.",
+            "Revived during the Tiki cocktail resurgence.",
+            "Popularized by Don Beachcomber bars."
+        ],
+        "ratio": "4:1:1",
+        "tagline": "Revive your palate with a tropical twist.",
+        "strength": 6,
+        "estimatedCost": 2,
+        "popularity": 6,
+        "totalMixes": 1500,
+        "colorHex": "#FFD700"
+    },
+    {
+        "name": "East India Cocktail",
+        "emoji": "🌍",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "USA",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Cognac"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Orange Curacao"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Maraschino Liqueur"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Angostura Bitters"
+            },
+            {
+                "amount": "1 tsp",
+                "item": "Pineapple Juice"
+            }
+        ],
+        "description": "Renowned for its opulent blend of Cognac, maraschino, and bitters, the East India Cocktail traces its origins to the late 19th century, offering a taste of colonial exoticism.",
+        "garnish": "Orange twist",
+        "instructions": [
+            "Add all ingredients into a mixing glass with ice.",
+            "Stir well and strain into a chilled martini glass.",
+            "Garnish with an orange twist."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "3 oz",
+        "quantity": 1,
+        "relationship": [
+            "Sidecar",
+            "Pisco Sour",
+            "Corpse Reviver #2"
+        ],
+        "source": "Harry Johnson",
+        "city": "San Francisco",
+        "mood": "Exotic",
+        "flavorProfile": [
+            "Fruity",
+            "Complex",
+            "Bitter"
+        ],
+        "difficultyLevel": "Advanced",
+        "occasion": "Pre-dinner",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1880s",
+        "trivia": [
+            "One of the first cocktails to use maraschino liqueur.",
+            "Originally popular with British officers.",
+            "Featured in Harry Johnson's 1882 Bartenders Manual."
+        ],
+        "ratio": "6:2:1",
+        "tagline": "Experience the exotic allure of the East.",
+        "strength": 8,
+        "estimatedCost": 4,
+        "popularity": 5,
+        "totalMixes": 1000,
+        "colorHex": "#FFA500"
+    },
+    {
+        "name": "English Rose",
+        "emoji": "🌹",
+        "primarySpirit": "Gin",
+        "origin": "England",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Apricot Brandy"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Dry Vermouth"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Grenadine"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lemon Juice"
+            }
+        ],
+        "description": "The English Rose is a delicately balanced blend of gin and fruit liqueurs, introduced as a modern classic. Its floral and tangy notes make it a delightful aperitif.",
+        "garnish": "Rose petal",
+        "instructions": [
+            "Shake ingredients with ice in a cocktail shaker.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with a rose petal."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "3.5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Martini",
+            "Aviation",
+            "Pegu Club"
+        ],
+        "source": "Colin Field",
+        "city": "London",
+        "mood": "Romantic",
+        "flavorProfile": [
+            "Floral",
+            "Tangy",
+            "Bright"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Pre-dinner",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "UK",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Inspired by the botanical gardens of England.",
+            "Often served at wedding receptions.",
+            "Considered a symbol of British elegance."
+        ],
+        "ratio": "3:1:1",
+        "tagline": "A petal-soft sip of blooming elegance.",
+        "strength": 5,
+        "estimatedCost": 3,
+        "popularity": 4,
+        "totalMixes": 800,
+        "colorHex": "#FF69B4"
+    },
+    {
+        "name": "Foghorn",
+        "emoji": "📯",
+        "primarySpirit": "Gin",
+        "origin": "USA",
+        "era": "Tiki",
+        "style": "Highball",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "London Dry Gin"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lime Juice"
+            },
+            {
+                "amount": "Top with",
+                "item": "Ginger Beer"
+            }
+        ],
+        "description": "The Foghorn is a spirited gin and ginger beer highball that emerged as a refreshing option for those seeking lighter drinks during the Tiki era. It combines spicy and botanical flavors.",
+        "garnish": "Lime wedge",
+        "instructions": [
+            "Fill a highball glass with ice.",
+            "Add gin and lime juice.",
+            "Top with ginger beer and stir gently.",
+            "Garnish with a lime wedge."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Moscow Mule",
+            "Dark and Stormy",
+            "Gin and Tonic"
+        ],
+        "source": "Unknown",
+        "city": "San Francisco",
+        "mood": "Refreshing",
+        "flavorProfile": [
+            "Spicy",
+            "Botanical",
+            "Citrusy"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Anytime",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "USA",
+        "timePeriod": "1940s",
+        "trivia": [
+            "Similar to a Moscow Mule but uses gin.",
+            "Ginger beer adds a refreshing effervescence.",
+            "Popular in coastal cities."
+        ],
+        "ratio": "3:1:3",
+        "tagline": "Navigate through flavors with a botanical breeze.",
+        "strength": 4,
+        "estimatedCost": 2,
+        "popularity": 6,
+        "totalMixes": 1500,
+        "colorHex": "#FFD700"
+    },
+    {
+        "name": "Frisco",
+        "emoji": "🥃",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "United States",
+        "era": "Pre-Prohibition",
+        "style": "Spirit-Forward",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Bénédictine"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Lemon Juice"
+            }
+        ],
+        "description": "The Frisco combines the depth of rye whiskey with the complex sweetness of Bénédictine, accented by lemon juice for a balanced, spirit-forward cocktail. Popular in the early 20th century, it carries the essence of sophisticated yet approachable drinking.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Add all ingredients to a shaker with ice.",
+            "Shake well and strain into a rocks glass filled with fresh ice.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Winter",
+        "recommendedAmount": "4 oz",
+        "quantity": 1,
+        "relationship": [
+            "Manhattan",
+            "Sazerac",
+            "Old Fashioned"
+        ],
+        "source": "Unknown",
+        "city": "San Francisco",
+        "mood": "Sophisticated",
+        "flavorProfile": [
+            "Complex",
+            "Herbal",
+            "Citrus"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1900s",
+        "trivia": [
+            "Named after the city of San Francisco.",
+            "Bénédictine is a herbal liqueur made of 27 plants and spices.",
+            "Rye whiskey offers a spicier taste compared to bourbon."
+        ],
+        "ratio": "8:2:1",
+        "tagline": "A classic, robust and balanced tribute to San Francisco.",
+        "strength": 3,
+        "estimatedCost": 3,
+        "popularity": 4,
+        "totalMixes": 3000,
+        "colorHex": "#c4916e"
+    },
+    {
+        "name": "Ginger Rogers",
+        "emoji": "🍹",
+        "primarySpirit": "Gin",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Fizzy",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Lime Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Ginger Syrup"
+            },
+            {
+                "amount": "Top with",
+                "item": "Club Soda"
+            }
+        ],
+        "description": "The Ginger Rogers offers a refreshing and fizzy twist on a gin cocktail, celebrating the vivacity and elegance of its namesake. It balances the sharpness of lime and ginger with the smoothness of gin, making it a delightful sip for any occasion.",
+        "garnish": "Lime wheel",
+        "instructions": [
+            "Combine gin, lime juice, and ginger syrup in a shaker with ice.",
+            "Shake and strain into a highball glass with ice.",
+            "Top with club soda and garnish with a lime wheel."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Gin Fizz",
+            "Moscow Mule",
+            "Pimm's Cup"
+        ],
+        "source": "Unknown",
+        "city": "Los Angeles",
+        "mood": "Lively",
+        "flavorProfile": [
+            "Spicy",
+            "Refreshing",
+            "Citrus"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Inspired by the actress and dancer Ginger Rogers.",
+            "Perfect for jazz-age themed parties.",
+            "Makes use of homemade ginger syrup for added zest."
+        ],
+        "ratio": "3:1.5:1",
+        "tagline": "A zesty, fizzy tribute to the elegance of a screen legend.",
+        "strength": 2,
+        "estimatedCost": 2,
+        "popularity": 3,
+        "totalMixes": 1500,
+        "colorHex": "#b0d3c3"
+    },
+    {
+        "name": "Hibiscus Margarita",
+        "emoji": "🍹",
+        "primarySpirit": "Agave",
+        "origin": "Mexico",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Tequila Blanco"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Lime Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Hibiscus Syrup"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Orange Liqueur"
+            }
+        ],
+        "description": "The Hibiscus Margarita transforms the classic margarita with a floral twist, combining tequila, tangy lime, and sweet hibiscus syrup for a visually stunning and flavor-packed blend. It's an ideal vibrant and exotic cocktail for summer sipping.",
+        "garnish": "Hibiscus flower",
+        "instructions": [
+            "Shake all ingredients with ice in a shaker.",
+            "Strain into a coupe glass with or without ice.",
+            "Garnish with a hibiscus flower."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "4.75 oz",
+        "quantity": 1,
+        "relationship": [
+            "Margarita",
+            "Paloma",
+            "Daisy"
+        ],
+        "source": "Unknown",
+        "city": "Mexico City",
+        "mood": "Tropical",
+        "flavorProfile": [
+            "Floral",
+            "Tangy",
+            "Fruity"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Summer gatherings",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Hibiscus syrup adds a floral and tangy note.",
+            "Popular at rooftop bars in warmer climates.",
+            "Tequila connects back to its Mexican roots."
+        ],
+        "ratio": "8:4:2:1",
+        "tagline": "A floral twist on a beloved Mexican classic.",
+        "strength": 2,
+        "estimatedCost": 2.5,
+        "popularity": 4,
+        "totalMixes": 2000,
+        "colorHex": "#eb416e"
+    },
+    {
+        "name": "Honeymoon Cocktail",
+        "emoji": "🍸",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "United States",
+        "era": "Golden Age",
+        "style": "Spirit-Forward",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Apple Brandy"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Bénédictine"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Orange Curaçao"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lemon Juice"
+            }
+        ],
+        "description": "A symphony of apple brandy, Bénédictine, and orange curaçao, the Honeymoon Cocktail is a classic from the Prohibition era, offering a rich, fruity profile. It remains a sophisticated choice for those celebrating new beginnings or indulging in a luxurious evening.",
+        "garnish": "Orange slice",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a chilled martini glass.",
+            "Garnish with an orange slice."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "3.5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Sidecar",
+            "Corpse Reviver #2",
+            "Old Cuban"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Romantic",
+        "flavorProfile": [
+            "Fruity",
+            "Herbal",
+            "Citrus"
+        ],
+        "difficultyLevel": "Advanced",
+        "occasion": "Celebrations",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1920s",
+        "trivia": [
+            "A popular choice during the Prohibition era.",
+            "Often associated with newlywed celebrations.",
+            "Emphasizes the complexity of apple brandy."
+        ],
+        "ratio": "8:2:2:2",
+        "tagline": "Celebrate new beginnings with elegance and charm.",
+        "strength": 3,
+        "estimatedCost": 4,
+        "popularity": 3,
+        "totalMixes": 1800,
+        "colorHex": "#b36b4d"
+    },
+    {
+        "name": "Italian Greyhound",
+        "emoji": "🍊",
+        "primarySpirit": "Vodka",
+        "origin": "Italy",
+        "era": "Modern Classic",
+        "style": "Highball",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Vodka"
+            },
+            {
+                "amount": "1.5 oz",
+                "item": "Grapefruit Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Campari"
+            }
+        ],
+        "description": "The Italian Greyhound spices up the traditional greyhound with a splash of Campari, lending an Italian twist to the bright and refreshing mix of vodka and grapefruit. It's a modern classic perfect for aperitivo time or lazy weekends.",
+        "garnish": "Grapefruit wedge",
+        "instructions": [
+            "Fill a highball glass with ice.",
+            "Add vodka and grapefruit juice.",
+            "Float Campari on top and garnish with a grapefruit wedge."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "3.5 oz",
+        "quantity": 1,
+        "relationship": [
+            "Greyhound",
+            "Negroni",
+            "Aperol Spritz"
+        ],
+        "source": "Unknown",
+        "city": "Milan",
+        "mood": "Invigorating",
+        "flavorProfile": [
+            "Bitter",
+            "Citrus",
+            "Bold"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Aperitivo",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "Italy",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Combines the traditional Greyhound with Campari for a bitter edge.",
+            "Popular during the Venetian aperitivo hour.",
+            "Named after the sleek Greyhound cocktail but with an Italian twist."
+        ],
+        "ratio": "3:3:1",
+        "tagline": "A bitter twist on a classic greyhound, infused with Italian Flair.",
+        "strength": 2,
+        "estimatedCost": 2,
+        "popularity": 4,
+        "totalMixes": 2500,
+        "colorHex": "#f16a45"
+    },
+    {
+        "name": "Japanese Slipper",
+        "emoji": "🍈",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "Australia",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Midori"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Cointreau"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Lemon juice"
+            }
+        ],
+        "description": "The Japanese Slipper is a vibrant, green cocktail combining Midori, Cointreau, and fresh lemon juice. It offers a sweet, tangy flavor sure to please fruit lovers.",
+        "garnish": "Maraschino cherry",
+        "instructions": [
+            "Combine all ingredients in a shaker with ice.",
+            "Shake well and strain into a chilled martini glass.",
+            "Garnish with a maraschino cherry."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "1 cocktail",
+        "quantity": 1,
+        "relationship": [
+            "Midori Sour",
+            "Melon Ball",
+            "Appletini"
+        ],
+        "source": "Jean-Paul Bourguignon",
+        "city": "Melbourne",
+        "mood": "Joyful",
+        "flavorProfile": [
+            "Sweet",
+            "Fruity",
+            "Tangy"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Cocktail Party",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "Australia",
+        "timePeriod": "1980s",
+        "trivia": [
+            "Created at Mietta's Restaurant in Melbourne.",
+            "Named for its striking green color reminiscent of Japanese culture.",
+            "Often enjoyed as a dessert cocktail."
+        ],
+        "ratio": "1:1:1",
+        "tagline": "A vibrant dance of melon and citrus.",
+        "strength": 5,
+        "estimatedCost": 3,
+        "popularity": 7,
+        "totalMixes": 4,
+        "colorHex": "#98FF98"
+    },
+    {
+        "name": "Jasmine",
+        "emoji": "🌺",
+        "primarySpirit": "Gin",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1 1/2 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "1/4 oz",
+                "item": "Cointreau"
+            },
+            {
+                "amount": "1/4 oz",
+                "item": "Campari"
+            },
+            {
+                "amount": "3/4 oz",
+                "item": "Lemon juice"
+            }
+        ],
+        "description": "The Jasmine is a delightful blend of gin, Cointreau, Campari, and lemon juice, offering a tart, citrus-forward experience. Its lovely pink hue adds to its charming appeal.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Combine all ingredients in a shaker with ice.",
+            "Shake well and strain into a chilled coupe glass.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 cocktail",
+        "quantity": 1,
+        "relationship": [
+            "Negroni",
+            "Boulevardier",
+            "Pisco Sour"
+        ],
+        "source": "Paul Harrington",
+        "city": "San Francisco",
+        "mood": "Sophisticated",
+        "flavorProfile": [
+            "Citrus",
+            "Bitter",
+            "Refreshing"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Dinner Party",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1990s",
+        "trivia": [
+            "Created by bartender Paul Harrington.",
+            "Originally published in a book titled Cocktail: The Drinks Bible for the 21st Century.",
+            "Celebrated for its balance of sweetness and bitterness."
+        ],
+        "ratio": "6:1:1:3",
+        "tagline": "A rosy dance of gin and citrus.",
+        "strength": 7,
+        "estimatedCost": 4,
+        "popularity": 8,
+        "totalMixes": 5,
+        "colorHex": "#F08080"
+    },
+    {
+        "name": "London Calling",
+        "emoji": "📞",
+        "primarySpirit": "Gin",
+        "origin": "England",
+        "era": "Modern Classic",
+        "style": "Spirit-Forward",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Dry Sherry"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Lemon juice"
+            },
+            {
+                "amount": "1/4 oz",
+                "item": "Simple syrup"
+            },
+            {
+                "amount": "2 dashes",
+                "item": "Orange bitters"
+            }
+        ],
+        "description": "London Calling is a sophisticated blend of gin and dry sherry, brightened by fresh lemon and orange bitters. Its layered profile offers a smooth, spirit-forward experience.",
+        "garnish": "Lemon twist",
+        "instructions": [
+            "Combine all ingredients in a shaker with ice.",
+            "Shake well and strain into a chilled coupe glass.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Fall",
+        "recommendedAmount": "1 cocktail",
+        "quantity": 1,
+        "relationship": [
+            "Martini",
+            "Gimlet",
+            "Sherry Cobbler"
+        ],
+        "source": "Wayne Collins",
+        "city": "London",
+        "mood": "Elegant",
+        "flavorProfile": [
+            "Dry",
+            "Citrus",
+            "Smooth"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Cold",
+        "countryOfPopularity": "England",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Invented by bartender Wayne Collins in the early 2000s.",
+            "Named after the famous song by The Clash.",
+            "Celebrated for its use of dry sherry."
+        ],
+        "ratio": "2:1:1:1:0.5",
+        "tagline": "Echoes of elegance in every sip.",
+        "strength": 7,
+        "estimatedCost": 4,
+        "popularity": 8,
+        "totalMixes": 3,
+        "colorHex": "#FFD700"
+    },
+    {
+        "name": "Mission Bell",
+        "emoji": "🔔",
+        "primarySpirit": "Vodka",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1 1/2 oz",
+                "item": "Vodka"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Lemon juice"
+            },
+            {
+                "amount": "1/2 oz",
+                "item": "Elderflower liqueur"
+            },
+            {
+                "amount": "1/4 oz",
+                "item": "Simple syrup"
+            }
+        ],
+        "description": "Mission Bell rings in floral sweetness and vodka smoothness, supported by bright lemon and a touch of elderflower. A beloved choice for cocktail enthusiasts.",
+        "garnish": "Edible flower",
+        "instructions": [
+            "Shake all ingredients with ice.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with an edible flower."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "1 cocktail",
+        "quantity": 1,
+        "relationship": [
+            "Lemon Drop",
+            "Cosmopolitan",
+            "White Lady"
+        ],
+        "source": "Unknown",
+        "city": "Los Angeles",
+        "mood": "Refreshing",
+        "flavorProfile": [
+            "Floral",
+            "Citrus",
+            "Light"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Brunch",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Often compared to the Lemon Drop.",
+            "Popular in California's cocktail bars.",
+            "Elderflower adds a unique twist."
+        ],
+        "ratio": "3:2:1:0.5",
+        "tagline": "A bell rings with floral and citrus highlights.",
+        "strength": 6,
+        "estimatedCost": 3,
+        "popularity": 7,
+        "totalMixes": 4,
+        "colorHex": "#DDA0DD"
+    },
+    {
+        "name": "Norwegian Paralysis",
+        "emoji": "🛏",
+        "primarySpirit": "Rum",
+        "origin": "Norway",
+        "era": "Modern Classic",
+        "style": "Highball",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Light rum"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Dark rum"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Coconut cream"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Pineapple juice"
+            }
+        ],
+        "description": "The Norwegian Paralysis offers a tropical escape with a blend of coconut cream, pineapple juice, and both light and dark rums. Its creamy, sweet flavor is a hit at any beachside gathering.",
+        "garnish": "Pineapple slice",
+        "instructions": [
+            "Add all ingredients to a blender with ice.",
+            "Blend until smooth and pour into a highball glass.",
+            "Garnish with a pineapple slice."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "1 cocktail",
+        "quantity": 1,
+        "relationship": [
+            "Pina Colada",
+            "Painkiller",
+            "Bahama Mama"
+        ],
+        "source": "Unknown",
+        "city": "Oslo",
+        "mood": "Relaxed",
+        "flavorProfile": [
+            "Coconut",
+            "Tropical",
+            "Sweet"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Beach Party",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "Norway",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Rumored to have been invented in Oslo nightclubs.",
+            "Combines tropical flavors with a Nordic twist.",
+            "Named for its relaxing, laid-back vibe."
+        ],
+        "ratio": "1:1:1:1",
+        "tagline": "A creamy tropical voyage.",
+        "strength": 5,
+        "estimatedCost": 4,
+        "popularity": 6,
+        "totalMixes": 5,
+        "colorHex": "#FFE4C4"
+    },
+    {
+        "name": "Paradise Lost",
+        "emoji": "🌅",
+        "primarySpirit": "Gin",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Spirit-Forward",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Aperol"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Passion fruit juice"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Lime juice"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Simple syrup"
+            }
+        ],
+        "description": "The Paradise Lost captures the tropical allure with a modern twist, combining the exotic flavor of passion fruit with the gentle bitterness of Aperol. This cocktail delivers a smooth and elegant experience reminiscent of a sunset at sea.",
+        "garnish": "Lime wheel",
+        "instructions": [
+            "Add all ingredients to a shaker filled with ice.",
+            "Shake well until chilled.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with a lime wheel."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "Single",
+        "quantity": 1,
+        "relationship": [
+            "Paradise",
+            "Aviation",
+            "Last Word"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Relaxed",
+        "flavorProfile": [
+            "Tropical",
+            "Citrusy",
+            "Bittersweet"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Evening",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "2000s",
+        "trivia": [
+            "Inspired by the beauty of tropical sunsets.",
+            "Designed to be visually captivating with its orange hue.",
+            "Combines modern and classic cocktail ingredients."
+        ],
+        "ratio": "3:1:1:1",
+        "tagline": "Tropical elegance in every sip.",
+        "strength": 3,
+        "estimatedCost": 2,
+        "popularity": 5,
+        "totalMixes": 1,
+        "colorHex": "#ffa07a"
+    },
+    {
+        "name": "Porto Flip",
+        "emoji": "🍷",
+        "primarySpirit": "Liqueur & Other",
+        "origin": "Portugal",
+        "era": "Golden Age",
+        "style": "Dessert",
+        "glass": "Martini",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "Port wine"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Brandy"
+            },
+            {
+                "amount": "1",
+                "item": "Egg yolk"
+            },
+            {
+                "amount": "1 tsp",
+                "item": "Simple syrup"
+            }
+        ],
+        "description": "Rich and velvety, the Porto Flip marries the deep flavors of port and brandy with the creamy texture of an egg yolk. This classic dessert cocktail is a luxurious treat that adds warmth to any evening.",
+        "garnish": "Grated nutmeg",
+        "instructions": [
+            "Add port, brandy, egg yolk, and simple syrup to a shaker without ice.",
+            "Dry shake to emulsify the egg.",
+            "Add ice and shake again until chilled.",
+            "Strain into a chilled martini glass.",
+            "Garnish with grated nutmeg."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "Single",
+        "quantity": 1,
+        "relationship": [
+            "Brandy Alexander",
+            "Eggnog",
+            "Ramos Gin Fizz"
+        ],
+        "source": "Jerry Thomas",
+        "city": "Lisbon",
+        "mood": "Indulgent",
+        "flavorProfile": [
+            "Rich",
+            "Smooth",
+            "Sweet"
+        ],
+        "difficultyLevel": "Advanced",
+        "occasion": "Digestif",
+        "abvContent": "High",
+        "temperature": "Room Temp",
+        "countryOfPopularity": "Portugal",
+        "timePeriod": "1870s",
+        "trivia": [
+            "Created by legendary bartender Jerry Thomas.",
+            "Originally used ruby port for its sweetness.",
+            "Commonly enjoyed as an after-dinner drink."
+        ],
+        "ratio": "2:1:1",
+        "tagline": "A decadent symphony of smooth flavors.",
+        "strength": 4,
+        "estimatedCost": 3,
+        "popularity": 4,
+        "totalMixes": 1,
+        "colorHex": "#663300"
+    },
+    {
+        "name": "Rosarita",
+        "emoji": "🌹",
+        "primarySpirit": "Agave",
+        "origin": "Mexico",
+        "era": "Modern Classic",
+        "style": "Sour",
+        "glass": "Rocks",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Tequila Blanco"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Lime juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Rose syrup"
+            },
+            {
+                "amount": "0.25 oz",
+                "item": "Orange liqueur"
+            }
+        ],
+        "description": "The Rosarita cocktail blends the classic zing of tequila with the delicate sweetness of rose, offering a fresh and floral twist. This modern creation enchants the senses, perfect for a romantic evening.",
+        "garnish": "Rose petal",
+        "instructions": [
+            "Add all ingredients to a shaker filled with ice.",
+            "Shake until chilled.",
+            "Strain over fresh ice in a rocks glass.",
+            "Garnish with a rose petal."
+        ],
+        "season": "Spring",
+        "recommendedAmount": "Single",
+        "quantity": 1,
+        "relationship": [
+            "Margarita",
+            "Paloma",
+            "Tequila Sunrise"
+        ],
+        "source": "Unknown",
+        "city": "Mexico City",
+        "mood": "Romantic",
+        "flavorProfile": [
+            "Floral",
+            "Citrusy",
+            "Sweet"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Date Night",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "Mexico",
+        "timePeriod": "2010s",
+        "trivia": [
+            "Inspired by traditional Mexican floral flavors.",
+            "Rose syrup infuses a fragrant sweetness.",
+            "Designed for springtime enjoyment."
+        ],
+        "ratio": "8:2:2:1",
+        "tagline": "A bouquet of flavor in every sip.",
+        "strength": 3,
+        "estimatedCost": 2,
+        "popularity": 4,
+        "totalMixes": 1,
+        "colorHex": "#ff69b4"
+    },
+    {
+        "name": "Sloe Gin Fizz",
+        "emoji": "🍋",
+        "primarySpirit": "Gin",
+        "origin": "United Kingdom",
+        "era": "Golden Age",
+        "style": "Fizzy",
+        "glass": "Highball",
+        "ingredients": [
+            {
+                "amount": "1.5 oz",
+                "item": "Sloe gin"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Gin"
+            },
+            {
+                "amount": "0.75 oz",
+                "item": "Lemon juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Simple syrup"
+            },
+            {
+                "amount": "Club soda",
+                "item": "Top"
+            }
+        ],
+        "description": "Bubbly and refreshing, the Sloe Gin Fizz combines the sweet, berry flavors of sloe gin with a tart citrus twist and effervescent finish. This iconic cocktail captures the playful spirit of summer in a glass.",
+        "garnish": "Lemon wheel",
+        "instructions": [
+            "Add sloe gin, gin, lemon juice, and simple syrup to a shaker with ice.",
+            "Shake well and strain into a highball glass filled with ice.",
+            "Top with club soda and stir gently.",
+            "Garnish with a lemon wheel."
+        ],
+        "season": "Summer",
+        "recommendedAmount": "Single",
+        "quantity": 1,
+        "relationship": [
+            "Tom Collins",
+            "Gin Fizz",
+            "Ramos Gin Fizz"
+        ],
+        "source": "Unknown",
+        "city": "London",
+        "mood": "Playful",
+        "flavorProfile": [
+            "Fruity",
+            "Refreshing",
+            "Tangy"
+        ],
+        "difficultyLevel": "Beginner",
+        "occasion": "Picnic",
+        "abvContent": "Low",
+        "temperature": "Cold",
+        "countryOfPopularity": "United Kingdom",
+        "timePeriod": "1890s",
+        "trivia": [
+            "Sloe gin is made from sloe berries, a type of wild plum.",
+            "Fizzes became popular as a lighter alternative during temperance movements.",
+            "Traditional English country drink ingredient."
+        ],
+        "ratio": "3:1:1:1",
+        "tagline": "Bubbly berry bliss.",
+        "strength": 2,
+        "estimatedCost": 2,
+        "popularity": 5,
+        "totalMixes": 1,
+        "colorHex": "#f0e68c"
+    },
+    {
+        "name": "Spanish Coffee",
+        "emoji": "☕",
+        "primarySpirit": "Rum",
+        "origin": "United States",
+        "era": "Modern Classic",
+        "style": "Dessert",
+        "glass": "Mug",
+        "ingredients": [
+            {
+                "amount": "1 oz",
+                "item": "151-proof rum"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Coffee liqueur"
+            },
+            {
+                "amount": "3 oz",
+                "item": "Hot coffee"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Triple sec"
+            },
+            {
+                "amount": "Whipped cream",
+                "item": "Topping"
+            }
+        ],
+        "description": "The Spanish Coffee is a flamboyant spectacle, both visually and in flavor, combining rich coffee with sweet and spiced notes. Often served with a caramelized sugar rim, it's a firm winter favorite.",
+        "garnish": "Caramelized sugar rim",
+        "instructions": [
+            "Rim a mug with sugar and caramelize using a torch.",
+            "Add rum, coffee liqueur, and triple sec to the mug.",
+            "Pour in hot coffee, and stir to combine.",
+            "Top with whipped cream."
+        ],
+        "season": "Winter",
+        "recommendedAmount": "Single",
+        "quantity": 1,
+        "relationship": [
+            "Irish Coffee",
+            "Mexican Coffee",
+            "Black Russian"
+        ],
+        "source": "Hubbard Inn",
+        "city": "Portland",
+        "mood": "Cozy",
+        "flavorProfile": [
+            "Rich",
+            "Warm",
+            "Spicy"
+        ],
+        "difficultyLevel": "Advanced",
+        "occasion": "Nightcap",
+        "abvContent": "High",
+        "temperature": "Hot",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1980s",
+        "trivia": [
+            "Spanish Coffee is often flambéed for visual effect.",
+            "Hubbard Inn popularized it in the Pacific Northwest.",
+            "Combines influences from Irish and Mexican coffee cocktails."
+        ],
+        "ratio": "2:1:1:6",
+        "tagline": "Ignite your senses with a fiery delight.",
+        "strength": 4,
+        "estimatedCost": 3,
+        "popularity": 5,
+        "totalMixes": 1,
+        "colorHex": "#8B4513"
+    },
+    {
+        "name": "The Blinker",
+        "emoji": "🍹",
+        "primarySpirit": "Whiskey & Bourbon",
+        "origin": "United States",
+        "era": "Prohibition",
+        "style": "Sour",
+        "glass": "Coupe",
+        "ingredients": [
+            {
+                "amount": "2 oz",
+                "item": "Rye Whiskey"
+            },
+            {
+                "amount": "1 oz",
+                "item": "Grapefruit Juice"
+            },
+            {
+                "amount": "0.5 oz",
+                "item": "Raspberry Syrup"
+            }
+        ],
+        "description": "The Blinker is a refreshing blend of rye whiskey, grapefruit juice, and raspberry syrup, known for its balanced blend of tart and sweet flavors. Though its origins trace back to the Prohibition era, modern variations amplify its raspberry notes, creating a cocktail with a sharp, crisp finish.",
+        "garnish": "Lemon Twist",
+        "instructions": [
+            "Add all ingredients into a shaker filled with ice.",
+            "Shake vigorously until well chilled.",
+            "Strain into a chilled coupe glass.",
+            "Garnish with a lemon twist."
+        ],
+        "season": "Year-Round",
+        "recommendedAmount": "2 drinks",
+        "quantity": 1,
+        "relationship": [
+            "Whiskey Sour",
+            "Boulevardier",
+            "Paloma"
+        ],
+        "source": "Unknown",
+        "city": "New York",
+        "mood": "Refreshing",
+        "flavorProfile": [
+            "Tart",
+            "Sweet",
+            "Fruity"
+        ],
+        "difficultyLevel": "Intermediate",
+        "occasion": "Nightcap",
+        "abvContent": "Medium",
+        "temperature": "Cold",
+        "countryOfPopularity": "United States",
+        "timePeriod": "1920s",
+        "trivia": [
+            "Originally a Prohibition era drink, popularized in modern times.",
+            "Its recipe was first published in Patrick Gavin Duffy’s 1934 \"The Official Mixer’s Manual.\"",
+            "Modern variations often use raspberry syrup for a sweeter flavor."
+        ],
+        "ratio": "4:2:1",
+        "tagline": "A Prohibition classic reborn with a fruity twist.",
+        "strength": 7.5,
+        "estimatedCost": 4,
+        "popularity": 6.8,
+        "totalMixes": 4,
+        "colorHex": "#D4999B"
     }
 ];
