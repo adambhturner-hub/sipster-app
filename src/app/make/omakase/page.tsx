@@ -57,32 +57,57 @@ export default function OmakasePage() {
         if (!user || !omakaseRecipe) return;
         setIsSaving(true);
         try {
-            const customCocktailsRef = collection(db, 'users', user.uid, 'custom_cocktails');
-
-            // Format for Sipster
-            const cocktailToSave = {
-                name: omakaseRecipe.name,
-                description: omakaseRecipe.backstory,
+            const cocktailData = {
+                name: omakaseRecipe.name || 'Omakase Special',
+                description: omakaseRecipe.backstory || 'A custom omakase creation.',
+                emoji: '✨',
+                glass: omakaseRecipe.glass || 'Cocktail',
+                style: 'Omakase',
+                era: 'Modern',
+                primarySpirit: omakaseRecipe.ingredients[0]?.item || "Unknown",
                 ingredients: omakaseRecipe.ingredients,
                 instructions: omakaseRecipe.instructions,
-                garnish: omakaseRecipe.garnish,
-                glassType: omakaseRecipe.glass,
-                iceType: omakaseRecipe.ice,
-                flavorProfile: omakaseRecipe.flavorProfile,
-                color: omakaseRecipe.color,
-                isCustom: true,
-                flavorScore: 0,
-                complexity: 3,
-                baseSpirit: omakaseRecipe.ingredients[0]?.item || "Unknown",
-                createdAt: serverTimestamp(),
-                omakaseGenerated: true
+                garnish: omakaseRecipe.garnish || 'None',
+                flavorProfile: omakaseRecipe.flavorProfile || [],
+                colorHex: omakaseRecipe.color || '#3b82f6',
+                origin: 'Omakase Mode',
+                city: 'Unknown',
+                source: 'Sipster AI',
+                timePeriod: 'Present',
+                countryOfPopularity: 'Worldwide',
+                season: 'Year-Round',
+                recommendedAmount: '1 Drink',
+                quantity: 1,
+                mood: 'Adventurous',
+                difficultyLevel: 'Intermediate',
+                occasion: 'Omakase Experience',
+                abvContent: 'Medium',
+                temperature: 'Cold',
+                trivia: [],
+                ratio: 'Custom',
+                tagline: 'Trust the bartender.',
+                strength: 5,
+                estimatedCost: 3,
+                relationship: []
             };
 
-            const docRef = await addDoc(customCocktailsRef, cocktailToSave);
-            toast.success(`Saved ${omakaseRecipe.name} to your custom creations!`);
+            const favoriteData = {
+                uid: user.uid,
+                authorName: user.displayName || 'Anonymous Mixologist',
+                type: 'custom_full',
+                cocktailData,
+                isPublic: false,
+                isFavorite: true,
+                isWantToTry: false,
+                isTried: false,
+                createdAt: new Date().toISOString()
+            };
 
-            // Redirect to the custom cocktail view (assuming standard route exists, or just back to Custom Bar list)
-            router.push(`/custom-cocktails/${docRef.id}`);
+            const docRef = await addDoc(collection(db, 'favorites'), favoriteData);
+            toast.success(`Saved ${omakaseRecipe.name} to your Tasting Journal!`);
+
+            // Optional: redirect to custom recipe viewer
+            router.push(`/recipe/${docRef.id}`);
 
         } catch (error: any) {
             console.error('Error saving Omakase recipe:', error);

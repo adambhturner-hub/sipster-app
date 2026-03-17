@@ -389,6 +389,9 @@ export default function CreateCocktailPage() {
                 type: 'custom_full',
                 cocktailData,
                 isPublic,
+                isFavorite: true,
+                isWantToTry: false,
+                isTried: false,
                 createdAt: new Date().toISOString()
             };
 

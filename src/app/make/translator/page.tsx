@@ -141,11 +141,14 @@ export default function MenuTranslatorPage() {
                 type: 'custom_full',
                 cocktailData,
                 isPublic: false,
+                isFavorite: true,
+                isWantToTry: false,
+                isTried: false,
                 createdAt: new Date().toISOString()
             };
 
             const docRef = await addDoc(collection(db, 'favorites'), favoriteData);
-            toast.success(`Saved! View in Creator Studio.`, { id: toastId });
+            toast.success(`Saved! View in Tasting Journal.`, { id: toastId });
 
         } catch (error: any) {
             console.error("Error saving translated recipe:", error);
