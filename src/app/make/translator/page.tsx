@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 import DynamicGlass from '@/components/DynamicGlass';
+import { db } from '@/lib/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 
 export interface TranslatedCocktail {
     name: string;
@@ -94,9 +96,6 @@ export default function MenuTranslatorPage() {
         const toastId = toast.loading("Saving to your recipes...");
 
         try {
-            const { db } = await import('@/lib/firebase');
-            const { collection, addDoc } = await import('firebase/firestore');
-
             const cocktailData = {
                 name: drink.name || 'Unknown',
                 description: drink.menuDescription || 'Scanned from a menu.',
@@ -148,9 +147,9 @@ export default function MenuTranslatorPage() {
             const docRef = await addDoc(collection(db, 'favorites'), favoriteData);
             toast.success(`Saved! View in Creator Studio.`, { id: toastId });
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error saving translated recipe:", error);
-            toast.error("Failed to save recipe.", { id: toastId });
+            toast.error(`Failed to save: ${error?.message || 'Unknown Error'}`, { id: toastId });
         }
     };
 
