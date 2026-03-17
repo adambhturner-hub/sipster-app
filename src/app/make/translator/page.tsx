@@ -95,38 +95,59 @@ export default function MenuTranslatorPage() {
 
         try {
             const { db } = await import('@/lib/firebase');
-            const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+            const { collection, addDoc } = await import('firebase/firestore');
 
-            const newCocktail = {
-                name: drink.name,
-                description: drink.menuDescription,
+            const cocktailData = {
+                name: drink.name || 'Unknown',
+                description: drink.menuDescription || 'Scanned from a menu.',
                 emoji: '🥂',
-                glassType: drink.glassType || 'Cocktail',
+                glass: drink.glassType || 'Cocktail',
                 style: 'Menu Scan',
-                era: 'Modern',
-                baseSpirit: 'Unknown',
+                era: 'Modern Classic',
+                primarySpirit: 'Unknown',
                 ingredients: drink.estimatedRecipe.ingredients.map(ing => {
                     const parts = ing.split(' ');
-                    const amount = parts.slice(0, 2).join(' '); // Rough parsing attempt
-                    const item = parts.slice(2).join(' ');
-                    return { item: item || ing, amount: amount || 'taste', unit: 'oz' }
+                    const amount = parts.slice(0, 2).join(' ') || 'taste';
+                    const item = parts.slice(2).join(' ') || ing;
+                    return { item, amount, unit: 'oz' }
                 }),
-                instructions: drink.estimatedRecipe.instructions,
-                flavorProfile: [drink.verdict.split(' ')[0] || 'Custom', drink.verdict.split(' ')[1] || 'Menu Scan'],
+                instructions: drink.estimatedRecipe.instructions || [],
+                flavorProfile: [drink.verdict.split(' ')[0] || 'Custom', drink.verdict.split(' ')[1] || 'Menu'],
                 estimatedCost: 3,
                 relationship: [],
-                authorUid: user.uid,
-                uid: user.uid,
-                color: drink.color || '#3b82f6',
-                isCustom: true,
-                flavorScore: drink.matchScore,
-                createdAt: serverTimestamp(),
+                colorHex: drink.color || '#3b82f6',
+                origin: 'Menu Scanner',
+                city: 'Unknown',
+                source: 'Menu Scanner',
+                timePeriod: 'Modern',
+                countryOfPopularity: 'Worldwide',
+                garnish: 'None',
+                season: 'Year-Round',
+                recommendedAmount: '1 Drink',
+                quantity: 1,
+                mood: 'Curious',
+                difficultyLevel: 'Intermediate',
+                occasion: 'Outing',
+                abvContent: 'Medium',
+                temperature: 'Cold',
+                trivia: [],
+                ratio: 'Custom',
+                tagline: 'Scanned from the wild.',
+                strength: 5
             };
 
-            const docRef = await addDoc(collection(db, 'users', user.uid, 'custom_cocktails'), newCocktail);
+            const favoriteData = {
+                uid: user.uid,
+                authorName: user.displayName || 'Anonymous Mixologist',
+                type: 'custom_full',
+                cocktailData,
+                isPublic: false,
+                createdAt: new Date().toISOString()
+            };
+
+            const docRef = await addDoc(collection(db, 'favorites'), favoriteData);
             toast.success(`Saved! View in Creator Studio.`, { id: toastId });
 
-            // Optional: immediately redirect them, or just let them stay on the page
         } catch (error) {
             console.error("Error saving translated recipe:", error);
             toast.error("Failed to save recipe.", { id: toastId });
