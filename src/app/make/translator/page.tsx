@@ -141,8 +141,8 @@ export default function MenuTranslatorPage() {
                 type: 'custom_full',
                 cocktailData,
                 isPublic: false,
-                isFavorite: true,
-                isWantToTry: false,
+                isFavorite: false,
+                isWantToTry: true,
                 isTried: false,
                 createdAt: new Date().toISOString()
             };
