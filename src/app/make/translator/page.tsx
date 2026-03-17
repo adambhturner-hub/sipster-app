@@ -95,16 +95,16 @@ export default function MenuTranslatorPage() {
 
         try {
             const { db } = await import('@/lib/firebase');
-            const { collection, addDoc } = await import('firebase/firestore');
+            const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
 
             const newCocktail = {
                 name: drink.name,
                 description: drink.menuDescription,
                 emoji: '🥂',
-                glass: 'Cocktail',
+                glassType: drink.glassType || 'Cocktail',
                 style: 'Menu Scan',
                 era: 'Modern',
-                primarySpirit: 'Unknown',
+                baseSpirit: 'Unknown',
                 ingredients: drink.estimatedRecipe.ingredients.map(ing => {
                     const parts = ing.split(' ');
                     const amount = parts.slice(0, 2).join(' '); // Rough parsing attempt
@@ -112,15 +112,19 @@ export default function MenuTranslatorPage() {
                     return { item: item || ing, amount: amount || 'taste', unit: 'oz' }
                 }),
                 instructions: drink.estimatedRecipe.instructions,
-                flavorProfile: [drink.verdict.split(' ')[0], drink.verdict.split(' ')[1]],
+                flavorProfile: [drink.verdict.split(' ')[0] || 'Custom', drink.verdict.split(' ')[1] || 'Menu Scan'],
                 estimatedCost: 3,
                 relationship: [],
+                authorUid: user.uid,
                 uid: user.uid,
-                createdAt: new Date().toISOString()
+                color: drink.color || '#3b82f6',
+                isCustom: true,
+                flavorScore: drink.matchScore,
+                createdAt: serverTimestamp(),
             };
 
-            const docRef = await addDoc(collection(db, 'custom_cocktails'), newCocktail);
-            toast.success(`Saved! View in Create.`, { id: toastId });
+            const docRef = await addDoc(collection(db, 'users', user.uid, 'custom_cocktails'), newCocktail);
+            toast.success(`Saved! View in Creator Studio.`, { id: toastId });
 
             // Optional: immediately redirect them, or just let them stay on the page
         } catch (error) {
