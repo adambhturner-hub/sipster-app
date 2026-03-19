@@ -258,11 +258,11 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                 )}
 
                 {/* Expanded Menu Options */}
-                <div className={`flex items-center gap-1 transition-all duration-300 ${isExpanded ? 'opacity-100 px-1' : 'opacity-0 w-0 pointer-events-none'}`}>
+                <div className={`flex items-center gap-2 transition-all duration-300 ${isExpanded ? 'opacity-100 px-2' : 'opacity-0 w-0 pointer-events-none'}`}>
                     <button
                         onClick={(e) => toggleInteraction('isFavorite', e)}
                         disabled={isSaving || loading}
-                        title="Favorite"
+                        title="Favorite - Your all-time keepers"
                         className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${interactions.isFavorite
                             ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] border border-[var(--color-neon-pink)]/50 shadow-[0_0_10px_rgba(255,0,127,0.3)]'
                             : 'text-gray-500 hover:text-white hover:bg-gray-800/50'
@@ -274,7 +274,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                     <button
                         onClick={(e) => toggleInteraction('isWantToTry', e)}
                         disabled={isSaving || loading}
-                        title="On Deck"
+                        title="On Deck - Queued for your next round"
                         className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${interactions.isWantToTry
                             ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50 shadow-[0_0_10px_rgba(59,130,246,0.3)]'
                             : 'text-gray-500 hover:text-white hover:bg-gray-800/50'
@@ -286,7 +286,7 @@ export default function FavoriteButton({ cocktailId, cocktailName, compact = fal
                     <button
                         onClick={(e) => toggleInteraction('isTried', e)}
                         disabled={isSaving || loading}
-                        title="On My Tab"
+                        title="On My Tab - What you’ve actually tried"
                         className={`flex items-center justify-center rounded-full transition-all duration-300 font-sans font-bold text-sm min-h-[40px] min-w-[40px] ${interactions.isTried
                             ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
                             : 'text-gray-500 hover:text-white hover:bg-gray-800/50'

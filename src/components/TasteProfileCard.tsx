@@ -5,6 +5,7 @@ import { useAuth, TasteProfile } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 import { getClassicCocktails } from '@/lib/dataFetchers';
 import { Cocktail } from '@/data/cocktails';
 
@@ -122,13 +123,29 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
                             "{tasteProfile.description}"
                         </p>
 
-                        <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                        <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
                             <span className="text-xs font-bold tracking-widest uppercase text-gray-500 flex items-center mr-2">Top Flavors:</span>
                             {tasteProfile.topFlavors.map((flavor, idx) => (
                                 <span key={idx} className="bg-purple-500/10 text-purple-300 border border-purple-500/20 px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide">
                                     {flavor}
                                 </span>
                             ))}
+                        </div>
+
+                        <div className="flex flex-wrap justify-center md:justify-start gap-4">
+                            <button
+                                onClick={runAnalysis}
+                                disabled={isAnalyzing || !canAnalyze}
+                                className="px-5 py-2.5 bg-gray-900 border border-gray-700 hover:border-purple-500/50 rounded-full text-sm font-bold text-gray-300 hover:text-white transition-all flex items-center gap-2 shadow-lg disabled:opacity-50"
+                            >
+                                {isAnalyzing ? '🔄 Analyzing...' : '🔄 Recalibrate Profile'}
+                            </button>
+                            <Link 
+                                href={`/discover`} 
+                                className="px-5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-full text-sm font-bold text-purple-300 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+                            >
+                                🔍 Find Matching Drinks
+                            </Link>
                         </div>
                     </div>
                 </div>

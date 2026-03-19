@@ -23,6 +23,7 @@ interface CocktailCardProps {
     userRating?: number;
     userNotes?: string;
     userPhotoUrl?: string;
+    interactionDate?: string;
     showReviewPrompt?: boolean;
     authorName?: string;
     authorUid?: string;
@@ -42,6 +43,7 @@ export default function CocktailCard({
     userRating,
     userNotes,
     userPhotoUrl,
+    interactionDate,
     showReviewPrompt,
     authorName,
     authorUid
@@ -295,6 +297,32 @@ export default function CocktailCard({
                 </div>
             </div>
 
+            {/* Personal Journal Info Surface */}
+            {(userRating || (userNotes && userNotes.trim().length > 0)) && (
+                <div className="mb-4 bg-gray-950/70 border border-[var(--primary)]/20 rounded-xl p-3 shadow-inner relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)]/5 to-transparent pointer-events-none" />
+                    <div className="relative z-10 flex flex-col gap-1.5">
+                        <div className="flex justify-between items-center">
+                            {userRating && (
+                                <div className="flex items-center gap-1 text-[var(--primary)] font-bold text-sm bg-[var(--primary)]/10 px-2 py-0.5 rounded-md border border-[var(--primary)]/20 shadow-inner">
+                                    <span>★</span> {userRating.toFixed(1)}
+                                </div>
+                            )}
+                            {interactionDate && (
+                                <span className="text-[10px] text-gray-500 font-mono tracking-widest uppercase">
+                                    Logged {new Date(interactionDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                                </span>
+                            )}
+                        </div>
+                        {userNotes && (
+                            <div className="pt-1">
+                                <p className="text-gray-300 text-xs italic line-clamp-2 leading-relaxed">&ldquo;{userNotes}&rdquo;</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             <div className="flex flex-wrap gap-2 mb-4">
                 <span className="px-2 py-1 bg-gray-950 border border-gray-800 text-gray-400 text-[10px] uppercase font-bold tracking-wider rounded-md">
                     {cocktail.primarySpirit}
@@ -376,35 +404,13 @@ export default function CocktailCard({
             </div>
 
             {/* Review Prompt or Display */}
-            {(showReviewPrompt && (userRating || !isExporting)) && (
+            {(showReviewPrompt && !userRating && !isExporting) && (
                 <div className="mt-6 pt-4 border-t border-gray-800 relative z-20">
-                    {userRating ? (
-                        <div className="bg-black/30 rounded-xl p-3 border border-yellow-500/20 shadow-inner flex gap-3 items-start">
-                            {userPhotoUrl && (
-                                <div className="w-12 h-12 rounded-lg overflow-hidden border border-yellow-500/30 flex-shrink-0 relative">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={userPhotoUrl} alt="Tasting Photo" crossOrigin="anonymous" className="w-full h-full object-cover" />
-                                </div>
-                            )}
-                            <div className="flex-1">
-                                <div className="flex items-center gap-1 mb-1 text-sm text-yellow-500">
-                                    <span className="font-bold">{userRating.toFixed(1)}</span>
-                                    <span>★</span>
-                                </div>
-                                {userNotes ? (
-                                    <p className="text-gray-400 text-xs italic line-clamp-2">&quot;{userNotes}&quot;</p>
-                                ) : (
-                                    <p className="text-gray-600 text-xs italic">Logged without notes.</p>
-                                )}
-                            </div>
-                        </div>
-                    ) : (
-                        <Link href={`${href}#review`} className="w-full flex items-center justify-center gap-2 py-3 min-h-[44px] rounded-xl bg-gray-800 text-gray-300 text-sm font-bold tracking-wider border border-gray-700 shadow-lg group-hover/card:bg-[var(--primary)] group-hover/card:text-white group-hover/card:border-[var(--primary)] transition-all pointer-events-auto cursor-pointer relative z-20">
-                            <span>⭐</span>
-                            Leave a Review
-                            <span className="group-hover/card:translate-x-1 transition-transform">&rarr;</span>
-                        </Link>
-                    )}
+                    <Link href={`${href}#review`} className="w-full flex items-center justify-center gap-2 py-3 min-h-[44px] rounded-xl bg-gray-800 text-gray-300 text-sm font-bold tracking-wider border border-gray-700 shadow-lg group-hover/card:bg-[var(--primary)] group-hover/card:text-white group-hover/card:border-[var(--primary)] transition-all pointer-events-auto cursor-pointer relative z-20">
+                        <span>⭐</span>
+                        Leave a Review
+                        <span className="group-hover/card:translate-x-1 transition-transform">&rarr;</span>
+                    </Link>
                 </div>
             )}
 

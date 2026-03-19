@@ -22,6 +22,7 @@ interface InteractionRecord {
     imageUrl?: string | null;
     cocktailData?: any;
     createdAt: string;
+    updatedAt?: string;
     isFavorite?: boolean;
     isWantToTry?: boolean;
     isTried?: boolean;
@@ -31,7 +32,7 @@ interface InteractionRecord {
 }
 
 export default function JournalPage() {
-    const { user, loading: authLoading, openLoginModal, badges } = useAuth();
+    const { user, loading: authLoading, openLoginModal, badges, tasteProfile } = useAuth();
     const [interactions, setInteractions] = useState<InteractionRecord[]>([]);
     const [myBar, setMyBar] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +40,7 @@ export default function JournalPage() {
 
     // Tab state
     const [activeTab, setActiveTab] = useState<'favorites' | 'wantToTry' | 'triedIt'>('favorites');
+    const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
 
     useEffect(() => {
         const fetchInteractions = async () => {
@@ -71,7 +73,8 @@ export default function JournalPage() {
                         isTried: !!data.isTried,
                         rating: data.rating,
                         notes: data.notes,
-                        personalPhotoUrl: data.personalPhotoUrl
+                        personalPhotoUrl: data.personalPhotoUrl,
+                        updatedAt: data.updatedAt
                     } as InteractionRecord);
                 });
 
@@ -171,33 +174,82 @@ export default function JournalPage() {
                     </div>
                 )}
 
-                <p className="text-gray-400 font-light max-w-2xl mx-auto">
+                <p className="text-gray-400 font-light max-w-2xl mx-auto mb-8">
                     Track your mixology journey, save your favorites, and log what you've tried.
                 </p>
+
+                {/* Journal Summary Stats */}
+                <div className="flex justify-center gap-4 md:gap-8 flex-wrap">
+                    <div className="flex flex-col items-center">
+                        <span className="text-2xl font-bold text-white">{interactions.filter(i => i.isTried).length}</span>
+                        <span className="text-xs uppercase tracking-widest text-gray-500 font-bold">Total Logged</span>
+                    </div>
+                    <div className="w-px h-10 bg-gray-800"></div>
+                    <div className="flex flex-col items-center">
+                        <span className="text-2xl font-bold text-white">{interactions.filter(i => i.isFavorite).length}</span>
+                        <span className="text-xs uppercase tracking-widest text-gray-500 font-bold">Favorites</span>
+                    </div>
+                    {tasteProfile && (
+                        <>
+                            <div className="w-px h-10 bg-gray-800"></div>
+                            <div className="flex flex-col items-center">
+                                <span className="text-2xl font-bold text-[var(--primary)]">{tasteProfile.topFlavors[0] || 'Balanced'}</span>
+                                <span className="text-xs uppercase tracking-widest text-gray-500 font-bold">Top Flavor</span>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
 
             {/* Tabs */}
-            <div className="flex justify-center mb-12">
-                <div className="flex items-center bg-gray-900 border border-gray-800 rounded-full p-1.5 shadow-inner">
+            <div className="flex justify-center mb-8">
+                <div className="flex items-center bg-gray-900 border border-gray-800 rounded-full p-1.5 shadow-inner overflow-x-auto max-w-full">
                     <button
                         onClick={() => setActiveTab('favorites')}
-                        className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${activeTab === 'favorites' ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] shadow-[0_0_15px_rgba(255,0,127,0.3)] border border-[var(--color-neon-pink)]/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
+                        className={`px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase transition-all duration-300 whitespace-nowrap ${activeTab === 'favorites' ? 'bg-[var(--color-neon-pink)]/20 text-[var(--color-neon-pink)] shadow-[0_0_15px_rgba(255,0,127,0.3)] border border-[var(--color-neon-pink)]/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
                     >
-                        ❤️ Favorites
+                        ❤️ Favorites ({interactions.filter(i => i.isFavorite).length})
                     </button>
                     <button
                         onClick={() => setActiveTab('wantToTry')}
-                        className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${activeTab === 'wantToTry' ? 'bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)] border border-blue-500/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
+                        className={`px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase transition-all duration-300 whitespace-nowrap ${activeTab === 'wantToTry' ? 'bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)] border border-blue-500/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
                     >
-                        🔖 On Deck
+                        🔖 On Deck ({interactions.filter(i => i.isWantToTry).length})
                     </button>
                     <button
                         onClick={() => setActiveTab('triedIt')}
-                        className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider uppercase transition-all duration-300 ${activeTab === 'triedIt' ? 'bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] border border-emerald-500/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
+                        className={`px-4 md:px-6 py-2.5 rounded-full text-xs md:text-sm font-bold tracking-wider uppercase transition-all duration-300 whitespace-nowrap ${activeTab === 'triedIt' ? 'bg-emerald-500/20 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.3)] border border-emerald-500/50' : 'text-gray-400 hover:text-white border border-transparent'}`}
                     >
-                        ✔️ On My Tab
+                        ✔️ On My Tab ({interactions.filter(i => i.isTried).length})
                     </button>
                 </div>
+            </div>
+
+            <div className="text-center mb-10 relative">
+                <p className="text-gray-500 text-sm font-medium italic mb-6">
+                    {activeTab === 'favorites' && 'Your all-time keepers.'}
+                    {activeTab === 'wantToTry' && 'Drinks queued for your next round.'}
+                    {activeTab === 'triedIt' && 'What you’ve actually tried and logged.'}
+                </p>
+
+                {activeTab === 'triedIt' && filteredList.length > 0 && (
+                    <div className="flex justify-center animate-fade-in-up">
+                        <div className="flex bg-black/40 border border-gray-800 rounded-lg p-1 shadow-inner relative z-10 w-fit">
+                            <button 
+                                onClick={() => setViewMode('grid')} 
+                                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-all duration-300 w-24 ${viewMode === 'grid' ? 'bg-gray-800 text-white shadow-md' : 'text-gray-500 hover:text-white'}`}
+                            >
+                                🔲 Grid
+                            </button>
+                            <button 
+                                onClick={() => setViewMode('timeline')} 
+                                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-all duration-300 w-24 ${viewMode === 'timeline' ? 'bg-[var(--primary)] text-white shadow-[0_0_10px_rgba(var(--primary-rgb),0.3)]' : 'text-gray-500 hover:text-white'}`}
+                            >
+                                ⏳ Timeline
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {filteredList.length === 0 ? (
@@ -215,8 +267,58 @@ export default function JournalPage() {
                         Discover Recipes
                     </Link>
                 </div>
+            ) : viewMode === 'timeline' && activeTab === 'triedIt' ? (
+                <div className="max-w-3xl mx-auto w-full relative pt-4 pb-20 fade-in">
+                    <div className="absolute left-[36px] md:left-[106px] top-6 bottom-4 w-px bg-gradient-to-b from-gray-800 via-gray-700 to-transparent" />
+                    {filteredList.map((fav, i) => {
+                        let name = 'Custom Recipe';
+                        let href = `/recipe/${fav.id}`;
+                        if (fav.type === 'classic' && fav.cocktailId) {
+                            const classicCocktail = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
+                            if (classicCocktail) name = classicCocktail.name;
+                            href = `/menu/${fav.cocktailId}`;
+                        } else if (fav.type === 'custom_full' && fav.cocktailData) {
+                            name = fav.cocktailData.name || name;
+                        } else if (fav.name) {
+                            name = fav.name;
+                        }
+
+                        const dateStr = (fav.updatedAt || fav.createdAt) 
+                            ? new Date(fav.updatedAt || fav.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+                            : 'Unknown Date';
+
+                        return (
+                            <div key={fav.id} className="relative flex gap-6 md:gap-8 items-start mb-8 group pl-4 md:pl-0 animate-fade-in-up" style={{ animationDelay: `${i * 50}ms` }}>
+                                <div className="hidden md:block w-20 text-right pt-2 shrink-0">
+                                    <span className="text-[10px] md:text-[11px] font-bold tracking-widest uppercase text-gray-500">{dateStr}</span>
+                                </div>
+                                <div className="absolute left-[32px] md:left-[102px] top-[14px] w-2.5 h-2.5 rounded-full bg-gray-600 border-2 border-gray-900 group-hover:bg-[var(--primary)] group-hover:shadow-[0_0_15px_var(--primary-glow)] transition-colors z-10" />
+                                
+                                <Link href={href} className="flex-1 ml-12 md:ml-0 bg-gray-900/60 hover:bg-gray-900 border border-gray-800 hover:border-gray-700 p-5 rounded-2xl transition-all shadow-lg block">
+                                    <div className="md:hidden mb-2">
+                                        <span className="text-[10px] font-bold tracking-widest uppercase text-gray-500">{dateStr}</span>
+                                    </div>
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                                        <h3 className="text-xl font-bold font-serif text-white group-hover:text-[var(--primary)] transition-colors">{name}</h3>
+                                        {fav.rating && (
+                                            <div className="flex items-center gap-1 text-[var(--primary)] font-bold text-sm bg-[var(--primary)]/10 px-2 py-0.5 rounded-md border border-[var(--primary)]/20 shadow-inner w-fit">
+                                                <span>★</span> {fav.rating.toFixed(1)}
+                                            </div>
+                                        )}
+                                    </div>
+                                    {fav.notes && (
+                                        <p className="text-gray-300 text-sm italic line-clamp-2 md:line-clamp-none leading-relaxed">&ldquo;{fav.notes}&rdquo;</p>
+                                    )}
+                                    {!fav.notes && !fav.rating && (
+                                        <p className="text-gray-600 text-xs italic">Logged without notes.</p>
+                                    )}
+                                </Link>
+                            </div>
+                        );
+                    })}
+                </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in">
                     {filteredList.map((fav) => {
                         if (fav.type === 'classic' && fav.cocktailId) {
                             const classicCocktail = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
@@ -244,6 +346,7 @@ export default function JournalPage() {
                                     userRating={fav.rating}
                                     userNotes={fav.notes}
                                     userPhotoUrl={fav.personalPhotoUrl}
+                                    interactionDate={fav.updatedAt || fav.createdAt || undefined}
                                     showReviewPrompt={activeTab === 'triedIt' || activeTab === 'favorites'}
                                 />
                             );
@@ -271,6 +374,7 @@ export default function JournalPage() {
                                     userRating={fav.rating}
                                     userNotes={fav.notes}
                                     userPhotoUrl={fav.personalPhotoUrl}
+                                    interactionDate={fav.updatedAt || fav.createdAt || undefined}
                                     showReviewPrompt={activeTab === 'triedIt' || activeTab === 'favorites'}
                                 />
                             );
