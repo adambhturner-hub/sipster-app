@@ -13,6 +13,21 @@ import {
 } from '@/data/cocktails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
+const ChipSelect = ({ options, value, onChange }: { options: string[], value: string, onChange: (val: any) => void }) => (
+    <div className="flex flex-wrap gap-2">
+        {options.map(opt => (
+            <button
+                key={opt}
+                type="button"
+                onClick={() => onChange(opt)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${value === opt ? 'bg-[var(--primary)] text-white shadow-[0_0_10px_rgba(var(--primary-rgb),0.3)]' : 'bg-black text-gray-400 border border-gray-700 hover:border-gray-500 hover:text-white'}`}
+            >
+                {opt}
+            </button>
+        ))}
+    </div>
+);
+
 export default function CreateCocktailPage() {
     const { user, loading: authLoading, openLoginModal } = useAuth();
     const router = useRouter();
@@ -21,6 +36,7 @@ export default function CreateCocktailPage() {
     const [isAutoFilling, setIsAutoFilling] = useState(false);
     const [isImporting, setIsImporting] = useState(false);
     const [isPublic, setIsPublic] = useState(false);
+    const [isQuickCreate, setIsQuickCreate] = useState(true);
 
     // Omni-Importer State
     const [importType, setImportType] = useState<'url' | 'text' | 'image'>('url');
@@ -421,19 +437,35 @@ export default function CreateCocktailPage() {
     return (
         <ProtectedRoute featureName="Creator Studio" description="Design a masterpiece. Input all 26 metadata points so your custom drink flawlessly integrates into the Sipster universe.">
             <div className="flex flex-col w-full max-w-5xl mx-auto z-10 relative pb-12 px-4">
-                <div className="mb-10 text-center relative">
+                <div className="mb-8 text-center relative">
                     <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-white">
                         Creator <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Studio</span>
                     </h1>
-                    <p className="text-gray-400 font-light max-w-2xl mx-auto mb-6">
-                        Design a masterpiece. Input all 26 metadata points so your custom drink flawlessly integrates into the Sipster universe.
+                    <p className="text-gray-400 font-light max-w-2xl mx-auto mb-8 leading-relaxed">
+                        Build a custom cocktail that fits perfectly inside the Sipster universe. Start with the essentials. Add lore, flavor, and metadata as deep as you want.
                     </p>
 
-                    <div className="flex justify-center mb-12">
+                    {/* Mode Toggle */}
+                    <div className="flex bg-black/50 border border-gray-800 rounded-full p-1 max-w-sm mx-auto mb-10 shadow-inner">
+                        <button
+                            onClick={() => setIsQuickCreate(true)}
+                            className={`flex-1 py-2.5 px-4 rounded-full text-sm font-bold transition-all duration-300 ${isQuickCreate ? 'bg-[var(--primary)] text-white shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]' : 'text-gray-500 hover:text-gray-300'}`}
+                        >
+                            ⚡ Quick Create
+                        </button>
+                        <button
+                            onClick={() => setIsQuickCreate(false)}
+                            className={`flex-1 py-2.5 px-4 rounded-full text-sm font-bold transition-all duration-300 ${!isQuickCreate ? 'bg-gray-800 text-[var(--accent)] border border-gray-700 shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                        >
+                            🧬 Full Studio
+                        </button>
+                    </div>
+
+                    <div className="flex justify-center mb-8">
                         <button
                             onClick={handleAutoFill}
                             disabled={isAutoFilling}
-                            className="bg-gray-800 border border-[var(--primary)]/50 text-white px-6 py-3 rounded-full font-bold hover:bg-[var(--primary)]/20 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(176,38,255,0.2)] disabled:opacity-50"
+                            className="bg-gray-800 border border-[var(--primary)]/50 text-white px-6 py-3 rounded-full font-bold hover:bg-[var(--primary)]/20 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)] disabled:opacity-50 text-sm"
                         >
                             {isAutoFilling ? '🪄 Analyzing...' : '🪄 Auto-Fill with AI'}
                         </button>
@@ -511,31 +543,38 @@ export default function CreateCocktailPage() {
                     </section>
 
                     {/* 2. Classification */}
-                    <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
+                    <section className="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 shadow-2xl">
                         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">2.</span> Classification</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="space-y-2">
+                        <div className="grid grid-cols-1 gap-8">
+                            <div className="space-y-3">
                                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Primary Spirit</label>
-                                <select value={primarySpirit} onChange={e => setPrimarySpirit(e.target.value as PrimarySpirit)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none">
-                                    <option>Whiskey & Bourbon</option><option>Agave</option><option>Gin</option><option>Vodka</option><option>Rum</option><option>Liqueur & Other</option>
-                                </select>
+                                <ChipSelect 
+                                    options={['Whiskey & Bourbon', 'Agave', 'Gin', 'Vodka', 'Rum', 'Liqueur & Other']} 
+                                    value={primarySpirit} 
+                                    onChange={setPrimarySpirit} 
+                                />
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Style</label>
-                                <select value={style} onChange={e => setStyle(e.target.value as CocktailStyle)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none">
-                                    <option>Spirit-Forward</option><option>Sour</option><option>Highball</option><option>Fizzy</option><option>Dessert</option>
-                                </select>
+                                <ChipSelect 
+                                    options={['Spirit-Forward', 'Sour', 'Highball', 'Fizzy', 'Dessert']} 
+                                    value={style} 
+                                    onChange={setStyle} 
+                                />
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Glass Type</label>
-                                <select value={glass} onChange={e => setGlass(e.target.value as GlassType)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none">
-                                    <option>Rocks</option><option>Coupe</option><option>Highball</option><option>Martini</option><option>Mug</option>
-                                </select>
+                                <ChipSelect 
+                                    options={['Rocks', 'Coupe', 'Highball', 'Martini', 'Mug', 'Flute', 'Nick & Nora']} 
+                                    value={glass} 
+                                    onChange={setGlass} 
+                                />
                             </div>
                         </div>
                     </section>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    {!isQuickCreate && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 animate-fade-in-up">
 
                         {/* 3. Tasting Notes */}
                         <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
@@ -545,26 +584,24 @@ export default function CreateCocktailPage() {
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Flavor Profile (Comma Separated)</label>
                                     <input type="text" value={flavorProfile} onChange={e => setFlavorProfile(e.target.value)} placeholder="Sweet, Smoky, Herbal" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-[var(--primary)] transition-all outline-none" />
                                 </div>
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Strength (1-10)</label>
-                                        <input type="number" min="1" max="10" value={strength} onChange={e => setStrength(Number(e.target.value))} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
+                                        <div className="flex justify-between items-center mb-1">
+                                            <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Strength ({strength}/10)</label>
+                                        </div>
+                                        <input type="range" min="1" max="10" value={strength} onChange={e => setStrength(Number(e.target.value))} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]" />
                                     </div>
-                                    <div className="space-y-2">
+                                    <div className="space-y-3">
                                         <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Difficulty</label>
-                                        <select value={difficultyLevel} onChange={e => setDifficultyLevel(e.target.value as DifficultyLabel)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none">
-                                            <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
-                                        </select>
+                                        <ChipSelect options={['Beginner', 'Intermediate', 'Advanced']} value={difficultyLevel} onChange={setDifficultyLevel} />
                                     </div>
-                                    <div className="space-y-2">
+                                    <div className="space-y-3">
                                         <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">ABV Class</label>
-                                        <select value={abvContent} onChange={e => setAbvContent(e.target.value as ABVLevel)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none">
-                                            <option>Low</option><option>Medium</option><option>High</option><option>Very High</option>
-                                        </select>
+                                        <ChipSelect options={['Low', 'Medium', 'High', 'Very High', 'Zero Proof']} value={abvContent} onChange={setAbvContent} />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Ratio</label>
-                                        <input type="text" value={ratio} onChange={e => setRatio(e.target.value)} placeholder="2:1:1" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
+                                        <input type="text" value={ratio} onChange={e => setRatio(e.target.value)} placeholder="e.g. 2:1:1" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-[var(--primary)]" />
                                     </div>
                                 </div>
                             </div>
@@ -574,34 +611,31 @@ export default function CreateCocktailPage() {
                         <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
                             <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">4.</span> Vibe & Time</h2>
                             <div className="space-y-6">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Season</label>
-                                        <select value={season} onChange={e => setSeason(e.target.value as Season)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none">
-                                            <option>Year-Round</option><option>Summer</option><option>Fall</option><option>Winter</option><option>Spring</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Temperature</label>
-                                        <select value={temperature} onChange={e => setTemperature(e.target.value as Temperature)} className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none">
-                                            <option>Cold</option><option>Hot</option><option>Room Temp</option>
-                                        </select>
-                                    </div>
+                                <div className="space-y-3">
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Season</label>
+                                    <ChipSelect options={['Year-Round', 'Summer', 'Fall', 'Winter', 'Spring']} value={season} onChange={setSeason} />
                                 </div>
-                                <div className="space-y-2">
+                                <div className="space-y-3">
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Temperature</label>
+                                    <ChipSelect options={['Cold', 'Hot', 'Room Temp']} value={temperature} onChange={setTemperature} />
+                                </div>
+                                <div className="space-y-3">
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Mood</label>
-                                    <input type="text" value={mood} onChange={e => setMood(e.target.value)} placeholder="e.g. Celebratory, Cozy" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
+                                    <ChipSelect options={['Cozy', 'Celebratory', 'Late Night', 'Dinner Party', 'Patio', 'Brunch', 'Chill', 'Holiday']} value={mood} onChange={setMood} />
+                                    <input type="text" value={mood} onChange={e => setMood(e.target.value)} placeholder="Or type a custom mood..." className="w-full mt-2 bg-black border border-gray-700 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-[var(--primary)]" />
                                 </div>
-                                <div className="space-y-2">
+                                <div className="space-y-3">
                                     <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Occasion</label>
-                                    <input type="text" value={occasion} onChange={e => setOccasion(e.target.value)} placeholder="e.g. Dinner Party, Nightcap" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
+                                    <input type="text" value={occasion} onChange={e => setOccasion(e.target.value)} placeholder="e.g. Nightcap, Holiday Party" className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-[var(--primary)]" />
                                 </div>
                             </div>
                         </section>
                     </div>
+                    )}
 
                     {/* 5. History & Lore */}
-                    <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
+                    {!isQuickCreate && (
+                    <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl animate-fade-in-up">
                         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><span className="text-[var(--primary)]">5.</span> History & Lore</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                             <div className="space-y-2">
@@ -670,6 +704,7 @@ export default function CreateCocktailPage() {
                             </div>
                         </div>
                     </section>
+                    )}
 
                     {/* 6. Recipe Build */}
                     <section className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl">
@@ -679,19 +714,19 @@ export default function CreateCocktailPage() {
                         <div className="space-y-4 mb-8">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Ingredients *</label>
                             {ingredients.map((ing, index) => (
-                                <div key={index} className="flex gap-2 relative">
-                                    <input type="text" value={ing.amount} onChange={e => handleIngredientChange(index, 'amount', e.target.value)} placeholder="2 oz" required className="w-1/4 min-w-[80px] bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
+                                <div key={index} className="flex gap-2 relative group">
+                                    <input type="text" value={ing.amount} onChange={e => handleIngredientChange(index, 'amount', e.target.value)} placeholder="2 oz" required className="w-1/4 max-w-[100px] bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-[var(--primary)] text-center font-mono" />
                                     <div className="flex-1 relative">
-                                        <input type="text" value={ing.item} onChange={e => { handleIngredientChange(index, 'item', e.target.value); setActiveIngredientIndex(index); }} onFocus={() => setActiveIngredientIndex(index)} onBlur={() => setTimeout(() => setActiveIngredientIndex(null), 200)} placeholder="Bourbon" required className="w-full bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
+                                        <input type="text" value={ing.item} onChange={e => { handleIngredientChange(index, 'item', e.target.value); setActiveIngredientIndex(index); }} onFocus={() => setActiveIngredientIndex(index)} onBlur={() => setTimeout(() => setActiveIngredientIndex(null), 200)} placeholder="Bourbon" required className="w-full bg-black border border-gray-700 border-l-0 rounded-xl rounded-l-none px-4 py-3 text-white outline-none focus:border-[var(--primary)]" />
                                         {activeIngredientIndex === index && getSuggestions(ing.item).length > 0 && (
-                                            <ul className="absolute z-20 w-full mt-1 bg-black/95 border border-gray-700 rounded-xl shadow-lg overflow-hidden">
+                                            <ul className="absolute z-20 w-full mt-1 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl overflow-hidden divide-y divide-gray-800">
                                                 {getSuggestions(ing.item).map(suggestion => (
-                                                    <li key={suggestion} onClick={() => handleIngredientChange(index, 'item', suggestion)} className="px-4 py-2 hover:bg-[var(--primary)]/20 cursor-pointer text-gray-300">{suggestion}</li>
+                                                    <li key={suggestion} onMouseDown={() => handleIngredientChange(index, 'item', suggestion)} className="px-4 py-3 hover:bg-[var(--primary)]/20 cursor-pointer text-gray-300 font-medium">{suggestion}</li>
                                                 ))}
                                             </ul>
                                         )}
                                     </div>
-                                    <button type="button" onClick={() => { if (ingredients.length > 1) { setIngredients(ingredients.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 ${ingredients.length > 1 ? 'hover:text-red-400 hover:border-red-400' : 'opacity-30'}`}>✕</button>
+                                    <button type="button" onClick={() => { if (ingredients.length > 1) { setIngredients(ingredients.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 transition-colors ${ingredients.length > 1 ? 'hover:text-red-400 hover:border-red-400 bg-gray-900/50' : 'opacity-30'}`}>✕</button>
                                 </div>
                             ))}
                             <button type="button" onClick={() => setIngredients([...ingredients, { amount: '', item: '' }])} className="text-[var(--primary)] text-sm font-bold">+ Add Ingredient</button>
@@ -712,33 +747,41 @@ export default function CreateCocktailPage() {
                         <div className="space-y-4">
                             <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Instructions *</label>
                             {instructions.map((inst, index) => (
-                                <div key={index} className="flex gap-2">
-                                    <div className="w-8 h-12 flex-shrink-0 flex items-center justify-center font-bold text-gray-500">{index + 1}.</div>
-                                    <input type="text" value={inst} onChange={e => { const newInst = [...instructions]; newInst[index] = e.target.value; setInstructions(newInst); }} placeholder="Add all ingredients to a shaker." required className="flex-1 bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none" />
-                                    <button type="button" onClick={() => { if (instructions.length > 1) { setInstructions(instructions.filter((_, i) => i !== index)); } }} className={`w-12 rounded-xl flex items-center justify-center border border-gray-700 ${instructions.length > 1 ? 'hover:text-red-400 hover:border-red-400' : 'opacity-30'}`}>✕</button>
+                                <div key={index} className="flex gap-2 items-start relative group">
+                                    <div className="w-10 h-12 flex-shrink-0 flex items-center justify-center font-bold text-gray-500 bg-gray-900 rounded-xl border border-gray-800">{index + 1}</div>
+                                    <textarea value={inst} onChange={e => { const newInst = [...instructions]; newInst[index] = e.target.value; setInstructions(newInst); }} placeholder="Add all ingredients to a shaker." required rows={2} className="flex-1 bg-black border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-[var(--primary)] resize-none" />
+                                    <button type="button" onClick={() => { if (instructions.length > 1) { setInstructions(instructions.filter((_, i) => i !== index)); } }} className={`w-12 h-12 rounded-xl flex items-center justify-center border border-gray-700 transition-colors ${instructions.length > 1 ? 'hover:text-red-400 hover:border-red-400 bg-gray-900/50' : 'opacity-30'}`}>✕</button>
                                 </div>
                             ))}
                             <button type="button" onClick={() => setInstructions([...instructions, ''])} className="text-[var(--primary)] text-sm font-bold">+ Add Step</button>
                         </div>
                     </section>
 
-                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8 shadow-2xl flex items-center justify-between">
+                    <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 shadow-2xl flex items-center justify-between">
                         <div>
-                            <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">Make Public to Community? 🌍</h3>
+                            <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">Publish to Discover 🌍</h3>
                             <p className="text-gray-400 text-sm">Allow this recipe to appear on Sipster's global Discover feed.</p>
                         </div>
                         <button
                             type="button"
                             onClick={() => setIsPublic(!isPublic)}
-                            className={`w-16 h-8 rounded-full transition-colors relative shadow-inner ${isPublic ? 'bg-[var(--primary)]' : 'bg-gray-800'}`}
+                            className={`w-16 h-8 rounded-full transition-colors relative shadow-inner flex-shrink-0 ${isPublic ? 'bg-[var(--primary)] shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]' : 'bg-gray-800'}`}
                         >
                             <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${isPublic ? 'left-9' : 'left-1'}`}></div>
                         </button>
                     </div>
 
-                    <div className="flex justify-end pt-4">
-                        <button type="submit" disabled={isSubmitting} className="bg-[var(--primary)] text-white text-lg px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(176,38,255,0.4)] flex items-center gap-2">
-                            {isSubmitting ? 'Saving Metadata...' : (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('edit') ? 'Update Recipe ✨' : 'Save Full Creation ✨')}
+                    {/* Standard Save Row (Desktop) */}
+                    <div className="hidden md:flex justify-end pt-4">
+                        <button type="submit" disabled={isSubmitting} className="bg-[var(--primary)] text-white text-lg px-12 py-5 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary-rgb),0.4)] flex items-center gap-2">
+                            {isSubmitting ? 'Saving Metadata...' : (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('edit') ? 'Update Recipe ✨' : 'Save Recipe ✨')}
+                        </button>
+                    </div>
+
+                    {/* Sticky Mobile Save Bar */}
+                    <div className="fixed bottom-0 left-0 right-0 p-4 bg-gray-950/90 backdrop-blur-md border-t border-gray-800/80 z-[100] md:hidden flex justify-end pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.8)]">
+                        <button type="submit" onClick={handleSave} disabled={isSubmitting} className="w-full bg-[var(--primary)] text-white text-lg px-8 py-4 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] flex items-center justify-center gap-2">
+                            {isSubmitting ? 'Saving...' : (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('edit') ? 'Update Recipe ✨' : 'Save Recipe ✨')}
                         </button>
                     </div>
                 </form>
