@@ -79,10 +79,14 @@ export default function JournalPage() {
                 setInteractions(fetched);
 
                 // Run Gamification Background Check
+                const token = await user.getIdToken();
                 fetch('/api/evaluate-badges', {
                     method: 'POST',
                     body: JSON.stringify({ uid: user.uid }),
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
                 }).catch(err => console.error("Badge eval failed:", err));
 
             } catch (e) {

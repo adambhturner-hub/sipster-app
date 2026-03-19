@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { BOOZIVERSITY_LESSONS } from '@/data/booziversity';
@@ -36,7 +37,7 @@ export default function BooziversityLesson() {
                 <div className="text-center">
                     <h1 className="text-3xl font-bold text-[var(--secondary)] mb-4">Lesson Not Found</h1>
                     <button
-                        onClick={() => router.push('/booziversity')}
+                        onClick={() => router.push('/learn')}
                         className="px-6 py-2 bg-[var(--primary)] rounded-full font-bold hover:scale-105 transition-transform"
                     >
                         Return to Academy
@@ -111,12 +112,13 @@ export default function BooziversityLesson() {
     };
 
     return (
+        <ProtectedRoute featureName="Sipster Learn" description="You must be logged in to view lessons and track your progress.">
         <div className="min-h-screen bg-[var(--bg)] text-white pb-32">
             <header className="relative pt-24 pb-12 px-6 overflow-hidden border-b border-[var(--border)]">
                 <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)] to-transparent opacity-50"></div>
 
                 <div className="relative max-w-3xl mx-auto z-20 mb-8">
-                    <Link href="/booziversity" className="inline-flex items-center gap-2 text-gray-400 hover:text-[var(--primary)] transition-colors">
+                    <Link href="/learn" className="inline-flex items-center gap-2 text-gray-400 hover:text-[var(--primary)] transition-colors">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
@@ -305,7 +307,7 @@ export default function BooziversityLesson() {
                                 <div className="z-10 text-center w-full max-w-sm">
                                     <p className="text-gray-400 mb-3 text-sm italic font-light">Next up...</p>
                                     <Link
-                                        href={`/booziversity/${nextLesson.id}`}
+                                        href={`/learn/${nextLesson.id}`}
                                         className="w-full flex justify-between items-center px-6 py-4 bg-gradient-to-r from-[var(--primary)]/40 to-[var(--secondary)]/40 hover:from-[var(--primary)]/60 hover:to-[var(--secondary)]/60 border border-[var(--primary)]/50 text-white rounded-2xl font-bold shadow-[0_4px_20px_var(--primary-glow)] hover:scale-105 transition-all duration-300"
                                     >
                                         <div className="text-left">
@@ -317,7 +319,7 @@ export default function BooziversityLesson() {
                                 </div>
                             ) : (
                                 <Link
-                                    href="/booziversity"
+                                    href="/learn"
                                     className="text-[var(--primary)] hover:text-white transition-colors underline underline-offset-4 font-bold z-10"
                                 >
                                     Return to the Academy Hub
@@ -365,5 +367,6 @@ export default function BooziversityLesson() {
 
             </main>
         </div>
+        </ProtectedRoute>
     );
 }

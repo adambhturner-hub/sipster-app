@@ -25,13 +25,13 @@ export default function Navigation() {
 
                     {/* Nav Links */}
                     <nav className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
-                        <Link href="/booziversity" className="text-[var(--accent)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--accent)] transition-all duration-300 flex items-center gap-1.5">Academy 🎓</Link>
                         <Link href="/my-bar" className="text-[var(--accent)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--accent)] transition-all duration-300 flex items-center gap-1.5">My Bar 🍾</Link>
-                        <Link href="/make" className="text-[var(--primary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1.5">Make 🍸</Link>
+                        <Link href="/make" className="text-[var(--primary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1.5">Make to Drink 🍸</Link>
                         <Link href="/journal" className="text-[var(--secondary)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--secondary)] transition-all duration-300 flex items-center gap-1.5">Journal 📓</Link>
                         <Link href="/create" className="font-bold xl:text-lg hover:drop-shadow-[0_0_15px_var(--primary-glow)] transition-all duration-300 flex items-center gap-1.5">
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Create</span> ✨
                         </Link>
+                        <Link href="/learn" className="text-[var(--accent)] font-medium xl:text-lg hover:text-white hover:drop-shadow-[0_0_10px_var(--accent)] transition-all duration-300 flex items-center gap-1.5">Learn 🎓</Link>
                     </nav>
 
                     {/* Auth Section & Theme (Desktop) */}
@@ -98,13 +98,6 @@ export default function Navigation() {
                 <div className="md:hidden absolute top-16 left-0 w-full bg-gray-950 border-b border-gray-800 shadow-2xl z-40">
                     <div className="px-4 pt-2 pb-6 flex flex-col space-y-4">
                         <Link
-                            href="/booziversity"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block px-3 py-4 text-xl text-[var(--accent)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
-                        >
-                            <span>Academy</span> <span>🎓</span>
-                        </Link>
-                        <Link
                             href="/my-bar"
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="block px-3 py-4 text-xl text-[var(--accent)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
@@ -116,7 +109,7 @@ export default function Navigation() {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="block px-3 py-4 text-xl text-[var(--primary)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
                         >
-                            <span>Make</span> <span>🍸</span>
+                            <span>Make to Drink</span> <span>🍸</span>
                         </Link>
                         <Link
                             href="/journal"
@@ -130,7 +123,14 @@ export default function Navigation() {
                             onClick={() => setIsMobileMenuOpen(false)}
                             className="block px-3 py-4 text-xl font-bold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
                         >
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Create Drink</span> <span>✨</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Create</span> <span>✨</span>
+                        </Link>
+                        <Link
+                            href="/learn"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block px-3 py-4 text-xl text-[var(--accent)] font-semibold hover:bg-gray-900 hover:text-white rounded-lg transition-colors border-b border-gray-800/50 flex items-center justify-between"
+                        >
+                            <span>Learn</span> <span>🎓</span>
                         </Link>
 
                         {/* Mobile Auth */}

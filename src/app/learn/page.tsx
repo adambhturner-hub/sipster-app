@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { BOOZIVERSITY_LESSONS, PillarType } from '@/data/booziversity';
@@ -52,6 +53,7 @@ export default function BooziversityHub() {
     }, [user]);
 
     return (
+        <ProtectedRoute featureName="Sipster Learn" description="You must be logged in to view lessons and track your progress.">
         <div className="min-h-screen bg-[var(--bg)] text-white pb-24">
             {/* Header Hero */}
             <header className="relative pt-24 pb-12 px-6 overflow-hidden">
@@ -115,7 +117,7 @@ export default function BooziversityHub() {
 
                                 return (
                                     <Link
-                                        href={isLocked ? '#' : `/booziversity/${lesson.id}`}
+                                        href={isLocked ? '#' : `/learn/${lesson.id}`}
                                         key={lesson.id}
                                         onClick={(e) => { if (isLocked) e.preventDefault(); }}
                                         className={`group glass-panel p-6 relative overflow-hidden flex flex-col justify-between min-h-[200px] border transition-all duration-300 ${isAdvanced
@@ -185,5 +187,6 @@ export default function BooziversityHub() {
                 ))}
             </main>
         </div>
+        </ProtectedRoute>
     );
 }

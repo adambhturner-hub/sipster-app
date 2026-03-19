@@ -201,9 +201,13 @@ export default function MyBarPage() {
         setIsPlanningRestock(true);
         setRestockPlan(null);
         try {
+            const token = await user.getIdToken();
             const response = await fetch('/api/smart-restock', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     graveyard,
                     myBar,
@@ -380,9 +384,15 @@ export default function MyBarPage() {
             const base64Image = reader.result?.toString();
 
             try {
+                const token = user ? await user.getIdToken() : '';
+                if (!token) throw new Error("Please log in to use the Fridge Scanner.");
+
                 const response = await fetch('/api/vision/scan-fridge', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
                     body: JSON.stringify({ image: base64Image })
                 });
 

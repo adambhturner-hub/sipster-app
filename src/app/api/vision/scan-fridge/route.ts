@@ -1,6 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import { z } from 'zod';
+import { adminAuth } from '@/lib/firebase-admin';
 
 // We allow longer execution for vision processing
 export const maxDuration = 30;
@@ -9,6 +10,18 @@ import { FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return new Response(JSON.stringify({ error: 'Unauthorized: Missing or invalid token' }), { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return new Response(JSON.stringify({ error: 'Unauthorized: Invalid token' }), { status: 401 });
+        }
+
         const { image } = await req.json();
 
         if (!image) {

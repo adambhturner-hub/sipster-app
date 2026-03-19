@@ -2,6 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { NextResponse } from 'next/server';
+import { adminAuth } from '@/lib/firebase-admin';
 
 export const maxDuration = 30; // 30 seconds limit
 
@@ -10,6 +11,18 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Unauthorized: Missing or invalid token' }, { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
+        }
+
         const { cocktails } = await req.json();
 
         if (!Array.isArray(cocktails) || cocktails.length === 0) {

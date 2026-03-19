@@ -16,9 +16,10 @@ export interface TranslatedCocktail {
     glassType?: string;
     color?: string;
     estimatedRecipe?: {
-        ingredients: string[];
+        ingredients: { item: string, amount: string }[];
         instructions: string[];
     };
+    venueName?: string;
 }
 
 export default function MenuTranslatorPage() {
@@ -57,9 +58,15 @@ export default function MenuTranslatorPage() {
         setError(null);
 
         try {
+            const token = user ? await user.getIdToken() : '';
+            if (!token) throw new Error("Please log in to translate menus.");
+
             const response = await fetch('/api/translate-menu', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     image: selectedImage,
                     tasteProfile: tasteProfile
@@ -74,7 +81,8 @@ export default function MenuTranslatorPage() {
             const data = await response.json();
 
             // Sort by matchScore descending
-            const sortedItems = (data.menuItems || []).sort((a: TranslatedCocktail, b: TranslatedCocktail) => b.matchScore - a.matchScore);
+            const sortedItems = (data.menuItems || []).sort((a: TranslatedCocktail, b: TranslatedCocktail) => b.matchScore - a.matchScore)
+                .map((item: TranslatedCocktail) => ({ ...item, venueName: data.venueName }));
             setResults(sortedItems);
 
             if (data.menuItems && data.menuItems.length > 0) {
@@ -104,20 +112,19 @@ export default function MenuTranslatorPage() {
                 style: 'Menu Scan',
                 era: 'Modern Classic',
                 primarySpirit: 'Unknown',
-                ingredients: drink.estimatedRecipe.ingredients.map(ing => {
-                    const parts = ing.split(' ');
-                    const amount = parts.slice(0, 2).join(' ') || 'taste';
-                    const item = parts.slice(2).join(' ') || ing;
-                    return { item, amount, unit: 'oz' }
-                }),
+                ingredients: drink.estimatedRecipe.ingredients.map(ing => ({
+                    item: ing.item || 'Mystery Ingredient',
+                    amount: ing.amount || 'taste',
+                    unit: 'oz'
+                })),
                 instructions: drink.estimatedRecipe.instructions || [],
                 flavorProfile: [drink.verdict.split(' ')[0] || 'Custom', drink.verdict.split(' ')[1] || 'Menu'],
                 estimatedCost: 3,
                 relationship: [],
                 colorHex: drink.color || '#3b82f6',
-                origin: 'Menu Scanner',
+                origin: drink.venueName !== 'Unknown' && drink.venueName ? drink.venueName : 'Menu Scanner',
                 city: 'Unknown',
-                source: 'Menu Scanner',
+                source: drink.venueName !== 'Unknown' && drink.venueName ? drink.venueName : 'Menu Scanner',
                 timePeriod: 'Modern',
                 countryOfPopularity: 'Worldwide',
                 garnish: 'None',

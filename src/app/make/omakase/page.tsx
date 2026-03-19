@@ -26,12 +26,16 @@ export default function OmakasePage() {
         setOmakaseRecipe(null);
 
         try {
+            const token = await user.getIdToken();
             const timeOpts: Intl.DateTimeFormatOptions = { weekday: 'long', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' };
             const clientTimeContext = new Intl.DateTimeFormat('en-US', timeOpts).format(new Date());
 
             const res = await fetch('/api/omakase', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     myBar,
                     tasteProfile,

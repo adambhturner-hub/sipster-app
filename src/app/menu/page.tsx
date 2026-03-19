@@ -115,9 +115,15 @@ export default function MenuPage() {
 
         setIsSearching(true);
         try {
+            const token = user ? await user.getIdToken() : '';
+            if (!token) throw new Error('Please log in to use the AI filter.');
+
             const response = await fetch('/api/menu-filter', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ query: aiSearchQuery })
             });
 

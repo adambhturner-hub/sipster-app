@@ -49,7 +49,21 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     const [isGeneratingImg, setIsGeneratingImg] = useState<string | null>(null);
 
     const [input, setInput] = useState('');
-    const { messages, setMessages, sendMessage, status, stop, error, regenerate: reload } = useChat();
+    const [token, setToken] = useState<string>('');
+
+    useEffect(() => {
+        if (user) {
+            user.getIdToken().then(setToken).catch(() => setToken(''));
+        } else {
+            setToken('');
+        }
+    }, [user]);
+
+    // @ts-ignore - useChat headers are supported at runtime in this SDK version
+    const { messages, setMessages, sendMessage, status, stop, error, regenerate: reload } = useChat({
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined
+    } as any);
+
     const isLoading = status === 'submitted' || status === 'streaming';
 
     const queryConsumed = useRef(false);
@@ -230,7 +244,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         try {
             const parseRes = await fetch('/api/import-recipe', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     type: 'text',
                     payload: content,
@@ -259,6 +276,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
                 messageId: messageId,
                 cocktailData: safeCocktailData,
                 isPublic: isPublic,
+                isFavorite: false,
+                isWantToTry: true,
+                isTried: false,
                 createdAt: new Date().toISOString()
             };
 

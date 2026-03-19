@@ -2,12 +2,26 @@ import { NextResponse } from 'next/server';
 import { generateObject } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { z } from 'zod';
+import { adminAuth } from '@/lib/firebase-admin';
+import { FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
 
 // Maximum duration to handle potentially slower Vision API responses
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Unauthorized: Missing or invalid token' }, { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
+        }
+
         const { image, tasteProfile } = await req.json();
 
         if (!image || typeof image !== 'string') {
@@ -53,6 +67,7 @@ export async function POST(req: Request) {
                 }
             ],
             schema: z.object({
+                venueName: z.string().describe("The name of the Bar/Restaurant/Venue if visible on the menu, otherwise 'Unknown'"),
                 menuItems: z.array(z.object({
                     name: z.string().describe("The name of the cocktail as printed on the menu"),
                     menuDescription: z.string().describe("The ingredients or description exactly as printed on the menu"),
@@ -61,7 +76,10 @@ export async function POST(req: Request) {
                     glassType: z.string().describe("The most appropriate glass type from the provided list"),
                     color: z.string().describe("A CSS hex color code representing the liquid's estimated color"),
                     estimatedRecipe: z.object({
-                        ingredients: z.array(z.string()).describe("A list of ingredients with estimated ounces/dashes (e.g. '2 oz Rye Whiskey')"),
+                        ingredients: z.array(z.object({
+                            amount: z.string().describe("The measurement (e.g. '2 oz', '1 dash')"),
+                            item: z.string().describe(`The ingredient name. MATCH EXACTLY to standard list if possible: ${FLAT_INGREDIENTS_LIST.join(', ')}`)
+                        })).describe("The ingredients required"),
                         instructions: z.array(z.string()).describe("Step-by-step instructions to make this drink at home")
                     }).describe("A generated, reverse-engineered guess at the recipe specs")
                 }))

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
+import { adminDb, adminAuth } from '@/lib/firebase-admin';
 
 // Defines the logic for Gamification Badges
 export async function POST(req: NextRequest) {
@@ -12,6 +12,21 @@ export async function POST(req: NextRequest) {
 
         if (!uid) {
             return NextResponse.json({ error: 'UID is required' }, { status: 400 });
+        }
+
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Unauthorized: Missing or invalid token' }, { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            const decodedToken = await adminAuth?.verifyIdToken(idToken);
+            if (!decodedToken || decodedToken.uid !== uid) {
+                return NextResponse.json({ error: 'Unauthorized: UID mismatch' }, { status: 401 });
+            }
+        } catch (error) {
+            return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
         }
 
         // Fetch User's Data

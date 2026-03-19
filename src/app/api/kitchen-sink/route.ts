@@ -2,9 +2,22 @@ import { NextResponse } from 'next/server';
 import { generateObject } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { z } from 'zod';
+import { adminAuth } from '@/lib/firebase-admin';
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Unauthorized: Missing or invalid token' }, { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
+        }
+
         const { ingredients, myBar } = await req.json();
 
         if (!ingredients || typeof ingredients !== 'string') {

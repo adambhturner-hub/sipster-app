@@ -203,9 +203,15 @@ export default function CreateCocktailPage() {
                 instructions: instructions.filter(i => i.trim()),
             };
 
+            if (!user) throw new Error("Must be logged in to use Magic Fill");
+            const token = await user.getIdToken();
+
             const response = await fetch('/api/generate-metadata', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
                 body: JSON.stringify({ partialCocktail }),
             });
 
@@ -280,9 +286,15 @@ export default function CreateCocktailPage() {
         const loadingToast = toast.loading("AI is ingesting recipe... 🪄");
 
         try {
+            const token = user ? await user.getIdToken() : '';
+            if (!token) throw new Error("Please log in to import recipes.");
+
             const response = await fetch('/api/import-recipe', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ type, payload }),
             });
 
@@ -389,8 +401,8 @@ export default function CreateCocktailPage() {
                 type: 'custom_full',
                 cocktailData,
                 isPublic,
-                isFavorite: true,
-                isWantToTry: false,
+                isFavorite: false,
+                isWantToTry: true,
                 isTried: false,
                 createdAt: new Date().toISOString()
             };

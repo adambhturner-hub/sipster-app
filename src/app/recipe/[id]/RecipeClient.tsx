@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Cocktail } from '@/data/cocktails';
 import FavoriteButton from '@/components/FavoriteButton';
 import ShareButton from '@/components/ShareButton';
+import toast from 'react-hot-toast';
 import NotesAndRating from '@/components/NotesAndRating';
 import InteractiveIngredients from '@/components/InteractiveIngredients';
 import GlobalStarRating from '@/components/GlobalStarRating';
@@ -81,6 +82,22 @@ export default function RecipeClient({ id }: { id: string }) {
         isMatch: user && (user.uid === recipeData.uid || user.uid === cocktail.authorUid)
     });
 
+    const handleDelete = async () => {
+        if (!user || !recipeData) return;
+        const confirmDelete = window.confirm("Are you sure you want to permanently delete this creation? This cannot be undone.");
+        if (!confirmDelete) return;
+
+        const loadingToast = toast.loading("Deleting masterpiece...");
+        try {
+            await deleteDoc(doc(db, 'favorites', recipeData.id));
+            toast.success("Creation deleted forever.", { id: loadingToast });
+            router.push('/journal');
+        } catch (err: any) {
+            console.error("Error deleting recipe:", err);
+            toast.error("Failed to delete creation.", { id: loadingToast });
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-950 text-white pb-24 font-serif relative overflow-hidden">
             {/* Background Glow */}
@@ -132,9 +149,14 @@ export default function RecipeClient({ id }: { id: string }) {
                                         path={`/recipe/${recipeData.id}`}
                                     />
                                     {user && (user.uid === recipeData.uid || user.uid === cocktail.authorUid) && (
-                                        <Link href={`/create?edit=${recipeData.id}`} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg border border-gray-600 transition-colors flex items-center gap-2">
-                                            <span>✏️</span> Edit Recipe
-                                        </Link>
+                                        <>
+                                            <Link href={`/create?edit=${recipeData.id}`} className="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold uppercase tracking-wider rounded-lg border border-gray-600 transition-colors flex items-center gap-2">
+                                                <span>✏️</span> Edit
+                                            </Link>
+                                            <button onClick={handleDelete} className="px-3 py-2 bg-red-900/30 hover:bg-red-900/50 text-red-400 text-xs font-bold uppercase tracking-wider rounded-lg border border-red-500/30 transition-colors flex items-center gap-2">
+                                                <span>🗑️</span> Delete
+                                            </button>
+                                        </>
                                     )}
                                 </div>
                             </div>

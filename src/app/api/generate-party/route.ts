@@ -2,7 +2,7 @@ import { OpenAI } from 'openai';
 import { Cocktail } from '@/data/cocktails';
 import { getClassicCocktails } from '@/lib/dataFetchers';
 import { NextRequest } from 'next/server';
-import { adminStorage } from '@/lib/firebase-admin';
+import { adminStorage, adminAuth } from '@/lib/firebase-admin';
 import { v4 as uuidv4 } from 'uuid';
 
 export const runtime = 'nodejs';
@@ -14,6 +14,18 @@ const openaiClient = new OpenAI({
 
 export async function POST(req: NextRequest) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return new Response('Unauthorized: Missing or invalid token', { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return new Response('Unauthorized: Invalid token', { status: 401 });
+        }
+
         const { vibe, spiritsAvailable, guestCount, userId } = await req.json();
 
         const classicCocktails = await getClassicCocktails();

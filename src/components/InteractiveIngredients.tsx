@@ -74,7 +74,7 @@ export default function InteractiveIngredients({ ingredients }: InteractiveIngre
                                                     if (ing?.item) handleSwap(ing.item);
                                                 }}
                                                 disabled={isSwapping[ing?.item || 'Mystery Ingredient']}
-                                                className="text-[10px] bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 px-3 py-1.5 rounded transition-colors uppercase tracking-widest disabled:opacity-50"
+                                                className="text-[10px] font-bold bg-purple-500/20 hover:bg-purple-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,85,247,0.5)] text-purple-300 border border-purple-500/50 hover:border-purple-400 px-3 py-1.5 rounded transition-all uppercase tracking-widest disabled:opacity-50"
                                             >
                                                 {isSwapping[ing?.item || 'x'] ? '...' : 'Swap 🪄'}
                                             </button>
@@ -83,7 +83,7 @@ export default function InteractiveIngredients({ ingredients }: InteractiveIngre
                                                     e.preventDefault();
                                                     if (ing?.item) addToBar(ing.item);
                                                 }}
-                                                className="text-[10px] bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded transition-colors uppercase tracking-widest"
+                                                className="text-[10px] font-bold bg-blue-600/20 hover:bg-blue-600 hover:text-white hover:shadow-[0_0_15px_rgba(37,99,235,0.5)] text-blue-300 border border-blue-500/50 hover:border-blue-400 px-3 py-1.5 rounded transition-all uppercase tracking-widest"
                                             >
                                                 + Bar
                                             </button>
@@ -98,7 +98,7 @@ export default function InteractiveIngredients({ ingredients }: InteractiveIngre
                                                         }
                                                     }
                                                 }}
-                                                className={`group text-[10px] px-3 py-1.5 rounded transition-colors uppercase tracking-widest border ${inCart ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 hover:bg-red-900/40 hover:text-red-300 hover:border-red-500/50' : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/30'}`}
+                                                className={`group text-[10px] font-bold px-3 py-1.5 rounded transition-all uppercase tracking-widest border ${inCart ? 'bg-emerald-500/30 text-emerald-300 border-emerald-400 hover:bg-red-500 hover:text-white hover:border-red-400 hover:shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-emerald-600/20 hover:bg-emerald-600 hover:text-white hover:shadow-[0_0_15px_rgba(5,150,105,0.5)] text-emerald-300 border-emerald-500/50 hover:border-emerald-400'}`}
                                             >
                                                 <span className={`${inCart ? 'group-hover:hidden' : ''}`}>{inCart ? '✓ Cart' : '+ Cart'}</span>
                                                 {inCart && <span className="hidden group-hover:inline">Remove</span>}

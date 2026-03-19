@@ -24,11 +24,22 @@ export default function PartyPlanner() {
         setIsGenerating(true);
         setError('');
 
+        if (!user) {
+            setError('You must be logged in to use the AI Party Generator.');
+            setIsGenerating(false);
+            return;
+        }
+
         try {
+            const token = await user.getIdToken();
+
             // 1. Call our generative backend API
             const response = await fetch('/api/generate-party', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     vibe,
                     spiritsAvailable,

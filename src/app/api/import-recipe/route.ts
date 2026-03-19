@@ -2,9 +2,23 @@ import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import * as cheerio from 'cheerio';
+import { adminAuth } from '@/lib/firebase-admin';
+import { FLAT_INGREDIENTS_LIST } from '@/data/ingredients';
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return new Response('Unauthorized: Missing or invalid token', { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return new Response('Unauthorized: Invalid token', { status: 401 });
+        }
+
         const body = await req.json();
         const { type, payload, sourceOverride, locationOverride } = body;
 
@@ -63,7 +77,7 @@ export async function POST(req: Request) {
             origin: z.string().describe("Country of origin, e.g., 'USA', 'Italy', or 'Unknown'"),
             city: z.string().describe("City of origin if known, else 'Unknown'"),
             era: z.enum(['Pre-Prohibition', 'Prohibition', 'Tiki', 'Modern Classic', 'Golden Age']),
-            source: z.string().describe("Who invented it or where it's from (Author, Bartender, Website name)"),
+            source: z.string().describe("The venue (Bar/Restaurant) the drink is from if applicable, OR the Author/Bartender. Prioritize the venue name (e.g. 'Three Dots and a Dash') if known."),
             timePeriod: z.string().describe("e.g. '1920s', 'Modern Era'"),
             countryOfPopularity: z.string().describe("Countries where it's popular, or 'Worldwide'"),
             trivia: z.array(z.string()).describe("Array of 1-4 fun trivia facts about the drink. Invent them if not explicitly in the text!"),
@@ -71,7 +85,7 @@ export async function POST(req: Request) {
             relationship: z.array(z.string()).describe("Array of 1-3 similar cocktails by name"),
             ingredients: z.array(z.object({
                 amount: z.string().describe("The measurement (e.g. '2 oz', '1 dash')"),
-                item: z.string().describe("The ingredient name (e.g. 'Bourbon', 'Simple Syrup')")
+                item: z.string().describe(`The ingredient name. MATCH EXACTLY to standard list if possible: ${FLAT_INGREDIENTS_LIST.join(', ')}`)
             })).describe("The list of ingredients required to make the drink"),
             instructions: z.array(z.string()).describe("Step-by-step instructions to make the drink"),
             estimatedCost: z.number().min(1).max(4).describe("Estimated amortized cost-per-drink based on typical US liquor store ingredients (1=Cheap $, 4=Premium $$$$)"),

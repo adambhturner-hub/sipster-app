@@ -3,6 +3,7 @@ import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { CLASSIC_COCKTAILS, Cocktail } from '@/data/cocktails';
 import OpenAI from 'openai';
+import { adminAuth } from '@/lib/firebase-admin';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -14,6 +15,21 @@ export async function POST(request: Request) {
 
         if (!uid || !spotifyData) {
             return NextResponse.json({ error: 'Missing required fields or not connected' }, { status: 400 });
+        }
+
+        const authHeader = request.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Unauthorized: Missing or invalid token' }, { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            const decodedToken = await adminAuth?.verifyIdToken(idToken);
+            if (!decodedToken || decodedToken.uid !== uid) {
+                return NextResponse.json({ error: 'Unauthorized: UID mismatch' }, { status: 401 });
+            }
+        } catch (error) {
+            return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
         }
 
         let accessToken = spotifyData.accessToken;

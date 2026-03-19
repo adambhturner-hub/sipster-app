@@ -64,9 +64,13 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
                 })
                 .filter(Boolean); // Remove nulls
 
+            const token = await user.getIdToken();
             const response = await fetch('/api/analyze-palate', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ cocktails: drinksToAnalyze })
             });
 

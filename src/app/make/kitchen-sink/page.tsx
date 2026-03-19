@@ -20,9 +20,15 @@ export default function KitchenSinkPage() {
         setResult(null);
 
         try {
+            const token = user ? await user.getIdToken() : '';
+            if (!token) throw new Error("Please log in to use the Kitchen Sink generator.");
+
             const response = await fetch('/api/kitchen-sink', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     ingredients: ingredientsInput,
                     myBar: myBar || [],

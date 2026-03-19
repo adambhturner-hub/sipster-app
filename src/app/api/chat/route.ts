@@ -2,11 +2,25 @@ import { openai } from '@ai-sdk/openai';
 import { streamText, convertToModelMessages, tool } from 'ai';
 import { z } from 'zod';
 import { getClassicCocktails } from '@/lib/dataFetchers';
+import { adminAuth } from '@/lib/firebase-admin';
+import { NextResponse } from 'next/server';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return NextResponse.json({ error: 'Unauthorized: Missing or invalid token' }, { status: 401 });
+    }
+
+    const idToken = authHeader.split('Bearer ')[1];
+    try {
+        await adminAuth?.verifyIdToken(idToken);
+    } catch (error) {
+        return NextResponse.json({ error: 'Unauthorized: Invalid token' }, { status: 401 });
+    }
+
     const { messages, data } = await req.json();
     const classicCocktails = await getClassicCocktails();
 

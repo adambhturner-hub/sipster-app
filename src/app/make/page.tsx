@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import SurpriseMeButton from '@/components/SurpriseMeButton';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function MakePage() {
     return (
+        <ProtectedRoute featureName="Make to Drink" description="You must be logged in to chat with Sipster or create menus.">
         <div className="min-h-screen bg-[var(--bg)] text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white pb-32 pt-16 relative overflow-hidden">
             {/* Background Glows */}
             <div className="absolute top-[-10%] right-[-10%] w-[50vh] h-[50vh] bg-[var(--primary)]/10 rounded-full blur-[120px] pointer-events-none" />
@@ -82,5 +84,6 @@ export default function MakePage() {
                 </div>
             </div>
         </div>
+        </ProtectedRoute>
     );
 }

@@ -1,6 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import { z } from 'zod';
+import { adminAuth } from '@/lib/firebase-admin';
 
 // Define the exact schemas that match our React State Dropdowns
 const SpiritSchema = z.enum(['Whiskey & Bourbon', 'Agave', 'Gin', 'Vodka', 'Rum', 'Liqueur & Other', 'All']);
@@ -10,6 +11,18 @@ const GlassSchema = z.enum(['Rocks', 'Coupe', 'Highball', 'Martini', 'Mug', 'All
 
 export async function POST(req: Request) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return new Response('Unauthorized: Missing or invalid token', { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return new Response('Unauthorized: Invalid token', { status: 401 });
+        }
+
         const { query } = await req.json();
 
         if (!query) {

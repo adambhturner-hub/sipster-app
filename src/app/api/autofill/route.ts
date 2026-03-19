@@ -1,7 +1,8 @@
 import { OpenAI } from 'openai';
 import { NextRequest } from 'next/server';
+import { adminAuth } from '@/lib/firebase-admin';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const maxDuration = 30;
 
 const openaiClient = new OpenAI({
@@ -10,6 +11,18 @@ const openaiClient = new OpenAI({
 
 export async function POST(req: NextRequest) {
     try {
+        const authHeader = req.headers.get('Authorization');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return new Response('Unauthorized: Missing or invalid token', { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        try {
+            await adminAuth?.verifyIdToken(idToken);
+        } catch (error) {
+            return new Response('Unauthorized: Invalid token', { status: 401 });
+        }
+
         const { partialCocktail } = await req.json();
 
         if (!partialCocktail || !partialCocktail.name) {

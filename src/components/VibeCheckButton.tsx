@@ -43,9 +43,14 @@ export default function VibeCheckButton() {
                 return;
             }
 
+            const token = await user.getIdToken();
+
             const res = await fetch('/api/vibe-check', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({ uid: user.uid, spotifyData, myBar })
             });
 
