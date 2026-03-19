@@ -239,13 +239,13 @@ export default function JournalPage() {
                                 onClick={() => setViewMode('grid')} 
                                 className={`px-4 py-1.5 rounded-md text-xs font-bold transition-all duration-300 w-24 ${viewMode === 'grid' ? 'bg-gray-800 text-white shadow-md' : 'text-gray-500 hover:text-white'}`}
                             >
-                                🔲 Grid
+                                Grid
                             </button>
                             <button 
                                 onClick={() => setViewMode('timeline')} 
                                 className={`px-4 py-1.5 rounded-md text-xs font-bold transition-all duration-300 w-24 ${viewMode === 'timeline' ? 'bg-[var(--primary)] text-white shadow-[0_0_10px_rgba(var(--primary-rgb),0.3)]' : 'text-gray-500 hover:text-white'}`}
                             >
-                                ⏳ Timeline
+                                Timeline
                             </button>
                         </div>
                     </div>
