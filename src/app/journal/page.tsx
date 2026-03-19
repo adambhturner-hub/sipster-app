@@ -157,17 +157,24 @@ export default function JournalPage() {
     const groupedTimeline = useMemo(() => {
         if (viewMode !== 'timeline' || activeTab !== 'triedIt') return [];
         
+        const parseDate = (val: any) => {
+            if (!val) return null;
+            if (typeof val.toDate === 'function') return val.toDate();
+            const d = new Date(val);
+            return isNaN(d.getTime()) ? null : d;
+        };
+
         const list = [...filteredList].sort((a, b) => {
-            const dateA = new Date(a.updatedAt || a.createdAt).getTime();
-            const dateB = new Date(b.updatedAt || b.createdAt).getTime();
+            const dateA = parseDate(a.updatedAt || a.createdAt)?.getTime() || 0;
+            const dateB = parseDate(b.updatedAt || b.createdAt)?.getTime() || 0;
             return dateB - dateA;
         });
         
         const groups: { dateStr: string, headerDate: string, items: InteractionRecord[] }[] = [];
         list.forEach(fav => {
-            const rawDate = fav.updatedAt || fav.createdAt;
-            if (!rawDate) return;
-            const dateObj = new Date(rawDate);
+            const dateObj = parseDate(fav.updatedAt || fav.createdAt);
+            if (!dateObj) return;
+            
             const dateStr = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
             
             let lastGroup = groups[groups.length - 1];
@@ -496,7 +503,12 @@ export default function JournalPage() {
 
                                     <div className="pt-4 border-t border-[var(--secondary)]/20 flex justify-between items-center z-20">
                                         <span className="text-xs text-gray-500 font-mono tracking-widest uppercase">
-                                            {new Date(fav.createdAt).toLocaleDateString()}
+                                            {(() => {
+                                                if (!fav.createdAt) return '';
+                                                if (typeof (fav.createdAt as any).toDate === 'function') return (fav.createdAt as any).toDate().toLocaleDateString();
+                                                const d = new Date(fav.createdAt);
+                                                return isNaN(d.getTime()) ? 'UNKNOWN DATE' : d.toLocaleDateString();
+                                            })()}
                                         </span>
                                         <span className="text-[var(--secondary)] text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                                             Explore &rarr;
@@ -509,5 +521,5 @@ export default function JournalPage() {
                 </div>
             )}
         </div>
-    );
+);
 }

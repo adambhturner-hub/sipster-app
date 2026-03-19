@@ -308,7 +308,7 @@ export default function CocktailCard({
                                     <span>★</span> {userRating.toFixed(1)}
                                 </div>
                             )}
-                            {interactionDate && (
+                            {interactionDate && !isNaN(new Date(interactionDate).getTime()) && (
                                 <span className="text-[10px] text-gray-500 font-mono tracking-widest uppercase">
                                     Logged {new Date(interactionDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                 </span>
