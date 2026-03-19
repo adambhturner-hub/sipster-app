@@ -122,31 +122,6 @@ export default function JournalPage() {
         return myBar.some(item => item.toLowerCase() === ingredientName.toLowerCase());
     };
 
-    if (authLoading || isLoading) {
-        return (
-            <div className="flex justify-center items-center min-h-[50vh]">
-                <div className="animate-pulse text-[var(--secondary)] text-4xl">🍸</div>
-            </div>
-        );
-    }
-
-    if (!user) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
-                <span className="text-6xl mb-6">🔒</span>
-                <h2 className="text-3xl font-bold mb-4">Login Required</h2>
-                <p className="text-gray-400 max-w-md mb-8">You need to log in to access your personal Tasting Journal.</p>
-                <button
-                    onClick={openLoginModal}
-                    className="bg-[var(--secondary)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_var(--primary-glow)]"
-                >
-                    Log In with Google
-                </button>
-            </div>
-        );
-    }
-
-    // Filter by tab
     const filteredList = interactions.filter(fav => {
         if (activeTab === 'favorites') return fav.isFavorite;
         if (activeTab === 'wantToTry') return fav.isWantToTry;
@@ -186,6 +161,33 @@ export default function JournalPage() {
         });
         return groups;
     }, [filteredList, viewMode, activeTab]);
+
+    if (authLoading || isLoading) {
+        return (
+            <div className="flex justify-center flex-col gap-4 items-center min-h-[50vh]">
+                <div className="animate-spin text-[var(--secondary)] text-4xl">🍸</div>
+                <div className="text-[var(--secondary)] font-mono tracking-widest text-xs uppercase animate-pulse">Consulting The Barkeep...</div>
+            </div>
+        );
+    }
+
+    if (!user) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
+                <span className="text-6xl mb-6">🔒</span>
+                <h2 className="text-3xl font-bold mb-4">Login Required</h2>
+                <p className="text-gray-400 max-w-md mb-8">You need to log in to access your personal Tasting Journal.</p>
+                <button
+                    onClick={openLoginModal}
+                    className="bg-[var(--secondary)] text-white px-8 py-3 rounded-full font-bold hover:scale-105 transition-all shadow-[0_0_15px_var(--primary-glow)]"
+                >
+                    Log In with Google
+                </button>
+            </div>
+        );
+    }
+
+
 
     return (
         <div className="flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4 pt-12">
