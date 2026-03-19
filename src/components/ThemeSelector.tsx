@@ -7,6 +7,8 @@ const themes = [
     { id: 'neon', name: 'Neon Nights', icon: '🌃', color: '#b026ff' },
     { id: 'speakeasy', name: 'Speakeasy', icon: '🥃', color: '#f59e0b' },
     { id: 'miami', name: 'Miami Vice', icon: '🦩', color: '#06b6d4' },
+    { id: 'tiki', name: 'Tiki Room', icon: '🌴', color: '#10b981' },
+    { id: 'midnight', name: 'Midnight Lounge', icon: '🌙', color: '#6366f1' },
 ] as const;
 
 export default function ThemeSelector() {

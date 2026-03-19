@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Theme = 'neon' | 'speakeasy' | 'miami';
+type Theme = 'neon' | 'speakeasy' | 'miami' | 'tiki' | 'midnight';
 
 interface ThemeContextType {
     theme: Theme;
@@ -16,7 +16,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [theme, setThemeState] = useState<Theme>(() => {
         if (typeof window !== 'undefined') {
             const storedTheme = localStorage.getItem('sipster-theme') as Theme;
-            if (storedTheme && ['neon', 'speakeasy', 'miami'].includes(storedTheme)) {
+            if (storedTheme && ['neon', 'speakeasy', 'miami', 'tiki', 'midnight'].includes(storedTheme)) {
                 return storedTheme;
             }
         }

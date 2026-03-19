@@ -78,7 +78,7 @@ export async function POST(req: Request) {
                     estimatedRecipe: z.object({
                         ingredients: z.array(z.object({
                             amount: z.string().describe("The measurement (e.g. '2 oz', '1 dash')"),
-                            item: z.string().describe(`The ingredient name. MATCH EXACTLY to standard list if possible: ${FLAT_INGREDIENTS_LIST.join(', ')}`)
+                            item: z.string().describe(`The ingredient name. MUST use an exact match from the standard list below IF it is fundamentally the same ingredient (e.g. 'Strucchi Vermouth' -> 'Sweet Vermouth'). HOWEVER, if the ingredient is uniquely distinct (e.g. 'Blue Curacao' vs 'Curacao', or 'Spanish Vermouth'), use the distinct name. Standard list: ${FLAT_INGREDIENTS_LIST.join(', ')}`)
                         })).describe("The ingredients required"),
                         instructions: z.array(z.string()).describe("Step-by-step instructions to make this drink at home")
                     }).describe("A generated, reverse-engineered guess at the recipe specs")

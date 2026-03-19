@@ -85,7 +85,7 @@ export async function POST(req: Request) {
             relationship: z.array(z.string()).describe("Array of 1-3 similar cocktails by name"),
             ingredients: z.array(z.object({
                 amount: z.string().describe("The measurement (e.g. '2 oz', '1 dash')"),
-                item: z.string().describe(`The ingredient name. MATCH EXACTLY to standard list if possible: ${FLAT_INGREDIENTS_LIST.join(', ')}`)
+                item: z.string().describe(`The ingredient name. MUST use an exact match from the standard list below IF it is fundamentally the same ingredient (e.g. 'Strucchi Vermouth' -> 'Sweet Vermouth'). HOWEVER, if the ingredient is uniquely distinct (e.g. 'Blue Curacao' vs 'Curacao', or 'Spanish Vermouth'), use the distinct name. Standard list: ${FLAT_INGREDIENTS_LIST.join(', ')}`)
             })).describe("The list of ingredients required to make the drink"),
             instructions: z.array(z.string()).describe("Step-by-step instructions to make the drink"),
             estimatedCost: z.number().min(1).max(4).describe("Estimated amortized cost-per-drink based on typical US liquor store ingredients (1=Cheap $, 4=Premium $$$$)"),
