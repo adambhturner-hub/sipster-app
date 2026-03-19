@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { db } from '@/lib/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 
@@ -147,12 +147,38 @@ export default function JournalPage() {
     }
 
     // Filter by tab
-    const filteredList = interactions.filter(item => {
-        if (activeTab === 'favorites') return item.isFavorite;
-        if (activeTab === 'wantToTry') return item.isWantToTry;
-        if (activeTab === 'triedIt') return item.isTried;
+    const filteredList = interactions.filter(fav => {
+        if (activeTab === 'favorites') return fav.isFavorite;
+        if (activeTab === 'wantToTry') return fav.isWantToTry;
+        if (activeTab === 'triedIt') return fav.isTried;
         return false;
     });
+
+    const groupedTimeline = useMemo(() => {
+        if (viewMode !== 'timeline' || activeTab !== 'triedIt') return [];
+        
+        const list = [...filteredList].sort((a, b) => {
+            const dateA = new Date(a.updatedAt || a.createdAt).getTime();
+            const dateB = new Date(b.updatedAt || b.createdAt).getTime();
+            return dateB - dateA;
+        });
+        
+        const groups: { dateStr: string, headerDate: string, items: InteractionRecord[] }[] = [];
+        list.forEach(fav => {
+            const rawDate = fav.updatedAt || fav.createdAt;
+            if (!rawDate) return;
+            const dateObj = new Date(rawDate);
+            const dateStr = dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+            
+            let lastGroup = groups[groups.length - 1];
+            if (!lastGroup || lastGroup.dateStr !== dateStr) {
+                groups.push({ dateStr, headerDate: dateStr, items: [fav] });
+            } else {
+                lastGroup.items.push(fav);
+            }
+        });
+        return groups;
+    }, [filteredList, viewMode, activeTab]);
 
     return (
         <div className="flex flex-col w-full max-w-6xl mx-auto z-10 relative pb-12 px-4 pt-12">
@@ -269,53 +295,96 @@ export default function JournalPage() {
                 </div>
             ) : viewMode === 'timeline' && activeTab === 'triedIt' ? (
                 <div className="max-w-3xl mx-auto w-full relative pt-4 pb-20 fade-in">
-                    <div className="absolute left-[36px] md:left-[106px] top-6 bottom-4 w-px bg-gradient-to-b from-gray-800 via-gray-700 to-transparent" />
-                    {filteredList.map((fav, i) => {
-                        let name = 'Custom Recipe';
-                        let href = `/recipe/${fav.id}`;
-                        if (fav.type === 'classic' && fav.cocktailId) {
-                            const classicCocktail = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
-                            if (classicCocktail) name = classicCocktail.name;
-                            href = `/menu/${fav.cocktailId}`;
-                        } else if (fav.type === 'custom_full' && fav.cocktailData) {
-                            name = fav.cocktailData.name || name;
-                        } else if (fav.name) {
-                            name = fav.name;
-                        }
-
-                        const dateStr = (fav.updatedAt || fav.createdAt) 
-                            ? new Date(fav.updatedAt || fav.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
-                            : 'Unknown Date';
-
-                        return (
-                            <div key={fav.id} className="relative flex gap-6 md:gap-8 items-start mb-8 group pl-4 md:pl-0 animate-fade-in-up" style={{ animationDelay: `${i * 50}ms` }}>
-                                <div className="hidden md:block w-20 text-right pt-2 shrink-0">
-                                    <span className="text-[10px] md:text-[11px] font-bold tracking-widest uppercase text-gray-500">{dateStr}</span>
+                    <div className="absolute left-[36px] md:left-[56px] top-6 bottom-4 w-px bg-gradient-to-b from-gray-800 via-gray-700 to-transparent" />
+                    
+                    {groupedTimeline.map((group, groupIndex) => (
+                        <div key={group.dateStr} className="mb-12 relative animate-fade-in-up" style={{ animationDelay: `${groupIndex * 100}ms` }}>
+                            {/* Group Header */}
+                            <div className="flex items-center gap-4 mb-6 relative z-10">
+                                <div className="w-16 md:w-24 text-right shrink-0">
+                                    <span className="text-xs md:text-sm font-extrabold tracking-widest text-[var(--primary)]">{group.headerDate}</span>
                                 </div>
-                                <div className="absolute left-[32px] md:left-[102px] top-[14px] w-2.5 h-2.5 rounded-full bg-gray-600 border-2 border-gray-900 group-hover:bg-[var(--primary)] group-hover:shadow-[0_0_15px_var(--primary-glow)] transition-colors z-10" />
-                                
-                                <Link href={href} className="flex-1 ml-12 md:ml-0 bg-gray-900/60 hover:bg-gray-900 border border-gray-800 hover:border-gray-700 p-5 rounded-2xl transition-all shadow-lg block">
-                                    <div className="md:hidden mb-2">
-                                        <span className="text-[10px] font-bold tracking-widest uppercase text-gray-500">{dateStr}</span>
-                                    </div>
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                                        <h3 className="text-xl font-bold font-serif text-white group-hover:text-[var(--primary)] transition-colors">{name}</h3>
-                                        {fav.rating && (
-                                            <div className="flex items-center gap-1 text-[var(--primary)] font-bold text-sm bg-[var(--primary)]/10 px-2 py-0.5 rounded-md border border-[var(--primary)]/20 shadow-inner w-fit">
-                                                <span>★</span> {fav.rating.toFixed(1)}
-                                            </div>
-                                        )}
-                                    </div>
-                                    {fav.notes && (
-                                        <p className="text-gray-300 text-sm italic line-clamp-2 md:line-clamp-none leading-relaxed">&ldquo;{fav.notes}&rdquo;</p>
+                                <div className="absolute left-[30px] md:left-[50px] w-3 h-3 rounded-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary-glow)]" />
+                                <div className="flex-1">
+                                    {group.items.length > 1 && (
+                                        <span className="bg-gray-800/80 text-gray-400 text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-bold">
+                                            {group.items.length} Drinks Logged
+                                        </span>
                                     )}
-                                    {!fav.notes && !fav.rating && (
-                                        <p className="text-gray-600 text-xs italic">Logged without notes.</p>
-                                    )}
-                                </Link>
+                                </div>
                             </div>
-                        );
-                    })}
+
+                            {/* Group Items */}
+                            <div className="flex flex-col gap-6">
+                                {group.items.map((fav, i) => {
+                                    let name = 'Custom Recipe';
+                                    let href = `/recipe/${fav.id}`;
+                                    let flavorProfile = '';
+                                    let difficulty = '';
+                                    
+                                    if (fav.type === 'classic' && fav.cocktailId) {
+                                        const classicCocktail = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
+                                        if (classicCocktail) {
+                                            name = classicCocktail.name;
+                                            flavorProfile = classicCocktail.flavorProfile?.[0] || '';
+                                            difficulty = classicCocktail.difficultyLevel?.split(' • ')[0] || '';
+                                        }
+                                        href = `/menu/${fav.cocktailId}`;
+                                    } else if (fav.type === 'custom_full' && fav.cocktailData) {
+                                        name = fav.cocktailData.name || name;
+                                        flavorProfile = fav.cocktailData.flavorProfile?.[0] || '';
+                                        difficulty = fav.cocktailData.difficultyLevel?.split(' • ')[0] || '';
+                                    } else if (fav.name) {
+                                        name = fav.name;
+                                    }
+
+                                    const fallbackText = fav.type === 'custom_full' ? 'Logged custom recipe.' : fav.type === 'custom' ? 'Generated AI log.' : 'No tasting notes yet.';
+
+                                    return (
+                                        <div key={fav.id} className="relative flex gap-6 md:gap-8 items-start group pl-12 md:pl-28">
+                                            {/* Sub node dot */}
+                                            <div className="absolute left-[33px] md:left-[53px] top-[24px] w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--primary)] transition-colors z-10" />
+                                            
+                                            <Link href={href} className="flex-1 bg-gray-900/40 hover:bg-gray-900 border border-gray-800 hover:border-[var(--primary)]/30 p-5 rounded-2xl transition-all shadow-lg block max-w-[600px]">
+                                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                                                    <h3 className="text-xl font-bold font-serif text-white group-hover:text-[var(--primary)] transition-colors">{name}</h3>
+                                                    {fav.rating && (
+                                                        <div className="flex items-center gap-1 text-[var(--primary)] font-bold text-sm bg-[var(--primary)]/10 px-2 py-0.5 rounded-md border border-[var(--primary)]/20 shadow-inner w-fit shrink-0">
+                                                            <span>★</span> {fav.rating.toFixed(1)}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {fav.notes ? (
+                                                    <p className="text-gray-300 text-sm italic line-clamp-2 md:line-clamp-none leading-relaxed mb-3">&ldquo;{fav.notes}&rdquo;</p>
+                                                ) : (
+                                                    <p className="text-gray-600 text-xs italic mb-3">{fallbackText}</p>
+                                                )}
+                                                
+                                                {/* Mini Badges */}
+                                                <div className="flex flex-wrap gap-1.5">
+                                                    {flavorProfile && (
+                                                        <span className="px-1.5 py-0.5 bg-gray-950 border border-gray-800 text-gray-400 text-[9px] uppercase font-bold tracking-wider rounded">
+                                                            {flavorProfile}
+                                                        </span>
+                                                    )}
+                                                    {difficulty && (
+                                                        <span className="px-1.5 py-0.5 bg-gray-950 border border-gray-800 text-gray-400 text-[9px] uppercase font-bold tracking-wider rounded">
+                                                            {difficulty}
+                                                        </span>
+                                                    )}
+                                                    {fav.type === 'custom_full' && (
+                                                        <span className="px-1.5 py-0.5 bg-[var(--secondary)]/10 border border-[var(--secondary)]/30 text-[var(--secondary)] text-[9px] uppercase font-bold tracking-wider rounded">
+                                                            Home Original
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in">
