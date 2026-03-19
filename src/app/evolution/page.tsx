@@ -11,12 +11,12 @@ function EvolutionContent() {
     return (
         <div className="w-full h-screen overflow-hidden bg-[#0A0A0A] relative text-white pt-20">
             {/* Header overlay */}
-            <div className="absolute top-20 left-4 md:left-8 z-10 pointer-events-none">
-                <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-2 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
-                    Evolution <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Tree</span> 🧬
+            <div className="absolute top-20 left-4 md:left-8 z-10 pointer-events-none md:max-w-md">
+                <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-3 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                    Evolution <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]">Tree</span> 🧬
                 </h1>
-                <p className="text-gray-400 text-sm md:text-base max-w-sm">
-                    Visually explore the DNA of cocktails. Select a node to evolve it into a new creation.
+                <p className="text-gray-300 text-sm md:text-base leading-relaxed tracking-wide shadow-black drop-shadow-md">
+                    Explore how cocktails mutate, branch, and become entirely new drinks. Select any node to generate a twist, riff, or descendant.
                 </p>
             </div>
 

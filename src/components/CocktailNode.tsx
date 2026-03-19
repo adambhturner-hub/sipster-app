@@ -1,7 +1,16 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { Cocktail } from '@/data/cocktails';
+
+const LOADING_PHRASES = [
+    "Recombining spirit base...",
+    "Preserving citrus backbone...",
+    "Searching for a darker mutation...",
+    "Sequencing flavor profile...",
+    "Extracting botanical notes...",
+];
 
 interface CocktailNodeData {
     cocktail?: Cocktail;
@@ -10,12 +19,24 @@ interface CocktailNodeData {
 }
 
 export default function CocktailNode({ data, selected }: { data: CocktailNodeData, selected: boolean }) {
+    const [phraseIndex, setPhraseIndex] = useState(0);
+
+    useEffect(() => {
+        if (data.isGenerating) {
+            const interval = setInterval(() => {
+                setPhraseIndex(prev => (prev + 1) % LOADING_PHRASES.length);
+            }, 2500);
+            return () => clearInterval(interval);
+        }
+    }, [data.isGenerating]);
+
     if (data.isGenerating) {
         return (
-            <div className="w-56 h-28 bg-gray-900/80 backdrop-blur-md border-2 border-dashed border-purple-500/50 rounded-2xl flex flex-col items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.4)] animate-pulse relative">
+            <div className="w-56 h-32 bg-gray-900/80 backdrop-blur-md border-2 border-dashed border-[var(--primary)]/50 rounded-2xl flex flex-col items-center justify-center shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] animate-pulse relative p-4 text-center">
                 <Handle type="target" position={Position.Top} className="opacity-0" />
-                <span className="text-4xl animate-[spin_3s_linear_infinite] mb-2 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">🧬</span>
-                <span className="text-purple-400 font-mono text-[10px] font-bold tracking-widest uppercase">Evolving...</span>
+                <span className="text-4xl animate-[spin_3s_linear_infinite] mb-3 filter drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]">🧬</span>
+                <span className="text-[var(--primary)] font-mono text-[10px] font-bold tracking-widest uppercase mb-1">Evolving...</span>
+                <span className="text-gray-400 font-sans text-xs italic animate-fade-in transition-opacity duration-500 min-h-[32px]">{LOADING_PHRASES[phraseIndex]}</span>
                 <Handle type="source" position={Position.Bottom} className="opacity-0" />
             </div>
         );
@@ -24,10 +45,20 @@ export default function CocktailNode({ data, selected }: { data: CocktailNodeDat
     const { cocktail } = data;
     if (!cocktail) return null;
 
+    const isGen0 = data.depth === 0 || data.depth === undefined;
+    const isNewChild = data.depth && data.depth > 0 && !selected;
+
+    // Glowing logic: selected gets bright cyan/primary, new child gets subtle purple/cyan
+    const glowClass = selected 
+        ? 'ring-2 ring-[var(--primary)] shadow-[0_0_30px_rgba(var(--primary-rgb),0.8)] scale-105 z-50' 
+        : isNewChild 
+            ? 'ring-1 ring-[var(--accent)] shadow-[0_0_15px_rgba(var(--accent-rgb),0.4)] hover:ring-[var(--primary)]'
+            : 'ring-1 ring-gray-800 shadow-2xl hover:ring-gray-600';
+
     return (
         <div className={`
             relative w-56 rounded-2xl overflow-hidden transition-all duration-300
-            ${selected ? 'ring-2 ring-[var(--primary)] shadow-[0_0_30px_rgba(var(--primary-rgb),0.5)] scale-105 z-50' : 'ring-1 ring-gray-800 shadow-2xl hover:ring-gray-600'}
+            ${glowClass}
             bg-gray-950 backdrop-blur-xl
         `}>
             {/* Top connection point */}

@@ -33,7 +33,13 @@ Return a valid JSON object matching this EXACT schema:
   ],
   "instructions": ["Step 1...", "Step 2..."],
   "flavorProfile": ["Flavor 1", "Flavor 2", "Flavor 3"],
-  "description": "A 1-2 sentence description of how this evolves from the parent."
+  "description": "A 1-2 sentence description of how this evolves from the parent.",
+  "evolutionRationale": {
+    "mutation": "Brief description of the core change (e.g. 'Rum -> Bourbon')",
+    "preserved": "What stayed true to the parent (e.g. 'tropical citrus core')",
+    "shiftedToward": "The new flavor direction (e.g. 'warmer, richer, darker profile')",
+    "resultSummary": "Overall vibe change (e.g. 'less beachy, more stormy / whiskey-driven')"
+  }
 }`;
 
         const chatCompletion = await openaiClient.chat.completions.create({

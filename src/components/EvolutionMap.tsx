@@ -210,8 +210,24 @@ function EvolutionMapInner({ initialCocktailId }: EvolutionMapInnerProps) {
                             </div>
                         </div>
 
-                        {/* Recipe Build Preview */}
-                        <div className="mb-4 bg-black/40 rounded-xl p-3 md:p-4 border border-gray-800/50 max-h-[150px] overflow-y-auto custom-scrollbar">
+                        {/* Recipe & Rationale Preview */}
+                        <div className="mb-4 bg-black/40 rounded-xl p-3 md:p-4 border border-gray-800/50 max-h-[250px] overflow-y-auto custom-scrollbar space-y-5">
+                            {/* Rationale Section (if exists) */}
+                            {(selectedNode.data.cocktail as any)?.evolutionRationale && (
+                                <div className="border border-[var(--primary)]/30 p-3.5 rounded-lg bg-gradient-to-br from-[var(--primary)]/10 to-transparent">
+                                    <h4 className="text-[10px] text-[var(--primary)]/90 uppercase tracking-widest font-bold mb-2 flex items-center gap-1.5">
+                                        <span>🧬</span> Mutation Rationale
+                                    </h4>
+                                    <div className="space-y-1.5 text-xs font-sans">
+                                        <p><span className="text-gray-500 font-mono">Mutation:</span> <span className="text-white font-medium">{(selectedNode.data.cocktail as any).evolutionRationale.mutation}</span></p>
+                                        <p><span className="text-gray-500 font-mono">Preserved:</span> <span className="text-gray-300">{(selectedNode.data.cocktail as any).evolutionRationale.preserved}</span></p>
+                                        <p><span className="text-gray-500 font-mono">Direction:</span> <span className="text-[var(--primary)]">{(selectedNode.data.cocktail as any).evolutionRationale.shiftedToward}</span></p>
+                                        <p className="mt-2.5 pt-2 border-t border-[var(--primary)]/20 text-gray-400 italic font-medium">" {(selectedNode.data.cocktail as any).evolutionRationale.resultSummary} "</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Standard Recipe Output */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <h4 className="text-[10px] text-[var(--primary)]/70 uppercase tracking-widest font-bold mb-1.5 flex items-center gap-1">
@@ -239,12 +255,27 @@ function EvolutionMapInner({ initialCocktailId }: EvolutionMapInnerProps) {
                             </div>
                         </div>
 
+                        {/* Quick Mutations */}
+                        <div className="mb-3 flex flex-wrap gap-2">
+                            {['Smokier', 'Tropical', 'Lower ABV', 'Spicier', 'More bitter', 'Party-friendly'].map(chip => (
+                                <button
+                                    key={chip}
+                                    type="button"
+                                    disabled={isGenerating}
+                                    onClick={() => setPrompt(chip)}
+                                    className="text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full border border-gray-700 bg-gray-900 text-gray-400 hover:text-[var(--primary)] hover:border-[var(--primary)] hover:bg-[var(--primary)]/10 transition-colors disabled:opacity-50"
+                                >
+                                    {chip}
+                                </button>
+                            ))}
+                        </div>
+
                         <form onSubmit={handleGenerate} className="flex gap-2">
                             <input
                                 type="text"
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
-                                placeholder="e.g. 'Make it smoky with Mezcal', 'Turn it into a spicy highball'"
+                                placeholder="Describe one twist, ingredient swap, or vibe shift..."
                                 className="flex-1 bg-black/50 border border-gray-700/50 rounded-full px-5 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--primary)] transition-all font-sans"
                                 autoFocus
                             />
@@ -265,9 +296,9 @@ function EvolutionMapInner({ initialCocktailId }: EvolutionMapInnerProps) {
                                         localStorage.setItem('sipster-riff-cocktail', JSON.stringify(selectedNode.data.cocktail));
                                         window.location.href = '/create?mode=riff';
                                     }}
-                                    className="text-xs font-mono text-gray-400 hover:text-[var(--primary)] transition-all uppercase tracking-widest flex items-center gap-1.5"
+                                    className="text-xs font-mono text-[var(--accent)] hover:text-white hover:drop-shadow-[0_0_8px_var(--accent-glow)] transition-all uppercase tracking-widest flex items-center gap-1.5 font-bold"
                                 >
-                                    Take to Creator Studio 🛠️
+                                    Open this mutation in Creator Studio 🛠️
                                 </button>
                             </div>
                         )}
