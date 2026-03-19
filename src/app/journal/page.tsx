@@ -219,7 +219,7 @@ export default function JournalPage() {
                         <>
                             <div className="w-px h-10 bg-gray-800"></div>
                             <div className="flex flex-col items-center">
-                                <span className="text-2xl font-bold text-[var(--primary)]">{tasteProfile.topFlavors[0] || 'Balanced'}</span>
+                                <span className="text-2xl font-bold text-[var(--primary)]">{tasteProfile.topFlavors?.[0] || 'Balanced'}</span>
                                 <span className="text-xs uppercase tracking-widest text-gray-500 font-bold">Top Flavor</span>
                             </div>
                         </>

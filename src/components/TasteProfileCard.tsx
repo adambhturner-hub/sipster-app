@@ -125,7 +125,7 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
                             <span className="text-xs font-bold tracking-widest uppercase text-gray-500 flex items-center mr-2">Top Flavors:</span>
-                            {tasteProfile.topFlavors.map((flavor, idx) => (
+                            {(tasteProfile.topFlavors || []).map((flavor, idx) => (
                                 <span key={idx} className="bg-purple-500/10 text-purple-300 border border-purple-500/20 px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide">
                                     {flavor}
                                 </span>
