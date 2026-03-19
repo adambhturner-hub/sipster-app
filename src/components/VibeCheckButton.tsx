@@ -158,21 +158,29 @@ export default function VibeCheckButton() {
             >
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="flex flex-col items-center justify-center gap-3 relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
-                        {loading ? '🔮' : '🎧'}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 w-full px-4">
+                    <div className="flex items-center gap-4 text-left w-full sm:w-auto">
+                        <div className="w-12 h-12 shrink-0 rounded-full bg-green-500/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300 border border-green-500/20">
+                            {loading ? '🔮' : '🎧'}
+                        </div>
+                        <div>
+                            <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                                {loading ? "Reading the room..." : "Run a Vibe Check"}
+                                {!loading && <span className="bg-green-500/20 text-green-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border border-green-500/30">Spotify</span>}
+                            </h3>
+                            <p className="text-gray-400 text-sm">
+                                {loading
+                                    ? "Matching your track to your My Bar inventory..."
+                                    : "Pair your current Spotify track with a drink from your bar."}
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="text-center">
-                        <h3 className="text-white font-bold text-lg">
-                            {loading ? "Reading the room..." : "Run a Vibe Check"}
-                        </h3>
-                        <p className="text-gray-400 text-sm">
-                            {loading
-                                ? "Matching your Spotify to your My Bar inventory..."
-                                : "Let AI pair a cocktail from your bar with your current Spotify track."}
-                        </p>
-                    </div>
+                    {!loading && (
+                        <div className="shrink-0 bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm font-bold py-2 px-6 rounded-full transition-colors">
+                            Run Now
+                        </div>
+                    )}
 
                     {error && (
                         <p className="text-red-400 text-xs mt-2 bg-red-500/10 px-3 py-1 rounded-full">

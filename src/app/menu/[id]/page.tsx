@@ -85,7 +85,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                 {/* Header Section */}
                 <div className="mb-12">
                     <Link href="/menu" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">
-                        &larr; Back to Menu
+                        &larr; Back to Discover
                     </Link>
                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mt-4">
                         <div className="relative flex-shrink-0 w-64 h-64 bg-gray-900/50 rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(176,38,255,0.15)] border border-[var(--primary)]/20 overflow-visible">
@@ -102,19 +102,27 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
                                     {cocktail.name}
                                 </h1>
                                 <GlobalStarRating cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')} />
-                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
-                                    <ShareButton
-                                        title={cocktail.name}
-                                        text={`Check out the ${cocktail.name} on Sipster! ${cocktail.tagline}`}
-                                        path={`/menu/${cocktail.name.toLowerCase().replace(/ /g, '-')}`}
-                                    />
-                                    <FavoriteButton
-                                        cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')}
-                                        cocktailName={cocktail.name}
-                                    />
-                                </div>
                             </div>
-                            <p className="text-xl text-gray-400 italic">&quot;{cocktail.tagline}&quot;</p>
+
+                            <div className="flex flex-wrap items-center gap-2 mb-4">
+                                <span className="px-3 py-1 bg-gray-900 border border-gray-800 rounded-full text-xs font-bold text-gray-300 uppercase tracking-widest">{cocktail.primarySpirit}</span>
+                                <span className="px-3 py-1 bg-gray-900 border border-gray-800 rounded-full text-xs font-bold text-gray-300 uppercase tracking-widest">{cocktail.glass} Glass</span>
+                                <span className="px-3 py-1 bg-gray-900 border border-gray-800 rounded-full text-xs font-bold text-gray-300 uppercase tracking-widest">{cocktail.difficultyLevel.split(' • ')[0]}</span>
+                            </div>
+
+                            <p className="text-xl text-gray-400 italic mb-4">&quot;{cocktail.tagline}&quot;</p>
+
+                            <div className="flex flex-wrap items-center justify-start gap-3 mt-4">
+                                <ShareButton
+                                    title={cocktail.name}
+                                    text={`Check out the ${cocktail.name} on Sipster! ${cocktail.tagline}`}
+                                    path={`/menu/${cocktail.name.toLowerCase().replace(/ /g, '-')}`}
+                                />
+                                <FavoriteButton
+                                    cocktailId={cocktail.name.toLowerCase().replace(/ /g, '-')}
+                                    cocktailName={cocktail.name}
+                                />
+                            </div>
                         </div>
                     </div>
                     <p className="mt-8 text-2xl text-gray-300 leading-relaxed max-w-2xl font-sans font-light">

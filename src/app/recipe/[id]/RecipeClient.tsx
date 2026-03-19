@@ -160,6 +160,14 @@ export default function RecipeClient({ id }: { id: string }) {
                                     )}
                                 </div>
                             </div>
+
+                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-4">
+                                <span className="px-3 py-1 bg-gray-900 border border-gray-800 rounded-full text-xs font-bold text-gray-300 uppercase tracking-widest">{cocktail.primarySpirit || 'Any Spirit'}</span>
+                                <span className="px-3 py-1 bg-gray-900 border border-gray-800 rounded-full text-xs font-bold text-gray-300 uppercase tracking-widest">{cocktail.glass || 'Any'} Glass</span>
+                                {cocktail.difficultyLevel && (
+                                    <span className="px-3 py-1 bg-gray-900 border border-gray-800 rounded-full text-xs font-bold text-gray-300 uppercase tracking-widest">{cocktail.difficultyLevel.split(' • ')[0]}</span>
+                                )}
+                            </div>
                             <p className="text-xl text-[var(--primary)] italic">&quot;{cocktail.tagline}&quot;</p>
 
                             <div className="flex items-center justify-center md:justify-start gap-2 mt-3">

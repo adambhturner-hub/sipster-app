@@ -321,8 +321,9 @@ export default function MenuPage() {
                     A curated selection of timeless classics, plus incredible custom recipes crafted by the Sipster community.
                 </p>
 
-                {/* Catalog Source Toggle */}
-                <div className="flex justify-center mb-8 relative z-30">
+                {/* --- Row 1: Source Tabs & View Toggle --- */}
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-6 relative z-30">
+                    {/* Catalog Source Toggle */}
                     <div className="flex bg-black/40 border border-gray-700 rounded-full p-1 overflow-x-auto no-scrollbar max-w-full">
                         <button
                             onClick={() => setFeedMode('classics')}
@@ -354,10 +355,8 @@ export default function MenuPage() {
                             </button>
                         )}
                     </div>
-                </div>
 
-                {/* View Mode Toggle */}
-                <div className="flex justify-center mb-8 relative z-30">
+                    {/* View Mode Toggle */}
                     <div className="flex bg-black/40 border border-gray-700 rounded-full p-1 overflow-hidden">
                         <button
                             onClick={() => setViewMode('grid')}
@@ -374,8 +373,8 @@ export default function MenuPage() {
                     </div>
                 </div>
 
-                {/* Actions Row: Search & Sort */}
-                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 z-30 relative text-left w-full max-w-xl mx-auto">
+                {/* --- Row 2: Search, Sort, and Makeable Toggle --- */}
+                <div className="flex flex-col lg:flex-row justify-center items-center gap-4 mb-6 z-30 relative text-left w-full max-w-5xl mx-auto px-2">
                     {/* Text Search Bar */}
                     <div className="relative w-full group flex-grow">
                         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
@@ -387,44 +386,45 @@ export default function MenuPage() {
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Find a drink or ingredient..."
+                            placeholder="Search Catalog..."
                             className="w-full bg-black/60 border border-white/20 rounded-full py-3 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--primary)] focus:shadow-[0_0_15px_var(--primary-glow)] transition-all"
                         />
                     </div>
 
-                    {/* Sort Dropdown */}
-                    <div className="flex items-center gap-3 bg-black/40 border border-white/10 rounded-full py-2 pl-6 pr-2 shrink-0 relative overflow-hidden">
-                        <span className="text-gray-400 text-sm font-bold uppercase tracking-widest hidden lg:block">Sort</span>
-                        <select
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                            className="bg-black/90 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 min-h-[44px] text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
-                        >
-                            <option value="popular">🔥 Most Popular</option>
-                            <option value="makeable-first">✅ Makeable First</option>
-                            <option value="drank">🍹 Most Mixed</option>
-                            <option value="name-asc">🔤 A-Z</option>
-                            <option value="cost-asc">💵 $ to $$$$</option>
-                            <option value="cost-desc">💸 $$$$ to $</option>
-                            <option value="strength-desc">💪 Strongest</option>
-                            <option value="strength-asc">🍃 Lightest</option>
-                        </select>
-                    </div>
-                </div>
+                    <div className="flex flex-row items-center gap-3 w-full lg:w-auto">
+                        {/* Sort Dropdown */}
+                        <div className="flex items-center gap-3 bg-black/40 border border-white/10 rounded-full py-2 pl-4 md:pl-6 pr-2 shrink-0 relative overflow-hidden flex-1 lg:flex-none">
+                            <span className="text-gray-400 text-sm font-bold uppercase tracking-widest hidden md:block">Sort</span>
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value)}
+                                className="w-full bg-black/90 border border-[var(--primary)] text-white shadow-[0_0_10px_var(--primary-glow)] rounded-full px-4 py-2 min-h-[44px] text-sm focus:outline-none cursor-pointer appearance-none pr-8 hover:bg-gray-900 transition-colors bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_10px_center]"
+                            >
+                                <option value="popular">🔥 Most Popular</option>
+                                <option value="makeable-first">✅ Makeable First</option>
+                                <option value="drank">🍹 Most Mixed</option>
+                                <option value="name-asc">🔤 A-Z</option>
+                                <option value="cost-asc">💵 $ to $$$$</option>
+                                <option value="cost-desc">💸 $$$$ to $</option>
+                                <option value="strength-desc">💪 Strongest</option>
+                                <option value="strength-asc">🍃 Lightest</option>
+                            </select>
+                        </div>
 
-                {/* Master Switch & AI Search Bar */}
-                <div className="max-w-xl mx-auto mb-6 relative z-30">
-                    <div className="flex justify-end mb-3">
-                        <div className="flex items-center gap-3 bg-black/40 border border-white/10 px-4 py-2 min-h-[44px] rounded-2xl cursor-pointer group/switch hover:border-[var(--primary)]/50 transition-colors" onClick={() => setShowMakeableOnly(!showMakeableOnly)}>
+                        {/* Makeable Only Toggle */}
+                        <div className="flex items-center justify-center gap-3 bg-black/40 border border-white/10 px-4 py-2 min-h-[44px] rounded-full cursor-pointer group/switch hover:border-[var(--primary)]/50 transition-colors shrink-0" onClick={() => setShowMakeableOnly(!showMakeableOnly)}>
                             <div className={`w-10 h-5 rounded-full transition-colors relative flex items-center ${showMakeableOnly ? 'bg-[var(--primary)]' : 'bg-gray-700'}`}>
                                 <span className={`w-3.5 h-3.5 rounded-full bg-white absolute transition-transform ${showMakeableOnly ? 'translate-x-6' : 'translate-x-1'}`}></span>
                             </div>
-                            <span className={`text-xs font-bold tracking-wider uppercase transition-colors select-none ${showMakeableOnly ? 'text-[var(--primary)] text-shadow-[0_0_10px_var(--primary)]' : 'text-gray-400'}`}>
-                                100% Makeable
+                            <span className={`text-xs font-bold tracking-wider uppercase transition-colors select-none hidden md:block ${showMakeableOnly ? 'text-[var(--primary)] text-shadow-[0_0_10px_var(--primary)]' : 'text-gray-400'}`}>
+                                Makeable Now
                             </span>
                         </div>
                     </div>
+                </div>
 
+                {/* --- Row 3: Vibe Search Input --- */}
+                <div className="max-w-2xl mx-auto mb-6 relative z-30 px-2">
                     <form
                         onSubmit={(e: React.FormEvent<HTMLFormElement>) => { e.preventDefault(); handleAISearch(); }}
                         className="relative"
@@ -433,7 +433,7 @@ export default function MenuPage() {
                             type="text"
                             value={aiSearchQuery}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAiSearchQuery(e.target.value)}
-                            placeholder={isSearching ? "Asking the Bartender..." : "Craving something specific? Describe your vibe..."}
+                            placeholder={isSearching ? "Asking the Bartender..." : "Ask Sipster What Fits..."}
                             disabled={isSearching}
                             className={`w-full bg-black/60 border ${isSearching ? 'border-[var(--primary)]' : 'border-white/20'} rounded-full px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-[var(--accent)] focus:shadow-[0_0_15px_var(--primary-glow)] transition-all pr-12`}
                         />
@@ -659,13 +659,21 @@ export default function MenuPage() {
                     <div className="text-[var(--primary)] animate-pulse font-serif italic text-xl">Loading community creations...</div>
                 </div>
             ) : cocktailsToShow.length === 0 ? (
-                <div className="text-center py-20 bg-black/40 border border-white/10 rounded-3xl mt-8">
+                <div className="text-center py-20 bg-black/40 border border-white/10 rounded-3xl mt-8 px-4">
                     <span className="text-6xl opacity-50 block mb-4">🧊</span>
-                    <h3 className="text-2xl font-bold mb-2">Nothing found...</h3>
-                    <p className="text-gray-400 max-w-md mx-auto mb-6">We couldn't find any drinks matching these rigid filters.</p>
+                    <h3 className="text-2xl font-bold mb-2">
+                        {showMakeableOnly && myBar.length < 5 ? 'Your bar is still getting built.' : showMakeableOnly ? 'No 100% matches right now.' : 'Nothing found...'}
+                    </h3>
+                    <p className="text-gray-400 max-w-md mx-auto mb-6 text-sm md:text-base">
+                        {showMakeableOnly && myBar.length < 5
+                            ? 'Add a few base spirits and modifiers to unlock smarter Makeable matches.'
+                            : showMakeableOnly
+                                ? 'Try turning off Makeable Now, adding a bottle, or letting Sipster suggest substitutions.'
+                                : "We couldn't find any drinks matching these rigid filters."}
+                    </p>
                     <button
                         onClick={clearFilters}
-                        className="text-[var(--accent)] border border-[var(--accent)]/50 px-6 py-2 rounded-full hover:bg-[var(--accent)]/10 transition-colors"
+                        className="text-[var(--accent)] border border-[var(--accent)]/50 px-6 py-2 rounded-full hover:bg-[var(--accent)]/10 transition-colors font-bold text-sm"
                     >
                         Clear Filters
                     </button>
