@@ -524,7 +524,7 @@ export default function MenuPage() {
 
                     <button
                         onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                        className="flex items-center justify-center min-h-[44px] gap-2 text-gray-400 hover:text-white transition-colors text-sm uppercase tracking-widest font-bold font-sans"
+                        className="flex items-center justify-center px-6 py-2 min-h-[44px] gap-2 text-gray-300 hover:text-white transition-all text-sm uppercase tracking-widest font-bold font-sans bg-gray-900/60 border-2 border-gray-700 hover:border-gray-500 rounded-full shadow-lg"
                     >
                         {showAdvancedFilters ? 'Hide Filters ⬆️' : 'Advanced Filters ⬇️'}
                         {activeFilterCount > 0 && <span className="bg-[var(--secondary)] text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">{activeFilterCount}</span>}
