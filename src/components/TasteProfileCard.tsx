@@ -136,13 +136,13 @@ export default function TasteProfileCard({ interactions }: TasteProfileCardProps
                             <button
                                 onClick={runAnalysis}
                                 disabled={isAnalyzing || !canAnalyze}
-                                className="px-5 py-2.5 bg-gray-900 border border-gray-700 hover:border-purple-500/50 rounded-full text-sm font-bold text-gray-300 hover:text-white transition-all flex items-center gap-2 shadow-lg disabled:opacity-50"
+                                className="px-5 py-2.5 bg-gray-900 border-2 border-gray-600 hover:border-purple-500/60 rounded-full text-sm font-bold text-gray-200 hover:text-white transition-all flex items-center gap-2 shadow-lg disabled:opacity-50"
                             >
                                 {isAnalyzing ? '🔄 Analyzing...' : '🔄 Recalibrate Profile'}
                             </button>
                             <Link 
-                                href={`/discover`} 
-                                className="px-5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-full text-sm font-bold text-purple-300 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+                                href={`/menu`} 
+                                className="px-5 py-2.5 bg-purple-500/10 hover:bg-purple-500/20 border-2 border-purple-500/60 hover:border-purple-400 rounded-full text-sm font-bold text-purple-300 hover:text-purple-200 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
                             >
                                 🔍 Find Matching Drinks
                             </Link>
