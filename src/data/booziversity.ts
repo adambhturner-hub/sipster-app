@@ -35,7 +35,7 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         description: 'Discover the original 1806 definition of the cocktail and the golden ratio of balance.',
         content: [
             'The word "cocktail" gets thrown around a lot today to describe anything mixed in a glass, but historically, it meant something very specific. On May 13, 1806, an upstate New York newspaper editor responded to a reader\'s question by defining a cocktail simply as "a stimulating liquor, composed of spirits of any kind, sugar, water, and bitters."',
-            'If you strip away the neon umbrellas and modern syrups, that 1806 definition remains the absolute bedrock of mixology. A spirit provides the base, sugar provides the needed texture and weight, water (via ice dilution) provides the volume and chilling, and bitters provide the complex seasoning.',
+            'CALLOUT: If you strip away the neon umbrellas and modern syrups, that 1806 definition remains the absolute bedrock of mixology. A spirit provides the base, sugar provides the needed texture and weight, water (via ice dilution) provides the volume and chilling, and bitters provide the complex seasoning.',
             'To understand this golden ratio in its purest form, there is no better starting point than the Old Fashioned. It is exactly the 1806 definition brought to life: Whiskey (spirit), a sugar cube (sugar), ice (water), and Angostura (bitters). By mastering this simple four-part harmony, you master the foundation of everything that follows.'
         ],
         whyItMatters: [
@@ -85,7 +85,8 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         content: [
             'Once bartenders mastered the bitter-and-sugar balance of the Old Fashioned, they began experimenting with introducing acid. Enter the Sour, arguably the single most important and frequently replicated template in cocktail history. Once you understand the mechanics of a Sour, you instantly know how to make variations.',
             'The classic "Sour" relies on a delicate trinity: a base spirit (for the foundation), a sour citrus component (usually lemon or lime for brightness), and a sweet component (usually simple syrup or a liqueur) to round off the sharp acidic edges.',
-            'The magic lies in the tension between the sweet and the sour. The canonical formula is typically 2 ounces of Spirit, 1 ounce of Sour, and ¾ ounce of Sweet (the 2:1:¾ ratio). To taste this perfect tension, look no further than a classic Daiquiri—a flawless trinity of Rum, Lime, and Sugar.'
+            'CALLOUT: The magic lies in the tension between the sweet and the sour. The canonical formula is typically 2 ounces of Spirit, 1 ounce of Sour, and ¾ ounce of Sweet (the 2:1:¾ ratio).',
+            'To taste this perfect tension, look no further than a classic Daiquiri—a flawless trinity of Rum, Lime, and Sugar.'
         ],
         whyItMatters: [
             'You will understand why your drinks taste "too sharp" (needs sweet) or "too flat" (needs sour).',
@@ -98,11 +99,16 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
             'The classic Daiquiri is the ultimate blank canvas to test your citrus balance.'
         ],
         quiz: [
-            { question: 'What is the "Trinity" of the Sour Template?', options: ['Spirit, Sweet, Sour', 'Spirit, Bitter, Sweet', 'Spirit, Soda, Sour'], correctAnswerIndex: 0 },
-            { question: 'What is the canonical ratio for a modern sour?', options: ['1:1:1', '2:1:¾', '3:2:1'], correctAnswerIndex: 1 },
-            { question: 'If a Sour tastes too sharp or astringent, what is it missing?', options: ['More Spirit', 'More Sweetness', 'More Acid'], correctAnswerIndex: 1 }
+            { question: 'What is the "Trinity" of the Sour Template?', options: ['Spirit, Sweet, Sour', 'Spirit, Bitter, Sweet', 'Spirit, Soda, Sour'], correctAnswerIndex: 0, explanation: 'Correct. A sour requires a Spirit base, a Sweet modifier, and a Sour citrus to balance each other out.' },
+            { question: 'What is the canonical ratio for a modern sour?', options: ['1:1:1', '2:1:¾', '3:2:1'], correctAnswerIndex: 1, explanation: 'Nailed it. 2oz Spirit, 1oz Sour, and 0.75oz Sweet represents the modern golden ratio for hundreds of classic cocktails.' },
+            { question: 'If a Sour tastes too sharp or astringent, what is it missing?', options: ['More Spirit', 'More Sweetness', 'More Acid'], correctAnswerIndex: 1, explanation: 'Exactly. Sweetness directly counteracts acidity. If a drink is too sour, it simply needs more sugar to pull the tension back into balance.' }
         ],
-        featuredCocktailId: 'Daiquiri'
+        featuredCocktailId: 'Daiquiri',
+        tutorContextualPrompts: [
+            'Explain the 2:1:0.75 ratio logic.',
+            'How do I save a drink that is too sour?',
+            'What is the difference between Lemon and Lime in a sour?'
+        ]
     },
     {
         id: 'ratio-thinking',
