@@ -309,9 +309,11 @@ export default function JournalPage() {
                     {groupedTimeline.map((group, groupIndex) => (
                         <div key={group.dateStr} className="mb-12 relative animate-fade-in-up" style={{ animationDelay: `${groupIndex * 100}ms` }}>
                             {/* Group Header */}
-                            <div className="flex items-center gap-4 mb-6 relative z-10">
-                                <div className="w-16 md:w-24 text-right shrink-0">
-                                    <span className="text-xs md:text-sm font-extrabold tracking-widest text-[var(--primary)]">{group.headerDate}</span>
+                            <div className="flex items-center gap-4 mb-6 relative z-10 w-full md:w-auto">
+                                <div className="w-16 md:w-28 flex flex-col items-end shrink-0 leading-tight">
+                                    <span className="text-xs md:text-sm font-extrabold tracking-widest text-[var(--primary)] text-right">
+                                        {group.headerDate}
+                                    </span>
                                 </div>
                                 <div className="absolute left-[30px] md:left-[50px] w-3 h-3 rounded-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary-glow)]" />
                                 <div className="flex-1">
@@ -331,16 +333,20 @@ export default function JournalPage() {
                                     let flavorProfile = '';
                                     let difficulty = '';
                                     
+                                    let emoji = '🍹';
+                                    
                                     if (fav.type === 'classic' && fav.cocktailId) {
                                         const classicCocktail = classicCocktails.find(c => c.name.toLowerCase().replace(/ /g, '-') === fav.cocktailId);
                                         if (classicCocktail) {
                                             name = classicCocktail.name;
+                                            emoji = classicCocktail.emoji || emoji;
                                             flavorProfile = classicCocktail.flavorProfile?.[0] || '';
                                             difficulty = classicCocktail.difficultyLevel?.split(' • ')[0] || '';
                                         }
                                         href = `/menu/${fav.cocktailId}`;
                                     } else if (fav.type === 'custom_full' && fav.cocktailData) {
                                         name = fav.cocktailData.name || name;
+                                        emoji = fav.cocktailData.emoji || emoji;
                                         flavorProfile = fav.cocktailData.flavorProfile?.[0] || '';
                                         difficulty = fav.cocktailData.difficultyLevel?.split(' • ')[0] || '';
                                     } else if (fav.name) {
@@ -354,15 +360,27 @@ export default function JournalPage() {
                                             {/* Sub node dot */}
                                             <div className="absolute left-[33px] md:left-[53px] top-[24px] w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--primary)] transition-colors z-10" />
                                             
-                                            <Link href={href} className="flex-1 bg-gray-900/40 hover:bg-gray-900 border border-gray-800 hover:border-[var(--primary)]/30 p-5 rounded-2xl transition-all shadow-lg block max-w-[600px]">
-                                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
-                                                    <h3 className="text-xl font-bold font-serif text-white group-hover:text-[var(--primary)] transition-colors">{name}</h3>
-                                                    {fav.rating && (
-                                                        <div className="flex items-center gap-1 text-[var(--primary)] font-bold text-sm bg-[var(--primary)]/10 px-2 py-0.5 rounded-md border border-[var(--primary)]/20 shadow-inner w-fit shrink-0">
-                                                            <span>★</span> {fav.rating.toFixed(1)}
+                                            <Link href={href} className="flex-1 bg-gray-900/40 hover:bg-gray-900 border border-gray-800 hover:border-[var(--primary)]/30 p-5 rounded-2xl transition-all shadow-lg flex flex-col sm:flex-row gap-4 max-w-[600px]">
+                                                {/* Left column: Emoji Artwork */}
+                                                <div className="text-3xl md:text-4xl bg-gray-950 p-3 md:p-4 rounded-xl border border-gray-800 shadow-inner flex shrink-0 items-center justify-center self-start h-16 w-16 md:h-20 md:w-20">
+                                                    {fav.imageUrl ? (
+                                                        <div className="w-full h-full relative overflow-hidden rounded-lg">
+                                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                            <img src={fav.imageUrl} alt="AI Cocktail" className="w-full h-full object-cover" />
                                                         </div>
-                                                    )}
+                                                    ) : emoji}
                                                 </div>
+                                                
+                                                {/* Right column: Content */}
+                                                <div className="flex-1 flex flex-col justify-center">
+                                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+                                                        <h3 className="text-xl font-bold font-serif text-white group-hover:text-[var(--primary)] transition-colors">{name}</h3>
+                                                        {fav.rating && (
+                                                            <div className="flex items-center gap-1 text-[var(--primary)] font-bold text-sm bg-[var(--primary)]/10 px-2 py-0.5 rounded-md border border-[var(--primary)]/20 shadow-inner w-fit shrink-0">
+                                                                <span>★</span> {fav.rating.toFixed(1)}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 {fav.notes ? (
                                                     <p className="text-gray-300 text-sm italic line-clamp-2 md:line-clamp-none leading-relaxed mb-3">&ldquo;{fav.notes}&rdquo;</p>
                                                 ) : (
@@ -386,6 +404,7 @@ export default function JournalPage() {
                                                             Home Original
                                                         </span>
                                                     )}
+                                                </div>
                                                 </div>
                                             </Link>
                                         </div>
