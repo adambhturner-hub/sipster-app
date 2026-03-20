@@ -303,8 +303,8 @@ export default function JournalPage() {
                     </Link>
                 </div>
             ) : viewMode === 'timeline' && activeTab === 'triedIt' ? (
-                <div className="max-w-3xl mx-auto w-full relative pt-4 pb-20 fade-in">
-                    <div className="absolute left-[36px] md:left-[56px] top-6 bottom-4 w-px bg-gradient-to-b from-gray-800 via-gray-700 to-transparent" />
+                <div className="max-w-3xl mx-auto w-full relative pt-4 pb-20 fade-in pl-2 md:pl-0">
+                    <div className="absolute left-[72px] md:left-[120px] top-6 bottom-4 w-px bg-gradient-to-b from-gray-800 via-gray-700 to-transparent" />
                     
                     {groupedTimeline.map((group, groupIndex) => (
                         <div key={group.dateStr} className="mb-12 relative animate-fade-in-up" style={{ animationDelay: `${groupIndex * 100}ms` }}>
@@ -315,7 +315,7 @@ export default function JournalPage() {
                                         {group.headerDate}
                                     </span>
                                 </div>
-                                <div className="absolute left-[30px] md:left-[50px] w-3 h-3 rounded-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary-glow)]" />
+                                <div className="absolute left-[66px] md:left-[114px] w-3 h-3 rounded-full bg-[var(--primary)] shadow-[0_0_10px_var(--primary-glow)]" />
                                 <div className="flex-1">
                                     {group.items.length > 1 && (
                                         <span className="bg-gray-800/80 text-gray-400 text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-bold">
@@ -356,9 +356,9 @@ export default function JournalPage() {
                                     const fallbackText = fav.type === 'custom_full' ? 'Logged custom recipe.' : fav.type === 'custom' ? 'Generated AI log.' : 'No tasting notes yet.';
 
                                     return (
-                                        <div key={fav.id} className="relative flex gap-6 md:gap-8 items-start group pl-12 md:pl-28">
+                                        <div key={fav.id} className="relative flex gap-6 md:gap-8 items-start group pl-[96px] md:pl-[176px]">
                                             {/* Sub node dot */}
-                                            <div className="absolute left-[33px] md:left-[53px] top-[24px] w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--primary)] transition-colors z-10" />
+                                            <div className="absolute left-[69px] md:left-[117px] top-[24px] w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-[var(--primary)] transition-colors z-10" />
                                             
                                             <Link href={href} className="flex-1 bg-gray-900/40 hover:bg-gray-900 border border-gray-800 hover:border-[var(--primary)]/30 p-5 rounded-2xl transition-all shadow-lg flex flex-col sm:flex-row gap-4 max-w-[600px]">
                                                 {/* Left column: Emoji Artwork */}
