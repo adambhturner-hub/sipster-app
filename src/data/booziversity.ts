@@ -5,6 +5,7 @@ export interface QuizQuestion {
     question: string;
     options: string[];
     correctAnswerIndex: number;
+    explanation?: string;
 }
 
 export interface Lesson {
@@ -20,6 +21,7 @@ export interface Lesson {
     knowBeforeYouOrder?: string[]; // Optional, strictly used for Spirit Journeys
     featuredCocktailId: string; // Must perfectly match a cocktail exact name in the db
     quiz: QuizQuestion[]; // 2-3 questions for auto-completion
+    tutorContextualPrompts?: string[]; // Custom pre-filled 'Ask Sipster' prompts
 }
 
 export const BOOZIVERSITY_LESSONS: Lesson[] = [
@@ -47,11 +49,31 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
             'The Old Fashioned is the purest physical manifestation of the original cocktail definition.'
         ],
         quiz: [
-            { question: 'What are the four required ingredients in the original 1806 cocktail definition?', options: ['Spirit, Citrus, Sugar, Water', 'Spirit, Sugar, Water, Bitters', 'Spirit, Vermouth, Bitters, Ice'], correctAnswerIndex: 1 },
-            { question: 'What role does ice play beyond chilling the drink?', options: ['It adds essential water volume', 'It adds sweetness', 'It adds botanical flavors'], correctAnswerIndex: 0 },
-            { question: 'Which drink is the purest example of the original definition?', options: ['Margarita', 'Daiquiri', 'Old Fashioned'], correctAnswerIndex: 2 }
+            { 
+                question: 'What are the four required ingredients in the original 1806 cocktail definition?', 
+                options: ['Spirit, Citrus, Sugar, Water', 'Spirit, Sugar, Water, Bitters', 'Spirit, Vermouth, Bitters, Ice'], 
+                correctAnswerIndex: 1,
+                explanation: 'Correct! In 1806, the world had not yet started using citrus (sours) or vermouth (martinis) in drinks. It was simply liquor, sugar, water (ice), and bitters.'
+            },
+            { 
+                question: 'What role does ice play beyond chilling the drink?', 
+                options: ['It adds essential water volume', 'It adds sweetness', 'It adds botanical flavors'], 
+                correctAnswerIndex: 0,
+                explanation: 'Exactly. A properly diluted cocktail is up to 25% water. The melting ice is what marries the harsh alcohol and sweet sugar into a harmonious texture.'
+            },
+            { 
+                question: 'Which drink is the purest example of the original definition?', 
+                options: ['Margarita', 'Daiquiri', 'Old Fashioned'], 
+                correctAnswerIndex: 2,
+                explanation: 'Spot on. The Old Fashioned is literally the 1806 definition in a glass: Whiskey (Spirit), Sugar Cube (Sugar), Angostura (Bitters), and Ice (Water).'
+            }
         ],
-        featuredCocktailId: 'Old Fashioned'
+        featuredCocktailId: 'Old Fashioned',
+        tutorContextualPrompts: [
+            'Explain the 1806 cocktail definition in simpler terms.',
+            'Why does water/ice count as an actual ingredient?',
+            'What is the difference between an Old Fashioned and a Sour?'
+        ]
     },
     {
         id: 'the-sour-template',

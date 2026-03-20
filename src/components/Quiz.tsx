@@ -110,6 +110,19 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
                 })}
             </div>
 
+            {isCorrect !== null && currentQuestion.explanation && (
+                <div className={`p-6 rounded-2xl mb-8 border ${isCorrect ? 'bg-emerald-500/10 border-emerald-500/30' : 'bg-red-500/10 border-red-500/30'} animate-fade-in-up shadow-sm`}>
+                    <h4 className={`text-sm font-bold tracking-widest uppercase mb-2 flex items-center gap-2 ${isCorrect ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {isCorrect ? (
+                            <><span className="text-lg">✓</span> Knowledge Verified</>
+                        ) : (
+                            <><span className="text-lg">✗</span> Let's Review</>
+                        )}
+                    </h4>
+                    <p className="text-gray-300 leading-relaxed text-sm md:text-base">{currentQuestion.explanation}</p>
+                </div>
+            )}
+
             <div className="flex justify-end mt-4">
                 {isCorrect === null ? (
                     <button

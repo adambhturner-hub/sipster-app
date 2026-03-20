@@ -26,6 +26,10 @@ export default function BooziversityLesson() {
     const pillarIndex = pillarLessons.findIndex(l => l.id === lesson?.id);
     const totalInPillar = pillarLessons.length;
 
+    const prevLesson = lessonIndex > 0 
+        ? BOOZIVERSITY_LESSONS[lessonIndex - 1]
+        : null;
+
     const nextLesson = lessonIndex >= 0 && lessonIndex < BOOZIVERSITY_LESSONS.length - 1
         ? BOOZIVERSITY_LESSONS[lessonIndex + 1]
         : null;
@@ -191,9 +195,18 @@ export default function BooziversityLesson() {
                 )}
 
                 <article className="prose prose-invert prose-lg max-w-none text-gray-300 font-light leading-relaxed mb-16">
-                    {lesson.content.map((paragraph, idx) => (
-                        <p key={idx} className="mb-6">{paragraph}</p>
-                    ))}
+                    {lesson.content.map((paragraph, idx) => {
+                        if (paragraph.startsWith('CALLOUT:')) {
+                            return (
+                                <div key={idx} className="my-8 p-6 bg-[var(--primary)]/10 border-l-4 border-l-[var(--primary)] rounded-r-xl shadow-sm">
+                                    <p className="text-[var(--primary)] text-lg m-0 font-medium leading-relaxed">
+                                        {paragraph.replace('CALLOUT:', '').trim()}
+                                    </p>
+                                </div>
+                            );
+                        }
+                        return <p key={idx} className="mb-6">{paragraph}</p>;
+                    })}
                 </article>
 
                 {/* Why This Matters */}
@@ -248,8 +261,14 @@ export default function BooziversityLesson() {
                     </div>
 
                     {featuredCocktail ? (
-                        <div className="max-w-sm mx-auto transform hover:scale-105 transition-transform duration-500 mb-8">
-                            <CocktailCard cocktail={featuredCocktail} />
+                        <div className="max-w-sm mx-auto flex flex-col items-center group">
+                            <div className="transform group-hover:scale-[1.02] transition-transform duration-500 mb-6 w-full shadow-2xl">
+                                <CocktailCard cocktail={featuredCocktail} />
+                            </div>
+                            <Link href={`/recipe/${featuredCocktail.name.toLowerCase().replace(/\s+/g, '-')}`} className="px-8 py-3 bg-[var(--surface)] hover:bg-[var(--primary)] hover:text-white border border-[var(--border)] group-hover:border-[var(--primary)] transition-all rounded-full font-bold text-sm tracking-widest uppercase flex items-center gap-2 shadow-sm">
+                                View Recipe & Mix
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            </Link>
                         </div>
                     ) : (
                         <div className="text-center p-8 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 mb-8">
@@ -355,6 +374,15 @@ export default function BooziversityLesson() {
                         <p className="text-gray-300 text-sm">
                             Ask Sipster for a custom, personalized explanation about {lesson.title}.
                         </p>
+                        {lesson.tutorContextualPrompts && lesson.tutorContextualPrompts.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-4">
+                                {lesson.tutorContextualPrompts.map((prompt, i) => (
+                                    <Link key={i} href={`/chat?query=${encodeURIComponent(prompt)}`} className="text-xs bg-black/40 hover:bg-[var(--primary)]/20 text-gray-400 hover:text-white border border-gray-800 hover:border-[var(--primary)]/50 px-3 py-1.5 rounded-full transition-colors truncate max-w-[280px]">
+                                        "{prompt}"
+                                    </Link>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <Link
                         href={`/chat?query=${encodeURIComponent(`Can you explain the concepts from the Booziversity lesson "${lesson.title}" in more detail?`)}`}
@@ -363,6 +391,39 @@ export default function BooziversityLesson() {
                         Ask Sipster
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </Link>
+                </div>
+
+                {/* Persistent Footer Navigation */}
+                <hr className="border-[var(--border)] my-12 opacity-50" />
+                
+                <div className="flex justify-between items-center bg-[var(--surface)] p-2 rounded-2xl border border-[var(--border)] max-w-3xl mx-auto shadow-lg">
+                    {prevLesson ? (
+                        <Link href={`/learn/${prevLesson.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--bg)] rounded-xl transition-colors flex-1 w-1/2">
+                            <svg className="w-5 h-5 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                            <div className="text-left overflow-hidden hidden sm:block">
+                                <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-tight">Previous Lesson</div>
+                                <div className="text-sm font-bold text-gray-300 truncate">{prevLesson.title}</div>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div className="flex-1 w-1/2"></div>
+                    )}
+
+                    <div className="w-px h-10 bg-[var(--border)] mx-2 shrink-0"></div>
+
+                    {nextLesson ? (
+                        <Link href={`/learn/${nextLesson.id}`} className="flex items-center justify-end gap-3 px-4 py-3 hover:bg-[var(--bg)] rounded-xl transition-colors flex-1 w-1/2 text-right">
+                            <div className="overflow-hidden hidden sm:block">
+                                <div className="text-[10px] text-[var(--primary)] font-bold uppercase tracking-widest leading-tight">Next Lesson</div>
+                                <div className="text-sm font-bold text-white truncate">{nextLesson.title}</div>
+                            </div>
+                            <svg className="w-5 h-5 text-[var(--primary)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                        </Link>
+                    ) : (
+                        <div className="flex items-center justify-end px-4 py-3 text-emerald-500 font-bold text-sm tracking-widest uppercase flex-1 w-1/2 text-right truncate">
+                            Curriculum Complete 🎓
+                        </div>
+                    )}
                 </div>
 
             </main>

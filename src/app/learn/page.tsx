@@ -115,6 +115,9 @@ export default function BooziversityHub() {
                                 const previousLessons = pillar.lessons.slice(0, idx);
                                 const isLocked = isAdvanced && !previousLessons.every(l => progressMap[l.id]);
 
+                                const firstUncompletedIdx = pillar.lessons.findIndex(l => !progressMap[l.id]);
+                                const isRecommended = idx === firstUncompletedIdx;
+
                                 return (
                                     <Link
                                         href={isLocked ? '#' : `/learn/${lesson.id}`}
@@ -124,7 +127,9 @@ export default function BooziversityHub() {
                                                 ? isLocked
                                                     ? 'border-gray-800 bg-black/60 opacity-70 cursor-not-allowed'
                                                     : 'border-rose-500/20 bg-rose-950/20 hover:border-rose-500/50'
-                                                : 'border-[var(--border)] hover:border-[var(--primary)]'
+                                                : isRecommended
+                                                    ? 'border-[var(--primary)]/50 bg-[var(--primary)]/5 hover:border-[var(--primary)] shadow-[0_0_20px_var(--primary-glow)]'
+                                                    : 'border-[var(--border)] hover:border-[var(--primary)]'
                                             }`}
                                     >
                                         {/* Hover Glow Effect */}
@@ -160,7 +165,7 @@ export default function BooziversityHub() {
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <span>Start Lesson</span>
+                                                        <span>{isRecommended ? 'Recommended Next' : 'Start Lesson'}</span>
                                                         <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                                         </svg>
@@ -171,6 +176,10 @@ export default function BooziversityHub() {
                                             {progressMap[lesson.id] ? (
                                                 <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
                                                     <span>✓</span> Completed
+                                                </div>
+                                            ) : isRecommended ? (
+                                                <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--accent)] bg-[var(--surface)] px-3 py-1.5 rounded border border-[var(--accent)]/50 shadow-[0_0_10px_var(--primary-glow)] animate-pulse">
+                                                    <span>🎯</span> Up Next
                                                 </div>
                                             ) : (
                                                 <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${isLocked ? 'border-gray-800 bg-transparent text-gray-700' : 'border-[var(--border)] bg-[var(--bg)]/50 text-gray-600 group-hover:border-[var(--primary)]/50'
