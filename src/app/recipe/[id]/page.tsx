@@ -1,8 +1,7 @@
 import RecipeClient from './RecipeClient';
 import { adminDb } from '@/lib/firebase-admin';
 import { doc, getDoc } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase';
-import { signInAnonymously } from 'firebase/auth';
+import { db } from '@/lib/firebase';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,41 +17,26 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
                 if (docSnap.exists) {
                     docData = docSnap.data();
                 }
-            } else {
-                throw new Error("adminDb is null");
             }
         } catch (adminError) {
-            console.warn('[OG Meta] adminDb failed, attempting authenticated client fallback...', adminError);
+            console.warn('[OG Meta] adminDb failed...', adminError);
             try {
-                // To bypass Firestore "auth != null" rule, we must authenticate the server session
-                if (auth) {
-                    await signInAnonymously(auth);
-                }
+                // Secondary check if documents are publicly exposed in Firestore rules
                 const docRef = doc(db, 'favorites', resolvedParams.id);
                 const clientSnap = await getDoc(docRef);
                 if (clientSnap.exists()) {
                     docData = clientSnap.data();
                 }
-            } catch (authError: any) {
-                console.error("Anonymous client fallback failed:", authError);
-                return { 
-                    title: `Error: ${authError.message || authError.toString()}`,
-                    openGraph: { title: `Error: ${authError.message || authError.toString()}`, description: 'Diagnostic Data' }
-                };
+            } catch {
+                // Fails silently if rules block it
             }
         }
 
-        if (!docData) {
+        if (!docData || !docData.cocktailData) {
             return { 
-                title: 'Unknown Recipe | Sipster',
-                openGraph: { title: 'Unknown Recipe | Not Found', description: 'Document did not exist or access was denied.' }
-            };
-        }
-
-        if (!docData.cocktailData) {
-            return { 
-                title: 'Invalid Recipe | Sipster',
-                openGraph: { title: 'Invalid Recipe | Missing Data', description: 'Document exists but cocktailData is missing.' }
+                title: 'Community Creation | Sipster',
+                description: 'A custom cocktail creation built by the Sipster community.',
+                openGraph: { title: 'Community Creation | Sipster', description: 'A custom cocktail creation built by the Sipster community.' }
             };
         }
 
@@ -91,11 +75,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
                 images: [ogUrl.toString()],
             },
         };
-    } catch (e: any) {
-        const errMsg = `Error: ${e.message || e.toString()}`;
+    } catch (e) {
         return { 
-            title: errMsg,
-            openGraph: { title: errMsg, description: 'Diagnostic Data' }
+            title: 'Shared Recipe | Sipster',
+            openGraph: { title: 'Shared Recipe | Sipster', description: 'Check out this cocktail on Sipster.' }
         };
     }
 }
