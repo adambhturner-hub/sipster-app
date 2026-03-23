@@ -68,12 +68,22 @@ export default function CocktailCard({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
+    const getShareUrl = () => {
+        const isCustom = favoriteType === 'custom_full' || favoriteType === 'custom' || favoriteType === 'community_like';
+        const targetId = isCustom && (favoriteId || communityOriginalId) 
+            ? (communityOriginalId || favoriteId) 
+            : (cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-');
+        
+        const basePath = isCustom ? '/recipe' : '/menu';
+        return `${window.location.origin}${basePath}/${targetId}`;
+    };
+
     const handleShareClick = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
         if (navigator.share) {
             try {
-                const shareUrl = `${window.location.origin}/recipe/${(cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-')}`;
+                const shareUrl = getShareUrl();
                 await navigator.share({
                     title: cocktail?.name || 'Sipster Cocktail',
                     text: `Check out the ${cocktail?.name || 'cocktail'} recipe on Sipster!\n\n${shareUrl}`,
@@ -91,7 +101,7 @@ export default function CocktailCard({
         e.preventDefault();
         e.stopPropagation();
         setIsShareOpen(false);
-        const url = `${window.location.origin}/recipe/${(cocktail?.name || 'recipe').toLowerCase().replace(/\s+/g, '-')}`;
+        const url = getShareUrl();
         navigator.clipboard.writeText(url);
         toast.success("Link copied to clipboard! 🔗");
     };
