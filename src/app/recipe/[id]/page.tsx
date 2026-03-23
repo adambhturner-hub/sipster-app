@@ -1,5 +1,7 @@
 import RecipeClient from './RecipeClient';
 import { adminDb } from '@/lib/firebase-admin';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 export const dynamic = 'force-dynamic';
 
@@ -7,32 +9,42 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     try {
         const resolvedParams = await params;
         
-        if (!adminDb) {
-            console.warn('[OG Meta] adminDb is not initialized');
-            return { 
-                title: 'Error: adminDb failed to initialize',
-                openGraph: { title: 'Error: adminDb failed to initialize', description: 'Diagnostic Data' }
-            };
+        let docData: any = null;
+
+        try {
+            if (adminDb) {
+                const docSnap = await adminDb.collection('favorites').doc(resolvedParams.id).get();
+                if (docSnap.exists) {
+                    docData = docSnap.data();
+                }
+            } else {
+                throw new Error("adminDb is null");
+            }
+        } catch (adminError) {
+            console.warn('[OG Meta] adminDb failed, attempting client fallback...', adminError);
+            // Fallback to client SDK (unauthenticated server read)
+            const docRef = doc(db, 'favorites', resolvedParams.id);
+            const clientSnap = await getDoc(docRef);
+            if (clientSnap.exists()) {
+                docData = clientSnap.data();
+            }
         }
 
-        const docSnap = await adminDb.collection('favorites').doc(resolvedParams.id).get();
-
-        if (!docSnap.exists) {
+        if (!docData) {
             return { 
                 title: 'Unknown Recipe | Sipster',
-                openGraph: { title: 'Unknown Recipe | Not Found', description: 'Document did not exist in favorites collection.' }
+                openGraph: { title: 'Unknown Recipe | Not Found', description: 'Document did not exist or access was denied.' }
             };
         }
 
-        const data = docSnap.data();
-        if (!data || !data.cocktailData) {
+        if (!docData.cocktailData) {
             return { 
                 title: 'Invalid Recipe | Sipster',
                 openGraph: { title: 'Invalid Recipe | Missing Data', description: 'Document exists but cocktailData is missing.' }
             };
         }
 
-        const cocktail = data.cocktailData;
+        const cocktail = docData.cocktailData;
 
         const name = cocktail.name || 'Custom AI Recipe';
         const primarySpirit = cocktail.primarySpirit || 'Mystery';
