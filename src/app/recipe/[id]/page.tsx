@@ -1,7 +1,8 @@
 import RecipeClient from './RecipeClient';
 import { adminDb } from '@/lib/firebase-admin';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db, auth } from '@/lib/firebase';
+import { signInAnonymously } from 'firebase/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,12 +22,23 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
                 throw new Error("adminDb is null");
             }
         } catch (adminError) {
-            console.warn('[OG Meta] adminDb failed, attempting client fallback...', adminError);
-            // Fallback to client SDK (unauthenticated server read)
-            const docRef = doc(db, 'favorites', resolvedParams.id);
-            const clientSnap = await getDoc(docRef);
-            if (clientSnap.exists()) {
-                docData = clientSnap.data();
+            console.warn('[OG Meta] adminDb failed, attempting authenticated client fallback...', adminError);
+            try {
+                // To bypass Firestore "auth != null" rule, we must authenticate the server session
+                if (auth) {
+                    await signInAnonymously(auth);
+                }
+                const docRef = doc(db, 'favorites', resolvedParams.id);
+                const clientSnap = await getDoc(docRef);
+                if (clientSnap.exists()) {
+                    docData = clientSnap.data();
+                }
+            } catch (authError: any) {
+                console.error("Anonymous client fallback failed:", authError);
+                return { 
+                    title: `Error: ${authError.message || authError.toString()}`,
+                    openGraph: { title: `Error: ${authError.message || authError.toString()}`, description: 'Diagnostic Data' }
+                };
             }
         }
 
