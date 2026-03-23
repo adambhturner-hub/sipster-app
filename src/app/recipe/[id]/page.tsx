@@ -9,18 +9,27 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         
         if (!adminDb) {
             console.warn('[OG Meta] adminDb is not initialized');
-            return { title: 'Recipe | Sipster' };
+            return { 
+                title: 'Error: adminDb failed to initialize',
+                openGraph: { title: 'Error: adminDb failed to initialize', description: 'Diagnostic Data' }
+            };
         }
 
         const docSnap = await adminDb.collection('favorites').doc(resolvedParams.id).get();
 
         if (!docSnap.exists) {
-            return { title: 'Unknown Recipe | Sipster' };
+            return { 
+                title: 'Unknown Recipe | Sipster',
+                openGraph: { title: 'Unknown Recipe | Not Found', description: 'Document did not exist in favorites collection.' }
+            };
         }
 
         const data = docSnap.data();
         if (!data || !data.cocktailData) {
-            return { title: 'Unknown Recipe | Sipster' };
+            return { 
+                title: 'Invalid Recipe | Sipster',
+                openGraph: { title: 'Invalid Recipe | Missing Data', description: 'Document exists but cocktailData is missing.' }
+            };
         }
 
         const cocktail = data.cocktailData;
@@ -58,8 +67,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
                 images: [ogUrl.toString()],
             },
         };
-    } catch (e) {
-        return { title: 'Recipe | Sipster' };
+    } catch (e: any) {
+        const errMsg = `Error: ${e.message || e.toString()}`;
+        return { 
+            title: errMsg,
+            openGraph: { title: errMsg, description: 'Diagnostic Data' }
+        };
     }
 }
 
