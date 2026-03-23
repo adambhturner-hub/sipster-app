@@ -69,6 +69,9 @@ export default function CocktailCard({
     }, []);
 
     const getShareUrl = () => {
+        if (customHref) {
+            return `${window.location.origin}${customHref}`;
+        }
         const isCustom = favoriteType === 'custom_full' || favoriteType === 'custom' || favoriteType === 'community_like';
         const targetId = isCustom && (favoriteId || communityOriginalId) 
             ? (communityOriginalId || favoriteId) 
@@ -103,7 +106,7 @@ export default function CocktailCard({
         setIsShareOpen(false);
         const url = getShareUrl();
         navigator.clipboard.writeText(url);
-        toast.success("Link copied to clipboard! 🔗");
+        toast.success(`Copied: ${url}`);
     };
 
     // Export State
