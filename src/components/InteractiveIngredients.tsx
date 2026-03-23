@@ -11,7 +11,7 @@ interface InteractiveIngredientsProps {
 }
 
 export default function InteractiveIngredients({ ingredients }: InteractiveIngredientsProps) {
-    const { addToBar, addToShoppingList, removeShoppingItem, myBar = [], shoppingList = [] } = useAuth();
+    const { user, addToBar, addToShoppingList, removeShoppingItem, myBar = [], shoppingList = [] } = useAuth();
     const { system, setSystem, convertMeasurement } = useMeasurement();
 
     // Swap State
@@ -66,7 +66,7 @@ export default function InteractiveIngredients({ ingredients }: InteractiveIngre
                                         {ing?.item || 'Mystery Ingredient'}
                                     </span>
 
-                                    {(!officiallyHasIt) && (
+                                    {(!officiallyHasIt && !!user) && (
                                         <div className="flex flex-wrap gap-1.5 pointer-events-auto z-50 mt-1">
                                             <button
                                                 onClick={(e) => {
