@@ -12,6 +12,20 @@ import { getClassicCocktails } from '@/lib/dataFetchers';
 import { Cocktail } from '@/data/cocktails';
 import CocktailCard from '@/components/CocktailCard';
 import Quiz from '@/components/Quiz';
+import LessonDiagram from '@/components/LessonDiagram';
+import confetti from 'canvas-confetti';
+
+// Helper function to turn [[Term]] into stylish chips
+function parseTermChips(text: string) {
+    const parts = text.split(/(\[\[.*?\]\])/g);
+    return parts.map((part, i) => {
+        if (part.startsWith('[[') && part.endsWith(']]')) {
+            const term = part.slice(2, -2);
+            return <span key={i} className="px-[6px] py-[2px] rounded bg-gray-800 text-[var(--primary)] border border-gray-700 font-semibold inline-block mx-0.5 text-[0.9em] whitespace-nowrap shadow-sm">{term}</span>;
+        }
+        return part;
+    });
+}
 
 export default function BooziversityLesson() {
     const params = useParams();
@@ -98,6 +112,34 @@ export default function BooziversityLesson() {
             await setDoc(docRef, { [lessonId]: true }, { merge: true });
             setProgressMap(prev => ({ ...prev, [lessonId]: true }));
             setIsCompleted(true);
+
+            // Trigger the celebratory confetti explosion
+            const duration = 2500;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#f59e0b', '#10b981', '#ffffff'], // Primary Amber, Emerald, White
+                    zIndex: 9999
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#f59e0b', '#10b981', '#ffffff'],
+                    zIndex: 9999
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
         } catch (error) {
             console.error("Error saving lesson progress:", error);
             alert('Failed to save progress. Please try again.');
@@ -196,16 +238,20 @@ export default function BooziversityLesson() {
 
                 <article className="prose prose-invert prose-lg max-w-none text-gray-300 font-light leading-relaxed mb-16">
                     {lesson.content.map((paragraph, idx) => {
+                        if (paragraph.startsWith('DIAGRAM:')) {
+                            const type = paragraph.replace('DIAGRAM:', '').trim();
+                            return <LessonDiagram key={idx} type={type} />;
+                        }
                         if (paragraph.startsWith('CALLOUT:')) {
                             return (
                                 <div key={idx} className="my-8 p-6 bg-[var(--primary)]/10 border-l-4 border-l-[var(--primary)] rounded-r-xl shadow-sm">
                                     <p className="text-[var(--primary)] text-lg m-0 font-medium leading-relaxed">
-                                        {paragraph.replace('CALLOUT:', '').trim()}
+                                        {parseTermChips(paragraph.replace('CALLOUT:', '').trim())}
                                     </p>
                                 </div>
                             );
                         }
-                        return <p key={idx} className="mb-6">{paragraph}</p>;
+                        return <p key={idx} className="mb-6">{parseTermChips(paragraph)}</p>;
                     })}
                 </article>
 

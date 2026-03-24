@@ -36,7 +36,8 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         content: [
             'The word "cocktail" gets thrown around a lot today to describe anything mixed in a glass, but historically, it meant something very specific. On May 13, 1806, an upstate New York newspaper editor responded to a reader\'s question by defining a cocktail simply as "a stimulating liquor, composed of spirits of any kind, sugar, water, and bitters."',
             'CALLOUT: If you strip away the neon umbrellas and modern syrups, that 1806 definition remains the absolute bedrock of mixology. A spirit provides the base, sugar provides the needed texture and weight, water (via ice dilution) provides the volume and chilling, and bitters provide the complex seasoning.',
-            'To understand this golden ratio in its purest form, there is no better starting point than the Old Fashioned. It is exactly the 1806 definition brought to life: Whiskey (spirit), a sugar cube (sugar), ice (water), and Angostura (bitters). By mastering this simple four-part harmony, you master the foundation of everything that follows.'
+            'DIAGRAM: RATIO_1806',
+            'To understand this golden ratio in its purest form, there is no better starting point than the [[Old Fashioned]]. It is exactly the 1806 definition brought to life: Whiskey (spirit), a sugar cube (sugar), ice (water), and Angostura (bitters). By mastering this simple four-part harmony, you master the foundation of everything that follows.'
         ],
         whyItMatters: [
             'You will understand that "Water" from ice isn\'t just making a drink cold—it\'s a required ingredient.',
@@ -83,10 +84,11 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         tags: ['Structure'],
         description: 'Mastering the delicate trinity of Spirit, Sweet, and Sour.',
         content: [
-            'Once bartenders mastered the bitter-and-sugar balance of the Old Fashioned, they began experimenting with introducing acid. Enter the Sour, arguably the single most important and frequently replicated template in cocktail history. Once you understand the mechanics of a Sour, you instantly know how to make variations.',
+            'Once bartenders mastered the bitter-and-sugar balance of the Old Fashioned, they began experimenting with introducing acid. Enter the [[Sour]], arguably the single most important and frequently replicated template in cocktail history. Once you understand the mechanics of a Sour, you instantly know how to make variations.',
             'The classic "Sour" relies on a delicate trinity: a base spirit (for the foundation), a sour citrus component (usually lemon or lime for brightness), and a sweet component (usually simple syrup or a liqueur) to round off the sharp acidic edges.',
+            'DIAGRAM: SOUR_TRINITY',
             'CALLOUT: The magic lies in the tension between the sweet and the sour. The canonical formula is typically 2 ounces of Spirit, 1 ounce of Sour, and ¾ ounce of Sweet (the 2:1:¾ ratio).',
-            'To taste this perfect tension, look no further than a classic Daiquiri—a flawless trinity of Rum, Lime, and Sugar.'
+            'To taste this perfect tension, look no further than a classic [[Daiquiri]]—a flawless trinity of Rum, Lime, and Sugar.'
         ],
         whyItMatters: [
             'You will understand why your drinks taste "too sharp" (needs sweet) or "too flat" (needs sour).',
@@ -118,9 +120,10 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         tags: ['Structure', 'Math'],
         description: 'How to build your own drink without guessing by using the 2:1:1 logic.',
         content: [
-            'While the 2:1:¾ ratio is perfect for simple syrups, the cocktail world often relies on a slightly bolder formula when using liqueurs as the sweetener: the 2:1:1 ratio. This means 2 parts strong (Spirit), 1 part sour (Citrus), and 1 part sweet (Liqueur).',
+            'While the 2:1:¾ ratio is perfect for simple syrups, the cocktail world often relies on a slightly bolder formula when using liqueurs as the sweetener: the [[2:1:1 ratio]]. This means 2 parts strong (Spirit), 1 part sour (Citrus), and 1 part sweet (Liqueur).',
             'Liqueurs (like Cointreau or Amaretto) are less aggressively sweet than pure simple syrup but bring significantly more flavor and volume to the table. By bumping the sweet ratio up to a full ounce, you allow the complex orange or almond notes to shine without overpowering the base spirit.',
-            'The Sidecar is the ultimate professor of the 2:1:1 ratio. By combining 2 ounces of Cognac, 1 ounce of Lemon, and 1 ounce of Orange Liqueur (Cointreau), you achieve a perfectly balanced, slightly drier tartness that a standard syrup sour simply cannot replicate.'
+            'DIAGRAM: RATIO_211',
+            'The [[Sidecar]] is the ultimate professor of the 2:1:1 ratio. By combining 2 ounces of Cognac, 1 ounce of Lemon, and 1 ounce of Orange Liqueur (Cointreau), you achieve a perfectly balanced, slightly drier tartness that a standard syrup sour simply cannot replicate.'
         ],
         whyItMatters: [
             'You will stop memorizing arbitrary measurements and start building drinks intuitively via ratios.',
@@ -234,9 +237,10 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         tags: ['Structure', 'Math'],
         description: 'Exploring the magic of perfectly symmetrical cocktail recipes.',
         content: [
-            'While many cocktails rely on a dominant base spirit supported by smaller accent ingredients, there is a mesmerizing category of drinks built entirely on symmetry: the equal-parts cocktail. In these recipes, no single ingredient is allowed to take center stage.',
+            'While many cocktails rely on a dominant base spirit supported by smaller accent ingredients, there is a mesmerizing category of drinks built entirely on symmetry: the [[equal-parts cocktail]]. In these recipes, no single ingredient is allowed to take center stage.',
             'Instead of a lead singer and a backup band, an equal-parts cocktail acts like a choral arrangement. Ingredients that seem completely overpowering on their own (like intensely bitter Campari or herbaceous Chartreuse) are forced into a delicate standoff when matched seamlessly 1-to-1 against heavy spirits and sweet vermouths.',
-            'The Negroni is the undisputed king of equal-parts symmetry. By matching bold Gin, bitter Campari, and rich Sweet Vermouth at exactly one ounce each, the ingredients lock together, creating a flavor profile that is entirely unique from its sum parts.'
+            'DIAGRAM: EQUAL_PARTS',
+            'The [[Negroni]] is the undisputed king of equal-parts symmetry. By matching bold Gin, bitter Campari, and rich Sweet Vermouth at exactly one ounce each, the ingredients lock together, creating a flavor profile that is entirely unique from its sum parts.'
         ],
         whyItMatters: [
             'You will learn how to tame overwhelmingly aggressive ingredients (like Campari) by forcing them into a standoff.',
@@ -430,9 +434,10 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         tags: ['Spirit', 'Structure'],
         description: 'How to build massive complexity by splitting the core base of a cocktail.',
         content: [
-            'In nearly every classic recipe, a single spirit acts as the undisputed star of the show. But advanced mixology frequently employs the "Split Base"—the deliberate shattering of the lead ingredient into two perfectly harmonized spirits. Why? Because sometimes you want the weight of whiskey but the sharp apple fruitiness of Applejack.',
-            'The Vieux Carré is arguably the most famous split-base classic in existence. Born in New Orleans, this monumental drink requires exactly equal parts of spicy Rye Whiskey and rich, grape-forward Cognac. If you used only Rye, the drink would be too sharp. If you used only Cognac, it would be too flabby and sweet. Together, they create a towering architectural foundation.',
-            'Tiki drinks take this to the absolute extreme. A legendary Mai Tai doesn\'t just call for "Rum"; it demands a precise split between a funky, over-ripe Jamaican rum and a dry, wood-heavy aged Martinique rum to simulate a specific lost vintage. Splitting the base is like painting with two distinct, bold colors to invent an entirely new shade.'
+            'In nearly every classic recipe, a single spirit acts as the undisputed star of the show. But advanced mixology frequently employs the [[Split Base]]—the deliberate shattering of the lead ingredient into two perfectly harmonized spirits. Why? Because sometimes you want the weight of whiskey but the sharp apple fruitiness of Applejack.',
+            'The [[Vieux Carré]] is arguably the most famous split-base classic in existence. Born in New Orleans, this monumental drink requires exactly equal parts of spicy Rye Whiskey and rich, grape-forward Cognac. If you used only Rye, the drink would be too sharp. If you used only Cognac, it would be too flabby and sweet. Together, they create a towering architectural foundation.',
+            'DIAGRAM: SPLIT_BASE',
+            'Tiki drinks take this to the absolute extreme. A legendary [[Mai Tai]] doesn\'t just call for "Rum"; it demands a precise split between a funky, over-ripe Jamaican rum and a dry, wood-heavy aged Martinique rum to simulate a specific lost vintage. Splitting the base is like painting with two distinct, bold colors to invent an entirely new shade.'
         ],
         whyItMatters: [
             'You will understand why some sophisticated cocktails have five ingredients instead of three.',
@@ -668,7 +673,8 @@ export const BOOZIVERSITY_LESSONS: Lesson[] = [
         description: 'Coupe vs Rocks vs Highball vs Nick & Nora.',
         content: [
             'Choosing the correct glass is not just about aesthetics; it is about thermal dynamics and aroma. The structural shape of the glass explicitly dictates how fast the drink gets warm, where the scent hits your nose, and how the ice behaves.',
-            'A wide Coupe glass or a V-shaped Martini glass is used for drinks served "Up" (chilled, but with no ice in the glass). By holding the long stem, your hand does not transfer body heat to the liquid. A Rocks glass (Old Fashioned glass) is designed for direct spirit contact on ice, allowing your nose to plunge into the whiskey fumes. A tall Highball glass minimizes surface area to preserve maximum carbonation for sodas and tonics.',
+            'A wide [[Coupe glass]] or a V-shaped Martini glass is used for drinks served "Up" (chilled, but with no ice in the glass). By holding the long stem, your hand does not transfer body heat to the liquid. A [[Rocks glass]] (Old Fashioned glass) is designed for direct spirit contact on ice, allowing your nose to plunge into the whiskey fumes. A tall [[Highball glass]] minimizes surface area to preserve maximum carbonation for sodas and tonics.',
+            'DIAGRAM: GLASSWARE',
             'The Gimlet is classically served in a chilled Coupe. Without ice to keep it cold in the glass, the stem is required to keep the bright, fragile citrus perfectly chilled while you sip.'
         ],
         whyItMatters: [

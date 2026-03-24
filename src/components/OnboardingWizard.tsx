@@ -83,12 +83,7 @@ export default function OnboardingWizard() {
             const finalName = displayName.trim() || 'Anonymous Mixologist';
             await updateUserProfile(finalName, selectedAvatar.icon); // Saving the emoji as the photoURL for now
 
-            // 2. Save selected spirits to Bar
-            for (const spirit of selectedSpirits) {
-                await addToBar(spirit);
-            }
-
-            // 3. Mark Complete & Redirect
+            // 2. Mark Complete & Redirect
             await completeOnboarding();
             router.push('/my-bar');
         } catch (error) {
@@ -215,10 +210,11 @@ export default function OnboardingWizard() {
                                 </button>
                             ) : (
                                 <button
-                                    onClick={() => setStep(3)}
-                                    className="bg-[var(--accent)] text-white font-bold text-lg px-12 py-4 rounded-full hover:shadow-[0_0_30px_rgba(0,255,204,0.4)] transition-all w-full sm:w-auto"
+                                    onClick={handleFinishOnboarding}
+                                    disabled={isSaving}
+                                    className="bg-[var(--accent)] text-white font-bold text-lg px-12 py-4 rounded-full hover:shadow-[0_0_30px_rgba(0,255,204,0.4)] transition-all w-full sm:w-auto disabled:opacity-50"
                                 >
-                                    Let's Stock the Bar →
+                                    {isSaving ? 'Spinning up your bar...' : "Let's Go →"}
                                 </button>
                             )}
                         </div>
