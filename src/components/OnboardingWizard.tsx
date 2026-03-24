@@ -101,8 +101,9 @@ export default function OnboardingWizard() {
     };
 
     return (
-        <div className="fixed inset-0 z-[999] bg-black/95 flex items-center justify-center p-4 sm:p-8 backdrop-blur-xl">
-            <AnimatePresence mode="wait">
+        <div className="fixed inset-0 z-[999] bg-black/95 overflow-y-auto backdrop-blur-xl">
+            <div className="min-h-full flex items-center justify-center p-4 py-12 sm:p-8">
+                <AnimatePresence mode="wait">
 
                 {/* STEP 1: IDENTITY */}
                 {step === 1 && (
@@ -268,6 +269,7 @@ export default function OnboardingWizard() {
                     </motion.div>
                 )}
             </AnimatePresence>
+            </div>
         </div>
     );
 }
