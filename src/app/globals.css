@@ -116,10 +116,17 @@
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
+    min-height: 100dvh;
     transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 500ms;
+  }
+}
+
+/* --- iOS Auto-Zoom Prevention --- */
+@media screen and (max-width: 768px) {
+  input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="search"], textarea, select {
+    font-size: 16px !important;
   }
 }
 

@@ -121,7 +121,7 @@ export default function OmakasePage() {
     };
 
     return (
-        <div className={`min-h-screen bg-black text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white relative overflow-hidden transition-all duration-1000 ${isGenerating && !omakaseRecipe ? 'opacity-90' : 'opacity-100'}`}>
+        <div className={`min-h-[100dvh] bg-black text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white relative overflow-hidden transition-all duration-1000 ${isGenerating && !omakaseRecipe ? 'opacity-90' : 'opacity-100'}`}>
 
             {/* Ambient Backgrounds based on state */}
             {!omakaseRecipe && (

@@ -64,7 +64,7 @@ export default function VerifyEmailLink() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center -mt-20 p-4">
+        <div className="min-h-[100dvh] flex items-center justify-center -mt-20 p-4">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

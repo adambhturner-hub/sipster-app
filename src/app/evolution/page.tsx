@@ -9,7 +9,7 @@ function EvolutionContent() {
     const startId = searchParams.get('start');
 
     return (
-        <div className="w-full h-screen overflow-hidden bg-[#0A0A0A] relative text-white pt-20">
+        <div className="w-full h-[100dvh] overflow-hidden bg-[#0A0A0A] relative text-white pt-20">
             {/* Header overlay */}
             <div className="absolute top-20 left-4 md:left-8 z-10 pointer-events-none md:max-w-md">
                 <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-3 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
@@ -28,7 +28,7 @@ function EvolutionContent() {
 export default function EvolutionPage() {
     return (
         <Suspense fallback={
-            <div className="w-full h-screen flex items-center justify-center bg-[#0A0A0A]">
+            <div className="w-full h-[100dvh] flex items-center justify-center bg-[#0A0A0A]">
                 <div className="text-5xl animate-spin">🧬</div>
             </div>
         }>

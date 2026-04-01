@@ -168,8 +168,8 @@ export default function JiggerFlowPage() {
         setSteps(parsedSteps);
     }, [recipe]);
 
-    if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>;
-    if (!recipe || steps.length === 0) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Recipe not found.</div>;
+    if (loading) return <div className="min-h-[100dvh] bg-black text-white flex items-center justify-center">Loading...</div>;
+    if (!recipe || steps.length === 0) return <div className="min-h-[100dvh] bg-black text-white flex items-center justify-center">Recipe not found.</div>;
 
     const currentStep = steps[currentStepIndex];
     const progress = ((currentStepIndex) / (steps.length - 1)) * 100;

@@ -56,10 +56,11 @@ export default function ProfileSettingsModal({ isOpen, onClose }: ProfileSetting
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-            <div className="relative bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl max-w-md w-full shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary)]/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
+        <div className="fixed inset-0 z-[100] overflow-y-auto">
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+            <div className="min-h-full flex items-center justify-center p-4 py-12">
+                <div className="relative bg-[#0a0a0a] border border-white/10 p-8 rounded-3xl max-w-md w-full shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden z-10">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--primary)]/10 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
 
                 <h2 className="text-3xl font-bold mb-6 text-white text-center">Edit Profile</h2>
 
@@ -135,6 +136,7 @@ export default function ProfileSettingsModal({ isOpen, onClose }: ProfileSetting
                         </div>
                     )}
                 </form>
+            </div>
             </div>
         </div>
     );

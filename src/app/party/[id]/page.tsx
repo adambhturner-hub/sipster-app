@@ -154,7 +154,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center text-[var(--primary)] text-2xl font-serif">
+            <div className="min-h-[100dvh] bg-[var(--bg)] flex items-center justify-center text-[var(--primary)] text-2xl font-serif">
                 <span className="animate-pulse">Fetching your custom menu...</span>
             </div>
         );
@@ -162,7 +162,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
 
     if (error || !menu) {
         return (
-            <div className="min-h-screen bg-[var(--bg)] text-white flex flex-col items-center justify-center">
+            <div className="min-h-[100dvh] bg-[var(--bg)] text-white flex flex-col items-center justify-center">
                 <h1 className="text-4xl font-bold mb-4">Menu Not Found</h1>
                 <Link href="/party" className="text-[var(--primary)] underline hover:text-white transition-colors">
                     Create a new one
@@ -317,7 +317,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
     });
 
     return (
-        <div className="min-h-screen bg-[var(--bg)] text-white relative">
+        <div className="min-h-[100dvh] bg-[var(--bg)] text-white relative">
 
             {/* Screen-Only Controls (Hidden during print) */}
             <div className="print:hidden w-full max-w-7xl mx-auto p-4 sm:p-6 flex flex-wrap justify-between items-start sm:items-center gap-4 z-50">
@@ -624,7 +624,7 @@ export default function PrintedMenuPage({ params }: { params: Promise<{ id: stri
                         padding: 0 !important;
                     }
                     /* Ensure Next.js roots don't restrict full page rendering */
-                    html, body, #__next, .min-h-screen {
+                    html, body, #__next, .min-h-[100dvh] {
                         height: 100% !important;
                         min-height: 100% !important;
                         width: 100% !important;

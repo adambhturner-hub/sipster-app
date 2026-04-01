@@ -5,7 +5,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 export default function MakePage() {
     return (
         <ProtectedRoute featureName="Make to Drink" description="You must be logged in to chat with Sipster or create menus.">
-        <div className="min-h-screen bg-[var(--bg)] text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white pb-32 pt-16 relative overflow-hidden">
+        <div className="min-h-[100dvh] bg-[var(--bg)] text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white pb-32 pt-16 relative overflow-hidden">
             {/* Background Glows */}
             <div className="absolute top-[-10%] right-[-10%] w-[50vh] h-[50vh] bg-[var(--primary)]/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-[20%] left-[-10%] w-[60vh] h-[60vh] bg-[var(--secondary)]/10 rounded-full blur-[150px] pointer-events-none" />

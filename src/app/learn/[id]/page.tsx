@@ -51,7 +51,7 @@ export default function BooziversityLesson() {
     // Safety check if the URL slug is invalid
     if (!lesson) {
         return (
-            <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center text-white">
+            <div className="min-h-[100dvh] bg-[var(--bg)] flex items-center justify-center text-white">
                 <div className="text-center">
                     <h1 className="text-3xl font-bold text-[var(--secondary)] mb-4">Lesson Not Found</h1>
                     <button
@@ -159,7 +159,7 @@ export default function BooziversityLesson() {
 
     return (
         <ProtectedRoute featureName="Sipster Learn" description="You must be logged in to view lessons and track your progress.">
-        <div className="min-h-screen bg-[var(--bg)] text-white pb-32">
+        <div className="min-h-[100dvh] bg-[var(--bg)] text-white pb-32">
             <header className="relative pt-24 pb-12 px-6 overflow-hidden border-b border-[var(--border)]">
                 <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)] to-transparent opacity-50"></div>
 

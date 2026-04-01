@@ -58,7 +58,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
       </head>
-      <body className="flex flex-col min-h-screen font-sans antialiased overflow-x-hidden transition-colors duration-500" suppressHydrationWarning>
+      <body className="flex flex-col min-h-[100dvh] font-sans antialiased overflow-x-hidden transition-colors duration-500" suppressHydrationWarning>
         <ThemeProvider>
           <MeasurementProvider>
             <AuthProvider>

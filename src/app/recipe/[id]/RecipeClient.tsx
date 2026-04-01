@@ -54,7 +54,7 @@ export default function RecipeClient({ id }: { id: string }) {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-white p-6 pb-24">
+            <div className="min-h-[100dvh] bg-gray-950 flex flex-col items-center justify-center text-white p-6 pb-24">
                 <div className="text-6xl mb-6 animate-bounce">🍸</div>
                 <div className="text-xl text-[var(--accent)] animate-pulse">Loading Creation...</div>
             </div>
@@ -99,12 +99,12 @@ export default function RecipeClient({ id }: { id: string }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white pb-24 font-serif relative overflow-hidden">
+        <div className="min-h-[100dvh] bg-gray-950 text-white pb-24 font-serif relative overflow-hidden">
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--primary)]/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
             <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[var(--accent)]/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-            <div className="min-h-screen bg-[var(--bg)] text-white font-serif selection:bg-[var(--primary-glow)] selection:text-white pt-32 pb-32">
+            <div className="min-h-[100dvh] bg-[var(--bg)] text-white font-serif selection:bg-[var(--primary-glow)] selection:text-white pt-32 pb-32">
                 <div className="max-w-4xl mx-auto px-4 md:px-8">
 
                     <Link href="/journal" className="text-[var(--primary)] hover:text-white transition-colors mb-6 inline-block font-sans text-sm tracking-widest uppercase">

@@ -54,7 +54,7 @@ export default function BooziversityHub() {
 
     return (
         <ProtectedRoute featureName="Sipster Learn" description="You must be logged in to view lessons and track your progress.">
-        <div className="min-h-screen bg-[var(--bg)] text-white pb-24">
+        <div className="min-h-[100dvh] bg-[var(--bg)] text-white pb-24">
             {/* Header Hero */}
             <header className="relative pt-24 pb-12 px-6 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-[var(--surface)] to-transparent opacity-50"></div>

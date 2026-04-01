@@ -65,7 +65,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
 
     if (!cocktail) {
         return (
-            <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-white p-6">
+            <div className="min-h-[100dvh] bg-gray-950 flex flex-col items-center justify-center text-white p-6">
                 <h1 className="text-4xl font-bold mb-4 font-serif">Cocktail Not Found</h1>
                 <p className="text-gray-400 mb-8">We couldn&apos;t find the drink you&apos;re looking for.</p>
                 <Link
@@ -79,7 +79,7 @@ export default async function CocktailProfilePage({ params }: { params: Promise<
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 text-white pb-24 font-serif">
+        <div className="min-h-[100dvh] bg-gray-950 text-white pb-24 font-serif">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pt-24">
 
                 {/* Header Section */}

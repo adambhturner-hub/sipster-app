@@ -24,8 +24,9 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, cocktai
     const isMatch = inputValue === cocktailName;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="bg-gray-900 border border-red-500/30 w-full max-w-md rounded-2xl p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm">
+            <div className="min-h-full flex items-center justify-center p-4 py-12">
+                <div className="bg-gray-900 border border-red-500/30 w-full max-w-md rounded-2xl p-6 shadow-2xl relative z-10">
                 <div className="mb-6">
                     <div className="flex items-center gap-3 text-red-500 mb-2">
                         <span className="text-3xl">⚠️</span>
@@ -63,6 +64,7 @@ export default function DeleteConfirmModal({ isOpen, onClose, onConfirm, cocktai
                     >
                         Permanently Delete
                     </button>
+                </div>
                 </div>
             </div>
         </div>

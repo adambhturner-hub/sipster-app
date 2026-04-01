@@ -93,7 +93,7 @@ export default function MenusDashboard() {
 
     if (authLoading || isLoading) {
         return (
-            <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center pt-24">
+            <div className="min-h-[100dvh] bg-[var(--bg)] flex items-center justify-center pt-24">
                 <div className="w-12 h-12 border-4 border-[var(--primary)] border-t-white rounded-full animate-spin"></div>
             </div>
         );
@@ -101,7 +101,7 @@ export default function MenusDashboard() {
 
     if (!user) {
         return (
-            <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 text-center">
+            <div className="min-h-[100dvh] bg-[var(--bg)] flex flex-col items-center justify-center p-6 text-center">
                 <h1 className="text-4xl font-black text-white mb-4 uppercase tracking-tighter">My Menus</h1>
                 <p className="text-gray-400 max-w-md">Please sign in to view your saved event menus.</p>
             </div>
@@ -109,7 +109,7 @@ export default function MenusDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-[var(--bg)] pt-24 pb-12 px-6">
+        <div className="min-h-[100dvh] bg-[var(--bg)] pt-24 pb-12 px-6">
             <div className="max-w-6xl mx-auto">
                 <div className="flex justify-between items-end mb-12 border-b border-white/10 pb-6">
                     <div>

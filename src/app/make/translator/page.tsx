@@ -164,7 +164,7 @@ export default function MenuTranslatorPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--bg)] text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white pb-32 pt-24 relative overflow-hidden">
+        <div className="min-h-[100dvh] bg-[var(--bg)] text-white font-sans selection:bg-[var(--primary-glow)] selection:text-white pb-32 pt-24 relative overflow-hidden">
             {/* Background Glows */}
             <div className="absolute top-0 right-[20%] w-[50vh] h-[50vh] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute top-[40%] left-[-10%] w-[60vh] h-[60vh] bg-[var(--primary)]/10 rounded-full blur-[100px] pointer-events-none" />

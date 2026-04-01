@@ -46,23 +46,24 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-[200] overflow-y-auto">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        className="fixed inset-0 bg-black/80 backdrop-blur-md"
                     />
 
                     {/* Modal Content */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-md bg-[#0a0a0a] border border-white/10 shadow-[0_0_50px_rgba(255,0,127,0.15)] rounded-3xl overflow-hidden p-8 flex flex-col items-center"
-                    >
+                    <div className="min-h-full flex items-center justify-center p-4 py-12">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="relative w-full max-w-md bg-[#0a0a0a] border border-white/10 shadow-[0_0_50px_rgba(255,0,127,0.15)] rounded-3xl overflow-hidden p-8 flex flex-col items-center z-10"
+                        >
                         {/* Close Button */}
                         <button
                             onClick={onClose}
@@ -144,7 +145,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                 </p>
                             </motion.div>
                         )}
-                    </motion.div>
+                        </motion.div>
+                    </div>
                 </div>
             )}
         </AnimatePresence>

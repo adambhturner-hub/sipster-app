@@ -15,7 +15,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-red-900 text-white p-8">
+    <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-red-900 text-white p-8">
       <h2 className="text-2xl font-bold mb-4">Journal Render Crash</h2>
       <p className="mb-4">Message: {error?.message || String(error)}</p>
       <div className="bg-black/50 p-4 rounded text-left overflow-auto max-w-4xl w-full font-mono text-sm leading-relaxed whitespace-pre-wrap">

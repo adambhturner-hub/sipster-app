@@ -47,13 +47,13 @@ export default function Home() {
 
   // If loading Auth state, just show a subtle pulse
   if (authLoading) {
-    return <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center"><div className="w-16 h-16 rounded-full border-t-2 border-[var(--primary)] animate-spin"></div></div>;
+    return <div className="min-h-[100dvh] bg-[var(--bg)] flex items-center justify-center"><div className="w-16 h-16 rounded-full border-t-2 border-[var(--primary)] animate-spin"></div></div>;
   }
 
   // --- LOGGED IN DASHBOARD ---
   if (user) {
     return (
-      <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white pt-24 pb-32">
+      <div className="min-h-[100dvh] font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white pt-24 pb-32">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="mb-12 flex items-center gap-4">
@@ -138,7 +138,7 @@ export default function Home() {
 
   // --- LOGGED OUT MARKETING PAGE ---
   return (
-    <div className="min-h-screen font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white flex flex-col pt-16 md:pt-24 relative overflow-hidden">
+    <div className="min-h-[100dvh] font-sans bg-[var(--bg)] text-white selection:bg-[var(--primary-glow)] selection:text-white flex flex-col pt-16 md:pt-24 relative overflow-hidden">
       {/* Hero Section */}
       <BigNeonLogo />
       <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight mb-6 mt-8 md:mt-12 text-center z-10">
