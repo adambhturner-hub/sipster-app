@@ -11,6 +11,7 @@ import { INGREDIENT_CATEGORIES, FLAT_INGREDIENTS_LIST } from '@/data/ingredients
 import { getClassicCocktails } from '@/lib/dataFetchers';
 import { Cocktail } from '@/data/cocktails';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import RouletteSpinner from '@/components/RouletteSpinner';
 
 export default function MyBarPage() {
     const { user, loading: authLoading, tasteProfile } = useAuth();
@@ -48,6 +49,17 @@ export default function MyBarPage() {
             if (makeable) count++;
         });
         return count;
+    };
+
+    const getMakeableDrinks = (currentBar: string[]): Cocktail[] => {
+        return classicCocktails.filter(cocktail => {
+            return (cocktail.ingredients || []).filter(i =>
+                i.item !== 'Garnish' && i.item !== 'Simple Syrup' && i.item !== 'Club Soda'
+            ).length > 0 ? (cocktail.ingredients.filter(ing =>
+                currentBar.some(item => item.toLowerCase() === ing.item.toLowerCase()) || ing.item === 'Garnish' ||
+                ing.item === 'Simple Syrup' || ing.item === 'Club Soda'
+            ).length / cocktail.ingredients.length) >= 0.75 : true;
+        });
     };
 
     // Helpers for parsing and fuzzy search
@@ -483,6 +495,9 @@ export default function MyBarPage() {
                         <div className="text-center mb-8 px-4 text-sm text-gray-400">
                             <p><strong>Mobile Tip:</strong> Tap an ingredient to add/remove it from your bar.</p>
                             <p><strong>Long-press</strong> an item to instantly send it to your 🛒 Shopping List or 🪦 Graveyard!</p>
+                        </div>
+                        <div className="mb-12">
+                            <RouletteSpinner makeableDrinks={getMakeableDrinks(myBar)} />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                             {INGREDIENT_CATEGORIES.map((category) => {

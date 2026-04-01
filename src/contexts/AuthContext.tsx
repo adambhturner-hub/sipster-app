@@ -6,6 +6,7 @@ import { auth, db } from '../lib/firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import LoginModal from '@/components/LoginModal';
 import { createNotification } from '@/lib/notifications';
+import { useHaptic } from '@/hooks/useHaptic';
 
 export interface TasteProfile {
     nickname: string;
@@ -87,6 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
     const [docLoading, setDocLoading] = useState(true);
+    const { heavyImpact, successImpact, lightImpact } = useHaptic();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -189,6 +191,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const newBar = [...myBar, item];
         setMyBar(newBar);
+        lightImpact();
         await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
     };
 
@@ -228,6 +231,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const newBar = myBar.filter(i => i.toLowerCase() !== normalized);
         setMyBar(newBar);
+        heavyImpact();
 
         if (graveyard.some(i => i.toLowerCase() === normalized)) {
             await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
@@ -301,6 +305,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const completeOnboarding = async () => {
         if (!user) return;
         setHasCompletedOnboarding(true);
+        successImpact();
         await setDoc(doc(db, 'users', user.uid), { hasCompletedOnboarding: true }, { merge: true });
     };
 

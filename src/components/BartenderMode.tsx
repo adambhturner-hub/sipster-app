@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cocktail } from '@/data/cocktails';
 import { useMeasurement } from '@/contexts/MeasurementContext';
+import { useHaptic } from '@/hooks/useHaptic';
 
 interface BartenderModeProps {
     cocktail: Cocktail;
@@ -13,6 +14,7 @@ interface BartenderModeProps {
 export default function BartenderMode({ cocktail, onClose }: BartenderModeProps) {
     const [currentStep, setCurrentStep] = useState(-1); // -1 is Title/Intro
     const { convertMeasurement } = useMeasurement();
+    const { lightImpact } = useHaptic();
 
     // Prevent body scroll when open
     useEffect(() => {
@@ -62,6 +64,7 @@ export default function BartenderMode({ cocktail, onClose }: BartenderModeProps)
 
     const navigate = (newDirection: number) => {
         setDirection(newDirection);
+        lightImpact();
         if (newDirection === 1) handleNext();
         else handlePrev();
     };
