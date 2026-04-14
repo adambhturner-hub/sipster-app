@@ -25,6 +25,7 @@ interface AuthContextType {
     myBar: string[];
     shoppingList: string[];
     graveyard: string[];
+    bottleBrands: Record<string, string[]>;
     tasteProfile: TasteProfile | null;
     badges: string[];
     hasCompletedOnboarding: boolean;
@@ -40,6 +41,8 @@ interface AuthContextType {
     follows: string[];
     followCreator: (creatorUid: string) => Promise<void>;
     unfollowCreator: (creatorUid: string) => Promise<void>;
+    addSpecificBrand: (baseItem: string, brand: string) => Promise<void>;
+    removeSpecificBrand: (baseItem: string, brand: string) => Promise<void>;
     isAdmin: boolean | null;
     docLoading: boolean;
 }
@@ -54,6 +57,7 @@ const AuthContext = createContext<AuthContextType>({
     myBar: [],
     shoppingList: [],
     graveyard: [],
+    bottleBrands: {},
     tasteProfile: null,
     badges: [],
     hasCompletedOnboarding: true, // Default true to prevent flickering before load
@@ -69,6 +73,8 @@ const AuthContext = createContext<AuthContextType>({
     follows: [],
     followCreator: async () => { },
     unfollowCreator: async () => { },
+    addSpecificBrand: async () => { },
+    removeSpecificBrand: async () => { },
     isAdmin: null,
     docLoading: true,
 });
@@ -81,6 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [graveyard, setGraveyard] = useState<string[]>([]);
+    const [bottleBrands, setBottleBrands] = useState<Record<string, string[]>>({});
     const [tasteProfile, setTasteProfile] = useState<TasteProfile | null>(null);
     const [badges, setBadges] = useState<string[]>([]);
     const [follows, setFollows] = useState<string[]>([]);
@@ -149,6 +156,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setMyBar([]);
             setShoppingList([]);
             setGraveyard([]);
+            setBottleBrands({});
             setIsAdmin(false); // Make sure this falsifies for unauthenticated users!
             // Do NOT touch setDocLoading(false) here, onAuthStateChanged already handles it truthfully!
             return;
@@ -164,6 +172,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         setMyBar(docSnap.data().myBar || []);
                         setShoppingList(docSnap.data().shoppingList || []);
                         setGraveyard(docSnap.data().graveyard || []);
+                        setBottleBrands(docSnap.data().bottleBrands || {});
                         setTasteProfile(docSnap.data().tasteProfile || null);
                         setBadges(docSnap.data().badges || []);
                         setFollows(docSnap.data().follows || []);
@@ -200,7 +209,52 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const normalized = item.toLowerCase();
         const newBar = myBar.filter(i => i.toLowerCase() !== normalized);
         setMyBar(newBar);
-        await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
+        
+        let updatedBottleBrands = { ...bottleBrands };
+        if (updatedBottleBrands[item]) {
+            delete updatedBottleBrands[item];
+            setBottleBrands(updatedBottleBrands);
+        }
+
+        await setDoc(doc(db, 'users', user.uid), { myBar: newBar, bottleBrands: updatedBottleBrands }, { merge: true });
+    };
+
+    const addSpecificBrand = async (baseItem: string, brand: string) => {
+        if (!user) return;
+        const currentBrands = bottleBrands[baseItem] || [];
+        if (currentBrands.includes(brand)) return;
+        
+        const newBrands = [...currentBrands, brand];
+        const newBottleBrands = { ...bottleBrands, [baseItem]: newBrands };
+        setBottleBrands(newBottleBrands);
+        
+        // Also ensure the baseItem is in myBar so algorithms work
+        const normalizedItem = baseItem.toLowerCase();
+        let newBar = myBar;
+        if (!myBar.some(i => i.toLowerCase() === normalizedItem)) {
+            newBar = [...myBar, baseItem];
+            setMyBar(newBar);
+        }
+        
+        lightImpact();
+        await setDoc(doc(db, 'users', user.uid), { bottleBrands: newBottleBrands, myBar: newBar }, { merge: true });
+    };
+
+    const removeSpecificBrand = async (baseItem: string, brand: string) => {
+        if (!user) return;
+        const currentBrands = bottleBrands[baseItem] || [];
+        const newBrands = currentBrands.filter(b => b !== brand);
+        
+        let newBottleBrands = { ...bottleBrands };
+        if (newBrands.length === 0) {
+            delete newBottleBrands[baseItem];
+        } else {
+            newBottleBrands[baseItem] = newBrands;
+        }
+        setBottleBrands(newBottleBrands);
+        
+        heavyImpact();
+        await setDoc(doc(db, 'users', user.uid), { bottleBrands: newBottleBrands }, { merge: true });
     };
 
     const followCreator = async (creatorUid: string) => {
@@ -233,14 +287,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setMyBar(newBar);
         heavyImpact();
 
+        let updatedBottleBrands = { ...bottleBrands };
+        if (updatedBottleBrands[item]) {
+            delete updatedBottleBrands[item];
+            setBottleBrands(updatedBottleBrands);
+        }
+
         if (graveyard.some(i => i.toLowerCase() === normalized)) {
-            await setDoc(doc(db, 'users', user.uid), { myBar: newBar }, { merge: true });
+            await setDoc(doc(db, 'users', user.uid), { myBar: newBar, bottleBrands: updatedBottleBrands }, { merge: true });
             return;
         }
 
         const newGraveyard = [...graveyard, item];
         setGraveyard(newGraveyard);
-        await setDoc(doc(db, 'users', user.uid), { myBar: newBar, graveyard: newGraveyard }, { merge: true });
+        await setDoc(doc(db, 'users', user.uid), { myBar: newBar, graveyard: newGraveyard, bottleBrands: updatedBottleBrands }, { merge: true });
     };
 
     const removeFromGraveyard = async (item: string) => {
@@ -356,6 +416,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             myBar,
             shoppingList,
             graveyard,
+            bottleBrands,
             tasteProfile,
             badges,
             hasCompletedOnboarding,
@@ -363,6 +424,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             completeOnboarding,
             addToBar,
             removeFromBar,
+            addSpecificBrand,
+            removeSpecificBrand,
             addToShoppingList,
             removeShoppingItem,
             moveToGraveyard,

@@ -12,6 +12,7 @@ import { getClassicCocktails } from '@/lib/dataFetchers';
 import { Cocktail } from '@/data/cocktails';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import RouletteSpinner from '@/components/RouletteSpinner';
+import VirtualShelf from '@/components/VirtualShelf';
 
 export default function MyBarPage() {
     const { user, loading: authLoading, tasteProfile } = useAuth();
@@ -22,6 +23,9 @@ export default function MyBarPage() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [isScanning, setIsScanning] = useState(false);
     const [isAdvancedExpanded, setIsAdvancedExpanded] = useState(false);
+    const [viewMode, setViewMode] = useState<'shelf' | 'list'>('shelf');
+    const [brandModalState, setBrandModalState] = useState<{ isOpen: boolean, baseIngredient: string, currentBrand?: string, inputValue: string }>({ isOpen: false, baseIngredient: '', inputValue: '' });
+
     const [customIngredient, setCustomIngredient] = useState('');
     const [customShoppingItem, setCustomShoppingItem] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
@@ -474,10 +478,11 @@ export default function MyBarPage() {
 
                     {/* Fridge Scanner Button - Only in My Bar */}
                     {activeTab === 'my-bar' && (
-                        <div className="flex justify-center border-t border-white/10 pt-8">
+                        <div className="flex justify-center border-t border-white/10 pt-8 gap-4">
                             <label className={`cursor-pointer inline-flex items-center gap-2 bg-white/5 border border-white/20 hover:bg-white/10 hover:border-[var(--primary)] px-6 py-3 rounded-full transition-all duration-300 ${isScanning ? 'opacity-50 pointer-events-none' : ''}`}>
                                 <span className="text-xl">📸</span>
-                                <span className="font-bold text-gray-300 hover:text-white">Scan Fridge / Cabinet</span>
+                                <span className="font-bold text-gray-300 hover:text-white hidden md:inline">Scan Fridge / Cabinet</span>
+                                <span className="font-bold text-gray-300 hover:text-white md:hidden">Scan Camera</span>
                                 <input
                                     type="file"
                                     accept="image/png, image/jpeg, image/webp"
@@ -486,6 +491,23 @@ export default function MyBarPage() {
                                     disabled={isScanning}
                                 />
                             </label>
+                            
+                            <div className="inline-flex items-center bg-gray-900 border border-gray-700 rounded-full p-1 h-12">
+                                <button
+                                    onClick={() => setViewMode('shelf')}
+                                    className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${viewMode === 'shelf' ? 'bg-[var(--primary)] text-white' : 'text-gray-400 hover:text-white'}`}
+                                    title="Virtual Shelf View"
+                                >
+                                    🍾 Shelf
+                                </button>
+                                <button
+                                    onClick={() => setViewMode('list')}
+                                    className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${viewMode === 'list' ? 'bg-[var(--accent)] text-black' : 'text-gray-400 hover:text-white'}`}
+                                    title="List View"
+                                >
+                                    📋 Base List
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -499,10 +521,25 @@ export default function MyBarPage() {
                         <div className="mb-12">
                             <RouletteSpinner makeableDrinks={getMakeableDrinks(myBar)} />
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                            {INGREDIENT_CATEGORIES.map((category) => {
-                                // For Advanced Spirits, only render if expanded
-                                if (category.name.includes('Advanced Spirits') && !isAdvancedExpanded) {
+                        
+                        {viewMode === 'shelf' ? (
+                            <VirtualShelf 
+                                myBar={myBar} 
+                                bottleBrands={user?.bottleBrands || {}} 
+                                onBottleClick={(baseIngredient, brand) => {
+                                    setBrandModalState({
+                                        isOpen: true,
+                                        baseIngredient,
+                                        currentBrand: brand,
+                                        inputValue: ''
+                                    });
+                                }} 
+                            />
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                                {INGREDIENT_CATEGORIES.map((category) => {
+                                    // For Advanced Spirits, only render if expanded
+                                    if (category.name.includes('Advanced Spirits') && !isAdvancedExpanded) {
                                     return (
                                         <div key={category.name} className="md:col-span-2 text-center mt-4">
                                             <button
@@ -622,7 +659,8 @@ export default function MyBarPage() {
                                     </div>
                                 );
                             })}
-                        </div>
+                            </div>
+                        )}
 
                         {/* Custom Addition Section */}
                         <div className="glass-panel p-8 mb-12 w-full max-w-2xl mx-auto text-center border border-[var(--color-neon-purple)]/30 shadow-[0_0_20px_rgba(176,38,255,0.1)]">
@@ -910,6 +948,92 @@ export default function MyBarPage() {
                     </div>
                 )}
             </div >
+            {/* Brand Modifier Modal */}
+            <AnimatePresence>
+                {brandModalState.isOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setBrandModalState(prev => ({ ...prev, isOpen: false }))}
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                            className="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8 w-full max-w-md relative z-10 shadow-2xl"
+                        >
+                            <h2 className="text-2xl font-bold font-serif text-white mb-2">Bottle Collection</h2>
+                            <p className="text-gray-400 text-sm mb-6">
+                                Base Spirit: <strong className="text-[var(--primary)]">{brandModalState.baseIngredient}</strong>
+                                {brandModalState.currentBrand ? ` • Currently Editing: ${brandModalState.currentBrand}` : ''}
+                            </p>
+                            
+                            {!brandModalState.currentBrand ? (
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Add Specific Bottle Label</label>
+                                        <input
+                                            type="text"
+                                            value={brandModalState.inputValue}
+                                            onChange={(e) => setBrandModalState(prev => ({ ...prev, inputValue: e.target.value }))}
+                                            placeholder="e.g. Woodford Reserve"
+                                            className="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-[var(--primary)] transition-colors"
+                                            autoFocus
+                                        />
+                                    </div>
+                                    <div className="flex gap-3 pt-4 border-t border-gray-800">
+                                        <button
+                                            onClick={() => setBrandModalState(prev => ({ ...prev, isOpen: false }))}
+                                            className="flex-1 py-3 rounded-xl font-bold bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                if (brandModalState.inputValue.trim()) {
+                                                    await user?.addSpecificBrand(brandModalState.baseIngredient, brandModalState.inputValue.trim());
+                                                    setBrandModalState(prev => ({ ...prev, isOpen: false }));
+                                                }
+                                            }}
+                                            disabled={!brandModalState.inputValue.trim()}
+                                            className="flex-1 py-3 rounded-xl font-bold bg-[var(--primary)] text-white hover:bg-[#c93aff] transition-colors disabled:opacity-50"
+                                        >
+                                            Add Bottle
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <p className="text-white italic text-center pb-4 py-4 bg-black/30 rounded-xl border border-gray-800">
+                                        "{brandModalState.currentBrand}"
+                                    </p>
+                                    <div className="flex gap-3 pt-4 border-t border-gray-800 flex-col">
+                                        <button
+                                            onClick={async () => {
+                                                await user?.removeSpecificBrand(brandModalState.baseIngredient, brandModalState.currentBrand!);
+                                                setBrandModalState(prev => ({ ...prev, isOpen: false }));
+                                            }}
+                                            className="w-full py-3 rounded-xl font-bold bg-red-900 border border-red-500/50 text-red-200 hover:bg-red-800 hover:text-white transition-colors"
+                                        >
+                                            Kill Bottle (Remove)
+                                        </button>
+                                        <button
+                                            onClick={() => setBrandModalState(prev => ({ ...prev, isOpen: false }))}
+                                            className="w-full py-3 rounded-xl font-bold bg-gray-800 text-white hover:bg-gray-700 transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
+
         </ProtectedRoute>
     );
 }
