@@ -15,7 +15,7 @@ import RouletteSpinner from '@/components/RouletteSpinner';
 import VirtualShelf from '@/components/VirtualShelf';
 
 export default function MyBarPage() {
-    const { user, loading: authLoading, tasteProfile } = useAuth();
+    const { user, loading: authLoading, tasteProfile, bottleBrands, addSpecificBrand, removeSpecificBrand } = useAuth();
     const [myBar, setMyBar] = useState<string[]>([]);
     const [shoppingList, setShoppingList] = useState<string[]>([]);
     const [graveyard, setGraveyard] = useState<string[]>([]);
@@ -525,7 +525,7 @@ export default function MyBarPage() {
                         {viewMode === 'shelf' ? (
                             <VirtualShelf 
                                 myBar={myBar} 
-                                bottleBrands={user?.bottleBrands || {}} 
+                                bottleBrands={bottleBrands || {}} 
                                 onBottleClick={(baseIngredient, brand) => {
                                     setBrandModalState({
                                         isOpen: true,
@@ -994,7 +994,7 @@ export default function MyBarPage() {
                                         <button
                                             onClick={async () => {
                                                 if (brandModalState.inputValue.trim()) {
-                                                    await user?.addSpecificBrand(brandModalState.baseIngredient, brandModalState.inputValue.trim());
+                                                    await addSpecificBrand(brandModalState.baseIngredient, brandModalState.inputValue.trim());
                                                     setBrandModalState(prev => ({ ...prev, isOpen: false }));
                                                 }
                                             }}
@@ -1013,7 +1013,7 @@ export default function MyBarPage() {
                                     <div className="flex gap-3 pt-4 border-t border-gray-800 flex-col">
                                         <button
                                             onClick={async () => {
-                                                await user?.removeSpecificBrand(brandModalState.baseIngredient, brandModalState.currentBrand!);
+                                                await removeSpecificBrand(brandModalState.baseIngredient, brandModalState.currentBrand!);
                                                 setBrandModalState(prev => ({ ...prev, isOpen: false }));
                                             }}
                                             className="w-full py-3 rounded-xl font-bold bg-red-900 border border-red-500/50 text-red-200 hover:bg-red-800 hover:text-white transition-colors"
